@@ -26,7 +26,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	    CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
 	    cookieLocaleResolver.setCookieName("eIcsLang");
 	    cookieLocaleResolver.setDefaultLocale(new Locale("es"));
-	    cookieLocaleResolver.setCookiePath("/webapp-ics/");
+	    cookieLocaleResolver.setCookiePath("/a2cares/");
 	    cookieLocaleResolver.setCookieMaxAge(31536000);
 	    return cookieLocaleResolver;
 	}

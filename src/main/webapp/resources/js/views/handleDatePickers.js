@@ -4,7 +4,8 @@ var handleDatePickers = function (idioma) {
         $('.date-picker').datepicker({
             language: idioma,
             format:'dd/mm/yyyy',
-            autoclose: true
+            autoclose: true,
+            endDate: '-0d'
         });
         $('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
         // Para trabajar con rangos de fecha

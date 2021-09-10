@@ -388,3 +388,6 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `catPasive`, `es`) VALUES ('CAT_RAZON_NO_MX_04', '4', 'CAT_RAZON_NO_MX', NULL, '0', 4, '0', 'Participante o tutor no aceptó tomar muestra');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `catPasive`, `es`) VALUES ('CAT_RAZON_NO_MX_05', '5', 'CAT_RAZON_NO_MX', NULL, '0', 5, '0', 'Participante o tutor después de pinchadazo no desea que se le tome muestra');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `catPasive`, `es`) VALUES ('CAT_RAZON_NO_MX_998', '998', 'CAT_RAZON_NO_MX', NULL, '0', 6, '0', 'Otra razón');
+
+
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `catPasive`, `es`) VALUES ('select', '0', '0', '0', 'Seleccione');

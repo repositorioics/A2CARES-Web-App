@@ -320,8 +320,6 @@
             <c:set var="lenguaje" value="${cookie.eIcsLang.value}"/>
         </c:otherwise>
     </c:choose>
-    <spring:url value="/resources/js/libs/select2.min.js" var="selectJs" />
-    <script type="text/javascript" src="${selectJs}"></script>
     <spring:url value="/resources/js/libs/jquery.multi-select.js" var="jQueryMultiSelect" />
     <script type="text/javascript" src="${jQueryMultiSelect}"></script>
     <spring:url value="/resources/js/libs/jquery.validate.js" var="validateJs" />

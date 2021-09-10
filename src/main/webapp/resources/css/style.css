@@ -1504,17 +1504,20 @@ pre code {
     background-color: #fff;
     background-image: none;
     background-clip: padding-box;
-    border: 1px solid #e9ebec;
-    border-radius: 0;
+    border: 1px solid #ced4da; /*e9ebec*/
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem; /*para poner bordes redondeados*/
     transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
 .form-control::-ms-expand, .daterangepicker .input-mini::-ms-expand, .input-group > .ui-select-bootstrap > input.ui-select-search.form-control::-ms-expand, .input-group > .ui-select-bootstrap > input.ui-select-search.form-control.direction-up::-ms-expand {
     background-color: transparent;
     border: 0; }
 .form-control:focus, .daterangepicker .input-mini:focus, .input-group > .ui-select-bootstrap > input.ui-select-search.form-control:focus {
-    color: #9fabb8;
+    color: #495057; /*9fabb8 se comenta para cambiar estilo*/
     background-color: #fff;
-    border-color: #a5d8f2;
-    outline: none; }
+    border-color: #80bdff; /*a5d8f2 se comenta para cambiar estilo*/
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
 .form-control::placeholder, .daterangepicker .input-mini::placeholder, .input-group > .ui-select-bootstrap > input.ui-select-search.form-control::placeholder, .input-group > .ui-select-bootstrap > input.ui-select-search.form-control.direction-up::placeholder {
     color: #dbdee0;
     opacity: 1; }
@@ -2431,6 +2434,7 @@ tbody.collapse.show {
     white-space: nowrap;
     vertical-align: middle; }
 
+/* se comenta para modificar estilo
 .input-group-addon {
     padding: 0.5rem 0.75rem;
     margin-bottom: 0;
@@ -2441,6 +2445,18 @@ tbody.collapse.show {
     text-align: center;
     background-color: #e9ebec;
     border: 1px solid #e9ebec; }
+*/
+.input-group-addon {
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    font-weight: normal;
+    line-height: 1.25;
+    color: #2479ce;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;}
 .input-group-addon.form-control-sm, .daterangepicker .input-group-sm > .input-group-addon.input-mini, .input-group > .ui-select-bootstrap.input-group-sm > input.input-group-addon.ui-select-search.form-control,
 .input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .input-group-addon.btn, .fc
