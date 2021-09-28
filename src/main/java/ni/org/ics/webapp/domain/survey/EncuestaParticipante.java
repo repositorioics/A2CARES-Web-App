@@ -1293,7 +1293,7 @@ public class EncuestaParticipante extends BaseMetaData implements Serializable{
 		this.diagnosticoRash = diagnosticoRash;
 	}
 
-    @Column(name = "ESTUDIOS_ACTUALES", nullable = true, length = 2)
+    @Column(name = "ESTUDIOS_ACTUALES", nullable = true, length = 20)
 	public String getEstudiosAct() {
 		return estudiosAct;
 	}

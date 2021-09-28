@@ -1,6 +1,8 @@
 package ni.org.ics.webapp.movil.controller;
 
 import ni.org.ics.webapp.domain.core.Participante;
+import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
+import ni.org.ics.webapp.service.ParticipanteProcesosService;
 import ni.org.ics.webapp.service.ParticipanteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +28,9 @@ public class ParticipanteController {
     @Resource(name = "participanteService")
     private ParticipanteService participanteService;
 
-    /*@Resource(name="participanteProcesosService")
+    @Resource(name="participanteProcesosService")
     private ParticipanteProcesosService participanteProcesosService;
-    *//**
+    /**
      * Acepta una solicitud GET para JSON
      * @return JSON
      */
@@ -112,5 +114,60 @@ public class ParticipanteController {
         participantes.add(participanteService.getParticipanteByCodigo(codigo));
         return participantes;
     }
+
+    /**
+     * Retorna participantes. Acepta una solicitud GET para JSON
+     * @return participantes JSON
+     */
+    @RequestMapping(value = "participantesprocesos", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    List<ParticipanteProcesos> descargarParticipantes() {
+        try {
+            logger.info("Descargando toda la informacion de participantes");
+            List<ParticipanteProcesos> participantes = participanteProcesosService.getParticipantesProcesos();
+            if (participantes == null) {
+                logger.debug(new Date() + " - Nulo");
+            }
+            return participantes;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Acepta una solicitud POST con un parámetro JSON
+     * @param participantesArray Objeto serializado de Participante
+     * @return String con el resultado
+     */
+    @RequestMapping(value = "participantesprocesos", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody String saveParticipantesProcesos(@RequestBody ParticipanteProcesos[] participantesArray){
+        logger.debug("Insertando/Actualizando datos procesos de participantes");
+        if (participantesArray == null){
+            logger.debug("Nulo");
+            return "No recibi nada!";
+        }else{
+            List<ParticipanteProcesos> participantes = Arrays.asList(participantesArray);
+            for (ParticipanteProcesos participante : participantes){
+                participanteProcesosService.saveOrUpdateParticipanteProc(participante);
+            }
+        }
+        return "Datos recibidos!";
+    }
+
+    /**
+     * Retorna participante_procesos. Acepta una solicitud GET para JSON
+     * @return participante JSON
+     */
+    @RequestMapping(value = "participanteprocesos/{codigo}", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    List<ParticipanteProcesos> descargarParticipanteProcesos(@PathVariable Integer codigo) {
+        logger.info("Descargando toda la informacion del participante "+codigo);
+        List<ParticipanteProcesos> participantes = new ArrayList<ParticipanteProcesos>();
+        participantes.add(participanteProcesosService.getParticipante(codigo));
+
+        return participantes;
+    }
+
 
 }

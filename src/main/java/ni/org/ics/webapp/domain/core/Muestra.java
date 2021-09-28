@@ -16,7 +16,7 @@ import java.util.Date;
  **/
 
 @Entity
-@Table(name = "encuestas_participates", catalog = "a2cares")
+@Table(name = "muestras", catalog = "a2cares")
 public class Muestra extends BaseMetaData implements Serializable {
 
 	/**
