@@ -19,10 +19,10 @@
             </sec:authorize>
             <sec:authorize access="hasRole('ROLE_ROOT')">
                 <li class="nav-item nav-dropdown fingering">
-                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-book-open"></i><spring:message code="digitacion" /></a>
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-book-open"></i><spring:message code="fingering" /></a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item users">
-                            <a class="nav-link" href="<spring:url value="/hoja-clinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="Hoja Clinica" /></a>
+                            <a class="nav-link" href="<spring:url value="/hoja-clinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="clinical_sheet" /></a>
                         </li>
                     </ul>
                 </li>

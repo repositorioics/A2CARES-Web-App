@@ -290,7 +290,7 @@ public class Participante extends BaseMetaData implements Auditable {
                     }
                 }
             }
-            return anios.toString() + "/" + meses.toString() + "/" + dias.toString();
+            return anios.toString() + " A / " + meses.toString() + " M / " + dias.toString() + " D";
         }else{
             return "ND";
         }

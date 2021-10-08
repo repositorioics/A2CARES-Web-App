@@ -32,5 +32,9 @@
 <link href="${generalstyle}" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 
+<!-- Main styles for this application -->
+<spring:url value="/resources/css/toastr.css" var="toastCss" />
+<link href="${toastCss}" rel="stylesheet" type="text/css"/>
+
 <spring:url value="/resources/img/favicon.png" var="favicon" />
 <link rel="shortcut icon" href="${favicon}"/>

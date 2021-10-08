@@ -17,6 +17,13 @@ var ClinicalSheet = function () {
         //main function to initiate the module
         init: function (parametros) {
 
+            toastr.options = {
+                "closeButton": true,
+                "showMethod": "fadeIn",
+                "progressBar": true,
+                "hideMethod": "fadeOut"
+            };
+
             // wrapper function to  block element(indicate loading)
             function blockUI(el, centerY) {
                 var el = jQuery(el);
@@ -53,8 +60,43 @@ var ClinicalSheet = function () {
             }
 
             handleSelect();
-            var form1 = $('#form-clinicalsheet');
-            form1.validate({
+
+            var formSearch = $('#search-participant-form');
+            formSearch.validate({
+                errorElement: 'span', //default input error message container
+                focusInvalid: false, // do not focus the last invalid input
+                rules: {
+                    participantCode : {
+                        required: true,
+                        number: true,
+                        min: 80000
+                    }
+                },
+                errorPlacement: function ( error, element ) {
+                    // Add the `help-block` class to the error element
+                    error.addClass( 'form-control-feedback' );
+                    if ( element.prop( 'type' ) === 'checkbox' ) {
+                        error.insertAfter( element.parent( 'label' ) );
+                    } else {
+                        //error.insertAfter( element ); //cuando no es input-group
+                        error.insertAfter(element.parent('.input-group'));
+                    }
+                },
+                highlight: function ( element, errorClass, validClass ) {
+                    $( element ).addClass( 'form-control-danger' ).removeClass( 'form-control-success' );
+                    $( element ).parents( '.form-group' ).addClass( 'has-danger' ).removeClass( 'has-success' );
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $( element ).addClass( 'form-control-success' ).removeClass( 'form-control-danger' );
+                    $( element ).parents( '.form-group' ).addClass( 'has-success' ).removeClass( 'has-danger' );
+                },
+                submitHandler: function (form) {
+                    search();
+                }
+            });
+
+            var formDatos = $('#form-clinicalsheet');
+            formDatos.validate({
                 errorElement: 'span', //default input error message container
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
@@ -258,7 +300,7 @@ var ClinicalSheet = function () {
         	{
             	blockUI();
         	    $.post( parametros.saveUserUrl
-        	            , form1.serialize()
+        	            , formDatos.serialize()
         	            , function( data )
         	            {
         	    			usuario = JSON.parse(data);
@@ -281,37 +323,31 @@ var ClinicalSheet = function () {
         		    		unblockUI();
         		  		});
         	}
-            
-    	    
-    	    $(document).on('keypress','form input',function(event)
-    		{                
-    		    event.stopImmediatePropagation();
-    		    if( event.which == 13 )
-    		    {
-    		        event.preventDefault();
-    		        var $input = $('form input');
-    		        if( $(this).is( $input.last() ) )
-    		        {
-    		            //Time to submit the form!!!!
-    		            //alert( 'Hooray .....' );
-    		        }
-    		        else
-    		        {
-    		            $input.eq( $input.index( this ) + 1 ).focus();
-    		        }
-    		    }
-    		});
+
+            function search()
+            {
+                $.getJSON( parametros.searchUrl , formSearch.serialize() , function( data )   {
+                        //registro = JSON.parse(data);
+                        console.log(data);
+                        if (data.mensaje != undefined) {
+                            toastr.error(data.mensaje,"Error",{timeOut: 5000});
+                            $("#nombre").val("");
+                            $("#fechanac").val("");
+                            $("#edadPart").val("");
+                            $("#sexoPart").val("");
+                        }
+                        else {
+                            $("#nombre").val(data.nombre);
+                            $("#fechanac").val(data.fechaNac);
+                            $("#edadPart").val(data.edad);
+                            $("#sexoPart").val(data.sexo);
+                        }
+                    }
+                ).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                        toastr.error( "error:" + errorThrown);
+                    });
+            }
         }
     };
-
-
-
-
-
-
-
-
-
-
 
 }();
