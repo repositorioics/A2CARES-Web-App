@@ -1,3 +1,9 @@
+INSERT INTO `roles` (`ROL`) VALUES ('ROLE_ROOT');
+
+INSERT INTO `usuarios_sistema` (`NOMBRE_USUARIO`, `CUENTA_SINEXPIRAR`, `CUENTA_SINBLOQUEAR`, `DESCRIPCION`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `CREDENCIAL_SINEXPIRAR`, `CORREO_ELECTRONICO`, `HABILITADO`, `FECHA_ULTACC`, `FECHA_ULTMODCRED`, `FECHA_ULTMOD`, `USUARIO_ULTMOD`, `CONTRASENA`) VALUES ('admin', '1', '1', 'Administrador', '2021-01-01 12:00:00', 'admin', '1', 'admincndr@icsnicaragua.org', '1', '2021-01-01 12:00:00', NULL, '2021-01-01 12:00:00', 'admin', '4f4e617568a86abdce12ac9eab87ea40c0d9824a6db6e21fd6d4c54a0b9e5d58ff25e2093f8caee6');
+INSERT INTO `usuarios_roles` (`ROL`, `NOMBRE_USUARIO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `ESTADO`) VALUES ('ROLE_ROOT', 'admin', '0', '2021-01-01 12:00:00', 'admin', '1');
+
+
 /*Plantilla*/
 INSERT INTO `mensajes` (`messageKey`, `es`, `catPasive`, `isCat`, `orden`) VALUES ( 'heading', 'Aplicación Web','0','0',0);
 INSERT INTO `mensajes` (`messageKey`, `es`, `catPasive`, `isCat`, `orden`) VALUES ( 'title', 'Estudio A2CARES','0','0',0);
