@@ -19,17 +19,12 @@ public class UserPermissions {
 	private Boolean muestra=false;
 	private Boolean encuestaCasa=false;
 	private Boolean encuestaParticipante=false;
-	private Boolean encuestaLactancia=false;
 	private Boolean encuestaSatisfaccion=false;
 	private Boolean obsequio=false;
 	private Boolean pesoTalla=false;
-	private Boolean vacunas=false;
 	private Boolean visitas=false;
 	private Boolean recepcion=false;
 	private Boolean consentimiento=false;
-	private Boolean casazika=false;
-	private Boolean tamizajezika=false;
-	private Boolean datosparto=false;
 
 	@Id
 	@Column(name = "username", nullable = false, length =50)
@@ -64,14 +59,6 @@ public class UserPermissions {
 		this.encuestaParticipante = encuestaParticipante;
 	}
 
-	@Column(name = "elactancia", nullable = false)
-	public Boolean getEncuestaLactancia() {
-		return encuestaLactancia;
-	}
-	public void setEncuestaLactancia(Boolean encuestaLactancia) {
-		this.encuestaLactancia = encuestaLactancia;
-	}
-
 	@Column(name = "esatisfaccion", nullable = false)
 	public Boolean getEncuestaSatisfaccion() {
 		return encuestaSatisfaccion;
@@ -96,14 +83,6 @@ public class UserPermissions {
 		this.pesoTalla = pesoTalla;
 	}
 
-	@Column(name = "vacunas", nullable = false)
-	public Boolean getVacunas() {
-		return vacunas;
-	}
-	public void setVacunas(Boolean vacunas) {
-		this.vacunas = vacunas;
-	}
-
 	@Column(name = "visitas", nullable = false)
 	public Boolean getVisitas() {
 		return visitas;
@@ -126,29 +105,5 @@ public class UserPermissions {
 	}
 	public void setConsentimiento(Boolean consentimiento) {
 		this.consentimiento = consentimiento;
-	}
-
-	@Column(name = "casazika", nullable = false)
-	public Boolean getCasazika() {
-		return casazika;
-	}
-	public void setCasazika(Boolean casazika) {
-		this.casazika = casazika;
-	}
-
-	@Column(name = "tamizajezika", nullable = false)
-	public Boolean getTamizajezika() {
-		return tamizajezika;
-	}
-	public void setTamizajezika(Boolean tamizajezika) {
-		this.tamizajezika = tamizajezika;
-	}
-	
-	@Column(name = "datosparto", nullable = false)
-	public Boolean getDatosparto() {
-		return datosparto;
-	}
-	public void setDatosparto(Boolean datosparto) {
-		this.datosparto = datosparto;
 	}
 }

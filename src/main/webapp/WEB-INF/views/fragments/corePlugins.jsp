@@ -24,4 +24,7 @@
 <script src="${spinJs}" type="text/javascript" ></script>
 <spring:url value="/resources/js/libs/ladda.min.js" var="laddaJs" />
 <script src="${laddaJs}" type="text/javascript" ></script>
+
+<spring:url value="/resources/js/libs/sweetalert2/sweetalert2.min.js" var="sweetalert2" />
+<script src="${sweetalert2}"></script>
 <!-- END CORE PLUGINS -->

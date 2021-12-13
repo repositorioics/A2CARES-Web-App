@@ -54,17 +54,18 @@ public class MessageResourceService {
 		// Retrieve all
 		return  query.list();
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<MessageResource> loadMessages(String parametro) {
-		// Retrieve session from Hibernate
-		Session session = sessionFactory.getCurrentSession();
-		// Create a Hibernate query (HQL)
-		Query query = session.createQuery("FROM MessageResource mr where mr.messageKey like :parametro or mr.spanish like :parametro or mr.english like :parametro");
-		query.setParameter("parametro", '%'+parametro+'%');
-		// Retrieve all
-		return  query.list();
-	}
+
+    @SuppressWarnings("unchecked")
+    public List<MessageResource> loadMessages(String parametro) {
+        // Retrieve session from Hibernate
+        Session session = sessionFactory.getCurrentSession();
+        // Create a Hibernate query (HQL)
+        Query query = session.createQuery("FROM MessageResource mr where lower(mr.messageKey) like :parametro or lower(mr.spanish) like :parametro or lower(mr.english) like :parametro");
+        query.setParameter("parametro", '%'+parametro.toLowerCase()+'%');
+        // Retrieve all
+        return  query.list();
+    }
+
 	/* OBTIENE LA LISTA PARA LLENAR UN SELECT DE LA TABLA MENSAJE */
 	@SuppressWarnings("unchecked")
 	public List<MessageResource> getCatalogo(String catalogo) {
@@ -88,7 +89,17 @@ public class MessageResourceService {
 		// Retrieve all
 		return  query.list();
 	}
-	
+
+    @SuppressWarnings("unchecked")
+    public List<MessageResource> getCatalogosAdministracion() {
+        // Retrieve session from Hibernate
+        Session session = sessionFactory.getCurrentSession();
+        // Create a Hibernate query (HQL)
+        Query query = session.createQuery("FROM MessageResource mens where (mens.isCat ='1'" +
+                ") and mens.pasive = '0' order by mens.order");
+        // Retrieve all
+        return  query.list();
+    }
 	
 	public MessageResource getMensaje(String idMensaje) {
 		// Retrieve session from Hibernate
@@ -132,40 +143,17 @@ public class MessageResourceService {
     }
 
 
-        /* ocupar este para Mostrar los catalogos */
-    public MessageResource getMensajeByCatalogAndCatKey(String catKey, String catalogo) {
+    @SuppressWarnings("unchecked")
+    public List<MessageResource> getCatalogoTodos(String catalogo) {
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
         // Create a Hibernate query (HQL)
-        Query query = session.createQuery("FROM MessageResource mens where mens.catRoot =:catalogo and mens.catKey =:catKey");
-        query.setParameter("catalogo",catalogo);
-        query.setParameter("catKey", catKey);
-        // Retrieve all
-        return  (MessageResource) query.uniqueResult();
-    }
-
-    public List<MessageResource> getMensajeByCatalogAndCatKeys(String catKeys, String catalogo) {
-        // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
-        // Create a Hibernate query (HQL)
-        Query query = session.createQuery("FROM MessageResource mens where mens.catRoot =:catalogo and mens.catKey in ('"+catKeys+"')");
-        query.setParameter("catalogo",catalogo);
-        // Retrieve all
-        return  query.list();
-    }
-
-    public List<MessageResource> getMensajeEnfCronByTamizaje(String tamizaje, String catalogo) {
-        // Retrieve session from Hibernate
-        Session session = sessionFactory.getCurrentSession();
-        // Create a Hibernate query (HQL)
-        Query query = session.createQuery("select mens FROM MessageResource mens, EnfermedadCronica ec inner join ec.tamizaje t " +
-                "where mens.catRoot =:catalogo and t.codigo = :tamizaje and ec.enfermedad = mens.catKey and ec.pasive ='0' ");
+        Query query = session.createQuery("FROM MessageResource mens where mens.isCat ='0'" +
+                " and mens.catRoot =:catalogo and mens.catKey is not null order by mens.order");
         query.setParameter("catalogo", catalogo);
-        query.setParameter("tamizaje", tamizaje);
         // Retrieve all
         return  query.list();
     }
-
 
     /**/
 

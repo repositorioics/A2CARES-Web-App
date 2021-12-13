@@ -8,10 +8,14 @@
     <jsp:include page="../fragments/headTag.jsp" />
     <spring:url value="/resources/css/bootstrap.css" var="boot" />
     <link href="${boot}" rel="stylesheet" type="text/css"/>
-    <!-- DATE PICKER -->
+    <!-- DATE PICKER
     <spring:url value="/resources/css/datepicker.css" var="datepickerCss" />
     <link href="${datepickerCss}" rel="stylesheet" type="text/css"/>
-    <!-- END DATE PICKER -->
+    END DATE PICKER -->
+    <!-- DATETIME PICKER -->
+    <spring:url value="/resources/css/bootstrap-datetimepicker.css" var="datetimepickerCss" />
+    <link href="${datetimepickerCss}" rel="stylesheet" type="text/css"/>
+
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
 <jsp:include page="../fragments/bodyHeader.jsp" />
@@ -23,6 +27,7 @@
 <ol class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="<spring:url value="/" htmlEscape="true "/>"><spring:message code="home" /></a>
+        <i class="fa fa-angle-right"></i> <a href="<spring:url value="/hojaclinica/" htmlEscape="true "/>"><spring:message code="clinical_sheet" /></a> <i class="fa fa-angle-right"></i> <a href="<spring:url value="/hojaclinica/add" htmlEscape="true "/>"><spring:message code="add" /></a>
     </li>
 </ol>
 <div class="container-fluid">
@@ -32,9 +37,21 @@
         <spring:message code="clinical_sheet" /> <small><spring:message code="fingering" /></small>
     </h3>
 </div>
-
 <form action="#" autocomplete="off" id="search-participant-form" name="search-participant-form" class="form-horizontal">
     <div class="card-block">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group">
+                    <spring:url value="/hojaclinica/" var="buscarHojas"/>
+                    <button id="backClinicalSheet" onclick="location.href='${fn:escapeXml(buscarHojas)}'" class="btn btn-block btn-lg btn-primary">
+                        <i class="fa fa-arrow-circle-left"></i>
+                        <spring:message code="back" />
+                    </button>
+                </div>
+                <br>
+                <br>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <br>
@@ -58,6 +75,7 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <h4 class="text-capitalize"><spring:message code="datos_personales" /></h4>
+            <input id="codigoPart" type="hidden" value=""/>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="row">
@@ -125,7 +143,7 @@
             <span class="input-group-addon">
                 <i class="fa fa-clock"></i>
             </span>
-                <input type="text" class="form-control" id="horaCons" required name="horaCons" value="" />
+                <input type="text" class="form-control time-picker" id="horaCons" required name="horaCons" value="" />
             </div>
         </div>
 
@@ -187,7 +205,9 @@
                     </label>
                     <select class="form-control focusNext" id="sexo" name="sexo" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
-                        <option value=""><spring:message code="M" /></option>
+                        <c:forEach var="item" items="${catSexo}">
+                            <option value="${item.catKey}">${item.spanish}</option>
+                        </c:forEach>
                     </select>
                 </div>
 
@@ -271,7 +291,7 @@
             <span class="input-group-addon">
                 <i class="fas fa-clock"></i>
             </span>
-                        <input type="text" class="form-control" required id="horaIniCons" name="horaIniCons"
+                        <input type="text" class="form-control time-picker" required id="horaIniCons" name="horaIniCons"
                                value="" />
                     </div>
                 </div>
@@ -283,17 +303,19 @@
                     </label>
                     <select class="form-control focusNext" id="tipoConsulta" name="tipoConsulta" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
+                        <option selected value="100"><spring:message code="100" />...</option>
                     </select>
                 </div>
 
             </div>
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="form-group">
-                    <label class="form-control-label" for="lugarConsutla"><spring:message code="lugar_consulta" />
+                    <label class="form-control-label" for="lugarConsulta"><spring:message code="lugar_consulta" />
                         <span class="required">*</span>
                     </label>
-                    <select class="form-control focusNext" id="lugarConsutla" name="lugarConsutla" required="required">
+                    <select class="form-control focusNext" id="lugarConsulta" name="lugarConsulta" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
+                        <option selected value="100"><spring:message code="100" />...</option>
                     </select>
                 </div>
 
@@ -421,7 +443,7 @@
             <span class="input-group-addon">
                 <i class="fas fa-clock"></i>
             </span>
-                        <input type="text" class="form-control" id="horaUltimoDiaF" name="horaUltimoDiaF" value="" />
+                        <input type="text" class="form-control time-picker" id="horaUltimoDiaF" name="horaUltimoDiaF" value="" />
                     </div>
                 </div>
 
@@ -439,12 +461,12 @@
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
                 <div class="form-group">
-                    <label class="form-control-label" for="horaUltimaDosisAntip"><spring:message code="hora" />Hora:</label>
+                    <label class="form-control-label" for="horaUltimaDosisAntip"><spring:message code="hora" /></label>
                     <div class="input-group">
             <span class="input-group-addon">
                 <i class="fas fa-clock"></i>
             </span>
-                        <input type="text" class="form-control" id="horaUltimaDosisAntip" name="horaUltimaDosisAntip" value="" />
+                        <input type="text" class="form-control time-picker" id="horaUltimaDosisAntip" name="horaUltimaDosisAntip" value="" />
                     </div>
                 </div>
             </div>
@@ -1833,6 +1855,9 @@
                     </label>
                     <select class="form-control focusNext" id="categoria" name="categoria" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
+                        <c:forEach var="item" items="${catCategoria}">
+                            <option value="${item.catKey}">${item.spanish}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -1841,6 +1866,9 @@
                     <label for="cambioCategoria" class="form-control-label"><spring:message code="cambio_categoria" /></label>
                     <select class="form-control focusNext" id="cambioCategoria" name="cambioCategoria" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
+                        <c:forEach var="item" items="${catSiNo}">
+                            <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -2134,6 +2162,9 @@
                     <label for="hospitalizado" class="form-control-label"><spring:message code="hospitalizado_ultimo_anio" /><span class="required">*</span></label>
                     <select class="form-control focusNext" id="hospitalizado" name="hospitalizado" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
+                        <c:forEach var="item" items="${catSiNo}">
+                            <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -2158,6 +2189,9 @@
                     <label for="transfusion" class="form-control-label"><spring:message code="transfusion_sangre_ultimo_anio" /><span class="required">*</span></label>
                     <select class="form-control focusNext" id="transfusion" name="transfusion" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
+                        <c:forEach var="item" items="${catSiNo}">
+                            <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -2182,6 +2216,9 @@
                     <label for="tomaMedicamento" class="form-control-label"><spring:message code="medicamento_momento" /><span class="required">*</span></label>
                     <select class="form-control focusNext" id="tomaMedicamento" name="tomaMedicamento" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
+                        <c:forEach var="item" items="${catSiNo}">
+                            <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -2550,7 +2587,7 @@
                         <label for="medico" class="form-control-label"><spring:message code="medico" /><span class="required">*</span></label>
                         <select class="form-control focusNext" id="medico" name="medico" required="required">
                             <option selected value=""><spring:message code="select" />...</option>
-                            <option value=""><spring:message code="1000" /></option>
+                            <option value="1000"><spring:message code="1000" /></option>
                         </select>
                     </div>
                 </div>
@@ -2573,7 +2610,7 @@
             <span class="input-group-addon">
                 <i class="fas fa-clock"></i>
             </span>
-                            <input type="text" class="form-control" id="horaMedico" required name="horaMedico" value="" />
+                            <input type="text" class="form-control time-picker" id="horaMedico" required name="horaMedico" value="" />
                         </div>
                     </div>
                 </div>
@@ -2582,7 +2619,7 @@
                         <label for="enfermeria" class="form-control-label"><spring:message code="enfermeria" /><span class="required">*</span></label>
                         <select class="form-control focusNext" id="enfermeria" name="enfermeria" required="required">
                             <option selected value=""><spring:message code="select" />...</option>
-                            <option value=""><spring:message code="1000" /></option>
+                            <option value="1000"><spring:message code="1000" /></option>
                         </select>
                     </div>
                 </div>
@@ -2606,7 +2643,7 @@
             <span class="input-group-addon">
                 <i class="fas fa-clock"></i>
             </span>
-                            <input type="text" class="form-control" id="horaEnfermeria" required name="horaEnfermeria" value="" />
+                            <input type="text" class="form-control time-picker" id="horaEnfermeria" required name="horaEnfermeria" value="" />
                         </div>
                     </div>
 
@@ -2619,8 +2656,8 @@
 
 <div class="card-block">
     <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-4">
+        <div class="col-lg-4 col-md-4 col-sm-2"></div>
+        <div class="col-lg-2 col-md-2 col-sm-4">
             <div class="form-group">
                 <button class="btn btn-success  btn-ladda btn-block btn-lg"
                         type="submit" id="btnModificar">
@@ -2628,16 +2665,16 @@
                 </button>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-lg-2 col-md-2 col-sm-4">
             <div class="form-group">
-                <a href="${fn:escapeXml(listDetailsHemoUrl)}" data-toggle="tooltip" title="Volver" data-placement="top"
+                <a href="${fn:escapeXml(buscarHojas)}" data-toggle="tooltip" title="Volver" data-placement="top"
                    class="btn btn-danger  btn-ladda btn-block btn-lg">
                     <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
                     <spring:message code="cancel" />
                 </a>
             </div>
         </div>
-        <div class="col-sm-2"></div>
+        <div class="col-lg-4 col-md-4 col-sm-2"></div>
     </div>
 </div>
 </form>
@@ -2659,10 +2696,10 @@
 <!-- GenesisUI main scripts -->
 <spring:url value="/resources/js/app.js" var="App" />
 <script src="${App}" type="text/javascript"></script>
-
+<!--
 <spring:url value="/resources/js/libs/bootstrap-datepicker/bootstrap-datepicker.js" var="Datepicker" />
 <script src="${Datepicker}" type="text/javascript"></script>
-
+-->
 <!--  Select2 scripts-->
 <spring:url value="/resources/js/libs/mySelect2/select2.min.js" var="select2Js" />
 <script type="text/javascript" src="${select2Js}"></script>
@@ -2679,15 +2716,19 @@
     <spring:param name="language" value="${lenguaje}" />
 </spring:url>
 <script src="${jQValidationLoc}"></script>
-
+<!-- bootstrap datetimepicker -->
+<spring:url value="/resources/js/libs/bootstrap-datetimepicker/moment-with-locales.js" var="moment" />
+<script src="${moment}"></script>
+<spring:url value="/resources/js/libs/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js" var="datetimepicker" />
+<script src="${datetimepicker}"></script>
 <!--own scripts -->
-<spring:url value="/resources/js/views/handleDatePickers.js" var="handleDatePickers" />
-<script src="${handleDatePickers}"></script>
-
+<spring:url value="/resources/js/libs/jquery.serializejson.js" var="Serializejson" />
+<script src="${Serializejson}"></script>
 <spring:url value="/resources/js/views/fingering/process-clinicalsheet.js" var="Clinicalsheet" />
 <script src="${Clinicalsheet}"></script>
 
-<spring:url value="/hoja-clinica/searchParticipant" var="searchUrl"/>
+<spring:url value="/hojaclinica/searchParticipant" var="searchUrl"/>
+<spring:url value="/hojaclinica/save" var="saveUrl"/>
 
 </body>
 <script>
@@ -2697,9 +2738,9 @@
             saveUrl: "${saveUrl}",
             listaUrl: "${listaUrl}",
             successmessage: "${successMessage}",
-            error: "${errorProcess}"
+            error: "${errorProcess}",
+            locale : "${lenguaje}"
         };
-        handleDatePickers("${lenguaje}");
 
         ClinicalSheet.init(parameters);
 

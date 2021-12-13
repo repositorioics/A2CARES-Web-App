@@ -104,16 +104,13 @@ public class AdminUsuariosController {
 	        , @RequestParam( value="authorities", required=false, defaultValue="") List<String> authorities
 	        , @RequestParam( value="studies", required=false, defaultValue="") List<String> studies
             , @RequestParam( value="chk_muestra", required=false, defaultValue="" ) String chkMuestra
-            , @RequestParam( value="chk_vacunas", required=false, defaultValue="" ) String chkVacunas
             , @RequestParam( value="chk_consent", required=false, defaultValue="" ) String chkConsent
             , @RequestParam( value="chk_recepcion", required=false, defaultValue="" ) String chkRecepcion
             , @RequestParam( value="chk_visitas", required=false, defaultValue="" ) String chkVisitas
             , @RequestParam( value="chk_obsequio", required=false, defaultValue="" ) String chkObsequio
             , @RequestParam( value="chk_pesotalla", required=false, defaultValue="" ) String chkPesotalla
-            , @RequestParam( value="chk_datosparto", required=false, defaultValue="" ) String chkDatosparto
             , @RequestParam( value="chk_ecasa", required=false, defaultValue="" ) String chkEcasa
             , @RequestParam( value="chk_eparticipante", required=false, defaultValue="" ) String chkEparticipante
-            , @RequestParam( value="chk_elactancia", required=false, defaultValue="" ) String chkElactancia
             , @RequestParam( value="chk_esatisfaccion", required=false, defaultValue="" ) String chkEsatisfaccion
 	        )
 	{
@@ -139,16 +136,13 @@ public class AdminUsuariosController {
                 UserPermissions permissions = new UserPermissions();
                 permissions.setUsername(user.getUsername());
                 permissions.setMuestra(!chkMuestra.isEmpty());
-                permissions.setVacunas(!chkVacunas.isEmpty());
                 permissions.setConsentimiento(!chkConsent.isEmpty());
                 permissions.setRecepcion(!chkRecepcion.isEmpty());
                 permissions.setVisitas(!chkVisitas.isEmpty());
                 permissions.setObsequio(!chkObsequio.isEmpty());
                 permissions.setPesoTalla(!chkPesotalla.isEmpty());
-                permissions.setDatosparto(!chkDatosparto.isEmpty());
                 permissions.setEncuestaCasa(!chkEcasa.isEmpty());
                 permissions.setEncuestaParticipante(!chkEparticipante.isEmpty());
-                permissions.setEncuestaLactancia(!chkElactancia.isEmpty());
                 permissions.setEncuestaSatisfaccion(!chkEsatisfaccion.isEmpty());
                 this.usuarioService.saveUserPermissions(permissions);
 
@@ -172,16 +166,13 @@ public class AdminUsuariosController {
                 if (permissions==null) permissions = new UserPermissions();
                 permissions.setUsername(user.getUsername());
                 permissions.setMuestra(!chkMuestra.isEmpty());
-                permissions.setVacunas(!chkVacunas.isEmpty());
                 permissions.setConsentimiento(!chkConsent.isEmpty());
                 permissions.setRecepcion(!chkRecepcion.isEmpty());
                 permissions.setVisitas(!chkVisitas.isEmpty());
                 permissions.setObsequio(!chkObsequio.isEmpty());
                 permissions.setPesoTalla(!chkPesotalla.isEmpty());
-                permissions.setDatosparto(!chkDatosparto.isEmpty());
                 permissions.setEncuestaCasa(!chkEcasa.isEmpty());
                 permissions.setEncuestaParticipante(!chkEparticipante.isEmpty());
-                permissions.setEncuestaLactancia(!chkElactancia.isEmpty());
                 permissions.setEncuestaSatisfaccion(!chkEsatisfaccion.isEmpty());
                 this.usuarioService.saveUserPermissions(permissions);
 

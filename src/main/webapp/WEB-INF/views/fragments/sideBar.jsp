@@ -14,6 +14,12 @@
 	                <li class="nav-item users">
 	                    <a class="nav-link" href="<spring:url value="/admin/users/" htmlEscape="true "/>"><i class="icon-people"></i><spring:message code="users" /></a>
 	                </li>
+                    <li class="nav-item catalogs">
+                        <a class="nav-link" href="<spring:url value="/admin/catalogs/" htmlEscape="true "/>"><i class="icon-notebook"></i><spring:message code="catalogs" /></a>
+                    </li>
+                    <li class="nav-item personal">
+                        <a class="nav-link" href="<spring:url value="/admin/personal/" htmlEscape="true "/>"><i class="icon-people"></i><spring:message code="personal" /></a>
+                    </li>
 	            </ul>
 	        </li>
             </sec:authorize>
@@ -22,7 +28,7 @@
                     <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-book-open"></i><spring:message code="fingering" /></a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item users">
-                            <a class="nav-link" href="<spring:url value="/hoja-clinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="clinical_sheet" /></a>
+                            <a class="nav-link" href="<spring:url value="/hojaclinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="clinical_sheet" /></a>
                         </li>
                     </ul>
                 </li>

@@ -1,6 +1,8 @@
 var handleDatePickers = function (idioma) {
     if (jQuery().datepicker) {
         //para el resto de datetimepicker por defecto
+
+        //para libreria bootstrap-datepicker
         $('.date-picker').datepicker({
             language: idioma,
             format:'dd/mm/yyyy',

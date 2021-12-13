@@ -130,7 +130,7 @@ public class HojaClinica extends BaseMetaData {
     private String cianosis;
     private String hipermenorrea;
     private String hematemesis;
-    private Short hemoconcentracion;
+    private String hemoconcentracion;
     //Preguntas para todos los pacientes
     private String hospitalizado;
     private String hospitalizadoEspecificar;
@@ -1043,11 +1043,11 @@ public class HojaClinica extends BaseMetaData {
     }
 
     @Column(name = "hemoconcentracion")
-    public Short getHemoconcentracion() {
+    public String getHemoconcentracion() {
         return this.hemoconcentracion;
     }
 
-    public void setHemoconcentracion(Short hemoconcentracion) {
+    public void setHemoconcentracion(String hemoconcentracion) {
         this.hemoconcentracion = hemoconcentracion;
     }
 
@@ -1150,7 +1150,7 @@ public class HojaClinica extends BaseMetaData {
         this.egh = egh;
     }
 
-    @Column(name = "otro_examen_lab", length = 32)
+    @Column(name = "otro_examen_lab", length = 1)
     public String getOtroExamenLab() {
         return this.otroExamenLab;
     }
@@ -1159,7 +1159,7 @@ public class HojaClinica extends BaseMetaData {
         this.otroExamenLab = otroExamenLab;
     }
 
-    @Column(name = "otro_examan_especificar", length = 1)
+    @Column(name = "otro_examan_especificar", length = 250)
     public String getOtroExamanLabEspecificar() {
         return otroExamanLabEspecificar;
     }

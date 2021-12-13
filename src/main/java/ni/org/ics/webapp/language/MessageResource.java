@@ -1,13 +1,11 @@
 package ni.org.ics.webapp.language;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
+import ni.org.ics.webapp.domain.BaseMetaData;
 import ni.org.ics.webapp.domain.audit.Auditable;
 
 
@@ -22,11 +20,14 @@ public class MessageResource implements Serializable, Auditable{
     private String messageKey;
     private String catRoot;
     private String catKey;
-    private char pasive = '0';
     private char isCat = '0';
     private int order=0;
     private String spanish;
     private String english;
+    private Date recordDate;
+    private String recordUser;
+    private String recordIp;
+    private char pasive = '0';
     
     public MessageResource() {
 
@@ -69,16 +70,6 @@ public class MessageResource implements Serializable, Auditable{
 		this.isCat = isCat;
 	}
 
-	@Column(name="catPasive", nullable = false, length = 1)
-	public char getPasive() {
-		return pasive;
-	}
-
-	public void setPasive(char pasive) {
-		this.pasive = pasive;
-	}
-	
-	
 	@Column(name="orden", nullable = false)
 	public int getOrder() {
 		return order;
@@ -107,6 +98,43 @@ public class MessageResource implements Serializable, Auditable{
 		this.spanish = spanish;
 	}
 
+    @Temporal( TemporalType.TIMESTAMP)
+    @Column(name="recordDate")
+    public Date getRecordDate() {
+        return recordDate;
+    }
+
+    public void setRecordDate(Date recordDate) {
+        this.recordDate = recordDate;
+    }
+
+    @Column(name="recordUser", length = 50)
+    public String getRecordUser() {
+        return recordUser;
+    }
+
+    public void setRecordUser(String recordUser) {
+        this.recordUser = recordUser;
+    }
+
+    @Column(name="pasive", nullable = false, length = 1)
+    public char getPasive() {
+        return pasive;
+    }
+
+    public void setPasive(char pasive) {
+        this.pasive = pasive;
+    }
+
+    @Column(name="recordIp", length = 50)
+    public String getRecordIp() {
+        return recordIp;
+    }
+
+    public void setRecordIp(String recordIp) {
+        this.recordIp = recordIp;
+    }
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -126,8 +154,11 @@ public class MessageResource implements Serializable, Auditable{
     
 	@Override
 	public boolean isFieldAuditable(String fieldname) {
-		// TODO Auto-generated method stub
-		return false;
+        //Campos no auditables en la tabla
+        if(fieldname.matches("recordDate")||fieldname.matches("recordUser")){
+            return false;
+        }
+        return true;
 	}
 
 	

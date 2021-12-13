@@ -21,6 +21,7 @@ public class BaseMetaData implements Serializable
 	private char pasive = '0';
 	private char estado='0';
 	private String deviceid;
+    private String recordIp;
 	
 	public BaseMetaData() {
 
@@ -77,7 +78,14 @@ public class BaseMetaData implements Serializable
 	public void setDeviceid(String deviceid) {
 		this.deviceid = deviceid;
 	}
-	
-	
+
+    @Column(name="RECORD_IP", length = 50)
+    public String getRecordIp() {
+        return recordIp;
+    }
+
+    public void setRecordIp(String recordIp) {
+        this.recordIp = recordIp;
+    }
 
 }  

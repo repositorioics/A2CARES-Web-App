@@ -112,4 +112,26 @@ public final class DateUtil {
     /* ** fin de la funcion fecha*/
 
 
+    public static String onTimeSet(String hora) {
+
+        String partes[] = hora.replaceAll(" ",":").split(":");
+        int hour = Integer.valueOf(partes[0]);
+        int minute = Integer.valueOf(partes[1]);
+        String ampm = partes[2];
+
+        Calendar mCalen = Calendar.getInstance();
+        mCalen.set(Calendar.HOUR, hour);
+        mCalen.set(Calendar.MINUTE, minute);
+        if (ampm.equalsIgnoreCase("PM")) {
+            mCalen.set(Calendar.AM_PM, Calendar.PM);
+        } else {
+            mCalen.set(Calendar.AM_PM, Calendar.AM);
+        }
+
+        int hourOfDay_local = mCalen.get(Calendar.HOUR_OF_DAY);
+        int minute_local = mCalen.get(Calendar.MINUTE);
+
+        return hourOfDay_local+":"+ (minute_local<10?"0":"")+minute_local+":00";
+
+    }
 }

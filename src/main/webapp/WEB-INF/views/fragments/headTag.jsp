@@ -38,3 +38,6 @@
 
 <spring:url value="/resources/img/favicon.png" var="favicon" />
 <link rel="shortcut icon" href="${favicon}"/>
+
+<spring:url value="/resources/css/sweetalert2/sweetalert2.min.css" var="sweetalert2" />
+<link rel="stylesheet" href="${sweetalert2}">

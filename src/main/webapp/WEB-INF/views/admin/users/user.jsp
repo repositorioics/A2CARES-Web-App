@@ -132,10 +132,10 @@
                                             <p class="form-control-static">
                                                 <c:choose>
                                                     <c:when test="${user.enabled}">
-                                                        <spring:message code="CHF_CAT_SINO_SI" />
+                                                        <spring:message code="CAT_SINO_SI" />
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <spring:message code="CHF_CAT_SINO_NO" />
+                                                        <spring:message code="CAT_SINO_NO" />
                                                     </c:otherwise>
                                                 </c:choose>
                                             </p>
@@ -150,10 +150,10 @@
                                             <p class="form-control-static">
                                                 <c:choose>
                                                     <c:when test="${user.accountNonLocked}">
-                                                        <spring:message code="CHF_CAT_SINO_NO" />
+                                                        <spring:message code="CAT_SINO_NO" />
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <spring:message code="CHF_CAT_SINO_SI" />
+                                                        <spring:message code="CAT_SINO_SI" />
                                                     </c:otherwise>
                                                 </c:choose>
                                             </p>
@@ -172,10 +172,10 @@
                                             <p class="form-control-static">
                                                 <c:choose>
                                                     <c:when test="${user.credentialsNonExpired}">
-                                                        <spring:message code="CHF_CAT_SINO_NO" />
+                                                        <spring:message code="CAT_SINO_NO" />
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <spring:message code="CHF_CAT_SINO_SI" />
+                                                        <spring:message code="CAT_SINO_SI" />
                                                     </c:otherwise>
                                                 </c:choose>
                                             </p>
@@ -190,10 +190,10 @@
                                             <p class="form-control-static">
                                                 <c:choose>
                                                     <c:when test="${user.accountNonExpired}">
-                                                        <spring:message code="CHF_CAT_SINO_NO" />
+                                                        <spring:message code="CAT_SINO_NO" />
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <spring:message code="CHF_CAT_SINO_SI" />
+                                                        <spring:message code="CAT_SINO_SI" />
                                                     </c:otherwise>
                                                 </c:choose>
                                             </p>
@@ -290,9 +290,6 @@
                                                 <c:if test="${permisos.muestra}">
                                                     <spring:message code="muestra" />,
                                                 </c:if>
-                                                <c:if test="${permisos.vacunas}">
-                                                    <spring:message code="vacunas" />,
-                                                </c:if>
                                                 <c:if test="${permisos.consentimiento}">
                                                     <spring:message code="consentimiento" />,
                                                 </c:if>
@@ -307,9 +304,6 @@
                                                 </c:if>
                                                 <c:if test="${permisos.pesoTalla}">
                                                     <spring:message code="pesotalla" />,
-                                                </c:if>
-                                                <c:if test="${permisos.datosparto}">
-                                                    <spring:message code="datosparto" />
                                                 </c:if>
                                             </p>
                                         </div>
@@ -326,9 +320,6 @@
                                                 </c:if>
                                                 <c:if test="${permisos.encuestaParticipante}">
                                                     <spring:message code="participants" />,
-                                                </c:if>
-                                                <c:if test="${permisos.encuestaLactancia}">
-                                                    <spring:message code="elactancia" />,
                                                 </c:if>
                                                 <c:if test="${permisos.encuestaSatisfaccion}">
                                                     <spring:message code="esatisfaccion" />
@@ -364,10 +355,10 @@
                                         <c:set var="pasiveAsString">${rol.pasive}</c:set>
                                         <c:choose>
                                             <c:when test="${pasiveAsString eq '0'}">
-                                                <td><span class="badge badge-success"><spring:message code="CHF_CAT_SINO_SI" /></span></td>
+                                                <td><span class="badge badge-success"><spring:message code="CAT_SINO_SI" /></span></td>
                                             </c:when>
                                             <c:otherwise>
-                                                <td><span class="badge badge-danger"><spring:message code="CHF_CAT_SINO_NO" /></span></td>
+                                                <td><span class="badge badge-danger"><spring:message code="CAT_SINO_NO" /></span></td>
                                             </c:otherwise>
                                         </c:choose>
                                         <td><c:out value="${rol.recordUser}" /></td>

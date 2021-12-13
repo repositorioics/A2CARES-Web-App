@@ -6,6 +6,8 @@
 <html>
 <head>
     <jsp:include page="../../fragments/headTag.jsp" />
+    <spring:url value="/resources/css/bootstrap.css" var="boot" />
+    <link href="${boot}" rel="stylesheet" type="text/css"/>
     <style>
         div.dt-buttons {
             float: right !important;
@@ -45,7 +47,7 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <i class="fa fa-group"></i> <spring:message code="users" />
+                    <i class="fa fa-group"></i> <strong><spring:message code="users" /></strong>
                 </div>
                 <div class="card-block">
                     <div class="row table-toolbar">
@@ -113,7 +115,7 @@
 <spring:url value="/resources/js/libs/DataTables/datatables.min.js" var="dataTableJs" />
 <script src="${dataTableJs}" type="text/javascript"></script>
 <!-- JQUERY BLOCK UI -->
-<spring:url value="/resources/js/jquery.blockui.min.js" var="jqueryBlockUi" />
+<spring:url value="/resources/js/libs/jquery.blockui.min.js" var="jqueryBlockUi" />
 <script src="${jqueryBlockUi}"></script>
 <!-- GenesisUI main scripts -->
 <spring:url value="/resources/js/app.js" var="App" />
@@ -171,27 +173,27 @@
                 { data: 'enabled',
                     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                         if(oData.enabled) {
-                            $(nTd).html("<span class='badge badge-success'><spring:message code='lbl.yes' /></span>");
+                            $(nTd).html("<span class='badge badge-success'><spring:message code='CAT_SINO_SI' /></span>");
                         } else {
-                            $(nTd).html("<span class='badge badge-danger'><spring:message code='lbl.no' /></span>");
+                            $(nTd).html("<span class='badge badge-danger'><spring:message code='CAT_SINO_NO' /></span>");
                         }
                     }
                 },
                 { data: 'accountNonLocked',
                     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                         if(oData.accountNonLocked) {
-                            $(nTd).html("<span class='badge badge-success'><spring:message code='lbl.no' /></span>");
+                            $(nTd).html("<span class='badge badge-success'><spring:message code='CAT_SINO_NO' /></span>");
                         } else {
-                            $(nTd).html("<span class='badge badge-danger'><spring:message code='lbl.yes' /></span>");
+                            $(nTd).html("<span class='badge badge-danger'><spring:message code='CAT_SINO_SI' /></span>");
                         }
                     }
                 },
                 { data: 'credentialsNonExpired',
                     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                         if(oData.credentialsNonExpired) {
-                            $(nTd).html("<span class='badge badge-success'><spring:message code='lbl.no' /></span>");
+                            $(nTd).html("<span class='badge badge-success'><spring:message code='CAT_SINO_NO' /></span>");
                         } else {
-                            $(nTd).html("<span class='badge badge-danger'><spring:message code='lbl.yes' /></span>");
+                            $(nTd).html("<span class='badge badge-danger'><spring:message code='CAT_SINO_SI' /></span>");
                         }
                     }
                 },
@@ -203,7 +205,7 @@
                 },
                 { data: null,
                     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<a href='${editUrl}"+oData.username+"' class='btn btn-outline-primary btn-sm'><i class='fas fa-edit'></i></a>");
+                        $(nTd).html("<a href='${editUrl}"+oData.username+"' class='btn btn-outline-primary btn-sm' data-toggle='tooltip' title='<spring:message code="editEntidadToolTip" />'><i class='fas fa-edit'></i></a>");
                     },
                     orderable: false
                 },
@@ -315,6 +317,12 @@
     function ejecutarAccion() {
         window.location.href = $('#accionUrl').val();
     }
+
+    if ($('html').attr('dir') === 'rtl') {
+        $('.tooltip-demo [data-placement=right]').attr('data-placement', 'left').addClass('rtled');
+        $('.tooltip-demo [data-placement=left]:not(.rtled)').attr('data-placement', 'right').addClass('rtled');
+    }
+    $('[data-toggle="tooltip"]').tooltip();
 </script>
 </body>
 </html>
