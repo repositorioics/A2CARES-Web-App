@@ -66,6 +66,8 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
     private String tanquesTapados;
     private String pilasTapadas;
     private String otrosRecipientesTapados;
+    private String cepillaPilas;
+    private String frecCepillaPilas;
     private String cambiadoCasa; //13
     private String remodeladoCasa; //14
     private String ubicacionLavandero;
@@ -89,6 +91,8 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
     private String tieneMuro; //21
     private String tieneInternet; //22
     private String tieneInodoro; //23
+    private Integer cantInodoro;
+    private Integer cantLetrina;
     private String tieneServicioEnergia; //24
     private String tieneMedidorEnergia; //24.a
     private String casaDosPisos; //25
@@ -615,6 +619,24 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
         this.otrosRecipientesTapados = otrosRecipientesTapados;
     }
 
+    @Column(name = "CEPILLA_PILAS", length = 1)
+    public String getCepillaPilas() {
+        return cepillaPilas;
+    }
+
+    public void setCepillaPilas(String cepillaPilas) {
+        this.cepillaPilas = cepillaPilas;
+    }
+
+    @Column(name = "FRECUENCIA_CEPILLA_PILAS")
+    public String getFrecCepillaPilas() {
+        return frecCepillaPilas;
+    }
+
+    public void setFrecCepillaPilas(String frecCepillaPilas) {
+        this.frecCepillaPilas = frecCepillaPilas;
+    }
+
     @Column(name = "CAMBIADO_CASA", length = 1)
     public String getCambiadoCasa() {
         return cambiadoCasa;
@@ -820,6 +842,24 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
 
     public void setTieneInodoro(String tieneInodoro) {
         this.tieneInodoro = tieneInodoro;
+    }
+
+    @Column(name = "CANTIDAD_INODOROS")
+    public Integer getCantInodoro() {
+        return cantInodoro;
+    }
+
+    public void setCantInodoro(Integer cantInodoro) {
+        this.cantInodoro = cantInodoro;
+    }
+
+    @Column(name = "CANTIDAD_LETRINAS")
+    public Integer getCantLetrina() {
+        return cantLetrina;
+    }
+
+    public void setCantLetrina(Integer cantLetrina) {
+        this.cantLetrina = cantLetrina;
     }
 
     @Column(name = "TIENE_SRV_ENERGIA", length = 1)

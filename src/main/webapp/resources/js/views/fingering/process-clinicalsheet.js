@@ -730,6 +730,7 @@ var ClinicalSheet = function () {
             function search()
             {
                 $.getJSON( parametros.searchUrl , formSearch.serialize() , function( data )   {
+                        console.log(data);
                         if (data.mensaje != undefined) {
                             toastr.error(data.mensaje,"Error",{timeOut: 5000});
                             $("#nombre").val("");
@@ -746,6 +747,7 @@ var ClinicalSheet = function () {
                         }
                     }
                 ).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("error");
                         toastr.error( "error:" + errorThrown);
                     });
             }

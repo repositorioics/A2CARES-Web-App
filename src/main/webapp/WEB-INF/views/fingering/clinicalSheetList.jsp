@@ -58,10 +58,10 @@
                     <div class="row table-toolbar">
                         <div class="col-md-12">
                             <div class="btn-group">
-                                <spring:url value="/hojaclinica/add" var="nuevaHoja"/>
-                                <button id="addClinicalSheet" onclick="location.href='${fn:escapeXml(nuevaHoja)}'" class="btn btn-lg btn-success">
-                                    <i class="fa fa-plus"></i> <spring:message code="add" />
-                                </button>
+                                <spring:url value="/hojaclinica/add/" var="nuevaHoja"/>
+                                <a class="btn btn-lg btn-success"
+                                   data-toggle="tooltip" data-placement="bottom" title="<spring:message code="addEntityToolTip" />"
+                                   href="${fn:escapeXml(nuevaHoja)}"><i class="fa fa-plus"></i> <spring:message code="add" /></a>
                             </div>
                             <br>
                             <br>

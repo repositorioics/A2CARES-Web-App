@@ -37,8 +37,7 @@
         <spring:message code="clinical_sheet" /> <small><spring:message code="fingering" /></small>
     </h3>
 </div>
-<form action="#" autocomplete="off" id="search-participant-form" name="search-participant-form" class="form-horizontal">
-    <div class="card-block">
+<div class="card-block">
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group">
@@ -52,6 +51,7 @@
                 <br>
             </div>
         </div>
+        <form action="#" autocomplete="off" id="search-participant-form" name="search-participant-form" class="form-horizontal">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <br>
@@ -68,8 +68,9 @@
                 </div>
             </div>
         </div>
-    </div>
-</form>
+        </form>
+
+</div>
 <hr/>
 <div class="card-block">
     <div class="row">
@@ -2744,7 +2745,7 @@
 
         ClinicalSheet.init(parameters);
 
-        document.addEventListener('keypress', function(evt) {
+        /*document.addEventListener('keypress', function(evt) {
             // Si el evento NO es una tecla Enter
             if (evt.key !== 'Enter') {
                 return;
@@ -2762,7 +2763,7 @@
                 next.focus();
                 event.preventDefault();
             }
-        });
+        });*/
     });
 </script>
 </html>

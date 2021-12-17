@@ -1,5 +1,7 @@
 package ni.org.ics.webapp.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -80,6 +82,7 @@ public class BaseMetaData implements Serializable
 	}
 
     @Column(name="RECORD_IP", length = 50)
+    @JsonIgnore
     public String getRecordIp() {
         return recordIp;
     }

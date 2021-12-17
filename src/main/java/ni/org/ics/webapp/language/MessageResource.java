@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import ni.org.ics.webapp.domain.BaseMetaData;
 import ni.org.ics.webapp.domain.audit.Auditable;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 
 @Entity
@@ -100,6 +101,7 @@ public class MessageResource implements Serializable, Auditable{
 
     @Temporal( TemporalType.TIMESTAMP)
     @Column(name="recordDate")
+    @JsonIgnore
     public Date getRecordDate() {
         return recordDate;
     }
@@ -109,6 +111,7 @@ public class MessageResource implements Serializable, Auditable{
     }
 
     @Column(name="recordUser", length = 50)
+    @JsonIgnore
     public String getRecordUser() {
         return recordUser;
     }
@@ -127,6 +130,7 @@ public class MessageResource implements Serializable, Auditable{
     }
 
     @Column(name="recordIp", length = 50)
+    @JsonIgnore
     public String getRecordIp() {
         return recordIp;
     }

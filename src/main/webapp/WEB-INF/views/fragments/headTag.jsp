@@ -37,7 +37,7 @@
 <link href="${toastCss}" rel="stylesheet" type="text/css"/>
 
 <spring:url value="/resources/img/favicon.png" var="favicon" />
-<link rel="shortcut icon" href="${favicon}"/>
+<link rel="shortcut icon" href="#"/>
 
 <spring:url value="/resources/css/sweetalert2/sweetalert2.min.css" var="sweetalert2" />
 <link rel="stylesheet" href="${sweetalert2}">

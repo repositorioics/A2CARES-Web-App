@@ -62,21 +62,13 @@ public class HojaClinicaController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String list(Model model) throws ParseException {
-        logger.debug("Mostrando Usuarios en JSP");
-        List<MessageResource> catSiNo = this.messageResourceService.getCatalogo("CAT_SINO");
-        List<MessageResource> catSexo = this.messageResourceService.getCatalogo("CAT_SEXO");
-        List<MessageResource> catCategoria = this.messageResourceService.getCatalogo("CAT_CATEGORIA");
-        //List<UserSistema> usuarios = usuarioService.getUsers();
-        //model.addAttribute("usuarios", usuarios);
-        model.addAttribute("catSiNo", catSiNo);
-        model.addAttribute("catSexo", catSexo);
-        model.addAttribute("catCategoria", catCategoria);
+        logger.debug("Mostrando hojas clinicas en JSP");
         return "fingering/clinicalSheetList";
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "add", method = RequestMethod.GET)
     public String add(Model model) throws ParseException {
-        logger.debug("Mostrando Usuarios en JSP");
+        logger.debug("Mostrando formulario registro hoja clinica en JSP");
         List<MessageResource> catSiNo = this.messageResourceService.getCatalogo("CAT_SINO");
         List<MessageResource> catSexo = this.messageResourceService.getCatalogo("CAT_SEXO");
         List<MessageResource> catCategoria = this.messageResourceService.getCatalogo("CAT_CATEGORIA");

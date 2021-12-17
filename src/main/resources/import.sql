@@ -5,7 +5,7 @@ INSERT INTO `roles` (`ROL`) VALUES ('ROLE_DIGI');
 INSERT INTO `roles` (`ROL`) VALUES ('ROLE_SUPER');
 
 INSERT INTO `usuarios_sistema` (`NOMBRE_USUARIO`, `CUENTA_SINEXPIRAR`, `CUENTA_SINBLOQUEAR`, `DESCRIPCION`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `CREDENCIAL_SINEXPIRAR`, `CORREO_ELECTRONICO`, `HABILITADO`, `FECHA_ULTACC`, `FECHA_ULTMODCRED`, `FECHA_ULTMOD`, `USUARIO_ULTMOD`, `CONTRASENA`) VALUES ('admin', 1, 1, 'Administrador', '2021-01-01 12:00:00', 'admin', 1, 'admin@icsnicaragua.org', 1, '2021-01-01 12:00:00', NULL, '2021-01-01 12:00:00', 'admin', '4f4e617568a86abdce12ac9eab87ea40c0d9824a6db6e21fd6d4c54a0b9e5d58ff25e2093f8caee6');
-INSERT INTO `usuarios_roles` (`ROL`, `NOMBRE_USUARIO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `ESTADO`) VALUES ('ROLE_ROOT', 'admin', '0', '2021-01-01 12:00:00', 'admin', '1');
+INSERT INTO `usuarios_roles` (`ROL`, `NOMBRE_USUARIO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `ESTADO`) VALUES ('ROLE_ROOT', 'admin', '0', '2021-01-01 12:00:00', 'admin', '1');
 
 
 /*Plantilla*/
@@ -232,8 +232,7 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_COCINA', NULL, NULL, NULL, '1', 0, '0', 'Catalogo frecuencia de uso cocina de lenia');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_COCINA_1', '1', 'CAT_TIPO_COCINA', NULL, '0', 1, '0', 'Gas');
-INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_COCINA_2', '2', 'CAT_TIPO_COCINA', NULL, '0', 2, '0', 'Tropigas');
-INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_COCINA_3', '3', 'CAT_TIPO_COCINA', NULL, '0', 3, '0', 'Eléctrica');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_COCINA_2', '2', 'CAT_TIPO_COCINA', NULL, '0', 2, '0', 'Eléctrica');
 
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_COCINA', NULL, NULL, NULL, '1', 0, '0', 'Catalogo frecuencia de uso cocina de lenia');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_COCINA_D', '1', 'CAT_FREC_COCINA', NULL, '0', 1, '0', 'Diario');
@@ -400,6 +399,17 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_NO_MX_998', '998', 'CAT_RAZON_NO_MX', NULL, '0', 6, '0', 'Otra razón');
 
 
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_MUROCERCO', NULL, NULL, NULL, '1', 0, '0', 'Catalogo tiene muero o cerco');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_MUROCERCO_01', '1', 'CAT_MUROCERCO', NULL, '0', 1, '0', 'Muro');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_MUROCERCO_02', '2', 'CAT_MUROCERCO', NULL, '0', 2, '0', 'Cerco');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_MUROCERCO_03', '3', 'CAT_MUROCERCO', NULL, '0', 3, '0', 'Ambos');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_MUROCERCO_996', '996', 'CAT_MUROCERCO', NULL, '0', 4, '0', 'Ninguno');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_INODOROLET', NULL, NULL, NULL, '1', 0, '0', 'Catalogo tiene inodoro o letrina');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_INODOROLET_01', '1', 'CAT_INODOROLET', NULL, '0', 1, '0', 'Inodoro');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_INODOROLET_02', '2', 'CAT_INODOROLET', NULL, '0', 2, '0', 'Letrina');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_INODOROLET_03', '3', 'CAT_INODOROLET', NULL, '0', 3, '0', 'Ambos');
+
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('select', '0', '0', '0', 'Seleccione');
 
 /**HOJA CLINICA**/
@@ -559,7 +569,27 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_CATEGORIA_B', 'B', 'CAT_CATEGORIA', NULL, '0', 2, '0', 'B');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_CATEGORIA_C', 'C', 'CAT_CATEGORIA', NULL, '0', 3, '0', 'C');
 
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('1', '1', '0', '2021-11-10 12:02:07', 'admin', 'Martha Aguilar');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('1', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Martha Aguilar');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('2', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Germán Pomares');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('3', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Martín Lutero');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('4', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Maria Mora');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('5', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Divino Pastor');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('6', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Vladimir Hernández');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('7', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Berthílda Olegario');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('8', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Bloque K');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('9', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Tangará (Buena Vista)');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('10', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Alexis Arguello # 2');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('11', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Villa Nueva');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('12', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Arges Sequeira');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('13', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Raúl Cerna');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('14', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - German Pomares Ticomo');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('15', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Solidaridad');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('16', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - San José de las Colinas');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('17', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Camilo Ortega # 1');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('18', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Villa Esperanza');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('19', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - William Galeano');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('20', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - El Laurel');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('21', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - La Zacatera');
 
 /*hoja clinica*/
 INSERT INTO `a2cares`.`mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('participant', '0', '0', '0', 'Participante');
