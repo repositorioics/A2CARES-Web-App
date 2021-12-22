@@ -18,7 +18,7 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
 
     private String codigo;
     private Casa casa;
-    private Integer participante; //participantes encuestado
+    private String participante; //participantes encuestado
     private int cuantasPersonas; //1
     private int cuantasMujeres; //2
     private String edadMujer1;
@@ -46,7 +46,8 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
     private int cantidadCuartosDormir;
     private String problemaAgua; //6
     private int hrsSinServicioAgua;
-    private int frecuenciaSeVaAgua;
+    private String frecuenciaSeVaAgua;
+    private String otraFrecuenciaSeVaAgua;
     private String tienePozo; //7
     private String tieneMedidorAgua; //8
     private String tieneTanque; //10
@@ -187,12 +188,12 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
         this.casa = casa;
     }
 
-    @Column(name = "CODIGO_PARTICIPANTE")
-    public Integer getParticipante() {
+    @Column(name = "CODIGO_PARTICIPANTE", length = 6)
+    public String getParticipante() {
         return participante;
     }
 
-    public void setParticipante(Integer participante) {
+    public void setParticipante(String participante) {
         this.participante = participante;
     }
 
@@ -439,13 +440,22 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
         this.hrsSinServicioAgua = hrsSinServicioAgua;
     }
 
-    @Column(name = "FREC_DIAS_VA_AGUA")
-    public int getFrecuenciaSeVaAgua() {
+    @Column(name = "FREC_VA_AGUA", length = 3)
+    public String getFrecuenciaSeVaAgua() {
         return frecuenciaSeVaAgua;
     }
 
-    public void setFrecuenciaSeVaAgua(int frecuenciaSeVaAgua) {
+    public void setFrecuenciaSeVaAgua(String frecuenciaSeVaAgua) {
         this.frecuenciaSeVaAgua = frecuenciaSeVaAgua;
+    }
+
+    @Column(name = "OTRA_FREC_VA_AGUA", length = 255)
+    public String getOtraFrecuenciaSeVaAgua() {
+        return otraFrecuenciaSeVaAgua;
+    }
+
+    public void setOtraFrecuenciaSeVaAgua(String otraFrecuenciaSeVaAgua) {
+        this.otraFrecuenciaSeVaAgua = otraFrecuenciaSeVaAgua;
     }
 
     @Column(name = "TIENE_POZO", length = 1)
@@ -817,7 +827,7 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
         this.lavadoraFuncionando = lavadoraFuncionando;
     }
 
-    @Column(name = "TIENE_MURO", length = 1)
+    @Column(name = "TIENE_MURO", length = 3)
     public String getTieneMuro() {
         return tieneMuro;
     }
@@ -835,7 +845,7 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
         this.tieneInternet = tieneInternet;
     }
 
-    @Column(name = "TIENE_INODORO", length = 1)
+    @Column(name = "TIENE_INODORO", length = 3)
     public String getTieneInodoro() {
         return tieneInodoro;
     }

@@ -551,7 +551,7 @@ INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES (
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('suero_oral', '0', '0', '0', 'Suero oral');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('otro_tratamiento', '0', '0', '0', 'Otro tratamiento:');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('planes', '0', '0', '0', 'Planes:');
-INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('historia_clínica', '0', '0', '0', 'Historia clínica:');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('historia_clinica', '0', '0', '0', 'Historia clínica:');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('diagnostico', '0', '0', '0', 'Diagnóstico:');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('tel_emergencia', '0', '0', '0', 'Tel. Emergencia:');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('proxima_cita', '0', '0', '0', 'Próxima cita:');
@@ -569,27 +569,29 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_CATEGORIA_B', 'B', 'CAT_CATEGORIA', NULL, '0', 2, '0', 'B');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_CATEGORIA_C', 'C', 'CAT_CATEGORIA', NULL, '0', 3, '0', 'C');
 
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('1', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Martha Aguilar');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('2', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Germán Pomares');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('3', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Martín Lutero');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('4', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Maria Mora');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('5', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Divino Pastor');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('6', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Vladimir Hernández');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('7', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Berthílda Olegario');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('8', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Bloque K');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('9', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Tangará (Buena Vista)');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('10', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Alexis Arguello # 2');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('11', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Villa Nueva');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('12', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Arges Sequeira');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('13', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Raúl Cerna');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('14', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - German Pomares Ticomo');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('15', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Solidaridad');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('16', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - San José de las Colinas');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('17', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Camilo Ortega # 1');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('18', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Villa Esperanza');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('19', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - William Galeano');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('20', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - El Laurel');
-INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `pasive`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('21', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - La Zacatera');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('1', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Martha Aguilar');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('2', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Germán Pomares');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('3', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Martín Lutero');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('4', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Maria Mora');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('5', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Divino Pastor');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('6', '1', '0', '2021-11-10 12:02:07', 'admin', 'Nejapa - Vladimir Hernández');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('7', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Berthílda Olegario');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('8', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Bloque K');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('9', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Tangará (Buena Vista)');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('10', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Alexis Arguello # 2');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('11', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Villa Nueva');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('12', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Arges Sequeira');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('13', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Raúl Cerna');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('14', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - German Pomares Ticomo');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('15', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Solidaridad');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('16', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - San José de las Colinas');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('17', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Camilo Ortega # 1');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('18', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - Villa Esperanza');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('19', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - William Galeano');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('20', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - El Laurel');
+INSERT INTO `barrios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('21', '1', '0', '2021-11-10 12:02:07', 'admin', 'CO - La Zacatera');
+
+INSERT INTO `estudios` (`CODIGO`, `ESTADO`, `PASIVO`, `FECHA_REGISTRO`, `USUARIO_REGISTRO`, `NOMBRE`) VALUES ('1', '1', '0', '2021-11-10 12:36:25', 'admin', 'A2CARES');
 
 /*hoja clinica*/
 INSERT INTO `a2cares`.`mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('participant', '0', '0', '0', 'Participante');
@@ -623,6 +625,17 @@ INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES (
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('charge', '0', '0', '0', 'Cargo');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('name', '0', '0', '0', 'Nombre');
 
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('ROLE_DIGI', '0', '0', '0', 'Digitador');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('ROLE_ROOT', '0', '0', '0', 'Super usuario');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('ROLE_SUPER', '0', '0', '0', 'Supervisor');
+
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_CARGO', NULL, NULL, NULL, '1', 0, '0', 'Catalogo Cargo personal estudio');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_CARGO_1', '1', 'CAT_CARGO', NULL, '0', 1, '0', 'Médico');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_CARGO_2', '2', 'CAT_CARGO', NULL, '0', 2, '0', 'Enfermería');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_VA_AGUA', NULL, NULL, NULL, '1', 0, '0', 'Catalogo frecuencia se va el agua');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_VA_AGUA_1', '1', 'CAT_FREC_VA_AGUA', NULL, '0', 1, '0', 'Todos los días');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_VA_AGUA_2', '2', 'CAT_FREC_VA_AGUA', NULL, '0', 2, '0', 'Día de por medio');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_VA_AGUA_3', '3', 'CAT_FREC_VA_AGUA', NULL, '0', 3, '0', 'Cada 2 días');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_VA_AGUA_4', '4', 'CAT_FREC_VA_AGUA', NULL, '0', 4, '0', 'Cada 3 días');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_VA_AGUA_998', '998', 'CAT_FREC_VA_AGUA', NULL, '0', 5, '0', 'Otros');
