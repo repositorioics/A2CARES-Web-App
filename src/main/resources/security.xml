@@ -10,7 +10,7 @@
 		<intercept-url pattern="/loginfailed" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/logout" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/resources/.*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <intercept-url pattern="/reportes/.*" access="ROLE_SUPER"/>
+        <intercept-url pattern="/reportes/.*" access="ROLE_ROOT, ROLE_SUPER"/>
         <intercept-url pattern="/movil/.*" access="ROLE_MOVIL"/>
         <intercept-url pattern="/hojaclinica/.*" access="ROLE_DIGI"/>
         <intercept-url pattern="/.*" access="ROLE_ADMIN,ROLE_ROOT"/>

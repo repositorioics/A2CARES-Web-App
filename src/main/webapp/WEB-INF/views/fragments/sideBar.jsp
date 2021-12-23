@@ -20,6 +20,26 @@
                     <li class="nav-item personal">
                         <a class="nav-link" href="<spring:url value="/admin/personal/" htmlEscape="true "/>"><i class="icon-people"></i><spring:message code="personal" /></a>
                     </li>
+                    <!-- init Catalogos Cartas Consentimientos -->
+                    <li class="nav-item administracion">
+                        <a class="nav-link" href="<spring:url value="/CatalogoVersion/CrearNuevaVersion" htmlEscape="true "/>">
+                            <i class="fab fa-vimeo-v"></i>
+                            <spring:message code="lbl.version.letter" /></a>
+                    </li>
+
+                    <li class="nav-item administracion">
+                        <a class="nav-link" href="<spring:url value="/CatalogoParte/CrearNuevaParte" htmlEscape="true "/>">
+                            <i class="fab fa-pinterest-p"></i>
+                            <spring:message code="Letter.Parts" /></a>
+                    </li>
+
+                    <li class="nav-item administracion">
+                        <a class="nav-link" href="<spring:url value="/CatalogoVersion/extension" htmlEscape="true "/>">
+                            <i class="fab fa-etsy"></i>
+                            <spring:message code="Extension" /></a>
+                    </li>
+                    <!-- fin Catalogos Cartas Consentimientos -->
+
 	            </ul>
 	        </li>
             </sec:authorize>
@@ -29,6 +49,45 @@
                     <ul class="nav-dropdown-items">
                         <li class="nav-item users">
                             <a class="nav-link" href="<spring:url value="/hojaclinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="clinical_sheet" /></a>
+                        </li>
+                    </ul>
+                </li>
+            </sec:authorize>
+
+            <sec:authorize access="hasAnyRole('ROLE_ROOT')">
+                <li class="nav-item nav-dropdown consentimiento">
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-notebook"></i><spring:message code="letters" /></a>
+                    <ul class="nav-dropdown-items">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="<spring:url value="/cartas/ListadoCartaParticipant" htmlEscape="true "/>">
+                                <i class="fas fa-envelope-open"></i>
+                                <spring:message code="consent" /> </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="<spring:url value="/cartas/CartaParticipantTmp" htmlEscape="true "/>">
+                                <i class="fas fa-envelope" aria-hidden="true"></i>
+                                <spring:message code="consent" /> <spring:message code="Temporal" /> </a>
+                        </li>
+                    </ul>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ROOT')">
+                <li class="nav-item nav-dropdown Serologia">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fas fa-vial" aria-hidden="true"></i>
+                        <spring:message code="Serologia" /></a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/Serologia/listSerologia" htmlEscape="true "/>">
+                                <i class="fas fa-list-alt" aria-hidden="true"></i>
+                                <spring:message code="Listado" /></a>
+                        </li>
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/Serologia/listEnviosMuestras" htmlEscape="true "/>">
+                                <i class="fas fa-ambulance" aria-hidden="true"></i>
+                                <spring:message code="Envios" /></a>
                         </li>
                     </ul>
                 </li>
