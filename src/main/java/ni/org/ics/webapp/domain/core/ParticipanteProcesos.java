@@ -16,7 +16,7 @@ public class ParticipanteProcesos extends BaseMetaData implements Serializable, 
 
     @Id
     @Column(name = "codigo", nullable = false, length = 6)
-    private Integer codigo;
+    private String codigo;
 
     @Column(name = "retirado", nullable = false, length = 1)
     private Integer retirado;
@@ -36,11 +36,11 @@ public class ParticipanteProcesos extends BaseMetaData implements Serializable, 
     @Column(name = "pendiente_mx_tx", nullable = false, length = 2)
     private String pendienteMxTx;
 
-    public Integer getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Integer codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 

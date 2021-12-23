@@ -2542,7 +2542,7 @@
             <textarea  class="form-control focusNext" id="planes" name="planes" cols="30" rows="4" required="required" placeholder="Ingrese los planes"></textarea>
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
-            <label class="form-control-label" for="historia"><spring:message code="historia_clínica" /><span class="required">*</span></label>
+            <label class="form-control-label" for="historia"><spring:message code="historia_clinica" /><span class="required">*</span></label>
             <textarea  class="form-control focusNext" id="historia" name="historia" cols="30" rows="6" required="required" placeholder="Ingrese la historia clínica"></textarea>
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
