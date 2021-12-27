@@ -52,7 +52,7 @@ public class Extensiones extends BaseMetaData implements Serializable {
     }
 
     public void setVersion(ni.org.ics.webapp.domain.catalogs.Version version) {
-        this.version = (ni.org.ics.webapp.domain.catalogs.Version) version;
+        this.version = version;
     }
 
     @Column(name = "EXTENSION", nullable = false)

@@ -19,7 +19,7 @@ public class Serologia extends BaseMetaData implements Serializable  {
     private static final long serialVersionUID = 1L;
 
     private Integer idSerologia;
-    private Integer participante;
+    private String participante;
     private Date fecha;
     private double volumen;
     private String observacion;
@@ -42,11 +42,11 @@ public class Serologia extends BaseMetaData implements Serializable  {
     }
 
     @Column(name = "CODIGO_PARTICIPANTE", nullable = false)
-    public Integer getParticipante() {
+    public String getParticipante() {
         return participante;
     }
 
-    public void setParticipante(Integer participante) {
+    public void setParticipante(String participante) {
         this.participante = participante;
     }
 

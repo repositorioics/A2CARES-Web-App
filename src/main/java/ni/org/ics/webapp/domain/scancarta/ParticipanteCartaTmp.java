@@ -16,8 +16,8 @@ public class ParticipanteCartaTmp extends BaseMetaData implements Auditable {
 
     private static final long serialVersionUID = 1L;
 
-    private int id;
-    private int idparticipante;
+    private Integer id;
+    private String idparticipante;
     private ni.org.ics.webapp.domain.catalogs.Version version;
     private String recurso;
     private Date fechacarta;
@@ -45,26 +45,26 @@ public class ParticipanteCartaTmp extends BaseMetaData implements Auditable {
     @Id
     @Column(name = "ID_PARTICIPANTECARTA_TMP", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     @Column(name = "CODIGO_PARTICIPANTE", nullable = false)
-    public int getIdparticipante() {
+    public String getIdparticipante() {
         return idparticipante;
     }
 
-    public void setIdparticipante(int idparticipante) {
+    public void setIdparticipante(String idparticipante) {
         this.idparticipante = idparticipante;
     }
 
     @ManyToOne
     @JoinColumn(name = "IDVERSION", nullable = false)
-    @ForeignKey(name = "FK_VERSION")
+    @ForeignKey(name = "FK_PCTMP_VERSION")
     public ni.org.ics.webapp.domain.catalogs.Version getVersion() {
         return version;
     }

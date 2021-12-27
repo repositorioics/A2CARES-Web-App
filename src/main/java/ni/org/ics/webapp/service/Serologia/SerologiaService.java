@@ -71,7 +71,7 @@ public class SerologiaService {
     }
 
     //region Verificar si existe registro Guardado.
-    public boolean ExisteSerologia(Date fecha, Integer codigo) throws Exception{
+    public boolean ExisteSerologia(Date fecha, String codigo) throws Exception{
         try{
             Session session = sessionFactory.getCurrentSession();
             Query query = session.createQuery("from Serologia s where s.fecha =:fecha and s.participante =:codigo");
@@ -206,7 +206,7 @@ public class SerologiaService {
         }
     }
 
-    public ParticipanteSeroDto getDatosParticipanteById(Integer codigo){
+    public ParticipanteSeroDto getDatosParticipanteById(String codigo){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("select p.codigo as codigo, concat(p.nombre1,' ', p.nombre2,' ', p.apellido1,' ', p.apellido2) as nombreCompleto, p.casa.codigo as codigo_casa, pp.retirado as estado, p.fechaNac as fechaNacimiento from Participante p, ParticipanteProcesos pp where p.codigo = pp.codigo and p.codigo= :codigo");
         query.setParameter("codigo", codigo);

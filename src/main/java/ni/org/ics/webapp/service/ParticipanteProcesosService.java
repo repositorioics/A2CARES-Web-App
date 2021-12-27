@@ -51,10 +51,11 @@ public class ParticipanteProcesosService {
 	 * @return un <code>Participante</code>
 	 */
 
-	public ParticipanteProcesos getParticipante(Integer codigo) {
+	public ParticipanteProcesos getParticipante(String codigo) {
 		// Retrieve session from Hibernate
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("FROM ParticipanteProcesos par where par.codigo = "+codigo);
+		Query query = session.createQuery("FROM ParticipanteProcesos par where par.codigo = :codigo");
+        query.setParameter("codigo", codigo);
 		ParticipanteProcesos participante = (ParticipanteProcesos) query.uniqueResult();
 		return participante;
 	}

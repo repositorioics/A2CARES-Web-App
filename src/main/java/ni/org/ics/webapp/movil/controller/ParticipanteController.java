@@ -108,7 +108,7 @@ public class ParticipanteController {
      */
     @RequestMapping(value = "participante/{codigo}", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    List<Participante> descargarParticipante(@PathVariable Integer codigo) {
+    List<Participante> descargarParticipante(@PathVariable String codigo) {
         logger.info("Descargando toda la informacion del participante "+codigo);
         List<Participante> participantes = new ArrayList<Participante>();
         participantes.add(participanteService.getParticipanteByCodigo(codigo));
@@ -161,7 +161,7 @@ public class ParticipanteController {
      */
     @RequestMapping(value = "participanteprocesos/{codigo}", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    List<ParticipanteProcesos> descargarParticipanteProcesos(@PathVariable Integer codigo) {
+    List<ParticipanteProcesos> descargarParticipanteProcesos(@PathVariable String codigo) {
         logger.info("Descargando toda la informacion del participante "+codigo);
         List<ParticipanteProcesos> participantes = new ArrayList<ParticipanteProcesos>();
         participantes.add(participanteProcesosService.getParticipante(codigo));

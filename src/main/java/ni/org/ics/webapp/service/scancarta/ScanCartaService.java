@@ -34,10 +34,11 @@ public class ScanCartaService {
 
     //region Seccion de Catalogo Carta
 
-    public Participante getParticipante(Integer codigo) {
+    public Participante getParticipante(String codigo) {
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Participante par where par.codigo = "+codigo);
+        Query query = session.createQuery("FROM Participante par where par.codigo = :codigo");
+        query.setParameter("codigo", codigo);
         Participante participante = (Participante) query.uniqueResult();
         return participante;
     }
@@ -260,7 +261,7 @@ public class ScanCartaService {
         }
     }
     @SuppressWarnings("unchecked")
-    public boolean SiExisteParticipanteCarta(Integer idversion, Integer idparticipante, String fechaCarta)throws Exception{
+    public boolean SiExisteParticipanteCarta(Integer idversion, String idparticipante, String fechaCarta)throws Exception{
         try {
             Session session = sessionFactory.getCurrentSession();
             Date fecha = DateUtil.StringToDate(fechaCarta, "dd/MM/yyyy");
@@ -283,7 +284,7 @@ public class ScanCartaService {
         return query.list();
     }
 
-    public List<ParticipanteCarta> getScanCartasByParticipante(Integer parametro){
+    public List<ParticipanteCarta> getScanCartasByParticipante(String parametro){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from ParticipanteCarta pc where pc.participante.codigo=:parametro");
         query.setParameter("parametro",parametro);
@@ -408,7 +409,7 @@ public class ScanCartaService {
     public List<Extensiones>getExtension(Integer idversion)throws Exception {
         try{
             Session session = sessionFactory.getCurrentSession();
-            Query query = session.createQuery("from Extensiones e where e.version.idversion=:idversion and e.isActive=true ");
+            Query query = session.createQuery("from Extensiones e where e.version.idversion=:idversion and e.activo = true ");
             query.setParameter("idversion", idversion);
             return query.list();
         }catch (Exception e){
@@ -545,7 +546,7 @@ public class ScanCartaService {
         return query.list();
     }
 
-    public ParticipanteCartaTmp getAllParticipanteCartaTmpById(int id)throws Exception{
+    public ParticipanteCartaTmp getAllParticipanteCartaTmpById(Integer id)throws Exception{
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from ParticipanteCartaTmp tm where tm.id=:id");
         query.setParameter("id",id);
@@ -558,7 +559,7 @@ public class ScanCartaService {
        return query.list();
     }
 
-    public List<DetalleParteTmp>getDetalleParteTmpById(int id)throws Exception{
+    public List<DetalleParteTmp>getDetalleParteTmpById(Integer id)throws Exception{
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from DetalleParteTmp tm where tm.participantecartatmp.id=:id ");
         query.setParameter("id",id);
@@ -566,14 +567,14 @@ public class ScanCartaService {
     }
 
     //Obtengo partes aceptadas de la carta Temporal
-    public List<DetalleParteTmp>getDetalleParteTmpByAccept(int id)throws Exception{
+    public List<DetalleParteTmp>getDetalleParteTmpByAccept(Integer id)throws Exception{
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from DetalleParteTmp tm where participantecartatmp.id=:id and tm.acepta=true");
         query.setParameter("id",id);
         return query.list();
     }
     //Obtengo partes aceptadas de la carta oficial
-    public List<DetalleParte>getDetalleParteByAccept(int id)throws Exception{
+    public List<DetalleParte>getDetalleParteByAccept(Integer id)throws Exception{
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from DetalleParte tm where participantecarta.idparticipantecarta=:id and tm.acepta=true");
         query.setParameter("id",id);
@@ -581,7 +582,7 @@ public class ScanCartaService {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean SiExisteParticipanteCartaTMP(Integer idversion, Integer idparticipante, String fechaCarta)throws Exception{
+    public boolean SiExisteParticipanteCartaTMP(Integer idversion, String idparticipante, String fechaCarta)throws Exception{
         try {
             Session session = sessionFactory.getCurrentSession();
             Date fecha = DateUtil.StringToDate(fechaCarta,"dd/MM/yyyy");
@@ -618,7 +619,7 @@ public class ScanCartaService {
         return (ExtensionesTmp)query.uniqueResult();
     }
 
-    public boolean verificaSiyaTieneExtension(int codigo, int idExtension, String fechaext)throws Exception{
+    public boolean verificaSiyaTieneExtension(Integer codigo, int idExtension, String fechaext)throws Exception{
         try {
             Session session = sessionFactory.getCurrentSession();
             Date finicial = DateUtil.StringToDate(fechaext, "dd/MM/yyyy");
@@ -707,7 +708,7 @@ public class ScanCartaService {
     }
 
     // Desact ExtensionesTmp by IdCartaTmp
-    public int disableExtnsionTmpByIdCartaTmp(int participantecartatmp){
+    public int disableExtnsionTmpByIdCartaTmp(Integer participantecartatmp){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("update ExtensionesTmp e set e.pasive='1' where e.participantecartatmp.id=:participantecartatmp ");
         query.setParameter("participantecartatmp",participantecartatmp);
@@ -715,7 +716,7 @@ public class ScanCartaService {
         return response;
     }
     // Dessact Detalles_Partes_Temp participantecartatmp.id
-    public int disableDetailPartesTmpByIdCartaTmp(int participantecartatmp){
+    public int disableDetailPartesTmpByIdCartaTmp(Integer participantecartatmp){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("update DetalleParteTmp p set p.pasive='1' where p.participantecartatmp.id=:participantecartatmp ");
         query.setParameter("participantecartatmp",participantecartatmp);
@@ -723,7 +724,7 @@ public class ScanCartaService {
         return response;
     }
     // Dessact ParticipanteCartaTmp participantecartatmp.id
-    public int disableParticipanteCartaTmpById(int participantecartatmp){
+    public int disableParticipanteCartaTmpById(Integer participantecartatmp){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("update ParticipanteCartaTmp p set p.pasive='1' where p.id=:participantecartatmp ");
         query.setParameter("participantecartatmp",participantecartatmp);
@@ -734,7 +735,7 @@ public class ScanCartaService {
 
 
     //Verifica si Existe ExtensionesTmp By ParticipanteCarta
-    public boolean isExistExtensionesById(int id)throws  Exception{
+    public boolean isExistExtensionesById(Integer id)throws  Exception{
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from ExtensionesTmp etmp where etmp.participantecartatmp.id=:id");
         query.setParameter("id", id);
@@ -742,7 +743,7 @@ public class ScanCartaService {
     }
 
     // Obtengo la lista de Extension Temporal by idParticipanteCartatmp para pasarla a las tabla Oficial
-    public List<ExtensionesTmp>getListExtensionTmpByParticipanteCartaId(int idParticipanteCartatmp){
+    public List<ExtensionesTmp>getListExtensionTmpByParticipanteCartaId(Integer idParticipanteCartatmp){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from ExtensionesTmp et where et.participantecartatmp.id=:idParticipanteCartatmp and et.pasive='0'");
         query.setParameter("idParticipanteCartatmp",idParticipanteCartatmp);
@@ -786,19 +787,5 @@ public class ScanCartaService {
     }
     //endregion
 
-    // Búsca participante por codigo, este metodo viene de DomicilioService
-    @SuppressWarnings("unchecked")
-    public ParticipantesCodigo getCodigos(Integer parametro)throws Exception{
-        try{
-            Session session = sessionFactory.getCurrentSession();
-            Query query = session.createQuery("SELECT cast( p.codigo as string ) as codigo, cast(c.codigo as string) as casaP, coalesce( pp.estudio, 'Vacio') as estudio, " +
-                    "(SELECT cc.codigoCHF from ParticipanteCohorteFamilia pc, CasaCohorteFamilia cc where pc.casaCHF = cc.codigoCHF and pc.participante = p.codigo) as casaFamilia " +
-                    "FROM Participante p, Casa c, ParticipanteProcesos pp where p.casa = c.codigo and p.codigo = pp.codigo  and p.codigo =:parametro");
-            query.setParameter("parametro", parametro);
-            query.setResultTransformer(Transformers.aliasToBean(ParticipantesCodigo.class));
-            return (ParticipantesCodigo) query.uniqueResult();
-        }catch (Exception e){
-            throw e;
-        }
-    }
+
 }

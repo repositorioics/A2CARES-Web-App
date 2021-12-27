@@ -26,7 +26,7 @@ public class ParticipanteCartaDto  {
     private String  fechacarta;
     private String  observacion;
     private List<ParteDto> parte;
-    private Integer idparticipante;
+    private String idparticipante;
     private String recurso;
     private Integer tipoasentimiento;
     private String testigopresente;
@@ -164,11 +164,11 @@ public class ParticipanteCartaDto  {
         this.observacion = observacion;
     }
 
-    public Integer getIdparticipante() {
+    public String getIdparticipante() {
         return idparticipante;
     }
 
-    public void setIdparticipante(Integer idparticipante) {
+    public void setIdparticipante(String idparticipante) {
         this.idparticipante = idparticipante;
     }
 

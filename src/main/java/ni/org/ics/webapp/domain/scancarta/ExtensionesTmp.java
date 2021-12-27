@@ -2,6 +2,7 @@ package ni.org.ics.webapp.domain.scancarta;
 
 
 import ni.org.ics.webapp.domain.BaseMetaData;
+import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -149,6 +150,7 @@ public class ExtensionesTmp extends BaseMetaData implements Serializable {
     }
     @ManyToOne
     @JoinColumn(name = "PARTICIPANTE_CARTA_TMP", nullable = false)
+    @ForeignKey(name = "FK_EXT_TMP_PCTMP")
     public ParticipanteCartaTmp getParticipantecartatmp() {
         return participantecartatmp;
     }
@@ -159,6 +161,7 @@ public class ExtensionesTmp extends BaseMetaData implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "COD_EXTENSION", nullable = false)
+    @ForeignKey(name = "FK_EXT_TMP_EXTENSION")
     public Extensiones getExtensiones() {
         return extensiones;
     }

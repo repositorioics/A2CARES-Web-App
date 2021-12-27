@@ -74,7 +74,7 @@ public class ParticipanteCarta extends BaseMetaData implements Auditable {
 
     @ManyToOne
     @JoinColumn(name = "IDVERSION", nullable = false)
-    @ForeignKey(name = "FK_VERSION")
+    @ForeignKey(name = "FK_PC_VERSION")
     public Version getVersion() {
         return version;
     }

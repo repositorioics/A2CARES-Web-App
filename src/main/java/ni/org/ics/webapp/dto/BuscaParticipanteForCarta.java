@@ -11,7 +11,7 @@ import java.util.List;
 public class BuscaParticipanteForCarta implements Serializable {
 
     private Integer id;
-    private Integer codigoParticipante;
+    private String codigoParticipante;
     private String nombreCompleto;
     private String  edadDia;
     private String edadMes;
@@ -37,7 +37,7 @@ public class BuscaParticipanteForCarta implements Serializable {
     public BuscaParticipanteForCarta() {
     }
 
-    public BuscaParticipanteForCarta(Integer id, Integer codigoParticipante, String nombreCompleto, String edadDia, String edadMes, String edadAnios, String estudios, List<EstudioDto> listEstudios, boolean menorEdad, String nombreTutor, String nombreMadre, String nombrePadre, String realFam, Date fechaNac, String direccion, String estado, boolean anulada, String name1Tutor, String name2Tutor, String surname1Tutor, String surname2Tutor) {
+    public BuscaParticipanteForCarta(Integer id, String codigoParticipante, String nombreCompleto, String edadDia, String edadMes, String edadAnios, String estudios, List<EstudioDto> listEstudios, boolean menorEdad, String nombreTutor, String nombreMadre, String nombrePadre, String realFam, Date fechaNac, String direccion, String estado, boolean anulada, String name1Tutor, String name2Tutor, String surname1Tutor, String surname2Tutor) {
         this.id = id;
         this.codigoParticipante = codigoParticipante;
         this.nombreCompleto = nombreCompleto;
@@ -69,11 +69,11 @@ public class BuscaParticipanteForCarta implements Serializable {
         this.id = id;
     }
 
-    public Integer getCodigoParticipante() {
+    public String getCodigoParticipante() {
         return codigoParticipante;
     }
 
-    public void setCodigoParticipante(Integer codigoParticipante) {
+    public void setCodigoParticipante(String codigoParticipante) {
         this.codigoParticipante = codigoParticipante;
     }
 

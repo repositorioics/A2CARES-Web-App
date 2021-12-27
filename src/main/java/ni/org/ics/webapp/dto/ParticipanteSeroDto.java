@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class ParticipanteSeroDto {
 
-    private Integer codigo;
+    private String codigo;
     private Integer idSerologia;
-    private Integer idparticipante;
+    private String idparticipante;
     private double volumen;
     private Integer edadMeses;
     private String nombreCompleto;
@@ -37,11 +37,11 @@ public class ParticipanteSeroDto {
     }
 
 
-    public Integer getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Integer codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
@@ -157,11 +157,11 @@ public class ParticipanteSeroDto {
         this.idSerologia = idSerologia;
     }
 
-    public Integer getIdparticipante() {
+    public String getIdparticipante() {
         return idparticipante;
     }
 
-    public void setIdparticipante(Integer idparticipante) {
+    public void setIdparticipante(String idparticipante) {
         this.idparticipante = idparticipante;
     }
 

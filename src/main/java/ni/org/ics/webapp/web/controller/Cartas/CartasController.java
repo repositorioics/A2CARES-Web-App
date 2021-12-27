@@ -143,7 +143,7 @@ public class CartasController {
     @RequestMapping(value = "/searchParticipant", method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    ResponseEntity<String> BuscarParticipanteByID(@RequestParam(value = "parametro", required = true) Integer parametro) throws Exception {
+    ResponseEntity<String> BuscarParticipanteByID(@RequestParam(value = "parametro", required = true) String parametro) throws Exception {
         try {
             Map<String, String> map = new HashMap<String, String>();
             BuscaParticipanteForCarta objEncontrado = new BuscaParticipanteForCarta();
@@ -231,13 +231,13 @@ public class CartasController {
     public @ResponseBody ResponseEntity<String> saveScanCarta(@RequestBody ParticipanteCartaDto obj) {
         try {
             Version v = new Version();
-            if (!scanCartaService.SiExisteParticipanteCarta(obj.getVersion(), obj.getCodigo(), obj.getFechacarta())) {
+            if (!scanCartaService.SiExisteParticipanteCarta(obj.getVersion(), String.valueOf(obj.getCodigo()), obj.getFechacarta())) {
                 ParticipanteCarta pc = new ParticipanteCarta();
                 String computerName = InetAddress.getLocalHost().getHostName();
                 String computerIp = InetAddress.getLocalHost().getHostAddress();
                 if (obj != null) {
                     Participante p = new Participante();
-                    p.setCodigo(obj.getCodigo());
+                    //p.setCodigo(obj.getCodigo());
                     pc.setParticipante(p);
                     v.setIdversion(obj.getVersion());
                     pc.setVersion(v);
@@ -321,7 +321,7 @@ public class CartasController {
     @RequestMapping(value = "/GetCartasParticipante", method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    List<VersionExtensionCartaDto> fetchCartaParticipanteToJson(@RequestParam(value = "parametro", required = true) Integer parametro)
+    List<VersionExtensionCartaDto> fetchCartaParticipanteToJson(@RequestParam(value = "parametro", required = true) String parametro)
             throws ParseException {
         List<VersionExtensionCartaDto> ext = new ArrayList<VersionExtensionCartaDto>();
         try {
@@ -817,11 +817,10 @@ public class CartasController {
 
     // ** EDITAR CARTA TEMPORAL
     @RequestMapping(value = "/editTmp/{codigo}", method = RequestMethod.GET)
-    public String editTmp(Model model, @PathVariable("codigo") String codigo) throws Exception
+    public String editTmp(Model model, @PathVariable("codigo") Integer codigo) throws Exception
     {
         try{
-            int cod = Integer.parseInt(codigo);
-            ParticipanteCartaTmp caso = this.scanCartaService.getAllParticipanteCartaTmpById(cod);
+            ParticipanteCartaTmp caso = this.scanCartaService.getAllParticipanteCartaTmpById(codigo);
             model.addAttribute("caso", caso);
 
             List<Estudio> cartas = scanCartaService.getAllEstudios();
@@ -910,10 +909,9 @@ public class CartasController {
                 return createJsonResponse(map);
             }
 
-            Integer codParticipante = obj.getIdparticipante();
-            if ( codParticipante==0 || codParticipante<80000) {
+            if ( !obj.getIdparticipante().matches("^\\d{4}$")) {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("msj", "Codigo no debe ser menor a: 80,000");
+                map.put("msj", "Codigo no es válido");
                 return createJsonResponse(map);
             }
 
@@ -1139,8 +1137,7 @@ public class CartasController {
     ) throws Exception {
         try {
             ParticipanteCartaDto dto = new ParticipanteCartaDto();
-            int i = Integer.parseInt(idparticipante);
-            dto.setCodigo(i);
+            dto.setCodigo(Integer.valueOf(idparticipante));
             return JsonUtil.createJsonResponse("yeah");
         } catch (Exception e) {
             Gson gson = new Gson();
@@ -1278,7 +1275,6 @@ public class CartasController {
     ) throws Exception {
         int cod = Integer.parseInt(participantecartatmp);
         int codExtension = Integer.parseInt(idExtension);
-        int id_participante_carta_tmp = Integer.parseInt(participantecartatmp);
 
         if (editando.equals("true")) {
             int codigo_participante_extension = Integer.parseInt(idParticipantExtensiontmp);
@@ -1310,14 +1306,14 @@ public class CartasController {
             String obs = (observacion != "") ? observacion.toUpperCase() : "";
             extensionToEdit.setObservacion(obs);
 
-            ParticipanteCartaTmp pct = this.scanCartaService.getAllParticipanteCartaTmpById(id_participante_carta_tmp);
+            ParticipanteCartaTmp pct = this.scanCartaService.getAllParticipanteCartaTmpById(cod);
             extensionToEdit.setParticipantecartatmp(pct);
 
             this.scanCartaService.guardarExtensionTmp(extensionToEdit);
             return JsonUtil.createJsonResponse(extensionToEdit);
 
         }else {
-            if (!scanCartaService.verificaSiyaTieneExtension(id_participante_carta_tmp, codExtension, fechaExtension)) {
+            if (!scanCartaService.verificaSiyaTieneExtension(cod, codExtension, fechaExtension)) {
                 try {
                     ExtensionesTmp tmp = new ExtensionesTmp();
                     String computerName = InetAddress.getLocalHost().getHostName();
@@ -1354,7 +1350,7 @@ public class CartasController {
                     tmp.setExtensiones(ex);
 
                     ParticipanteCartaTmp pct = new ParticipanteCartaTmp();
-                    pct.setId(id_participante_carta_tmp);
+                    pct.setId(cod);
                     tmp.setParticipantecartatmp(pct);
 
                     this.scanCartaService.guardarExtensionTmp(tmp);
@@ -1377,7 +1373,7 @@ public class CartasController {
 
     //Desabilitar toda Carta, Parte, Extensiones Temporales con pasive=1
     @RequestMapping("/desactAllTmp/{idparticipantecartatmp}")
-    public String desactAllTmp(@PathVariable("idparticipantecartatmp") int idparticipantecartatmp,
+    public String desactAllTmp(@PathVariable("idparticipantecartatmp") Integer idparticipantecartatmp,
                                RedirectAttributes redirectAttributes)throws Exception{
         String redirecTo="404";
         try{

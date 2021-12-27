@@ -82,7 +82,7 @@ public class HojaClinicaController {
 
     @RequestMapping(value = "searchParticipant", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    ResponseEntity<String> buscarParticipante(@RequestParam(value="participantCode", required=true ) Integer codigo) throws ParseException {
+    ResponseEntity<String> buscarParticipante(@RequestParam(value="participantCode", required=true ) String codigo) throws ParseException {
         logger.debug("buscar participante");
         Map<String, String> map = new HashMap<String, String>();
         Participante participante = this.participanteService.getParticipanteByCodigo(codigo);
@@ -310,7 +310,7 @@ public class HojaClinicaController {
         //Recuperando Json enviado desde el cliente
         JsonObject jObjectRespuestas = new Gson().fromJson(json, JsonObject.class);
         String hojaStr = jObjectRespuestas.get("hojaClinica").toString();
-        Integer codigoParticipante = jObjectRespuestas.get("participante").getAsInt();
+        String codigoParticipante = jObjectRespuestas.get("participante").getAsString();
 
         Participante participante = participanteService.getParticipanteByCodigo(codigoParticipante);
         hojaClinica.setCodigoParticipante(participante);

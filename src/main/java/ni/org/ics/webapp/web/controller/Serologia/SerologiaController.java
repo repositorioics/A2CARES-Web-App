@@ -219,7 +219,7 @@ public class SerologiaController {
     //region Buscar Participante
     @RequestMapping(value = "/searchParticipant", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    ResponseEntity<String> BuscarParticipanteByID(@RequestParam(value = "parametro", required = true) Integer parametro)throws Exception {
+    ResponseEntity<String> BuscarParticipanteByID(@RequestParam(value = "parametro", required = true) String parametro)throws Exception {
         try {
             Map<String, String> map = new HashMap<String, String>();
             ParticipanteSeroDto participanteDto = new ParticipanteSeroDto();
@@ -269,7 +269,7 @@ public class SerologiaController {
     //region Serologia/GuardarSerologia
     @RequestMapping(value = "GuardarSerologia", method = RequestMethod.POST)
     public ResponseEntity<String>GuardarSerologia (@RequestParam(value = "idSerologia", required=false, defaultValue="") String idSerologia
-           ,@RequestParam( value = "idParticipante", required = false, defaultValue=""  ) Integer idParticipante
+           ,@RequestParam( value = "idParticipante", required = false, defaultValue=""  ) String idParticipante
            ,@RequestParam( value = "fecha",          required = false, defaultValue=""  ) String fecha
            ,@RequestParam( value = "volumen",        required = false, defaultValue=""  ) String volumen
            ,@RequestParam( value = "observacion",    required = false, defaultValue=""  ) String observacion
@@ -288,9 +288,9 @@ public class SerologiaController {
                 map.put("msj", "Fecha no puede ser vacía.");
                 return JsonUtil.createJsonResponse(map);
             }
-            if (idParticipante <=0){
+            if (!idParticipante.matches("^\\d{4}$")){
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("msj", "Código participante no puede ser menor o igual a cero." );
+                map.put("msj", "Código participante no es válido." );
                 return JsonUtil.createJsonResponse(map);
             }
             Serologia sero = new Serologia();

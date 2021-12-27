@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class VersionExtensionCartaDto  implements Serializable {
 
     private Integer idParticipanteCarta;
-    private Integer codigoParticipante;
+    private String codigoParticipante;
     private String nombreCompleto;
     private Integer idEstudio;
     private String nmobreEstudio;
@@ -25,7 +25,7 @@ public class VersionExtensionCartaDto  implements Serializable {
     public VersionExtensionCartaDto() {
     }
 
-    public VersionExtensionCartaDto(Integer idParticipanteCarta,Integer codigoParticipante, String nombreCompleto, Integer idEstudio, String nmobreEstudio, Integer idVersion, String nombreVersion, String fechaCarta, String estado, boolean tieneExtesion, Integer cantidadExtension, boolean anulada, String pqAnulada) {
+    public VersionExtensionCartaDto(Integer idParticipanteCarta,String codigoParticipante, String nombreCompleto, Integer idEstudio, String nmobreEstudio, Integer idVersion, String nombreVersion, String fechaCarta, String estado, boolean tieneExtesion, Integer cantidadExtension, boolean anulada, String pqAnulada) {
         this.idParticipanteCarta = idParticipanteCarta;
         this.codigoParticipante = codigoParticipante;
         this.nombreCompleto = nombreCompleto;
@@ -50,11 +50,11 @@ public class VersionExtensionCartaDto  implements Serializable {
         this.idParticipanteCarta = idParticipanteCarta;
     }
 
-    public Integer getCodigoParticipante() {
+    public String getCodigoParticipante() {
         return codigoParticipante;
     }
 
-    public void setCodigoParticipante(Integer codigoParticipante) {
+    public void setCodigoParticipante(String codigoParticipante) {
         this.codigoParticipante = codigoParticipante;
     }
 
