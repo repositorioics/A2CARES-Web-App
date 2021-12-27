@@ -231,13 +231,13 @@ public class CartasController {
     public @ResponseBody ResponseEntity<String> saveScanCarta(@RequestBody ParticipanteCartaDto obj) {
         try {
             Version v = new Version();
-            if (!scanCartaService.SiExisteParticipanteCarta(obj.getVersion(), String.valueOf(obj.getCodigo()), obj.getFechacarta())) {
+            if (!scanCartaService.SiExisteParticipanteCarta(obj.getVersion(), obj.getCodigo(), obj.getFechacarta())) {
                 ParticipanteCarta pc = new ParticipanteCarta();
                 String computerName = InetAddress.getLocalHost().getHostName();
                 String computerIp = InetAddress.getLocalHost().getHostAddress();
                 if (obj != null) {
                     Participante p = new Participante();
-                    //p.setCodigo(obj.getCodigo());
+                    p.setCodigo(obj.getCodigo());
                     pc.setParticipante(p);
                     v.setIdversion(obj.getVersion());
                     pc.setVersion(v);
