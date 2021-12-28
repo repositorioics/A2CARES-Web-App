@@ -1,27 +1,5 @@
 /**
  * Created by ICS on 18/02/2020.
- *
- * ,columnDefs: [
- {
-      targets: 0,
-      className: 'text-center'
-  },{
-                    targets: 3,
-                    className: 'text-center'
-                },{
-                    targets: 5,
-                    className: 'text-center'
-                },{
-                    targets: 6,
-                    className: 'text-center'
-                },{
-                    targets: 7,
-                    className: 'text-center'
-                },{
-                    targets: 9,
-                    className: 'text-center'
-                }
- ]
  */
 var urls={};
 var SearchCartaParticipant = function () {

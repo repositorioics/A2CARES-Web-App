@@ -145,6 +145,11 @@ public class CartasController {
     @ResponseBody
     ResponseEntity<String> BuscarParticipanteByID(@RequestParam(value = "parametro", required = true) String parametro) throws Exception {
         try {
+            if ( !parametro.matches("^\\d{4}$")) {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("msj", "Codigo participante no es válido");
+                return createJsonResponse(map);
+            }
             Map<String, String> map = new HashMap<String, String>();
             BuscaParticipanteForCarta objEncontrado = new BuscaParticipanteForCarta();
             Participante participante = scanCartaService.getParticipante(parametro);
@@ -231,13 +236,17 @@ public class CartasController {
     public @ResponseBody ResponseEntity<String> saveScanCarta(@RequestBody ParticipanteCartaDto obj) {
         try {
             Version v = new Version();
-            if (!scanCartaService.SiExisteParticipanteCarta(obj.getVersion(), obj.getCodigo(), obj.getFechacarta())) {
+            if ( !obj.getIdparticipante().matches("^\\d{4}$")) {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("msj", "Codigo participante no es válido");
+                return createJsonResponse(map);
+            }
+            if (!scanCartaService.SiExisteParticipanteCarta(obj.getVersion(), obj.getIdparticipante(), obj.getFechacarta())) {
                 ParticipanteCarta pc = new ParticipanteCarta();
                 String computerName = InetAddress.getLocalHost().getHostName();
                 String computerIp = InetAddress.getLocalHost().getHostAddress();
                 if (obj != null) {
-                    Participante p = new Participante();
-                    p.setCodigo(obj.getCodigo());
+                    Participante p = this.scanCartaService.getParticipante(obj.getIdparticipante());
                     pc.setParticipante(p);
                     v.setIdversion(obj.getVersion());
                     pc.setVersion(v);
@@ -419,7 +428,6 @@ public class CartasController {
                 Version v = new Version();
                 v.setIdversion(obj.getVersion());
                 pc.setVersion(v);
-                //boolean asentimiento = (obj.getAsentimiento().equals("")) ? false : true;
                 pc.setAsentimiento(obj.getAsentimiento());
                 int tipo_asentimiento = (obj.getTipoasentimiento() == null) ? 0 : obj.getTipoasentimiento();
                 pc.setTipoasentimiento(tipo_asentimiento);
@@ -430,9 +438,7 @@ public class CartasController {
                 pc.setApellido1Firma(obj.getApellido1Firma().toUpperCase());
                 String apellido2tutor = (obj.getApellido2Firma() != null) ? obj.getApellido2Firma().toUpperCase() : "";
                 pc.setApellido2Firma(apellido2tutor);
-
                 pc.setPersonal(""+obj.getPerson());
-                //pc.setRecurso(obj.getRecurso());
                 pc.setProyecto(obj.getProyecto());
                 boolean cf = (obj.getContactoFuturo().equals("1")) ? true : false;
                 pc.setContactoFuturo(cf);
@@ -612,13 +618,14 @@ public class CartasController {
             , @RequestParam(value = "idParticipantExtension", required = true) Integer idParticipantExtension
     ) throws Exception {
         try {
-
+            String ComputerName = InetAddress.getLocalHost().getHostName();
+            String ComputerIp = InetAddress.getLocalHost().getHostAddress();
             if (accion.equals("true")) { //aqui actualizar
                 ParticipanteExtension editObj = new ParticipanteExtension();
                 editObj.setIdParticipantExtension(idParticipantExtension);
                 editObj.setFechaExtension(DateUtil.StringToDate(fechaExtension, "dd/MM/yyyy"));
                 editObj.setNombre1Tutor(nombre1tutor.toUpperCase());
-                String name2tutor = ""; // = (nombre2tutor != null) ? nombre2tutor.toUpperCase():"";
+                String name2tutor = "";
                 if (nombre2tutor.equals("")) {
                     editObj.setNombre2Tutor(name2tutor);
                 } else {
@@ -649,8 +656,8 @@ public class CartasController {
                 Extensiones extensiones = new Extensiones();
                 extensiones.setId(idExtension);
                 editObj.setExtensiones(extensiones);
-                String ComputerName = InetAddress.getLocalHost().getHostName();
                 editObj.setDeviceid(ComputerName);
+                editObj.setRecordIp(ComputerIp);
                 editObj.setEstado('1');
                 editObj.setPasive('0');
                 editObj.setRecordDate(new Date());
@@ -662,7 +669,7 @@ public class CartasController {
                 if (!this.scanCartaService.VerificaExtension(fechaExtension, fechaExtension, idExtension)) {
                     ext.setFechaExtension(DateUtil.StringToDate(fechaExtension, "dd/MM/yyyy"));
                     ext.setNombre1Tutor(nombre1tutor.toUpperCase());
-                    String name2tutor = ""; //(nombre2tutor != null) ? nombre2tutor.toUpperCase():"";
+                    String name2tutor = "";
                     if (nombre2tutor.equals("")) {
                         ext.setNombre2Tutor(name2tutor);
                     } else {
@@ -693,7 +700,7 @@ public class CartasController {
                     Extensiones extensiones = new Extensiones();
                     extensiones.setId(idExtension);
                     ext.setExtensiones(extensiones);
-                    String ComputerName = InetAddress.getLocalHost().getHostName();
+                    ext.setRecordIp(ComputerIp);
                     ext.setDeviceid(ComputerName);
                     ext.setEstado('1');
                     ext.setPasive('0');
@@ -706,54 +713,12 @@ public class CartasController {
                     return createJsonResponse(cadenaCodificada);
                 }
             }
-            /*
-            ParticipanteExtension ext = new ParticipanteExtension();
-            if (!this.scanCartaService.VerificaExtension(fechaExtension,fechaExtension,idExtension,idVersion, idParticipante)){
-                ext.setFechaExtension(DateUtil.StringToDate(fechaExtension, "dd/MM/yyyy"));
-                ext.setNombre1Tutor(nombre1tutor.toUpperCase());
-                String name2tutor = (nombre2tutor != null) ? nombre2tutor.toUpperCase():"";
-                ext.setNombre2Tutor(name2tutor);
-                ext.setApellido1Tutor(apellido1tutor.toUpperCase());
-                String ape2Tutor = (apellido2tutor != null) ? apellido2tutor.toUpperCase(): "";
-                ext.setApellido2Tutor(ape2Tutor);
-                boolean band = (chktestigo.equals("on")) ? true : false;
-                ext.setTestigoPresente(band);
-                String name1Testigo = (nombre1Testigo != null) ? nombre1Testigo.toUpperCase():"";
-                ext.setNombre1Testigo(name1Testigo);
-                String name2testigo = (nombre2Testigo != null) ? nombre2Testigo.toUpperCase():"";
-                ext.setNombre2Testigo(name2testigo);
-                String ape1Testigo = (apellido1Testigo != null) ? apellido1Testigo.toUpperCase():"";
-                ext.setApellido1Testigo(ape1Testigo);
-                String ape2Testigo = (apellido2Testigo != null) ? apellido2Testigo.toUpperCase():"";
-                ext.setApellido2Testigo(ape2Testigo);
-                String obs = (observacion != null) ? observacion.toUpperCase():"";
-                ext.setObservacion(obs);
-                ParticipanteCarta pc = new ParticipanteCarta();
-                pc.setIdparticipantecarta(idParticipanteCarta);
-                ext.setParticipantecarta(pc);
-                Extensiones extensiones= new Extensiones();
-                extensiones.setId(idExtension);
-                ext.setExtensiones(extensiones);
-                String ComputerName = InetAddress.getLocalHost().getHostName();
-                ext.setDeviceid(ComputerName);
-                ext.setEstado('1');
-                ext.setPasive('0');
-                ext.setRecordDate(new Date());
-                ext.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
-                this.scanCartaService.saveParticpanteExtension(ext);
-                return createJsonResponse(ext);
-            }else{
-                String cadenaCodificada = ("Participante tiene registrada Extension!");
-                return createJsonResponse(cadenaCodificada);
-            }*/
         } catch (Exception e) {
             Gson gson = new Gson();
             String json = gson.toJson(e.toString());
             return new ResponseEntity<String>(json, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 
 
     //region ******************** CARTAS TEMPORALES  **********************************
@@ -766,10 +731,8 @@ public class CartasController {
         model.addAttribute("cartas", cartas);
         List<MessageResource> relFam = messageResourceService.getCatalogo("CAT_RF_TUTOR");
         model.addAttribute("relFam", relFam);
-
         List<Personal> personal = scanCartaService.getPersonal();
         model.addAttribute("personal", personal);
-
         List<MessageResource> proyecto = messageResourceService.getCatalogo("CAT_SCAN_PROYECTO");
         model.addAttribute("proyecto", proyecto);
         List<MessageResource> SiNoNA = messageResourceService.getCatalogo("SCANCARTA");
@@ -782,7 +745,7 @@ public class CartasController {
         List<Version> version = this.scanCartaService.getVersionActiva();
         model.addAttribute("version", version);
         List<ParticipanteCartaTmp> cartaTmp = this.scanCartaService.getAllParticipanteCartaTmp();
-            // determino si una carta temporal ttiene extension para habilitar el boton
+        // determino si una carta temporal tiene extension para habilitar el boton
         boolean tieneExtension = false;
         List<ParticipanteCartaDto> listaDto = new ArrayList<ParticipanteCartaDto>();
         for (int i = 0; i < cartaTmp.size(); i++) {
@@ -822,7 +785,6 @@ public class CartasController {
         try{
             ParticipanteCartaTmp caso = this.scanCartaService.getAllParticipanteCartaTmpById(codigo);
             model.addAttribute("caso", caso);
-
             List<Estudio> cartas = scanCartaService.getAllEstudios();
             model.addAttribute("cartas", cartas);
             List<Version> version = this.scanCartaService.getVersioCarta(caso.getVersion().getEstudio().getCodigo());
@@ -911,7 +873,7 @@ public class CartasController {
 
             if ( !obj.getIdparticipante().matches("^\\d{4}$")) {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("msj", "Codigo no es válido");
+                map.put("msj", "Codigo participante no es válido");
                 return createJsonResponse(map);
             }
 
@@ -974,7 +936,6 @@ public class CartasController {
                 this.scanCartaService.guardarCartaTMP(temporalForEdit);
                 if (obj.getParte() != null){
                    int regEliminados = this.scanCartaService.deleteDetalleParteTmp(temporalForEdit.getId());
-                    System.out.println("Registros Eliminados: " + regEliminados);
                     Parte pr = new Parte();
                        for (ParteDto parte : obj.getParte()) {
                            DetalleParteTmp dp = new DetalleParteTmp();
@@ -1000,7 +961,6 @@ public class CartasController {
                 vers.setIdversion(obj.getVersion());
                 temporal.setVersion(vers);
                 temporal.setRecurso(""+obj.getRecurso());
-                //asent = (obj.getAsentimiento().equals("0")) ? false : true;
                 temporal.setAsentimiento(obj.getAsentimiento());
                 temporal.setTipoasentimiento(obj.getTipoasentimiento());
                 temporal.setRelfam(obj.getRelfam());
@@ -1054,7 +1014,6 @@ public class CartasController {
                         dp.setRecordIp(computerIp);
                         scanCartaService.saveParteCartaTMP(dp);
                     }
-                    System.out.println("total " + count + " registros.");
                 }
                 return JsonUtil.createJsonResponse(temporal);
             } else {
@@ -1075,7 +1034,7 @@ public class CartasController {
     @RequestMapping(value = "/codigoParticipante", method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    ResponseEntity<String> buscarCodigoParticipante(@RequestParam(value = "idparticipante", required = true) Integer codigo) throws ParseException {
+    ResponseEntity<String> buscarCodigoParticipante(@RequestParam(value = "idparticipante", required = true) String codigo) throws ParseException {
         Participante participante = null;
         try {
             participante = scanCartaService.getCodigoParticipante(codigo);
@@ -1109,42 +1068,6 @@ public class CartasController {
 
 
     //endregion
-    //cartas/saveCartaExample
-    @RequestMapping(value = "/saveCartaExample", method = RequestMethod.POST, produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public  @ResponseBody ResponseEntity<String> saveExtensCarta(@RequestParam(value = "idparticipante", defaultValue = "", required = false) String idparticipante
-            , @RequestParam(value = "idcarta", defaultValue = "", required = false) String idcarta
-            , @RequestParam(value = "version", defaultValue = "", required = false) String version
-            , @RequestParam(value = "partes", defaultValue = "", required = false) Integer partes[]
-            , @RequestParam(value = "name1tutor", defaultValue = "", required = false) String name1tutor
-            , @RequestParam(value = "name2tutor", defaultValue = "", required = false) String name2tutor
-            , @RequestParam(value = "apellido1tutor", defaultValue = "", required = false) String apellido1tutor
-            , @RequestParam(value = "apellido2Firma", defaultValue = "", required = false) String apellido2Firma
-            , @RequestParam(value = "relfam", defaultValue = "", required = false) String relfam
-            , @RequestParam(value = "fechacarta", defaultValue = "", required = false) String fechacarta
-            , @RequestParam(value = "proyecto", defaultValue = "", required = false) String proyecto
-            , @RequestParam(value = "person", defaultValue = "", required = false) String person
-            , @RequestParam(value = "contactoFuturo", defaultValue = "", required = false) String contactoFuturo
-            , @RequestParam(value = "asentimiento", defaultValue = "", required = false) String asentimiento
-            , @RequestParam(value = "tipoasentimiento", defaultValue = "", required = false) String tipoasentimiento
-            , @RequestParam(value = "nombre1Testigo", defaultValue = "", required = false) String nombre1Testigo
-            , @RequestParam(value = "nombre2Testigo", defaultValue = "", required = false) String nombre2Testigo
-            , @RequestParam(value = "apellido1Testigo", defaultValue = "", required = false) String apellido1Testigo
-            , @RequestParam(value = "apellido2Testigo", defaultValue = "", required = false) String apellido2Testigo
-            , @RequestParam(value = "observacion", defaultValue = "", required = false) String observacion
-
-
-    ) throws Exception {
-        try {
-            ParticipanteCartaDto dto = new ParticipanteCartaDto();
-            dto.setCodigo(Integer.valueOf(idparticipante));
-            return JsonUtil.createJsonResponse("yeah");
-        } catch (Exception e) {
-            Gson gson = new Gson();
-            String json = gson.toJson(e.toString());
-            return new ResponseEntity<String>(json, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     // Formulario/Listado de extensionTmp
     @RequestMapping(value = "/extensionTmp/{codigo}", method = RequestMethod.GET)
@@ -1170,14 +1093,11 @@ public class CartasController {
             model.addAttribute("Surname1tutor",  participantecartatmp.getSurname1tutor());
             String ape2 = (participantecartatmp.getSurname2tutor()== "") ? "" : participantecartatmp.getSurname2tutor();
             model.addAttribute("Surname2tutor", ape2 );
-
             List<Extensiones> exts =  this.scanCartaService.getExtensionsByVersion(participantecartatmp.getVersion().getIdversion());
             model.addAttribute("exts",exts);
-
             model.addAttribute("caso", new ExtensionesTmp());
             model.addAttribute("agregando",true);
             model.addAttribute("editando",false);
-
             return "CatalogoScanCarta/ExtensionTmp";
         } catch (Exception e) {
             return "404";
@@ -1202,16 +1122,11 @@ public class CartasController {
             model.addAttribute("idversion",participantecartatmp.getVersion().getIdversion());
             model.addAttribute("estudio", participantecartatmp.getVersion().getEstudio().getNombre());
             model.addAttribute("codigo_participante",participantecartatmp.getIdparticipante());
-
             List<Extensiones> exts =  this.scanCartaService.getExtensionsByVersion(participantecartatmp.getVersion().getIdversion());
             model.addAttribute("exts",exts);
-
             model.addAttribute("agregando",false);
             model.addAttribute("editando",true);
-
             return "CatalogoScanCarta/ExtensionTmp";
-
-
         }catch (Exception e){
             return "404";
         }
@@ -1317,11 +1232,13 @@ public class CartasController {
                 try {
                     ExtensionesTmp tmp = new ExtensionesTmp();
                     String computerName = InetAddress.getLocalHost().getHostName();
+                    String computerIp = InetAddress.getLocalHost().getHostAddress();
                     tmp.setDeviceid(computerName);
                     tmp.setRecordDate(new Date());
                     tmp.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
                     tmp.setEstado('1');
                     tmp.setPasive('0');
+                    tmp.setRecordIp(computerIp);
                     tmp.setFechaExtension(DateUtil.StringToDate(fechaExtension, "dd/MM/yyyy"));
                     //Tutor
                     tmp.setNombre1Tutor(nombre1Tutor.toUpperCase());
@@ -1369,9 +1286,7 @@ public class CartasController {
     }
 
 
-    //region TODO DESACTIVAR Registros Temporales
-
-    //Desabilitar toda Carta, Parte, Extensiones Temporales con pasive=1
+    //region TODO DESACTIVAR Registros Temporales con pasive=1
     @RequestMapping("/desactAllTmp/{idparticipantecartatmp}")
     public String desactAllTmp(@PathVariable("idparticipantecartatmp") Integer idparticipantecartatmp,
                                RedirectAttributes redirectAttributes)throws Exception{
@@ -1469,7 +1384,7 @@ public class CartasController {
 //endregion
 
 
-    //region Pasar datos de una tabla a otra Finaliza Procesos
+    //region todo Pasar datos de una tabla a otra Finaliza Procesos
     @RequestMapping(value = "/saveTmpsToOficial", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody
@@ -1481,14 +1396,14 @@ public class CartasController {
             for (Integer num : dataArrayToSend){
                 ParticipanteCartaTmp cartaTemporal = this.scanCartaService.getAllParticipanteCartaTmpById(num);
                 Participante participanteNuevo = this.scanCartaService.getParticipante(cartaTemporal.getIdparticipante());
-                if (participanteNuevo == null){
+                if (participanteNuevo ==null){
                     continue;
                 }
                 String string  = participanteNuevo.getEdad();
                 String[] parts = string.split("/");
-                String anios =  parts[0]; // 0
-                String meses =  parts[1]; // 11
-                String dias  =  parts[2]; // 4
+                String anios =  parts[0];
+                String meses =  parts[1];
+                String dias  =  parts[2];
                 ParticipanteCarta pc = new ParticipanteCarta();
                 pc.setEdadyears(anios);
                 pc.setEdadmeses(meses);
@@ -1505,22 +1420,20 @@ public class CartasController {
                 pc.setApellido1Firma(cartaTemporal.getSurname1tutor());
                 pc.setApellido2Firma(cartaTemporal.getSurname2tutor());
                 pc.setNombre1testigo(cartaTemporal.getNombre1testigo().toUpperCase());
-                String nom1Testigo = (cartaTemporal.getNombre1testigo() !=  "") ? cartaTemporal.getNombre2testigo().toUpperCase() : "";
+                String nom1Testigo = (cartaTemporal.getNombre1testigo() !="") ? cartaTemporal.getNombre2testigo().toUpperCase() : "";
                 pc.setNombre2testigo(nom1Testigo);
                 pc.setApellido1testigo(cartaTemporal.getApellido1testigo());
-                String ape2Testigo = (cartaTemporal.getApellido2testigo() != "") ? cartaTemporal.getApellido2testigo().toUpperCase() : "";
+                String ape2Testigo = (cartaTemporal.getApellido2testigo() !="") ? cartaTemporal.getApellido2testigo().toUpperCase() : "";
                 pc.setApellido2testigo(ape2Testigo);
-                String o = ( cartaTemporal.getObservacion() != "" ) ? cartaTemporal.getObservacion().toUpperCase() : "";
+                String o = ( cartaTemporal.getObservacion() !="" ) ? cartaTemporal.getObservacion().toUpperCase() : "";
                 pc.setObservacion(o);
                 pc.setPq_anulada("");
                 pc.setProyecto(cartaTemporal.getProyecto());
-               pc.setPersonal(cartaTemporal.getRecurso());
+                pc.setPersonal(cartaTemporal.getRecurso());
                 Integer relfam = cartaTemporal.getRelfam();
                 pc.setRelfam(relfam);
-                boolean testgPresent = (cartaTemporal.isTestigopresent() == false) ? false : true;
+                boolean testgPresent = (cartaTemporal.isTestigopresent()==false) ? false : true;
                 pc.setTestigopresent(testgPresent);
-                //falta asentimiento
-
                 pc.setTipoasentimiento(cartaTemporal.getTipoasentimiento());
                 pc.setParticipante(participanteNuevo);
                 pc.setPersonal(cartaTemporal.getRecurso());
@@ -1589,7 +1502,7 @@ public class CartasController {
                     this.scanCartaService.Borrar_Participante_Carta_Tmp(cartaTemporal.getId());
                 }
             }
-            return JsonUtil.createJsonResponse("Registro transferidos: ".concat("" + contador));
+            return JsonUtil.createJsonResponse("Registro transferidos: "+ contador);
         }catch (DataAccessException ex){
             Gson gson = new Gson();
             String json = gson.toJson(ex.getMostSpecificCause().getMessage());
@@ -1598,8 +1511,6 @@ public class CartasController {
     }
     //endregion
 
-
-    /*  Esta Funcion retorna un Json  */
     private ResponseEntity<String> createJsonResponse( Object o )
     {
         HttpHeaders headers = new HttpHeaders();

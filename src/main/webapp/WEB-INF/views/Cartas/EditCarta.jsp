@@ -1200,7 +1200,7 @@
                 var textoseparado = text.split(separador);
                 data = {
                     codigo: parseInt($("#codigo").val().trim()),
-                    idparticipante: parseInt($("#idparticipante").val().trim()),
+                    idparticipante: $("#idparticipante").val().trim(),
                     version: parseInt($("#version").val().trim()),
                     asentimiento: $("#asentimiento").select2().val(),
                     relfam: parseInt($("#relfam").val().trim()),

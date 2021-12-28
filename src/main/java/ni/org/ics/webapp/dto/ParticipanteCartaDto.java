@@ -8,7 +8,7 @@ import java.util.List;
  * Created by ICS on 23/01/2020.
  */
 
-public class ParticipanteCartaDto  {
+public class ParticipanteCartaDto implements Serializable  {
 
     private Integer codigo;
     private Integer estudio;

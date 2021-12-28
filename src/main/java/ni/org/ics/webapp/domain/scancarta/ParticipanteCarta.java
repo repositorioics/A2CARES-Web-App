@@ -26,7 +26,6 @@ public class ParticipanteCarta extends BaseMetaData implements Auditable {
     private String personal;
     private Date fechacarta;
     private String asentimiento;
-    //private String recurso;
     private Integer relfam;
     private String quienfirma;
     private String nombre2Firma;

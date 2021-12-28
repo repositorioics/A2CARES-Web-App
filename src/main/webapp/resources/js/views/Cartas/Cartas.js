@@ -33,22 +33,26 @@ var scanCarta = function(){
 
             function searchParticipante(){
                 $.getJSON(parametroII.searchPartUrl, { parametro : $('#parametro').val(),   ajax : 'true'  }, function(data) {
-                    console.info(data);
                     var codigo = $('#parametro').val();
                     if(data.msj!=null){
                         toastr.error("Código: " + codigo + " no encontrado","Error!",{timeOut:6000});
+                        clearInput();
+                        $("#parametro").focus();
+                        return;
                     }
                     var len = data.length;
                     if(len==0){
                         swal("Error!","Código: " + codigo + " no encontrado","error");
                         clearInput();
                         $("#parametro").focus();
+                        return
                     }
                     else{
                         if(data.estado == "1"){
                             toastr.warning("Participante: " + codigo + " Retirado!",{timeOut: 5000});
                             clearInput();
                             $("#parametro").focus();
+                            return;
                         }else{
                             clearInput();
                             $("#codigo").val(data.codigoParticipante);
@@ -259,7 +263,8 @@ var scanCarta = function(){
                     var separador = "-";
                     var textoseparado = text.split(separador);
                     data = {
-                        codigo: parseInt($("#codigo").val().trim()),
+                        codigo: $("#codigo").val(),
+                        idparticipante:$("#codigo").val(),
                         version: parseInt($("#version").val().trim()),
                         person: parseInt($("#person").val().trim()),
                         relfam: parseInt($("#relfam").val().trim()),
@@ -291,14 +296,7 @@ var scanCarta = function(){
                 var isAllValid = true;
                 $('.form-group').removeClass('is-invalid');
 
-                if( isNaN( $("#codigo").val() )){
-                    isAllValid = false;
-                    $("#codigo").addClass('is-invalid');
-                }else{
-                    $("#codigo").removeClass('is-invalid');
-                }
-
-                if($("#codigo").val().trim() == "" || $("#codigo").val().trim() == null){
+                if($("#codigo").val() == "" || $("#codigo").val() == null){
                     isAllValid = false;
                     $('#codigo').addClass('is-invalid');
                 }
@@ -508,6 +506,7 @@ var scanCarta = function(){
                 $("#edad").val("");
                 $("#idParticipante").val("");
                 $("#estudios").val("");
+                $("#relacionFam").val("");
                 $("#madre").val("");
                 $("#padre").val("").change();
                 $("#relfam").val('').trigger('change.select2');

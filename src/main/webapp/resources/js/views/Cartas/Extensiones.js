@@ -42,7 +42,6 @@ var saveExtensiones = function(){
 
             function SaveExtension(url){
                 $.post(url.saveExtensCarta,form1.serialize(),function( data ){
-                   //console.log(data);
                     if(data.msj != null){
                         var respuesta =  data;
                         toastr.error(data.msj,"Error",{timeOut: 5000});

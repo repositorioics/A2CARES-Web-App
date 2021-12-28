@@ -37,7 +37,7 @@ public class ScanCartaService {
     public Participante getParticipante(String codigo) {
         // Retrieve session from Hibernate
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM Participante par where par.codigo = :codigo");
+        Query query = session.createQuery("FROM Participante par where par.codigo=:codigo");
         query.setParameter("codigo", codigo);
         Participante participante = (Participante) query.uniqueResult();
         return participante;
@@ -313,21 +313,21 @@ public class ScanCartaService {
 
     public List<Parte> getParteParticipante(Integer idparticipantecarta){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from DetalleParte  where participantecarta.idparticipantecarta = :idparticipantecarta");
+        Query query = session.createQuery("from DetalleParte  where participantecarta.idparticipantecarta =:idparticipantecarta");
         query.setParameter("idparticipantecarta",idparticipantecarta);
         return  query.list();
     }
 
     public List<DetalleParte>getDetalleParteList(Integer idParticipanteCarta){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from DetalleParte where participantecarta.idparticipantecarta = :idParticipanteCarta");
+        Query query = session.createQuery("from DetalleParte where participantecarta.idparticipantecarta =:idParticipanteCarta");
         query.setParameter("idParticipanteCarta",idParticipanteCarta);
         return  query.list();
     }
     //OBTENER Extension por idParticipantExtension para editar
     public ParticipanteExtension getByIDDetalleParte(Integer idParticipantExtension){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from ParticipanteExtension d where d.idParticipantExtension= :idParticipantExtension");
+        Query query = session.createQuery("from ParticipanteExtension d where d.idParticipantExtension=:idParticipantExtension");
         query.setParameter("idParticipantExtension",idParticipantExtension);
         return (ParticipanteExtension) query.uniqueResult();
     }
@@ -337,7 +337,7 @@ public class ScanCartaService {
         try{
         Session session = sessionFactory.getCurrentSession();
         boolean Si = true;
-        Query query = session.createQuery("update ParticipanteCarta pc set pc.anulada= :Si , pc.pq_anulada = :pqAnulada where idparticipantecarta = :idParticipanteCarta");
+        Query query = session.createQuery("update ParticipanteCarta pc set pc.anulada=:Si , pc.pq_anulada =:pqAnulada where idparticipantecarta =:idParticipanteCarta");
         query.setParameter("Si",Si);
         query.setParameter("pqAnulada", pqAnulada);
         query.setParameter("idParticipanteCarta", idParticipanteCarta);
@@ -409,7 +409,7 @@ public class ScanCartaService {
     public List<Extensiones>getExtension(Integer idversion)throws Exception {
         try{
             Session session = sessionFactory.getCurrentSession();
-            Query query = session.createQuery("from Extensiones e where e.version.idversion=:idversion and e.activo = true ");
+            Query query = session.createQuery("from Extensiones e where e.version.idversion=:idversion and e.activo =true ");
             query.setParameter("idversion", idversion);
             return query.list();
         }catch (Exception e){
@@ -597,9 +597,9 @@ public class ScanCartaService {
         }
     }
 
-    public Participante getCodigoParticipante(int codigo)throws Exception{
+    public Participante getCodigoParticipante(String codigo)throws Exception{
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Participante p where p.id=:codigo");
+        Query query = session.createQuery("from Participante p where p.codigo=:codigo");
         query.setParameter("codigo",codigo);
         return (Participante) query.uniqueResult();
     }
@@ -737,7 +737,7 @@ public class ScanCartaService {
     //Verifica si Existe ExtensionesTmp By ParticipanteCarta
     public boolean isExistExtensionesById(Integer id)throws  Exception{
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from ExtensionesTmp etmp where etmp.participantecartatmp.id=:id");
+        Query query = session.createQuery("from ExtensionesTmp etmp where etmp.participantecartatmp.id=:id and etmp.pasive='0' ");
         query.setParameter("id", id);
         return query.list().size() > 0;
     }
@@ -753,7 +753,7 @@ public class ScanCartaService {
     public boolean Borrar_Participante_Carta_Extension(Integer idParticipanteCartatmp){
         try{
             Session session= sessionFactory.getCurrentSession();
-            Query query = session.createQuery("delete from ExtensionesTmp et where et.participantecartatmp.id=:idParticipanteCartatmp");
+            Query query = session.createQuery("delete from ExtensionesTmp et where et.participantecartatmp.id=:idParticipanteCartatmp and et.pasive='0' ");
             query.setParameter("idParticipanteCartatmp",idParticipanteCartatmp);
             query.executeUpdate();
             return true;
@@ -765,7 +765,7 @@ public class ScanCartaService {
     public boolean Borrar_Detalle_Partes_tmp(Integer idParticipanteCartatmp)throws Exception{
         try {
             Session session = sessionFactory.getCurrentSession();
-            Query query = session.createQuery("delete from DetalleParteTmp dpt where dpt.participantecartatmp.id=:idParticipanteCartatmp");
+            Query query = session.createQuery("delete from DetalleParteTmp dpt where dpt.participantecartatmp.id=:idParticipanteCartatmp and dpt.pasive='0' ");
             query.setParameter("idParticipanteCartatmp", idParticipanteCartatmp);
             query.executeUpdate();
             return true;
@@ -777,7 +777,7 @@ public class ScanCartaService {
     public boolean Borrar_Participante_Carta_Tmp(Integer idParticipanteCartatmp)throws Exception{
         try{
             Session session = sessionFactory.getCurrentSession();
-            Query query = session.createQuery("delete from ParticipanteCartaTmp pct where pct.id=:idParticipanteCartatmp");
+            Query query = session.createQuery("delete from ParticipanteCartaTmp pct where pct.id=:idParticipanteCartatmp and pct.pasive='0' ");
             query.setParameter("idParticipanteCartatmp", idParticipanteCartatmp);
             query.executeUpdate();
             return true;

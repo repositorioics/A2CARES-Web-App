@@ -179,7 +179,7 @@ var saveCartaTMP = function(){
 
                     var obj = {
                         codigo              : parseInt($("#id_participante_carta_tmp").val()),
-                        idparticipante      : parseInt($("#idparticipante").val().trim()),
+                        idparticipante      : $("#idparticipante").val().trim(),
                         version             : parseInt($("#version").val().trim()),
                         asentimiento        : $("#asentimiento").select2().val(), //($('input:checkbox[name=asentimiento]').prop('checked') == true) ? '1' : '0',
                         tipoasentimiento    : $("#tipoasentimiento").val().trim(),

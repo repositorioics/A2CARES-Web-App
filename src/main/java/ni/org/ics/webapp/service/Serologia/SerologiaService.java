@@ -196,7 +196,6 @@ public class SerologiaService {
         }
     }
 
-
     public List<SerologiaEnvio> getAllSeroEnviadas()throws Exception{
         try{
             Session session = sessionFactory.getCurrentSession();
