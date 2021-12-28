@@ -32,7 +32,7 @@ public class ParticipanteService {
     /* Obtiene Un Participante por su codigo */
     public Participante getParticipanteByCodigo(String codigo){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Participante where codigo = :codigo");
+        Query query = session.createQuery("from Participante where codigo =:codigo");
         query.setParameter("codigo",codigo);
         return (Participante)query.uniqueResult();
     }

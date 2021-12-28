@@ -3,6 +3,7 @@ package ni.org.ics.webapp.service.Serologia;
 import ni.org.ics.webapp.domain.Serologia.Serologia;
 import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
 import ni.org.ics.webapp.domain.core.Participante;
+import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.dto.ParticipanteSeroDto;
 import ni.org.ics.webapp.dto.SerologiaDto;
@@ -206,12 +207,20 @@ public class SerologiaService {
         }
     }
 
-    public ParticipanteSeroDto getDatosParticipanteById(String codigo){
+    public ParticipanteSeroDto getDatosParticipanteById(String parametro){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("select p.codigo as codigo, concat(p.nombre1,' ', p.nombre2,' ', p.apellido1,' ', p.apellido2) as nombreCompleto, p.casa.codigo as codigo_casa, pp.retirado as estado, p.fechaNac as fechaNacimiento from Participante p, ParticipanteProcesos pp where p.codigo = pp.codigo and p.codigo= :codigo");
-        query.setParameter("codigo", codigo);
+        Query query = session.createQuery("select p.codigo as idparticipante, concat(p.nombre1,' ', p.nombre2,' ', p.apellido1,' ', p.apellido2) as nombreCompleto, p.casa.codigo as codigo_casa, pp.retirado as estado, p.fechaNac as fechaNacimiento " +
+                " from Participante p, ParticipanteProcesos pp where pp.codigo=p.codigo and p.codigo=:parametro");
+        query.setParameter("parametro", parametro);
         query.setResultTransformer(Transformers.aliasToBean(ParticipanteSeroDto.class));
         return (ParticipanteSeroDto)query.uniqueResult();
+    }
+
+    public ParticipanteProcesos getParticipanteprocesos(String parametro){
+        Session session = sessionFactory.getCurrentSession();
+        Query  query = session.createQuery("from ParticipanteProcesos pp where pp.codigo=:parametro");
+        query.setParameter("parametro",parametro);
+        return (ParticipanteProcesos) query.uniqueResult();
     }
 
  //10401 = 8 no 12

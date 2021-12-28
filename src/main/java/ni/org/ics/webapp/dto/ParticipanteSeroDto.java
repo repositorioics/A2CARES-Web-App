@@ -36,6 +36,27 @@ public class ParticipanteSeroDto {
     public ParticipanteSeroDto() {
     }
 
+    public ParticipanteSeroDto(String codigo, Integer idSerologia, String idparticipante, double volumen, Integer edadMeses, String nombreCompleto, Integer codigo_casa, String edad_year, String edad_meses, String edad_dias, Integer estado, Date fechaNacimiento, String edadParticipante, ArrayList<String> susEstudios, String nombrepadre, String nombremadre, String nombretutor, String observacion, Date fecha) {
+        this.codigo = codigo;
+        this.idSerologia = idSerologia;
+        this.idparticipante = idparticipante;
+        this.volumen = volumen;
+        this.edadMeses = edadMeses;
+        this.nombreCompleto = nombreCompleto;
+        this.codigo_casa = codigo_casa;
+        this.edad_year = edad_year;
+        this.edad_meses = edad_meses;
+        this.edad_dias = edad_dias;
+        this.estado = estado;
+        this.fechaNacimiento = fechaNacimiento;
+        this.edadParticipante = edadParticipante;
+        SusEstudios = susEstudios;
+        this.nombrepadre = nombrepadre;
+        this.nombremadre = nombremadre;
+        this.nombretutor = nombretutor;
+        this.observacion = observacion;
+        this.fecha = fecha;
+    }
 
     public String getCodigo() {
         return codigo;

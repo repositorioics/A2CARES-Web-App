@@ -234,11 +234,13 @@ public class SerologiaController {
                 participanteDto.setObservacion("");
                 participanteDto.setFechaNacimiento(new Date());
             }else{
+                ParticipanteProcesos procesos = this.serologiaService.getParticipanteprocesos(p.getCodigo());
+                //participanteDto= this.serologiaService.getDatosParticipanteById(p.getCodigo());
+                if (procesos==null)
+                    return JsonUtil.createJsonResponse("No se encontraron Processos del participante!");
 
-                participanteDto = this.serologiaService.getDatosParticipanteById(parametro);
-                if (participanteDto.getEstado().equals(1))
+                if (procesos.getEstado()==1)
                     return JsonUtil.createJsonResponse("Participante retirado");
-
 
                 String nombres = p.getNombre1().toUpperCase();
                 nombres += (p.getNombre2() != null) ? " "+p.getNombre2().toUpperCase() : "";
@@ -256,11 +258,15 @@ public class SerologiaController {
                 participanteDto.setEdad_dias(part3);
                 participanteDto.setCodigo_casa(p.getCasa().getCodigo());
                 participanteDto.setFechaNacimiento(p.getFechaNac());
+                participanteDto.setEstado(procesos.getRetirado());
+                participanteDto.setCodigo(p.getCodigo());
             }
             return JsonUtil.createJsonResponse(participanteDto);
         }catch (Exception e){
             logger.error(e.getMessage());
-            throw e;
+            Gson gson = new Gson();
+            String json = gson.toJson(e.toString());
+            return  new ResponseEntity<String>( json, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

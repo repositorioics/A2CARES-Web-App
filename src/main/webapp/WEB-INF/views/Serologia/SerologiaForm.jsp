@@ -283,7 +283,7 @@
                                           <div class="input-group">
                                               <input type="text" class="form-control form-control-lg"  placeholder="Ingrese el código" id="parametro" name="parametro" tabindex="1">
                                               <span class="input-group-btn">
-                                          <button class="btn btn-info btn-lg" type="button">
+                                          <button class="btn btn-info btn-lg" type="submit">
                                               <i class="fas fa-search"></i> <spring:message code="Search" />
                                           </button>
                                               </span>
@@ -296,7 +296,7 @@
                           </form>
 
                           <form class="form-horizontal" name="save-Serologia-form" id="save-Serologia-form" autocomplete="off">
-                              <div class="form-row" >
+                              <div class="form-row" hidden="hidden">
                                   <div class="col-md-3">
                                       <label for="idSerologia">idSerologia</label>
                                       <input id="idSerologia" name="idSerologia" type="text" class="form-control" value="${caso.idSerologia}"/>
