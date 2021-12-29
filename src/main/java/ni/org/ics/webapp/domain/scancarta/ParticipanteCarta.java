@@ -4,7 +4,6 @@ import ni.org.ics.webapp.domain.BaseMetaData;
 import ni.org.ics.webapp.domain.audit.Auditable;
 import ni.org.ics.webapp.domain.catalogs.Version;
 import ni.org.ics.webapp.domain.core.Participante;
-import ni.org.ics.webapp.domain.personal.Personal;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
