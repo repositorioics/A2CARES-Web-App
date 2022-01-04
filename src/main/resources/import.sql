@@ -759,3 +759,7 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_NO_DATA_08', '8', 'CAT_RAZON_NO_DATA', NULL, '0', 8, '0', 'Peso y talla en otro equipo móvil');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_NO_DATA_09', '9', 'CAT_RAZON_NO_DATA', NULL, '0', 9, '0', 'No comprendo las preguntas');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_NO_DATA_998', '998', 'CAT_RAZON_NO_DATA', NULL, '0', 10, '0', 'Otra razón');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_DESCARTE', NULL, NULL, NULL, '1', 0, '0', 'Catalogo descarta punto gps candidato');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_DESCARTE_01', '1', 'CAT_RAZON_DESCARTE', NULL, '0', 1, '0', 'Casa Cerrada');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_DESCARTE_998', '998', 'CAT_RAZON_DESCARTE', NULL, '0', 2, '0', 'Otra razón');

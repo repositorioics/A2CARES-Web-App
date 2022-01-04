@@ -36,6 +36,11 @@ public class ParticipanteProcesos extends BaseMetaData implements Serializable, 
     @Column(name = "pendiente_mx_tx", nullable = false, length = 2)
     private String pendienteMxTx;
 
+    @Column(name = "pendiente_obsequio", nullable = false, length = 2)
+    private String pendienteObseq;
+
+
+
     public String getCodigo() {
         return codigo;
     }
@@ -92,6 +97,14 @@ public class ParticipanteProcesos extends BaseMetaData implements Serializable, 
         this.pendienteMxTx = pendienteMxTx;
     }
 
+
+    public String getPendienteObseq() {
+        return pendienteObseq;
+    }
+
+    public void setPendienteObseq(String pendienteObseq) {
+        this.pendienteObseq = pendienteObseq;
+    }
 
     @Override
     public boolean isFieldAuditable(String fieldname) {
