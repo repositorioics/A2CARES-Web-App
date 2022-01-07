@@ -12,7 +12,7 @@ var Serologia2020 = function(){
                 rules:{
                     parametro: {
                         pattern: /^\+?[0-9]*\.?[0-9]+$/,
-                        maxlength: 5,
+                        maxlength: 6,
                         required: true
                     }
                 },
@@ -99,7 +99,8 @@ var Serologia2020 = function(){
                     volumen:{
                         required:true,
                         number: true,
-                        min:1
+                        min:1,
+                        maxlength: 2
                     },
                     fecha:{
                         required:true
@@ -134,13 +135,12 @@ var Serologia2020 = function(){
             function saveSerologia(urls){
                 var isAllValid = true;
                 var vol = $("#volumen").val();
-                 if( vol > 8){
+                 if( vol > 6){// valida el volumen de la muestra
                      $("#volumen").val("");
-                    swal("Advertencia!", "Volumen permitido de la Muestra es de 8 ml", "error");
+                    swal("Advertencia!", "Volumen permitido de la Muestra es de 6 ml", "error");
                     isAllValid = false;
                     return;
-                }else if(vol<8){
-                    debugger;
+                }else if(vol<6){
                     if($('#observacion').val()==""){
                         toastr.error("Razón por la cual el volumen es incompleto!",{timeOut:6000});
                         $('#observacion').prop("required", true);

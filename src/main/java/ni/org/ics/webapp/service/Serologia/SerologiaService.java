@@ -2,6 +2,7 @@ package ni.org.ics.webapp.service.Serologia;
 
 import ni.org.ics.webapp.domain.Serologia.Serologia;
 import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
+import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.personal.Personal;
@@ -59,6 +60,15 @@ public class SerologiaService {
             throw e;
         }
     }
+    // todo **  Consulta para llenar el reporte **
+    public List<Serologia_Detalles_Envio>getAllSerologia(Integer nEnvios, Date fechaInicio, Date fechaFin){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Serologia_Detalles_Envio se where se.serologiaEnvio.fecha between :fechaInicio and :fechaFin and se.serologiaEnvio.idenvio =:nEnvios  order by se.detalle_id asc ");
+        query.setParameter("fechaInicio", fechaInicio);
+        query.setParameter("fechaFin", fechaFin);
+        query.setParameter("nEnvios", nEnvios);
+        return query.list();
+    }
 
     @SuppressWarnings("unchecked")
     public List<Personal> getListPersonal() throws Exception {
@@ -99,7 +109,7 @@ public class SerologiaService {
 
 
     @SuppressWarnings("unchecked")
-    public void saveSerologiaEnviadas(SerologiaEnvio obj) throws Exception {
+    public void save_Envio_Serologia(SerologiaEnvio obj) throws Exception {
         try {
             Session session = sessionFactory.getCurrentSession();
             session.saveOrUpdate(obj);
@@ -107,6 +117,17 @@ public class SerologiaService {
             throw e;
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public void save_Detalles_Serologia_Envio(Serologia_Detalles_Envio obj) throws Exception {
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.saveOrUpdate(obj);
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
 
 
     //endregion
@@ -227,7 +248,7 @@ public class SerologiaService {
 
     public List<SerologiaEnvio> getSerologiaEnvioByDates(Integer nEnvios, Date fechaInicio, Date fechaFin){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from SerologiaEnvio se where se.fecha between :fechaInicio and :fechaFin and se.idenvio =:nEnvios order by se.serologia.participante asc");
+        Query query = session.createQuery("from SerologiaEnvio se where se.fecha between :fechaInicio and :fechaFin and se.idenvio =:nEnvios ");
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         query.setParameter("nEnvios", nEnvios);

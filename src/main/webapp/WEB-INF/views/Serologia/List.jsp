@@ -246,8 +246,6 @@
                                 <input type="text" class="form-control to_date datepicker" id="hasta" name="hasta" data-date-end-date="+0d">
                             </div>
                         </div>
-
-
                             <div class="form-group row">
                                     <label class="col-sm-2 col-form-label" for="horaEnvio">
                                         <spring:message code="lbl.Hour" />
@@ -276,6 +274,30 @@
                                             <option value="${n.catKey}">${n.spanish}</option>
                                         </c:forEach>
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="sitio"><spring:message code="Sitio" />
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <div class="col-sm-10">
+                                    <select name="sitio" id="sitio" class="form-control" type="text"  required="required">
+                                        <option selected value=""><spring:message code="select" />...</option>
+                                        <c:forEach items="${sitios}" var="s">
+                                            <option value="${s.catKey}">${s.catKey} - <spring:message code="${s.spanish}" /></option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="temperatura"><spring:message code="Temperatura" />
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input name="temperatura" id="temperatura" class="form-control" type="text" minlength="1" maxlength="4"  required="required" />
                                 </div>
                             </div>
 
@@ -449,7 +471,7 @@
             todayHighlight: true,
             autoclose: true,
             endDate: '-0d'
-        }).val(strDate);
+        }).val(moment().format('DD/MM/YYYY'));
     });
 </script>
 </body>

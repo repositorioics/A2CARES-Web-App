@@ -1,6 +1,7 @@
 package ni.org.ics.webapp.web.controller;
 
 import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
+import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.core.Estudio;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
@@ -101,10 +102,13 @@ public class ReportesController {
             dFechaFin = DateUtil.StringToDate(fechaFin+ " 23:59:59", "dd/MM/yyyy HH:mm:ss");
         List<SerologiaEnvio> SerologiasEnviadas =  this.serologiaservice.getSerologiaEnvioByDates(nEnvios,dFechaInicio,dFechaFin);
         ReporteEnvio.addObject("nEnvios",nEnvios);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        ReporteEnvio.addObject("sitios", sitios);
         ReporteEnvio.addObject("fechaInicio",fechaInicio);
         ReporteEnvio.addObject("fechaFin",fechaFin);
         ReporteEnvio.addObject("SerologiasEnviadas",SerologiasEnviadas);
-        List<Participante> allParticipantes = this.serologiaservice.getAllParticipantes();
+        List<Serologia_Detalles_Envio> allSerologia = this.serologiaservice.getAllSerologia(nEnvios,dFechaInicio,dFechaFin);
+        ReporteEnvio.addObject("allSerologia",allSerologia);
         ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTE);
         return ReporteEnvio;
     }

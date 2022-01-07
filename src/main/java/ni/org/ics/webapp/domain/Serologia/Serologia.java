@@ -29,6 +29,7 @@ public class Serologia extends BaseMetaData implements Serializable  {
     private String descripcion;
 
 
+
     //getter and setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -12,6 +12,7 @@ import com.lowagie.text.pdf.draw.LineSeparator;
 //import com.sun.javafx.font.*;
 
 import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
+import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.scancarta.DetalleParte;
@@ -44,7 +45,7 @@ public class PdfView extends AbstractPdfView {
     List<MessageResource> messageReports = new ArrayList<MessageResource>();
     List<MessageResource> messageExtremidades = new ArrayList<MessageResource>();
     List<MessageResource> messagerelFam = new ArrayList<MessageResource>();
-    List<MessageResource> messagenivel = new ArrayList<MessageResource>();
+    List<MessageResource> messageSitio = new ArrayList<MessageResource>();
     List<MessageResource> messagellenado = new ArrayList<MessageResource>();
     List<MessageResource> messagepulso = new ArrayList<MessageResource>();
     List<MessageResource> messagediuresis = new ArrayList<MessageResource>();
@@ -567,8 +568,12 @@ public class PdfView extends AbstractPdfView {
 
     //region Reporte Envio de Muestras
     private void ReporteEnvio(Map<String, Object> model, Document document, PdfWriter writer)throws Exception{
-        List<SerologiaEnvio> SerologiasEnviadas = (List<SerologiaEnvio>)  model.get("SerologiasEnviadas");
-        List<Participante> participanteList = (List<Participante>) model.get("allParticipantes");
+        List<SerologiaEnvio> datos_Envio = (List<SerologiaEnvio>)  model.get("SerologiasEnviadas");
+
+        List<Serologia_Detalles_Envio> Detalles_Muestras_Serologia = (List<Serologia_Detalles_Envio>) model.get("allSerologia");
+        messageSitio = (List<MessageResource>) model.get("sitios");
+
+
         Integer numeroEnvios = (Integer) model.get("nEnvios");
         String f1 = (String) model.get("fechaInicio");
         String f2 = (String) model.get("fechaFin");
@@ -580,8 +585,17 @@ public class PdfView extends AbstractPdfView {
         calendar2.setTime(fecha_inicio);
         int yearsNow  = calendar2.get(Calendar.YEAR);
 
+        String enviado_desde = "";
+        String hora_envio = "";
+        String temp="";
+        for (SerologiaEnvio obj : datos_Envio){
+            enviado_desde = this.getCatalogoSitio("" + obj.getSitio(), "CAT_SITIOS_ENVIO_SEROLOGIA");
+            hora_envio = obj.getHora();
+            temp= ""+ obj.getTemperatura();
+        }
+
         //se inicializa y setea el manejador de evento para el encabezado y pie de pagina
-        HeaderFooterReporteEnvio footer = new HeaderFooterReporteEnvio(f1, f2, numeroEnvios, yearsNow);
+        HeaderFooterReporteEnvio footer = new HeaderFooterReporteEnvio(f1, f2.concat(" Hora: "+hora_envio), numeroEnvios, yearsNow, enviado_desde, temp);
         writer.setPageEvent(footer);
 
         Font miaNormal = new Font(Font.COURIER,12, Font.NORMAL);
@@ -630,7 +644,7 @@ public class PdfView extends AbstractPdfView {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        if (SerologiasEnviadas.size()==0){
+        if (datos_Envio.size()==0){
             table = new PdfPTable(1);
             table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
             cell = new PdfPCell(new Phrase("No hay información!",mia));
@@ -640,69 +654,32 @@ public class PdfView extends AbstractPdfView {
             table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
         }
         int cont=0;
-        for (SerologiaEnvio obj : SerologiasEnviadas) {
+        for (Serologia_Detalles_Envio obj : Detalles_Muestras_Serologia) {
             cont++;
             cell = new PdfPCell(new Phrase(""+cont, miaNormal));
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             table.addCell(cell);
-            /*if  (obj.getSerologia().getParticipante()==null){//nuevo ingreso
-                cell = new PdfPCell(new Phrase("NEW PARTICIPANT", miaNormal));
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-
-                //volumen
-                cell = new PdfPCell(new Phrase("" + obj.getSerologia().getVolumen(), miaNormal));
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-
-                // edad años
-                cell = new PdfPCell(new Phrase("-", mia));
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-
-                // edad meses
-                cell = new PdfPCell(new Phrase("-", mia));
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-
-                // estudios
-                cell = new PdfPCell(new Phrase("-", miaNormal));
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-
-                //observacion
-                cell = new PdfPCell(new Phrase(obj.getSerologia().getObservacion(), miaNormal));
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-                if (table.getTotalHeight() > 580) {
-                    table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
-                    document.newPage();
-                    y = 650f;
-                    table = new PdfPTable(new float[]{5,10,10,15,23,25});
-                    table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
-                }*/
-            //}else {// participante existe en BD
                 //codigo
-                cell = new PdfPCell(new Phrase(obj.getSerologia().getParticipante().toString(), miaNormal));
+                cell = new PdfPCell(new Phrase( obj.getSerologia().getParticipante(), miaNormal));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
                 //volumen
-                cell = new PdfPCell(new Phrase("" + obj.getSerologia().getVolumen(), miaNormal));
+                cell = new PdfPCell(new Phrase(""+obj.getSerologia().getVolumen(), miaNormal));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
                 //edad
-                double d =  obj.getSerologia().getEdadMeses();
+                double d = obj.getSerologia().getEdadMeses();
                 double edad = d/12;
                 if (edad ==0){
                     cell = new PdfPCell(new Phrase("-", miaNormal));
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                     table.addCell(cell);
-                }else if(edad>1 ){
+                }else if(edad>=1.0 ){
                     cell = new PdfPCell(new Phrase(df.format(edad)+" años.", miaNormal));
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                     table.addCell(cell);
                 }else{
-                    cell = new PdfPCell(new Phrase(edad+" meses.", miaNormal));
+                    cell = new PdfPCell(new Phrase(df.format(edad)+" meses.", miaNormal));
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                     table.addCell(cell);
                 }
@@ -722,7 +699,7 @@ public class PdfView extends AbstractPdfView {
                     table = new PdfPTable(new float[]{5,10,10,15,23,25});
                     table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
                 }
-            //}
+
         }
 
         table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
@@ -730,7 +707,7 @@ public class PdfView extends AbstractPdfView {
 
         table = new PdfPTable(new float[]{100});
         table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
-        cell = new PdfPCell(new Phrase("Total: "+SerologiasEnviadas.size(),miaEstudio));
+        cell = new PdfPCell(new Phrase("Total: "+ Detalles_Muestras_Serologia.size(),miaEstudio));
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         cell.setBorder(0);
         table.addCell(cell);
@@ -775,8 +752,8 @@ public class PdfView extends AbstractPdfView {
         return "-";
     }
 
-    private String getDescripcionCatalogoProyect(String codigo,String catroot){
-        for(MessageResource rnv : messageproyecto){
+    private String getCatalogoSitio(String codigo,String catroot){
+        for(MessageResource rnv : messageSitio){
             if (rnv.getCatKey().equals(codigo)) {
                 if (catroot != "" && rnv.getCatRoot().equals(catroot))
                     return rnv.getSpanish();
@@ -871,22 +848,27 @@ class HeaderFooterReporteEnvio extends PdfPageEventHelper {
     private String fechaFin;
     private Integer numeroEnvios;
     private Integer anioActual;
+    private String sitio;
+    private String temperatura;
 
     HeaderFooterReporteEnvio() {
     }
 
-    HeaderFooterReporteEnvio(String fechaInicio, String fechaFin, Integer numeroEnvios, Integer anioActual) {
+    HeaderFooterReporteEnvio(String fechaInicio, String fechaFin, Integer numeroEnvios, Integer anioActual, String sitio, String temperatura) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.numeroEnvios = numeroEnvios;
         this.anioActual = anioActual;
+        this.sitio = sitio;
+        this.temperatura= temperatura;
     }
 
     public void onEndPage(PdfWriter writer, Document document) {
         PdfContentByte cb = writer.getDirectContent();
 
-        /*ENCABEZADO**/
-        Paragraph encabezado = new Paragraph("CENTRO DE SALUD SÓCRATES FLORES VIVAS.",FontFactory.getFont("COURIER", 20, java.awt.Font.BOLD, Color.black));
+        /* ENCABEZADO */
+
+        Paragraph encabezado = new Paragraph(sitio,FontFactory.getFont("COURIER", 20, java.awt.Font.BOLD, Color.black));
         encabezado.setAlignment(Element.ALIGN_CENTER);
         Paragraph encabezado2 = new Paragraph("RECEPCIÓN DE MUESTRAS TUBOS ROJOS.", FontFactory.getFont("COURIER",16, java.awt.Font.ITALIC));
         encabezado2.setAlignment(Element.ALIGN_CENTER);
@@ -911,7 +893,7 @@ class HeaderFooterReporteEnvio extends PdfPageEventHelper {
         table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
         y = y - 45;
 
-        table = new PdfPTable(new float[]{50,50});
+        table = new PdfPTable(new float[]{30,50,20});
         table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
         cell = new PdfPCell(new Phrase("Fecha Inicio: "+ this.getFechaInicio(),miaEstudio));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -922,6 +904,13 @@ class HeaderFooterReporteEnvio extends PdfPageEventHelper {
         cell.setBorder(PdfPCell.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Temperatura: "+ temperatura,miaEstudio));
+        cell.setBorder(PdfPCell.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+
         table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
         y = y - 15;
 
@@ -976,6 +965,14 @@ class HeaderFooterReporteEnvio extends PdfPageEventHelper {
 
     public void setAnioActual(Integer anioActual) {
         this.anioActual = anioActual;
+    }
+
+    public String getSitio() {
+        return sitio;
+    }
+
+    public void setSitio(String sitio) {
+        this.sitio = sitio;
     }
 }
 
