@@ -87,8 +87,7 @@ var ClinicalSheet = function () {
                 rules: {
                     participantCode : {
                         required: true,
-                        number: true,
-                        min: 80000
+                        pattern: /^\d{4}$/
                     }
                 },
                 errorPlacement: function ( error, element ) {
@@ -119,6 +118,39 @@ var ClinicalSheet = function () {
                 errorElement: 'span', //default input error message container
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
+                    fc: {
+                        required: true,
+                        digits: true,
+                        range: [60, 140]
+                    },
+                    temp: {
+                        required: true,
+                        range: [34, 44]
+                    },
+                    so: {
+                        required: true,
+                        digits: true,
+                        range: [0, 100]
+                    },
+                    fcMedico: {
+                        required: true,
+                        digits: true,
+                        range: [60, 140]
+                    },
+                    tempMedico: {
+                        required: true,
+                        range: [34, 44]
+                    },
+                    frMedico: {
+                        required: true,
+                        digits: true,
+                        range: [12, 45]
+                    },
+                    soMedico: {
+                        required: true,
+                        digits: true,
+                        range: [0, 100]
+                    },
                     fechaCons: {
                         required: true
                     },
@@ -658,6 +690,7 @@ var ClinicalSheet = function () {
                     $("#rbexamen_4S").prop('checked', true);
                     $("#rbexamen_5S").prop('checked', true);
                     $("#rbexamen_6S").prop('checked', true);
+                    updateReadOnly("descOtroExamen", false);
                 } else {
                     $("#rbexamen_1N").prop('checked', true);
                     $("#rbexamen_2N").prop('checked', true);
@@ -665,6 +698,7 @@ var ClinicalSheet = function () {
                     $("#rbexamen_4N").prop('checked', true);
                     $("#rbexamen_5N").prop('checked', true);
                     $("#rbexamen_6N").prop('checked', true);
+                    updateReadOnly("descOtroExamen", true);
                 }
             });
 
@@ -679,6 +713,7 @@ var ClinicalSheet = function () {
                     $("#rbtratamiento_7S").prop('checked', true);
                     $("#rbtratamiento_8S").prop('checked', true);
                     $("#rbtratamiento_9S").prop('checked', true);
+                    updateReadOnly("descOtroTratamiento", false);
                 } else {
                     $("#rbtratamiento_1N").prop('checked', true);
                     $("#rbtratamiento_2N").prop('checked', true);
@@ -689,10 +724,12 @@ var ClinicalSheet = function () {
                     $("#rbtratamiento_7N").prop('checked', true);
                     $("#rbtratamiento_8N").prop('checked', true);
                     $("#rbtratamiento_9N").prop('checked', true);
+                    updateReadOnly("descOtroTratamiento", true);
                 }
             });
 
             function save() {
+                console.log("save");
                 var strJson = $("#form-clinicalsheet").serializeJSON();
                 var recepcionObj = {};
                 recepcionObj['hojaClinica'] = strJson;
@@ -730,7 +767,6 @@ var ClinicalSheet = function () {
             function search()
             {
                 $.getJSON( parametros.searchUrl , formSearch.serialize() , function( data )   {
-                        console.log(data);
                         if (data.mensaje != undefined) {
                             toastr.error(data.mensaje,"Error",{timeOut: 5000});
                             $("#nombre").val("");

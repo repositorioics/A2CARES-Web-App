@@ -10,6 +10,7 @@ jQuery.validator.addMethod("pattern", function(value, element, param) {
     }
     if (typeof param === 'string') {
         param = new RegExp('^(?:' + param + ')$');
+        console.log('^(?:' + param + ')$');
     }
     return param.test(value);
 });

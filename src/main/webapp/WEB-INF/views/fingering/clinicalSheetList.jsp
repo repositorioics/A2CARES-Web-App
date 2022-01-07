@@ -130,13 +130,14 @@
                         <table class="table table-hover table-bordered" id="lista_hojas">
                             <thead>
                             <tr>
-                                <th class="expand"><spring:message code="code" /></th>
-                                <th class="hidden-xs"><spring:message code="participant" /></th>
-                                <th class="hidden-xs"><spring:message code="fecha_consulta" /></th>
-                                <th class="hidden-xs"><spring:message code="lugar_consulta" /></th>
-                                <th class="hidden-xs"><spring:message code="medico" /></th>
-                                <th class="hidden-xs"><spring:message code="enfermeria" /></th>
-                                <th></th>
+                                <th class="expand" width="10%"><spring:message code="code" /></th>
+                                <th class="hidden-xs" width="21%"><spring:message code="participant" /></th>
+                                <th class="hidden-xs" width="13%"><spring:message code="fecha_consulta" /></th>
+                                <th class="hidden-xs" width="13%"><spring:message code="lugar_consulta" /></th>
+                                <th class="hidden-xs" width="13%"><spring:message code="consulta" /></th>
+                                <th class="hidden-xs" width="15%"><spring:message code="medico" /></th>
+                                <th class="hidden-xs" width="15%"><spring:message code="enfermeria" /></th>
+                                <!--<th width="5%"></th>-->
                             </tr>
                             </thead>
                         </table>
@@ -243,9 +244,10 @@
                 { data: 'nombreCompleto' },
                 { data: 'fechaConsulta' },
                 { data: 'lugarAtencion' },
+                { data: 'tipoConsulta' },
                 { data: 'medico' },
-                { data: 'enfermeria' },
-                { data: null,
+                { data: 'enfermeria' }
+                /*{ data: null,
                     className: "dt-center editor-enabled",
                     fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                         var aEnabled = "";
@@ -257,7 +259,7 @@
                         $(nTd).html(aEnabled);
                     },
                     orderable: false
-                }
+                }*/
             ]
         });
 
@@ -270,8 +272,7 @@
                     required: function () {
                         return $('#fechaFinCons').val().length === 0 && $('#fechaInicioCons').val().length === 0;
                     },
-                    number: true,
-                    min: 80000
+                    pattern: /^\d{4}$/
                 },
                 fechaInicioCons: {required: function () {
                     return $('#fechaFinCons').val().length > 0;

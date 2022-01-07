@@ -5,19 +5,20 @@ package ni.org.ics.webapp.dto;
  */
 public class HojaClinicaDto {
 
-    private Integer codigo;
+    private String codigo;
     private String nombreCompleto;
     private String fechaConsulta;
     private String lugarAtencion;
-    private Short medico;
-    private Short enfermeria;
+    private String tipoConsulta;
+    private String medico;
+    private String enfermeria;
     private int secHojaConsulta;
 
-    public Integer getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Integer codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
@@ -45,19 +46,27 @@ public class HojaClinicaDto {
         this.lugarAtencion = lugarAtencion;
     }
 
-    public Short getMedico() {
+    public String getTipoConsulta() {
+        return tipoConsulta;
+    }
+
+    public void setTipoConsulta(String tipoConsulta) {
+        this.tipoConsulta = tipoConsulta;
+    }
+
+    public String getMedico() {
         return medico;
     }
 
-    public void setMedico(Short medico) {
+    public void setMedico(String medico) {
         this.medico = medico;
     }
 
-    public Short getEnfermeria() {
+    public String getEnfermeria() {
         return enfermeria;
     }
 
-    public void setEnfermeria(Short enfermeria) {
+    public void setEnfermeria(String enfermeria) {
         this.enfermeria = enfermeria;
     }
 

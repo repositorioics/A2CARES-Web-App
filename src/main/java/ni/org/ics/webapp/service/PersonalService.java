@@ -39,4 +39,11 @@ public class PersonalService {
         return (Personal) query.uniqueResult();
     }
 
+    public List<Personal> getByCargo(String cargo){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Personal p where p.cargo.messageKey = :cargo");
+        query.setParameter("cargo", cargo);
+        return query.list();
+    }
+
 }

@@ -34,10 +34,14 @@ public class HojaClinicaService {
         return query.list();
     }
 
-    public List<HojaClinicaDto> get(Integer codigoPart, Date fechaInicioCons, Date fechaFinCons){
+    public List<HojaClinicaDto> get(String codigoPart, Date fechaInicioCons, Date fechaFinCons){
         Session session = sessionFactory.getCurrentSession();
         String strQuery = "select h.codigoParticipante.codigo as codigo, concat(h.codigoParticipante.nombre1, ' ', h.codigoParticipante.nombre2, ' ', h.codigoParticipante.apellido1, ' ', h.codigoParticipante.apellido2) as nombreCompleto," +
-                " DATE_FORMAT(h.fechaConsulta, '%d/%m/%Y') as fechaConsulta, h.lugarAtencion as lugarAtencion, h.medico as medico, h.enfermeria as enfermeria  " +
+                " DATE_FORMAT(h.fechaConsulta, '%d/%m/%Y') as fechaConsulta, " +
+                "(select p.spanish from MessageResource p where p.catKey = h.lugarAtencion and p.catRoot = 'CAT_LUGAR_CONS_HC') as lugarAtencion, " +
+                "(select p.spanish from MessageResource p where p.catKey = h.consulta and p.catRoot = 'CAT_TIPO_CONSULTA') as tipoConsulta, " +
+                "(select concat(cast(p.codigo as string), ' - ', p.nombre) from Personal p where p.codigo = h.medico) as medico, " +
+                "(select concat(cast(p.codigo as string), ' - ', p.nombre) from Personal p where p.codigo = h.enfermeria)  as enfermeria  " +
                 "from HojaClinica h where 1=1";
         if (codigoPart != null) strQuery += " and h.codigoParticipante.codigo = :codigoPart";
         if (fechaInicioCons != null && fechaFinCons != null) strQuery += " and h.fechaConsulta between :fechaInicioCons and :fechaFinCons";

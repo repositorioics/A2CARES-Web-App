@@ -13,7 +13,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "estudios", catalog = "a2cares")
-
 public class Estudio extends BaseMetaData implements Auditable {
 	
 	/**

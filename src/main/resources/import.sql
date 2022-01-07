@@ -763,3 +763,16 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_DESCARTE', NULL, NULL, NULL, '1', 0, '0', 'Catalogo descarta punto gps candidato');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_DESCARTE_01', '1', 'CAT_RAZON_DESCARTE', NULL, '0', 1, '0', 'Casa Cerrada');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_RAZON_DESCARTE_998', '998', 'CAT_RAZON_DESCARTE', NULL, '0', 2, '0', 'Otra razón');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_CONS_HC', NULL, NULL, NULL, '1', 0, '0', 'Catalogo lugar de consulta hoja clinica');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_CONS_HC_01', '1', 'CAT_LUGAR_CONS_HC', NULL, '0', 1, '0', 'Puesto de Salud');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_CONS_HC_02', '2', 'CAT_LUGAR_CONS_HC', NULL, '0', 2, '0', 'Terreno');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_CONSULTA', NULL, NULL, NULL, '1', 0, '0', 'Catalogo tipos de consulta');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_CONSULTA_01', '1', 'CAT_TIPO_CONSULTA', NULL, '0', 1, '0', 'Inicial');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_CONSULTA_02', '2', 'CAT_TIPO_CONSULTA', NULL, '0', 2, '0', 'Seguimiento');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_CONSULTA_03', '3', 'CAT_TIPO_CONSULTA', NULL, '0', 3, '0', 'Convaleciente');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_RECEP_MX', NULL, NULL, NULL, '1', 0, '0', 'Catalogo lugar de recepcion muestras');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_RECEP_MX_01', '1', 'CAT_LUGAR_RECEP_MX', NULL, '0', 1, '0', 'Puesto de Salud');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_RECEP_MXC_02', '2', 'CAT_LUGAR_RECEP_MX', NULL, '0', 2, '0', 'Terreno');
