@@ -304,7 +304,9 @@
                     </label>
                     <select class="form-control focusNext" id="tipoConsulta" name="tipoConsulta" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
-                        <option selected value="100"><spring:message code="100" />...</option>
+                        <c:forEach var="item" items="${catTipoConsulta}">
+                            <option value="${item.catKey}">${item.spanish}</option>
+                        </c:forEach>
                     </select>
                 </div>
 
@@ -316,7 +318,9 @@
                     </label>
                     <select class="form-control focusNext" id="lugarConsulta" name="lugarConsulta" required="required">
                         <option selected value=""><spring:message code="select" />...</option>
-                        <option selected value="100"><spring:message code="100" />...</option>
+                        <c:forEach var="item" items="${catLugarConsulta}">
+                            <option value="${item.catKey}">${item.spanish}</option>
+                        </c:forEach>
                     </select>
                 </div>
 
@@ -2588,7 +2592,9 @@
                         <label for="medico" class="form-control-label"><spring:message code="medico" /><span class="required">*</span></label>
                         <select class="form-control focusNext" id="medico" name="medico" required="required">
                             <option selected value=""><spring:message code="select" />...</option>
-                            <option value="1000"><spring:message code="1000" /></option>
+                            <c:forEach var="item" items="${medicos}">
+                                <option value="${item.codigo}">${item.codigo} - ${item.nombre}</option>
+                            </c:forEach>
                         </select>
                     </div>
                 </div>
@@ -2620,7 +2626,9 @@
                         <label for="enfermeria" class="form-control-label"><spring:message code="enfermeria" /><span class="required">*</span></label>
                         <select class="form-control focusNext" id="enfermeria" name="enfermeria" required="required">
                             <option selected value=""><spring:message code="select" />...</option>
-                            <option value="1000"><spring:message code="1000" /></option>
+                            <c:forEach var="item" items="${enfermeria}">
+                                <option value="${item.codigo}">${item.codigo} - ${item.nombre}</option>
+                            </c:forEach>
                         </select>
                     </div>
                 </div>

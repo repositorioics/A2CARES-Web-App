@@ -5,12 +5,10 @@ import com.google.gson.JsonObject;
 import ni.org.ics.webapp.domain.clinical.HojaClinica;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
+import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.dto.HojaClinicaDto;
 import ni.org.ics.webapp.language.MessageResource;
-import ni.org.ics.webapp.service.HojaClinicaService;
-import ni.org.ics.webapp.service.MessageResourceService;
-import ni.org.ics.webapp.service.ParticipanteProcesosService;
-import ni.org.ics.webapp.service.ParticipanteService;
+import ni.org.ics.webapp.service.*;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import ni.org.ics.webapp.web.utils.JsonUtil;
 import org.slf4j.Logger;
@@ -57,6 +55,9 @@ public class HojaClinicaController {
     @Resource(name = "messageResourceService")
     private MessageResourceService messageResourceService;
 
+    @Resource(name = "personalService")
+    private PersonalService personalService;
+
     @Resource(name = "hojaClinicaService")
     private HojaClinicaService hojaClinicaService;
 
@@ -72,11 +73,19 @@ public class HojaClinicaController {
         List<MessageResource> catSiNo = this.messageResourceService.getCatalogo("CAT_SINO");
         List<MessageResource> catSexo = this.messageResourceService.getCatalogo("CAT_SEXO");
         List<MessageResource> catCategoria = this.messageResourceService.getCatalogo("CAT_CATEGORIA");
+        List<MessageResource> catTipoConsulta = this.messageResourceService.getCatalogo("CAT_TIPO_CONSULTA");
+        List<MessageResource> catLugarConsulta = this.messageResourceService.getCatalogo("CAT_LUGAR_CONS_HC");
+        List<Personal> medicos = this.personalService.getByCargo("CAT_CARGO_1");
+        List<Personal> enfermeria = this.personalService.getByCargo("CAT_CARGO_2");
         //List<UserSistema> usuarios = usuarioService.getUsers();
         //model.addAttribute("usuarios", usuarios);
         model.addAttribute("catSiNo", catSiNo);
         model.addAttribute("catSexo", catSexo);
         model.addAttribute("catCategoria", catCategoria);
+        model.addAttribute("catTipoConsulta", catTipoConsulta);
+        model.addAttribute("catLugarConsulta", catLugarConsulta);
+        model.addAttribute("medicos", medicos);
+        model.addAttribute("enfermeria", enfermeria);
         return "fingering/clinicalSheet";
     }
 
@@ -135,7 +144,7 @@ public class HojaClinicaController {
 
     @RequestMapping(value = "get", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    ResponseEntity<String> get(@RequestParam(value="codigo", required=false ) Integer codigo,
+    ResponseEntity<String> get(@RequestParam(value="codigo", required=false ) String codigo,
                                @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
                                @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
         try {

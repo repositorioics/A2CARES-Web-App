@@ -58,7 +58,7 @@ public class Participante extends BaseMetaData implements Auditable {
 		this.codigo = codigo;
 	}
 
-	@Column(name = "NOMBRE1", nullable = false)
+	@Column(name = "NOMBRE1", nullable = false, length = 100)
 	public String getNombre1() {
 		return nombre1;
 	}
@@ -67,7 +67,7 @@ public class Participante extends BaseMetaData implements Auditable {
 		this.nombre1 = nombre1;
 	}
 
-	@Column(name = "NOMBRE2", nullable = true)
+	@Column(name = "NOMBRE2", nullable = true, length = 100)
 	public String getNombre2() {
 		return nombre2;
 	}
@@ -76,7 +76,7 @@ public class Participante extends BaseMetaData implements Auditable {
 		this.nombre2 = nombre2;
 	}
 
-	@Column(name = "APELLIDO1", nullable = false)
+	@Column(name = "APELLIDO1", nullable = false, length = 100)
 	public String getApellido1() {
 		return apellido1;
 	}
@@ -85,7 +85,7 @@ public class Participante extends BaseMetaData implements Auditable {
 		this.apellido1 = apellido1;
 	}
 
-	@Column(name = "APELLIDO2", nullable = true)
+	@Column(name = "APELLIDO2", nullable = true, length = 100)
 	public String getApellido2() {
 		return apellido2;
 	}
@@ -94,7 +94,7 @@ public class Participante extends BaseMetaData implements Auditable {
 		this.apellido2 = apellido2;
 	}
 
-	@Column(name = "SEXO", nullable = false)
+	@Column(name = "SEXO", nullable = false, length = 2)
 	public String getSexo() {
 		return sexo;
 	}

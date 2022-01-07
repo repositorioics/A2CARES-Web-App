@@ -68,7 +68,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<spring:url value="/cartas/CartaParticipantTmp" htmlEscape="true "/>">
                                 <i class="fas fa-envelope" aria-hidden="true"></i>
-                                <spring:message code="consent" /> <spring:message code="Temporal" /> </a>
+                                <spring:message code="Temporal" /> </a>
                         </li>
                     </ul>
                 </li>

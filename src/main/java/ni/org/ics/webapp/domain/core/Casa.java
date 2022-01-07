@@ -72,7 +72,7 @@ public class Casa extends BaseMetaData implements Auditable {
 		this.longitud = longitud;
 	}
 
-    @Column(name = "NOMBRE1_JEFE", nullable = false)
+    @Column(name = "NOMBRE1_JEFE", nullable = false, length = 100)
     public String getNombre1JefeFamilia() {
         return nombre1JefeFamilia;
     }
@@ -81,7 +81,7 @@ public class Casa extends BaseMetaData implements Auditable {
         this.nombre1JefeFamilia = nombre1JefeFamilia;
     }
 
-    @Column(name = "NOMBRE2_JEFE", nullable = true)
+    @Column(name = "NOMBRE2_JEFE", nullable = true, length = 100)
     public String getNombre2JefeFamilia() {
         return nombre2JefeFamilia;
     }
@@ -90,7 +90,7 @@ public class Casa extends BaseMetaData implements Auditable {
         this.nombre2JefeFamilia = nombre2JefeFamilia;
     }
 
-    @Column(name = "APELLIDO1_JEFE", nullable = false)
+    @Column(name = "APELLIDO1_JEFE", nullable = false, length = 100)
     public String getApellido1JefeFamilia() {
         return apellido1JefeFamilia;
     }
@@ -99,7 +99,7 @@ public class Casa extends BaseMetaData implements Auditable {
         this.apellido1JefeFamilia = apellido1JefeFamilia;
     }
 
-    @Column(name = "APELLIDO2_JEFE", nullable = true)
+    @Column(name = "APELLIDO2_JEFE", nullable = true, length = 100)
     public String getApellido2JefeFamilia() {
         return apellido2JefeFamilia;
     }
