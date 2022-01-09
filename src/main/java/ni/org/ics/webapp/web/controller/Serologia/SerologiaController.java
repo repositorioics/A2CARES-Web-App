@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import ni.org.ics.webapp.domain.Serologia.Serologia;
 import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
+import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.personal.Personal;
@@ -58,7 +59,7 @@ public class SerologiaController {
     @Resource(name = "SerologiaService")
     private SerologiaService serologiaService;
 
-    //region Formulario Serplogia
+    //region Formulario Serologia
     @RequestMapping(value="/create", method = RequestMethod.GET)
     public String create(ModelMap model) throws Exception{
         try {
@@ -148,15 +149,9 @@ public class SerologiaController {
             objToSave.setFecha(DateUtil.StringToDate(muestraForEnvio.getFechaenvio(), "dd/MM/yyyy"));
             objToSave.setHora(muestraForEnvio.getHora());
             objToSave.setIdenvio(muestraForEnvio.getNenvios());
-
             String idMxSerologica = muestraForEnvio.getIdserologia().toString();
             Serologia objSerologia = this.serologiaService.getSerologiaById(idMxSerologica);
             objSerologia.setIdSerologia(objSerologia.getIdSerologia());
-            objToSave.setSerologia(objSerologia);
-
-
-            //service guardar en tabla envios
-            this.serologiaService.saveSerologiaEnviadas(objToSave);
             this.serologiaService.ModificarEnvio(muestraForEnvio.getIdserologia());//Modifica campo Cerrado
             return JsonUtil.createJsonResponse(objToSave);
         }catch(Exception e){
@@ -175,35 +170,45 @@ public class SerologiaController {
             ,@RequestParam(value="hasta", required=false ) String hasta
             ,@RequestParam(value="fechaEnvio", required=false ) String fechaEnvio
             ,@RequestParam(value="horaEnvio", required=false ) String horaEnvio
+            ,@RequestParam(value="sitio", required=true ) Integer sitio
+            ,@RequestParam(value="temperatura", required=true ) String temperatura
     )throws Exception{
         try{
             Date fdesde = DateUtil.StringToDate(desde +  " 00:00:00","dd/MM/yyyy HH:mm:ss");
             Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
-
+            String computerName = InetAddress.getLocalHost().getHostName();
+            String computerIp = InetAddress.getLocalHost().getHostAddress();
+            SerologiaEnvio envio = new SerologiaEnvio();
+            envio.setDeviceid(computerName);
+            envio.setRecordIp(computerIp);
+            envio.setEstado('1');
+            envio.setPasive('0');
+            envio.setRecordDate(new Date());
+            envio.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
+            envio.setFecha(DateUtil.StringToDate(fechaEnvio, "dd/MM/yyyy"));
+            envio.setHora(horaEnvio);
+            envio.setIdenvio(numenvio);
+            envio.setSitio(sitio);
+            double temp = Double.parseDouble(temperatura);
+            envio.setTemperatura(temp);
+            this.serologiaService.save_Envio_Serologia(envio);// aqui guardo los datos del envio
             List<Serologia> ListaSerologiaYaEnviadas = this.serologiaService.ObtenerSerologiasEnviadas(fdesde,fhasta);// Serologia en pasivo='0'  y cerrado='0'
+
+            if (envio.getIdserologiaenvio()!=null){
             if (ListaSerologiaYaEnviadas.size()>0){
-
-                String computerName = InetAddress.getLocalHost().getHostName();
-                String computerIp = InetAddress.getLocalHost().getHostAddress();
-
                 for (Serologia obj: ListaSerologiaYaEnviadas){
-                    SerologiaEnvio objToSave = new SerologiaEnvio();
-                    objToSave.setDeviceid(computerName);
-                    objToSave.setRecordIp(computerIp);
-                    objToSave.setEstado('1');
-                    objToSave.setPasive('0');
-                    objToSave.setRecordDate(new Date());
-                    objToSave.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
-                    objToSave.setFecha(DateUtil.StringToDate(fechaEnvio, "dd/MM/yyyy"));
-                    objToSave.setHora(horaEnvio);
-                    objToSave.setIdenvio(numenvio);
+                    Serologia_Detalles_Envio detalles_envio= new Serologia_Detalles_Envio();
                     this.serologiaService.ModificarEnvio(obj.getIdSerologia());
                     Serologia objSerologia = this.serologiaService.getSerologiaById(obj.getIdSerologia().toString());
-                    objToSave.setSerologia(objSerologia);
-                    this.serologiaService.saveSerologiaEnviadas(objToSave);
+                    detalles_envio.setSerologia(objSerologia);
+                    detalles_envio.setSerologiaEnvio(envio);
+                    this.serologiaService.save_Detalles_Serologia_Envio(detalles_envio);// guardo el detalle del envio
                 }
+
             }else {
                 return JsonUtil.createJsonResponse("Registros enviados: "+ListaSerologiaYaEnviadas.size());
+            }//fin if getIdserologiaenvio
+
             }
             return JsonUtil.createJsonResponse("Registros Enviados: "+ListaSerologiaYaEnviadas.size());
         }catch (Exception ex){
@@ -235,7 +240,6 @@ public class SerologiaController {
                 participanteDto.setFechaNacimiento(new Date());
             }else{
                 ParticipanteProcesos procesos = this.serologiaService.getParticipanteprocesos(p.getCodigo());
-                //participanteDto= this.serologiaService.getDatosParticipanteById(p.getCodigo());
                 if (procesos==null)
                     return JsonUtil.createJsonResponse("No se encontraron Processos del participante!");
 
@@ -362,6 +366,8 @@ public class SerologiaController {
     public String listSerologia(Model model)throws Exception{
         List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
         model.addAttribute("numero_envio", numero_envio);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        model.addAttribute("sitios", sitios);
         return "/Serologia/List";
     }
 
@@ -383,6 +389,8 @@ public class SerologiaController {
     public String listEnviosMuestras(Model model)throws Exception{
         List<Serologia> serologias = this.serologiaService.SerologiaNoEnviada();
         model.addAttribute("serologias",serologias);
+
+
         List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
         model.addAttribute("numero_envio", numero_envio);
         return "/Serologia/EnvioForm";

@@ -178,7 +178,6 @@ var scanCarta = function(){
             });
 
             $("#partes").on("select2-removing", function(e) {
-             debugger;
                 var p = $("#principal").val();
                 if (e.choice.text === p) {
                     e.preventDefault();

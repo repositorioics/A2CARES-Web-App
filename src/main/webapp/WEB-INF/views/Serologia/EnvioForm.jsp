@@ -244,6 +244,8 @@
                                     </div>
                                 </div>
 
+
+
                                 <div class="form-actions fluid">
                                     <div class="col-md-offset-6 col-md-10">
                                         <button id="toPdf" type="submit" class="btn btn-success btn-ladda" data-style="expand-right"><spring:message code="generate" /> <i class="fa fa-file-pdf-o"></i></button>

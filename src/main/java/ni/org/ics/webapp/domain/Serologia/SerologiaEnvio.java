@@ -18,10 +18,12 @@ public class SerologiaEnvio extends BaseMetaData implements Auditable {
     private static final long serialVersionUID = 1L;
 
     private Integer idserologiaenvio;
-    private Serologia serologia;
+    //private Serologia serologia;
     private Integer idenvio;
     private Date fecha;
     private String hora;
+    private Integer sitio;
+    private double temperatura;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +35,7 @@ public class SerologiaEnvio extends BaseMetaData implements Auditable {
     public void setIdserologiaenvio(Integer idserologiaenvio) {
         this.idserologiaenvio = idserologiaenvio;
     }
-
+/*
     @ManyToOne
     @JoinColumn(name="SEROLOGIA_ID", updatable = false)
     @ForeignKey(name = "FK_SEROLOGIA_ID")
@@ -44,7 +46,7 @@ public class SerologiaEnvio extends BaseMetaData implements Auditable {
     public void setSerologia(Serologia serologia) {
         this.serologia = serologia;
     }
-
+*/
     @Column(name = "ENVIO_ID", nullable = false)
     public Integer getIdenvio() {
         return idenvio;
@@ -69,6 +71,24 @@ public class SerologiaEnvio extends BaseMetaData implements Auditable {
 
     public void setHora(String hora) {
         this.hora = hora;
+    }
+
+    @Column(name = "ENVIADO_DESDE", nullable = false)
+    public Integer getSitio() {
+        return sitio;
+    }
+
+    public void setSitio(Integer sitio) {
+        this.sitio = sitio;
+    }
+
+    @Column(name = "TEMPERATURA", nullable = false)
+    public double getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(double temperatura) {
+        this.temperatura = temperatura;
     }
 
     @Override

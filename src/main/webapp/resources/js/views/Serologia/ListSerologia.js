@@ -52,6 +52,14 @@ var EnviarSerologiasForm = function(){
                 });
             }//fin funccion
 
+            $('#temperatura').on('change', function() {
+                if(isNaN(this.value)){
+                    this.value = "";
+                }else{
+                    this.value = parseFloat(this.value).toFixed(2);
+                }
+            });
+
 
             var form1 = $('#envio-allserologia-form');
             var $validator = form1.validate({
@@ -75,7 +83,14 @@ var EnviarSerologiasForm = function(){
                     }},
                     hasta: {required: function () {
                         return $('#hasta').val().length > 0;
-                    }}
+                    }},
+                    temperatura:{
+                        required: true,
+                        number: true
+                    },
+                    sitio:{
+                        required: true
+                    }
                 },errorPlacement: function ( error, element ) {
                     // Add the `help-block` class to the error element
                     error.addClass( 'form-control-feedback' );
@@ -104,7 +119,8 @@ var EnviarSerologiasForm = function(){
             });
 
             function crearEnvio(){
-                debugger;
+                //debugger;
+                console.log(form1.serialize());
                 swal({
                     title: "Deseas enviar las Muestras...",
                     text: "para generar el Reporte?",
