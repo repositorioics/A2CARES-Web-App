@@ -726,6 +726,10 @@ INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES (
 INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.user', 'Usuario','0','0',0);
 INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.serologia', 'Serología','0','0',0);
 
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.letters.comparison.1', 'Participantes registrados sin carta digitada','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.letters.comparison.2', 'Diferencias en partes de la carta','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.letters.comparison.3', 'Diferencias de Tutor y Relación Familiar','0','0',0);
+
 
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('SCANCARTA', NULL, NULL, NULL, '1', 0, '0', 'Catalogo Si/No/No Aplica ScanCarta');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_SCANCARTA_NO', '0','SCANCARTA', NULL, '0', 0, '0', 'NO');

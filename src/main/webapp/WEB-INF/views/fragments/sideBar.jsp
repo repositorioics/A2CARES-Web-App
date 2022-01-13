@@ -109,6 +109,21 @@
                     </ul>
                 </li>
             </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER')">
+                <li class="nav-item nav-dropdown comparacion">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fas fa-vial" aria-hidden="true"></i>
+                        <spring:message code="comparison" /></a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/comparacion/cartas" htmlEscape="true "/>">
+                                <i class="fas fa-list-alt" aria-hidden="true"></i>
+                                <spring:message code="letters" /></a>
+                        </li>
+
+                    </ul>
+                </li>
+            </sec:authorize>
 <!--
             <li class="nav-item nav-dropdown reports">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="fas fa-copy"></i><spring:message code="reports" /></a>

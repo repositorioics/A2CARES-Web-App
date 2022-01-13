@@ -86,31 +86,22 @@ public final class DateUtil {
             }
             return new StringBuffer().append(age).append(" años").toString();
         }
-       /* Calendar today = Calendar.getInstance();
-        int age = today.get(Calendar.YEAR) - fechaNacimiento.get(Calendar.YEAR);
-
-        if (age == 0) {
-            age = (today.get(Calendar.MONTH) - fechaNacimiento.get(Calendar.MONTH));
-
-            if (age == 0) {
-                age = (today.get(Calendar.DAY_OF_MONTH) - fechaNacimiento.get(Calendar.DAY_OF_MONTH));
-                return new StringBuffer().append(age).append(" dias").toString();
-            } else {
-                return new StringBuffer().append(age).append(" meses").toString();
-            }
-        } else {
-            if (today.get(Calendar.MONTH) < fechaNacimiento.get(Calendar.MONTH)) {
-                age--;
-            } else if (today.get(Calendar.MONTH) == fechaNacimiento.get(Calendar.MONTH)
-                    && today.get(Calendar.DAY_OF_MONTH) < fechaNacimiento.get(Calendar.DAY_OF_MONTH)) {
-                age--;
-            }
-            return new StringBuffer().append(age).append(" años").toString();
-        }*/
     }
 
     /* ** fin de la funcion fecha*/
 
+    public Integer getEdadMeses(Date fechaNac){
+        Calendar inicio = Calendar.getInstance();
+        Calendar fin = Calendar.getInstance();
+        inicio.setTime(fechaNac);
+        fin.setTime(new Date());
+        int difA = fin.get(Calendar.YEAR) - inicio.get(Calendar.YEAR);
+        int difM = difA * 12 + fin.get(Calendar.MONTH) - inicio.get(Calendar.MONTH);
+        int difD = fin.get(Calendar.DAY_OF_MONTH) - inicio.get(Calendar.DAY_OF_MONTH);
+        //aun no ha cumplido mes, restar 1
+        if (difD < 0) difM -=1;
+        return difM;
+    }
 
     public static String onTimeSet(String hora) {
 
