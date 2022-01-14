@@ -2,7 +2,6 @@
  * Created by ICS on 18/10/2020.
  */
 var EnviarSerologiasForm = function(){
-
     return {
         init: function(urls){
             var table = $("#Lista_Muestra").DataTable({
@@ -25,7 +24,12 @@ var EnviarSerologiasForm = function(){
                 $.getJSON(urls.MxNoEnviadasUrl, function(data){
                     var len = data.length;
                     if(data==0){
-                        toastr.warning("No se encontraron registro","ADVERTENCIA!",{timeOut:6000});
+                        swal({
+                            title: "¡Serologia!",
+                            text: "No se encontraron registro.",
+                            type: "info",
+                            timer: 2000
+                        });
                     }else{
                         for ( var i = 0; i < len; i++) {
                             var d = new Date(data[i].fecha);
@@ -119,8 +123,6 @@ var EnviarSerologiasForm = function(){
             });
 
             function crearEnvio(){
-                //debugger;
-                console.log(form1.serialize());
                 swal({
                     title: "Deseas enviar las Muestras...",
                     text: "para generar el Reporte?",
@@ -133,19 +135,29 @@ var EnviarSerologiasForm = function(){
                     confirmButtonText: "Si, enviar!"
                 }, function () {
                     $.post(urls.sendAllSerologiasUrl, form1.serialize(), function (data) {
-                        debugger;
-                        console.log(data);
                         if (data.mensaje != null) {
-                            swal("INFORMACIÓN",data.mensaje,"info");
+                            swal({
+                                title: "¡INFORMACIÓN!",
+                                text: data.mensaje,
+                                icon: "info",
+                                timer: 2000
+                            });
                         }
                         window.setTimeout(function () {
                             table.clear().draw( false );
                             CargarDatos();
                             location.reload();
-                        }, 1300);
+                        }, 1200);
                     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-                        //toastr.error("Error 500 Internal Server", 'EROOR!',{timeOut:6000});
-                        swal("Error 500!", "Interno del Servidor!", "error");
+                        swal({
+                            title: "Error 500",
+                            text: "Interno del Servidor",
+                            icon: "error",
+                            timer: 2000
+                        });
+                        window.setTimeout(function () {
+                            location.reload(true);
+                        }, 1200);
                     });
                 });
             }
@@ -186,20 +198,34 @@ var EnviarSerologiasForm = function(){
                 var form2 =$("#close-form");
                 $.post( urls.closeUrl, form2.serialize(), function( data ){
                     registro = JSON.parse(data);
-                    console.log(registro);
-                    if (registro.idSerologia === undefined) {
-                        toastr.error(data,"Error",{timeOut: 5000});
+                    if (registro.idSerologia ===undefined) {
+                        swal({
+                            title: "¡INFORMACIÓN!",
+                            text: data,
+                            type: "error",
+                            timer: 2000
+                        });
                     }
                     else {
                         $("#basic").modal('hide');
-                        toastr.success(urls.successMessage);
+                        swal({
+                            title: "¡Buen trabajo!!",
+                            text: urls.successMessage,
+                            type: "success",
+                            timer: 2000
+                        });
                         window.setTimeout(function () {
                             window.location.href = urls.listSerologiaUrl;
                         }, 1500);
                     }
                 },'text' )
                     .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-                        toastr.error("error:" + errorThrown);
+                        swal({
+                            title: "¡INFORMACIÓN!",
+                            text: errorThrown,
+                            type: "error",
+                            timer: 2000
+                        });
                     });
             }
             $("#Lista_Muestra tbody").on("click", ".btnPasive",function(){

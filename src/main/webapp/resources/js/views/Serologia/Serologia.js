@@ -2,7 +2,7 @@
  * Created by ICS on 15/10/2020.
  */
 var endPointSero = {};
-var Serologia2020 = function(){
+var SerologiaProcess = function(){
     return{
         init: function(urls){
             endPointSero = urls;
@@ -48,22 +48,39 @@ var Serologia2020 = function(){
             function searchParticipante(){
                 $.getJSON(endPointSero.searchPartUrl, { parametro : $('#parametro').val(),   ajax : 'true'  }, function(data) {
                     var len = data.length;
-                    if(data.mensaje != undefined){
-                        toastr.error(data.mensaje,"ERROR!",{timeOut:6000});
-                        Limpiartxt();
-                        $("#fechaNac").val("");
-                        $("#edadMeses").val("");
+                    if(data.mensaje !=undefined){
+                        swal({
+                            title: "¡ERROR!",
+                            text: data.mensaje,
+                            icon: "error",
+                            timer: 2000
+                        });
+                        window.setTimeout(function(){
+                            window.location.reload(true);
+                        }, 1000);
                     }
                     if(len==0){
-                        toastr.warning("Código no encontrado","ADVERTENCIA!",{timeOut:6000});
-                        $("#fechaNac").val("");
-                        $("#edadMeses").val("");
-                        Limpiartxt();
-                        $("#parametro").focus();
+                        swal({
+                            title: "¡ADVERTENCIA!",
+                            text: "Código no encontrado!",
+                            icon: "info",
+                            timer: 2000
+                        });
+                        window.setTimeout(function(){
+                            window.location.reload(true);
+                        }, 1000);
+                        $("#parametro").focus().val("");
                     } else{
-                        if(data.estado == 1){
-                            toastr.error("Participante Retirado!", "ERROR!",{timeOut:6000});
-                            Limpiartxt();
+                        if(data.estado ==1){
+                            swal({
+                                title: "¡ADVERTENCIA!",
+                                text: "Participante Retirado",
+                                icon: "error",
+                                timer: 2000
+                            });
+                            window.setTimeout(function(){
+                                window.location.reload(true);
+                            }, 1000);
                         }else{
                             var hoy=moment();
                             $("#idParticipante").val(data.codigo);
@@ -84,9 +101,16 @@ var Serologia2020 = function(){
                     }
                 }).fail(function() {
                     Limpiartxt();
-                    toastr.error("Código no existe!", "Error!",{timeOut:6000});
-                    $("#parametro").val("");
-                    $("#parametro").focus();
+                    swal({
+                        title: "¡ERROR!",
+                        text: "500 Interno del Servidor",
+                        icon: "error",
+                        tim: false
+                    });
+                    window.setTimeout(function () {
+                        location.reload(true);
+                    }, 1200);
+                    $("#parametro").focus().val("");
                 });
             }
 
@@ -142,7 +166,12 @@ var Serologia2020 = function(){
                     return;
                 }else if(vol<6){
                     if($('#observacion').val()==""){
-                        toastr.error("Razón por la cual el volumen es incompleto!",{timeOut:6000});
+                        swal({
+                            title: "¡ERROR!",
+                            text: "Ingresa la razón por la cual el volumen es incompleto?",
+                            icon: "error",
+                            timer: 2000
+                        });
                         $('#observacion').prop("required", true);
                         $('#observacion').focus();
                         isAllValid = false;
@@ -156,20 +185,38 @@ var Serologia2020 = function(){
                 if (isAllValid) {
                     var formSerologia = $("#save-Serologia-form");
                     $.post(urls.saveFormUrl, formSerologia.serialize(), function (data) {
-                    debugger;
                         if (data.msj != null) {
-                            toastr.error( data.msj, "Error!",{timeOut:6000});
+                            swal({
+                                title: "¡ERROR!",
+                                text: data.msj,
+                                icon: "info",
+                                timer: 2000
+                            });
+                            window.setTimeout(function () {
+                                location.reload(true);
+                            }, 1300);
                         } else {
-                            toastr.success(urls.successMessage);
+                            swal({
+                                title: "¡Buen trabajo!",
+                                text: urls.successMessage,
+                                icon: 'success',
+                                timer: 2000
+                            });
                             window.setTimeout(function(){
                                 window.location.href = urls.createUrl;
                             }, 1000);
-                            $("#parametro").val("");
-                            $("#parametro").focus();
+                            $("#parametro").focus().val("");
                         }
                     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
                         Limpiartxt();
-                        toastr.error("Error 500 Internal Server", "ERROR!",{timeOut:6000});
+                        swal({
+                            title: "¡ERROR!",
+                            text: "500 Interno del Servidor",
+                            icon: "error"
+                        });
+                        window.setTimeout(function(){
+                            window.location.reload(true);
+                        }, 1000);
                     });
 
                 }//fin isValid
@@ -183,7 +230,6 @@ var Serologia2020 = function(){
             };
 
             $('.submit_on_enter').on('keyup',function(event) {
-                // enter has keyCode = 13, change it if you want to use another button
                 if (event.which ===13) {
                     event.preventDefault();
                     $("#save-Serologia-form").submit();
@@ -203,6 +249,9 @@ var Serologia2020 = function(){
                 $("#volumen").val("");
                 $("#observacion").val("");
             }
+
+
+
         }
     }
 }();
