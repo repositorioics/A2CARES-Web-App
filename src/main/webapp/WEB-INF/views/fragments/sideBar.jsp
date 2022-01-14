@@ -73,6 +73,23 @@
                     </ul>
                 </li>
             </sec:authorize>
+
+            <sec:authorize access="hasAnyRole('ROLE_ROOT')">
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#">
+                    <i class="fa fa-user-times" aria-hidden="true"></i>
+                    <spring:message code="retirement" /></a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item retiro">
+                        <a class="nav-link" href="<spring:url value="/retiro/ListRetiro" htmlEscape="true "/>">
+                            <i class="fas fa-user-minus" aria-hidden="true"></i>
+                            <spring:message code="remove" /></a>
+                    </li>
+                </ul>
+            </li>
+            </sec:authorize>
+
+
             <sec:authorize access="hasAnyRole('ROLE_ROOT')">
                 <li class="nav-item nav-dropdown Serologia">
                     <a class="nav-link nav-dropdown-toggle" href="#">

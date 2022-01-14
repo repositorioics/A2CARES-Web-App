@@ -435,15 +435,16 @@
     jQuery(document).ready(function() {
         $('#btnPasive').tooltip('show');
         $('#btnEditar').tooltip('show');
+
         var misUrl ={
-            "sendAllSerologiasUrl":"${sendAllSerologiasUrl}",
-            "successMessage":"${successMessage}",
-            "envioUrl":"${envioUrl}",
-            "dataTablesLang": "${dataTablesLang}",
-            "MxNoEnviadasUrl":"${MxNoEnviadasUrl}",
-            "editUrl":"${editUrl}",
-            closeUrl:"${closeUrl}",
-            listSerologiaUrl:"${listSerologiaUrl}"
+            "editUrl"               : "${editUrl}",
+            "closeUrl"              : "${closeUrl}",
+            "envioUrl"              : "${envioUrl}",
+            "sendAllSerologiasUrl"  :"${sendAllSerologiasUrl}",
+            "successMessage"        : "${successMessage}",
+            "dataTablesLang"        : "${dataTablesLang}",
+            "MxNoEnviadasUrl"       : "${MxNoEnviadasUrl}",
+            listSerologiaUrl        : "${listSerologiaUrl}"
         }
         EnviarSerologiasForm.init(misUrl);
 

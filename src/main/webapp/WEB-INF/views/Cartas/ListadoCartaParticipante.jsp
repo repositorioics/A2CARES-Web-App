@@ -542,6 +542,7 @@
             minViewMode: "months",
             autoclose: true
         });
+
         $('#tableCartParticipnt tbody').on('click', '.btnReporte', function () {
             var id = $(this).data('id');
             CrearReporte(id);

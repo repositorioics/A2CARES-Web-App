@@ -155,6 +155,14 @@ public class MessageResourceService {
         return  query.list();
     }
 
+
+
+    public List<MessageResource> getMensajeByCatalogAndCatKeys(String catKeys, String catalogo) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM MessageResource mens where mens.catRoot =:catalogo and mens.catKey in ('"+catKeys+"')");
+        query.setParameter("catalogo",catalogo);
+        return  query.list();
+    }
     /**/
 
 }

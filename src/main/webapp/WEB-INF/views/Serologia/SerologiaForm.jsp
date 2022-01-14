@@ -14,180 +14,13 @@
 <html>
 <head>
     <jsp:include page="../fragments/headTag.jsp" />
-
     <spring:url value="/resources/css/bootstrap.css" var="boot" />
     <link href="${boot}" rel="stylesheet" type="text/css"/>
-
     <spring:url value="/resources/css/datepicker.css" var="datepickerCss" />
     <link href="${datepickerCss}" rel="stylesheet" type="text/css"/>
 
     <style>
-        /*ini*/
-        .toast-title {
-            font-weight: bold;
-        }
-        .toast-message {
-            -ms-word-wrap: break-word;
-            word-wrap: break-word;
-        }
-        .toast-message a,
-        .toast-message label {
-            color: #ffffff;
-        }
-        .toast-message a:hover {
-            color: #cccccc;
-            text-decoration: none;
-        }
 
-        .toast-close-button {
-            position: relative;
-            right: -0.3em;
-            top: -0.3em;
-            float: right;
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffffff;
-            -webkit-text-shadow: 0 1px 0 #ffffff;
-            text-shadow: 0 1px 0 #ffffff;
-            opacity: 0.8;
-            -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-            filter: alpha(opacity=80);
-        }
-        .toast-close-button:hover,
-        .toast-close-button:focus {
-            color: #000000;
-            text-decoration: none;
-            cursor: pointer;
-            opacity: 0.4;
-            -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
-            filter: alpha(opacity=40);
-        }
-        button.toast-close-button {
-            padding: 0;
-            cursor: pointer;
-            background: transparent;
-            border: 0;
-            -webkit-appearance: none;
-        }
-        .toast-top-full-width {
-            top: 0;
-            right: 0;
-            width: 100%;
-        }
-        .toast-bottom-full-width {
-            bottom: 0;
-            right: 0;
-            width: 100%;
-        }
-        .toast-top-left {
-            top: 12px;
-            left: 12px;
-        }
-        .toast-top-right {
-            top: 12px;
-            right: 12px;
-        }
-        .toast-bottom-right {
-            right: 12px;
-            bottom: 12px;
-        }
-        .toast-bottom-left {
-            bottom: 12px;
-            left: 12px;
-        }
-        #toast-container {
-            position: fixed;
-            z-index: 999999;
-            /*overrides*/
-
-        }
-        #toast-container * {
-            -moz-box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-        #toast-container > div {
-            margin: 0 0 6px;
-            padding: 15px 15px 15px 50px;
-            width: 300px;
-            -moz-border-radius: 3px 3px 3px 3px;
-            -webkit-border-radius: 3px 3px 3px 3px;
-            border-radius: 3px 3px 3px 3px;
-            background-position: 15px center;
-            background-repeat: no-repeat;
-            -moz-box-shadow: 0 0 12px #999999;
-            -webkit-box-shadow: 0 0 12px #999999;
-            box-shadow: 0 0 12px #999999;
-            color: #ffffff;
-            opacity: 0.8;
-            -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
-            filter: alpha(opacity=80);
-        }
-        #toast-container > :hover {
-            -moz-box-shadow: 0 0 12px #000000;
-            -webkit-box-shadow: 0 0 12px #000000;
-            box-shadow: 0 0 12px #000000;
-            opacity: 1;
-            -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-            filter: alpha(opacity=100);
-            cursor: pointer;
-        }
-
-        #toast-container.toast-top-full-width > div,
-        #toast-container.toast-bottom-full-width > div {
-            width: 96%;
-            margin: auto;
-        }
-        .toast {
-            background-color: #030303;
-        }
-        .toast-success {
-            background-color: #51a351;
-        }
-        .toast-error {
-            background-color: #bd362f;
-        }
-        .toast-info {
-            background-color: #2f96b4;
-        }
-        .toast-warning {
-            background-color: #f89406;
-        }
-        /**/
-        @media all and (max-width: 240px) {
-            #toast-container > div {
-                padding: 8px 8px 8px 50px;
-                width: 11em;
-            }
-            #toast-container .toast-close-button {
-                right: -0.2em;
-                top: -0.2em;
-            }
-        }
-        @media all and (min-width: 241px) and (max-width: 480px) {
-            #toast-container > div {
-                padding: 8px 8px 8px 50px;
-                width: 18em;
-            }
-            #toast-container .toast-close-button {
-                right: -0.2em;
-                top: -0.2em;
-            }
-        }
-        @media all and (min-width: 481px) and (max-width: 768px) {
-            #toast-container > div {
-                padding: 15px 15px 15px 50px;
-                width: 25em;
-            }
-        }
-        /*fin*/
-
-        .form-control-feedback {
-            margin-top: 0.25rem;
-            width: 95%;
-            text-align: right;
-            color: #ff5454;
-        }
         .form-control:disabled, .form-control[readonly] {
             background-color: #e9ecef00;
             opacity: 1;
@@ -217,20 +50,10 @@
             -moz-transition: max-height 0.5s ease;
             -webkit-transition: max-height 0.5s ease;
         }
-        .form-controls {
-            height: 45px;
-            padding: 10px;
-            font-size: 16px;
-            box-shadow: none;
-            border-radius: 0;
-            position: relative;
-        }
     </style>
 
     <spring:url value="/resources/css/sweetalert.css" var="swalcss" />
     <link href="${swalcss}" rel="stylesheet" type="text/css"/>
-
-
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
 <jsp:include page="../fragments/bodyHeader.jsp" />
@@ -415,7 +238,7 @@
 
             </div>
             <!--modal -->
-
+<!--
             <div class="modal fade" id="exampleModalNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -427,7 +250,6 @@
                         </div>
                         <div class="modal-body">
                             <form action="#" id="FormnuevoIngreso" name="FormnuevoIngreso">
-
                                 <div class="form-group">
                                     <input type="text" class="form-control date-picker" id="fechaNuevoIng" name="fechaNuevoIng" />
                                 </div>
@@ -457,7 +279,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!--fin Modal -->
         </div>
         <!-- /.conainer-fluid -->
@@ -512,12 +334,12 @@
 
         actDesact();
         var points ={
-            "searchPartUrl": "${searchPartUrl}",
-            "saveFormUrl" : "${saveFormUrl}",
-            "createUrl":"${createUrl}",
-            "successMessage":"${successMessage}"
+            "searchPartUrl" : "${searchPartUrl}",
+            "saveFormUrl"   : "${saveFormUrl}",
+            "createUrl"     : "${createUrl}",
+            "successMessage": "${successMessage}"
         };
-        Serologia2020.init(points);
+        SerologiaProcess.init(points);
         $("#fecha").datepicker({
             format: "dd/mm/yyyy",
             todayBtn:true,
@@ -555,9 +377,7 @@
             }
         });
         $("#parametro").focus();
-
     });
-
 </script>
 
 </body>
