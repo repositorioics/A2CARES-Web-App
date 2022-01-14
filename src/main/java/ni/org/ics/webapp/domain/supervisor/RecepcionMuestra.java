@@ -23,28 +23,16 @@ public class RecepcionMuestra extends BaseMetaData {
     /**
      *
      */
-    @Id
-    @Column(name = "ID_RECEPCION", length = 50, nullable = false)
     private String idRecepcion;
-
-    @Column(name = "CODIGO_MX", length = 50, nullable = false)
     private String codigoMx;
-
-    @Column(name = "FECHA_RECEPCION", nullable = false)
     private Date fechaRecepcion;
-
-    @Column(name="VOLUMEN", nullable = true)
     private Double volumen;
-
-    @Column(name="LUGAR", length = 10, nullable = true)
     private String lugar;
-
-    @Column(name="OBSERVACION", nullable = true)
     private String observacion;
-
-    @Column(name = "TIPO_TUBO", length = 5, nullable = true)
     private String tipoTubo;
 
+    @Id
+    @Column(name = "ID_RECEPCION", length = 50, nullable = false)
     public String getIdRecepcion() {
         return idRecepcion;
     }
@@ -53,6 +41,7 @@ public class RecepcionMuestra extends BaseMetaData {
         this.idRecepcion = idRecepcion;
     }
 
+    @Column(name = "CODIGO_MX", length = 50, nullable = false)
     public String getCodigoMx() {
         return codigoMx;
     }
@@ -61,6 +50,7 @@ public class RecepcionMuestra extends BaseMetaData {
         this.codigoMx = codigoMx;
     }
 
+    @Column(name = "FECHA_RECEPCION", nullable = false)
     public Date getFechaRecepcion() {
         return fechaRecepcion;
     }
@@ -69,6 +59,7 @@ public class RecepcionMuestra extends BaseMetaData {
         this.fechaRecepcion = fechaRecepcion;
     }
 
+    @Column(name="VOLUMEN", nullable = true)
     public Double getVolumen() {
         return volumen;
     }
@@ -77,6 +68,7 @@ public class RecepcionMuestra extends BaseMetaData {
         this.volumen = volumen;
     }
 
+    @Column(name="LUGAR", length = 10, nullable = true)
     public String getLugar() {
         return lugar;
     }
@@ -85,6 +77,7 @@ public class RecepcionMuestra extends BaseMetaData {
         this.lugar = lugar;
     }
 
+    @Column(name="OBSERVACION", nullable = true)
     public String getObservacion() {
         return observacion;
     }
@@ -93,6 +86,7 @@ public class RecepcionMuestra extends BaseMetaData {
         this.observacion = observacion;
     }
 
+    @Column(name = "TIPO_TUBO", length = 5, nullable = true)
     public String getTipoTubo() {
         return tipoTubo;
     }

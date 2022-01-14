@@ -3,6 +3,7 @@ var EditUser = function () {
 	var handleMultiSelect = function () {
         $('#authorities').multiSelect();
         $('#studies').multiSelect();
+        $("#seqPersonal").select2();
     };
     
     var handlePasswordStrengthChecker = function () {

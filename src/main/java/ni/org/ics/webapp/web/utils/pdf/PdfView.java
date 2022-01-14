@@ -881,7 +881,7 @@ class HeaderFooterReporteEnvio extends PdfPageEventHelper {
         y = y - 15;
         PdfPTable table = new PdfPTable(new float[]{80,20});
         table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
-        PdfPCell cell = new PdfPCell(new Phrase("MUESTREO ANUAL COHORTE FAMILIA " + anioActual,FontFactory.getFont("COURIER", 14, java.awt.Font.ITALIC)));
+        PdfPCell cell = new PdfPCell(new Phrase("MUESTREO ANUAL A2CARES " + anioActual,FontFactory.getFont("COURIER", 14, java.awt.Font.ITALIC)));
         cell.setBorder(PdfPCell.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_BOTTOM);
         table.addCell(cell);

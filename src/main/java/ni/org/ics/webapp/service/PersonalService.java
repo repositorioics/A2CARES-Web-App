@@ -26,16 +26,30 @@ public class PersonalService {
         return query.list();
     }
 
+    public List<Personal> getAllActives(){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Personal where pasive = '0'");
+        return query.list();
+    }
+
     public Personal saveOrUpdate(Personal obj) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(obj);
         return obj;
     }
 
+    //obtiene personal por idPersona
     public Personal getPersonalByCodigo(Integer codigo){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Personal where idPersona = :codigo");
         query.setParameter("codigo", codigo);
+        return (Personal) query.uniqueResult();
+    }
+
+    public Personal getPersonalBySeq(Integer seq){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Personal where codigo = :seq");
+        query.setParameter("seq", seq);
         return (Personal) query.uniqueResult();
     }
 

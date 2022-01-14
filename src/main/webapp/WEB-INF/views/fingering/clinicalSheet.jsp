@@ -2593,7 +2593,7 @@
                         <select class="form-control focusNext" id="medico" name="medico" required="required">
                             <option selected value=""><spring:message code="select" />...</option>
                             <c:forEach var="item" items="${medicos}">
-                                <option value="${item.codigo}">${item.codigo} - ${item.nombre}</option>
+                                <option value="${item.codigo}">${item.idPersona} - ${item.nombre}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -2627,7 +2627,7 @@
                         <select class="form-control focusNext" id="enfermeria" name="enfermeria" required="required">
                             <option selected value=""><spring:message code="select" />...</option>
                             <c:forEach var="item" items="${enfermeria}">
-                                <option value="${item.codigo}">${item.codigo} - ${item.nombre}</option>
+                                <option value="${item.codigo}">${item.idPersona} - ${item.nombre}</option>
                             </c:forEach>
                         </select>
                     </div>

@@ -1,5 +1,6 @@
 package ni.org.ics.webapp.web.utils;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -124,5 +125,17 @@ public final class DateUtil {
 
         return hourOfDay_local+":"+ (minute_local<10?"0":"")+minute_local+":00";
 
+    }
+
+    public static Timestamp getDateWithoutTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateWithoutTime = null;
+        try {
+            dateWithoutTime = sdf.parse(sdf.format(new Date()));
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return new Timestamp(dateWithoutTime.getTime());
     }
 }

@@ -331,6 +331,20 @@
                                 <!--/span-->
                             </div>
                             <!--/row-->
+                            <!--/row-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-3"><spring:message code="personal" />:</label>
+                                        <div class="col-md-9">
+                                            <p class="form-control-static">
+                                                <c:out value="${user.seqPersonal.idPersona} - ${user.seqPersonal.nombre}" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/row-->
                         </form>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 package ni.org.ics.webapp.service;
 
-import ni.org.ics.webapp.domain.vistas.DiferenciaParteCarta;
+import ni.org.ics.webapp.dto.DiferenciaParteCartaDto;
 import ni.org.ics.webapp.dto.ComparacionCartasDto;
 import ni.org.ics.webapp.dto.ComparacionRelFamCartasDto;
 import org.hibernate.Query;
@@ -25,17 +25,48 @@ public class ComparacionCartasService {
 
 
     @SuppressWarnings("unchecked")
-    public List<DiferenciaParteCarta> getDiferenciasPartesCartas()
+    public List<DiferenciaParteCartaDto> getDiferenciasPartesCartas()
     {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from DiferenciaParteCarta ");
+        Query query = session.createSQLQuery("select a.CODIGO_PARTICIPANTE as codigo, a.FECHA_FIRMA as fechaFirma, a.USUARIO_REGISTRO as usuarioRegistro, " +
+                "a.EDAD_ACTUAL_MESES as edadActualMeses, a.EDAD_MESES as edadMeses, " +
+                "a.ACEPTA_PARTE_A as aceptaParteACc, b.ACEPTA_PARTE_A as aceptaParteASc, " +
+                "a.ACEPTA_PARTE_B as aceptaParteBCc, b.ACEPTA_PARTE_B as aceptaParteBSc, " +
+                "a.ACEPTA_PARTE_C as aceptaParteCCc, b.ACEPTA_PARTE_C as aceptaParteCSc, " +
+                "a.ACEPTA_CONTACTO_FUTURO as aceptaContactoFuturoCc, b.ACEPTA_CONTACTO_FUTURO as aceptaContactoFuturoSc, " +
+                "a.ASENTIMIENTO_VERBAL as asentimientoVerbalCc, b.ASENTIMIENTO_VERBAL as asentimientoVerbalSc, " +
+                "a.VERSION as versionCc, b.VERSION as versionSc " +
+                "from ( " +
+                "select t1.CODIGO_PARTICIPANTE, DATE_FORMAT(t1.FECHA_FIRMA, '%d-%m-%Y') as FECHA_FIRMA, t1.USUARIO_REGISTRO AS USUARIO_REGISTRO, " +
+                "fn_edad_actual_meses(t3.FECHANAC) as EDAD_ACTUAL_MESES, fn_edad_meses(t3.FECHANAC, t1.FECHA_FIRMA) as EDAD_MESES, " +
+                "t1.ACEPTA_PARTE_A, t1.ACEPTA_PARTE_B, t1.ACEPTA_PARTE_C, " +
+                "t1.ACEPTA_CONTACTO_FUTURO, COALESCE(t2.ASENTIMIENTO_VERBAL, 'NA') as ASENTIMIENTO_VERBAL, t1.VERSION as VERSION " +
+                "FROM cartas_consentimientos t1 inner join tamizajes t2 on t1.CODIGO_TAMIZAJE = t2.CODIGO " +
+                "inner join participantes t3 on t1.CODIGO_PARTICIPANTE = t3.CODIGO " +
+                ") as a, " +
+                "(select t1.CODIGO_PARTICIPANTE, " +
+                "( select if(t3.ACEPTA, '1','0') from scan_detalle_parte t3 inner join scan_catalog_parte t2 on t3.IDPARTE = t2.IDPARTE " +
+                "where t3.IDPARTICIPANTECARTA = t1.IDPARTICIPANTECARTA and  t2.PARTE = 'A') as ACEPTA_PARTE_A, " +
+                "( select if(t3.ACEPTA, '1','0') from scan_detalle_parte t3 inner join scan_catalog_parte t2 on t3.IDPARTE = t2.IDPARTE " +
+                "where t3.IDPARTICIPANTECARTA = t1.IDPARTICIPANTECARTA and  t2.PARTE = 'B') as ACEPTA_PARTE_B, " +
+                "( select if(t3.ACEPTA, '1','0') from scan_detalle_parte t3 inner join scan_catalog_parte t2 on t3.IDPARTE = t2.IDPARTE " +
+                "where t3.IDPARTICIPANTECARTA = t1.IDPARTICIPANTECARTA and  t2.PARTE = 'C') as ACEPTA_PARTE_C, " +
+                "if(t1.CONTACTO_FUTURO, '1','0') as ACEPTA_CONTACTO_FUTURO, if (t1.TIPO_ASENTIMIENTO='1', t1.ASENTIMIENTO, 'NA') as ASENTIMIENTO_VERBAL, " +
+                "tv.VERSION as VERSION " +
+                "from scan_participante_carta t1 inner join scan_catalog_version tv on t1.IDVERSION = tv.IDVERSION) as b " +
+                "where a.CODIGO_PARTICIPANTE = b.CODIGO_PARTICIPANTE " +
+                "and ( " +
+                "a.ACEPTA_PARTE_A != b.ACEPTA_PARTE_A or " +
+                "a.ACEPTA_PARTE_B != b.ACEPTA_PARTE_B or " +
+                "a.ACEPTA_PARTE_C != b.ACEPTA_PARTE_C)");
+        query.setResultTransformer(Transformers.aliasToBean(DiferenciaParteCartaDto.class));
         return query.list();
     }
 
     public List<ComparacionCartasDto> getConsentimientosSinCarta() {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createSQLQuery("SELECT t1.CODIGO_PARTICIPANTE as codigoParticipante, DATE_FORMAT(t1.FECHA_FIRMA, '%d-%m-%Y') as fechaFirma, FLOOR(fn_edad_actual_meses(t3.FECHANAC)/12) as edadActual, t1.USUARIO_REGISTRO as usuarioRegistro, "+
-                "t1.ACEPTA_CONTACTO_FUTURO as contactoFuturo, t4.ASENTIMIENTO_VERBAL as asentimiento, t1.ACEPTA_PARTE_A as parteA, t1.ACEPTA_PARTE_B as parteB, t1.ACEPTA_PARTE_C as parteC, "+
+                "t1.ACEPTA_CONTACTO_FUTURO as contactoFuturo, COALESCE(t4.ASENTIMIENTO_VERBAL, '-') as asentimiento, t1.ACEPTA_PARTE_A as parteA, t1.ACEPTA_PARTE_B as parteB, t1.ACEPTA_PARTE_C as parteC, "+
                 "concat(t1.NOMBRE1_TUTOR, IF(t1.NOMBRE2_TUTOR is not null,' ', ''), COALESCE(t1.NOMBRE2_TUTOR,''), ' ', t1.APELLIDO1_TUTOR, IF(t1.APELLIDO2_TUTOR is not null,' ', ''), COALESCE(t1.APELLIDO2_TUTOR, '')) as quienFirma, "+
         "(select m.es from mensajes m where m.catRoot = 'CAT_RF_TUTOR' and m.catKey = t1.RELACION_FAMILIAR) as relacionFamiliar, t1.VERSION as versionCarta "+
         "FROM cartas_consentimientos t1 "+

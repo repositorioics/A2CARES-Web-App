@@ -2,10 +2,7 @@ package ni.org.ics.webapp.domain.puntos;
 
 import ni.org.ics.webapp.domain.BaseMetaData;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -92,6 +89,7 @@ public class PuntoCandidato  extends BaseMetaData {
     }
 
     @Column(name="FECHA_DESCARTE", nullable = true)
+    @Temporal(TemporalType.DATE)
     public Date getFechaDescarte() {
         return fechaDescarte;
     }

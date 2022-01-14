@@ -25,7 +25,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="<spring:url value="/" htmlEscape="true "/>"><spring:message code="home" /></a>
-                    <i class="fa fa-angle-right"></i> <a href="<spring:url value="/admin/catalogs" htmlEscape="true "/>"><spring:message code="catalogs" /></a>
+                    <i class="fa fa-angle-right"></i> <a href="<spring:url value="/comparacion/cartas" htmlEscape="true "/>"><spring:message code="comparison" /> <spring:message code="letters" /></a>
                 </li>
             </ol>
             <div class="container-fluid">
@@ -42,16 +42,16 @@
                                         <thead>
                                         <tr>
                                             <th><spring:message code="code"/></th>
-                                            <th><spring:message code="fecha_firma"/></th>
-                                            <th><spring:message code="usuario_registro"/></th>
+                                            <th><spring:message code="fecha"/></th>
+                                            <th><spring:message code="usuario"/></th>
                                             <th><spring:message code="edad_actual"/></th>
                                             <th><spring:message code="contacto_futuro"/></th>
                                             <th><spring:message code="asent"/></th>
-                                            <th><spring:message code="parteA"/></th>
-                                            <th><spring:message code="parteB"/></th>
-                                            <th><spring:message code="parteC"/></th>
-                                            <th><spring:message code="quien_firma"/></th>
-                                            <th><spring:message code="rel_fam"/></th>
+                                            <th><spring:message code="parteA_App"/></th>
+                                            <th><spring:message code="parteB_App"/></th>
+                                            <th><spring:message code="parteC_App"/></th>
+                                            <th><spring:message code="quien_firma_App"/></th>
+                                            <th><spring:message code="rel_fam_App"/></th>
                                             <th><spring:message code="version"/></th>
                                         </tr>
                                         </thead>
@@ -78,18 +78,18 @@
                                         <thead>
                                         <tr>
                                             <th><spring:message code="code"/></th>
-                                            <th><spring:message code="fecha_firma"/></th>
-                                            <th><spring:message code="usuario_registro"/></th>
+                                            <th><spring:message code="fecha"/></th>
+                                            <th><spring:message code="usuario"/></th>
                                             <th><spring:message code="edad_actual"/></th>
-                                            <th><spring:message code="edad_firma_carta"/></th>
-                                            <th><spring:message code="parteA_C"/></th>
-                                            <th><spring:message code="parteA_S"/></th>
-                                            <th><spring:message code="parteB_C"/></th>
-                                            <th><spring:message code="parteB_S"/></th>
-                                            <th><spring:message code="parteC_C"/></th>
-                                            <th><spring:message code="parteC_S"/></th>
-                                            <th><spring:message code="version_C"/></th>
-                                            <th><spring:message code="version_S"/></th>
+                                            <th><spring:message code="edad_firma"/></th>
+                                            <th><spring:message code="parteA_App"/></th>
+                                            <th><spring:message code="parteA_Car"/></th>
+                                            <th><spring:message code="parteB_App"/></th>
+                                            <th><spring:message code="parteB_Car"/></th>
+                                            <th><spring:message code="parteC_App"/></th>
+                                            <th><spring:message code="parteC_Car"/></th>
+                                            <th><spring:message code="version_App"/></th>
+                                            <th><spring:message code="version_Car"/></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -115,13 +115,13 @@
                                         <thead>
                                         <tr>
                                             <th><spring:message code="code"/></th>
-                                            <th><spring:message code="fecha_firma"/></th>
-                                            <th><spring:message code="usuario_registro"/></th>
-                                            <th><spring:message code="edad_firma_carta"/></th>
-                                            <th><spring:message code="quien_firma_C"/></th>
-                                            <th><spring:message code="quien_firma_S"/></th>
-                                            <th><spring:message code="rel_fam_C"/></th>
-                                            <th><spring:message code="rel_fam_S"/></th>
+                                            <th><spring:message code="fecha"/></th>
+                                            <th><spring:message code="usuario"/></th>
+                                            <th><spring:message code="edad_firma"/></th>
+                                            <th><spring:message code="quien_firma_App"/></th>
+                                            <th><spring:message code="quien_firma_Car"/></th>
+                                            <th><spring:message code="rel_fam_App"/></th>
+                                            <th><spring:message code="rel_fam_Car"/></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -192,18 +192,18 @@
                 dataSrc: ""
             },
             "columns": [
-                { data: 'codigoParticipante'},
-                { data: 'fechaFirma'},
-                { data: 'usuarioRegistro'},
-                { data: 'edadActual'},
-                { data: 'contactoFuturo'},
-                { data: 'asentimiento'},
-                { data: 'parteA'},
-                { data: 'parteB'},
-                { data: 'parteC'},
-                { data: 'quienFirma'},
-                { data: 'relacionFamiliar'},
-                { data: 'versionCarta'}
+                { data: 'codigoParticipante', defaultContent: ""},
+                { data: 'fechaFirma', defaultContent: ""},
+                { data: 'usuarioRegistro', defaultContent: ""},
+                { data: 'edadActual', defaultContent: ""},
+                { data: 'contactoFuturo', defaultContent: ""},
+                { data: 'asentimiento', defaultContent: ""},
+                { data: 'parteA', defaultContent: ""},
+                { data: 'parteB', defaultContent: ""},
+                { data: 'parteC', defaultContent: ""},
+                { data: 'quienFirma', defaultContent: ""},
+                { data: 'relacionFamiliar', defaultContent: ""},
+                { data: 'versionCarta', defaultContent: ""}
             ]
         });
 
@@ -238,19 +238,19 @@
                 dataSrc: ""
             },
             "columns": [
-                { data: 'codigo'},
-                { data: 'fechaFirma'},
-                { data: 'usuarioRegistro'},
-                { data: 'edadActualMeses'},
-                { data: 'edadMeses'},
-                { data: 'aceptaParteASc'},
-                { data: 'aceptaParteACc'},
-                { data: 'aceptaParteBCc'},
-                { data: 'aceptaParteBSc'},
-                { data: 'aceptaParteCCc'},
-                { data: 'aceptaParteCSc'},
-                { data: 'versionCc'},
-                { data: 'versionSc'}
+                { data: 'codigo', defaultContent: ""},
+                { data: 'fechaFirma', defaultContent: ""},
+                { data: 'usuarioRegistro', defaultContent: ""},
+                { data: 'edadActualMeses', defaultContent: ""},
+                { data: 'edadMeses', defaultContent: ""},
+                { data: 'aceptaParteASc', defaultContent: ""},
+                { data: 'aceptaParteACc', defaultContent: ""},
+                { data: 'aceptaParteBCc', defaultContent: ""},
+                { data: 'aceptaParteBSc', defaultContent: ""},
+                { data: 'aceptaParteCCc', defaultContent: ""},
+                { data: 'aceptaParteCSc', defaultContent: ""},
+                { data: 'versionCc', defaultContent: ""},
+                { data: 'versionSc', defaultContent: ""}
             ]
         });
 
@@ -285,14 +285,14 @@
                 dataSrc: ""
             },
             "columns": [
-                { data: 'codigoParticipante'},
-                { data: 'fechaFirma'},
-                { data: 'usuarioRegistro'},
-                { data: 'edadFirma'},
-                { data: 'quienFirmaC'},
-                { data: 'quienFirmaS'},
-                { data: 'relacionFamiliarC'},
-                { data: 'relacionFamiliarS'}
+                { data: 'codigoParticipante', defaultContent: ""},
+                { data: 'fechaFirma', defaultContent: ""},
+                { data: 'usuarioRegistro', defaultContent: ""},
+                { data: 'edadFirma', defaultContent: ""},
+                { data: 'quienFirmaC', defaultContent: ""},
+                { data: 'quienFirmaS', defaultContent: ""},
+                { data: 'relacionFamiliarC', defaultContent: ""},
+                { data: 'relacionFamiliarS', defaultContent: ""}
             ]
         });
     });

@@ -1,17 +1,15 @@
 package ni.org.ics.webapp.users.model;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import ni.org.ics.webapp.domain.audit.Auditable;
 
+import ni.org.ics.webapp.domain.personal.Personal;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.validator.constraints.NotBlank;
 
 
@@ -38,6 +36,7 @@ public class UserSistema implements Auditable {
 	private Boolean accountNonLocked=true;
 	private String createdBy;
 	private String modifiedBy;
+    private Personal seqPersonal;
 	
 	@Id
 	@Column(name = "NOMBRE_USUARIO", nullable = false, length =50)
@@ -150,8 +149,20 @@ public class UserSistema implements Auditable {
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	
-	@Override
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "SEQ_PERSONAL", nullable = true)
+    @ForeignKey(name = "FK_PERSONAL_USUARIO")
+    public Personal getSeqPersonal() {
+        return seqPersonal;
+    }
+
+    public void setSeqPersonal(Personal seqPersonal) {
+        this.seqPersonal = seqPersonal;
+    }
+
+    @Override
 	public String toString(){
 		return username;
 	}

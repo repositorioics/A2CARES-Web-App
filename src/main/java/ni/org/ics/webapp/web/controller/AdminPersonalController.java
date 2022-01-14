@@ -107,8 +107,10 @@ public class AdminPersonalController {
                     String json = gson.toJson("No se encontro entidad para editar");
                     return JsonUtil.createJsonResponse(json);
                 }
+            } else {
+                //para nuevos registros es necesario poner un valor por defecto en el codigo de personal, aunque se setee con el trigger tg_set_codigo_personal
+                entidad.setIdPersona(0);
             }
-
             entidad.setNombre(nombre);
             MessageResource cargoVal = messageResourceService.getMensaje(cargo);
             entidad.setCargo(cargoVal);

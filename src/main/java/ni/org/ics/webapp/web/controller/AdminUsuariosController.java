@@ -2,7 +2,9 @@ package ni.org.ics.webapp.web.controller;
 
 import com.google.gson.Gson;
 import ni.org.ics.webapp.domain.audit.AuditTrail;
+import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.service.AuditTrailService;
+import ni.org.ics.webapp.service.PersonalService;
 import ni.org.ics.webapp.service.UsuarioService;
 import ni.org.ics.webapp.users.model.*;
 import org.slf4j.Logger;
@@ -38,6 +40,9 @@ public class AdminUsuariosController {
 	@Resource(name="auditTrailService")
 	private AuditTrailService auditTrailService;
 
+    @Resource(name="personalService")
+    private PersonalService personalService;
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
     public String obtenerUsuarios(Model model) throws ParseException { 	
     	logger.debug("Mostrando Usuarios en JSP");
@@ -61,8 +66,10 @@ public class AdminUsuariosController {
     @RequestMapping(value = "newUser", method = RequestMethod.GET)
 	public String initAddUserForm(Model model) {
     	List<Rol> roles = usuarioService.getRoles();
-	    model.addAttribute("roles", roles);
-	    model.addAttribute("agregando",true);
+        List<Personal> personal = this.personalService.getAllActives();
+        model.addAttribute("roles", roles);
+        model.addAttribute("personal", personal);
+        model.addAttribute("agregando",true);
         model.addAttribute("editando",false);
 		return "admin/users/enterForm";
 	}
@@ -82,10 +89,12 @@ public class AdminUsuariosController {
 			List<Rol> roles = usuarioService.getRoles();
 	    	model.addAttribute("roles", roles);
 	    	List<Authority> rolesusuario = this.usuarioService.getRolesUsuario(username);
+            List<Personal> personal = this.personalService.getAllActives();
             model.addAttribute("permisos", permissions);
 	    	model.addAttribute("rolesusuario", rolesusuario);
 	    	model.addAttribute("editando",true);
             model.addAttribute("agregando",false);
+            model.addAttribute("personal", personal);
 			return "admin/users/enterForm";
 		}
 		else{
@@ -111,7 +120,8 @@ public class AdminUsuariosController {
             , @RequestParam( value="chk_pesotalla", required=false, defaultValue="" ) String chkPesotalla
             , @RequestParam( value="chk_ecasa", required=false, defaultValue="" ) String chkEcasa
             , @RequestParam( value="chk_eparticipante", required=false, defaultValue="" ) String chkEparticipante
-            , @RequestParam( value="chk_esatisfaccion", required=false, defaultValue="" ) String chkEsatisfaccion
+            , @RequestParam( value="chk_esatisfaccion", required=false, defaultValue="" ) String chkEsatisfaccion,
+              @RequestParam(value="seqPersonal", required=true ) Integer seqPersonal
 	        )
 	{
     	try{
@@ -130,6 +140,7 @@ public class AdminUsuariosController {
 	    		StandardPasswordEncoder encoder = new StandardPasswordEncoder();
 	    		String encodedPass = encoder.encode(password);
 	    		user.setPassword(encodedPass);
+                user.setSeqPersonal(this.personalService.getPersonalBySeq(seqPersonal));
 	    		this.usuarioService.saveUser(user);
 
                 //Permisos del usuario
@@ -158,6 +169,7 @@ public class AdminUsuariosController {
 				user.setModifiedBy(usuarioActual.getUsername());
 				user.setCompleteName(completeName);
 				user.setEmail(email);
+                user.setSeqPersonal(this.personalService.getPersonalBySeq(seqPersonal));
 				user.setModified(new Date());
 				this.usuarioService.saveUser(user);
 

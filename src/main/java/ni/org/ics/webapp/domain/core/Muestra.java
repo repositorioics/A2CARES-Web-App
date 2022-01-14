@@ -42,6 +42,8 @@ public class Muestra extends BaseMetaData implements Serializable {
 	private String otraRazonNoRojo;
 	private String terreno;
 	private String pinchazos;
+    private String observacion;
+    private String descOtraObservacion;
     private String estudiosAct;
     private String proposito;
 
@@ -182,6 +184,24 @@ public class Muestra extends BaseMetaData implements Serializable {
 	public void setPinchazos(String pinchazos) {
 		this.pinchazos = pinchazos;
 	}
+
+    @Column(name = "OBSERVACION", length = 4, nullable = true)
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
+    @Column(name = "OTRA_OBSERVACION", nullable = true)
+    public String getDescOtraObservacion() {
+        return descOtraObservacion;
+    }
+
+    public void setDescOtraObservacion(String descOtraObservacion) {
+        this.descOtraObservacion = descOtraObservacion;
+    }
 
     @Column(name = "ESTUDIOS_ACTUALES", length = 50, nullable = true)
 	public String getEstudiosAct() {

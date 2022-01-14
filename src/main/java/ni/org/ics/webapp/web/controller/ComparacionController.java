@@ -1,9 +1,11 @@
 package ni.org.ics.webapp.web.controller;
 
-import ni.org.ics.webapp.domain.vistas.DiferenciaParteCarta;
+import ni.org.ics.webapp.dto.DiferenciaParteCartaDto;
 import ni.org.ics.webapp.dto.ComparacionCartasDto;
+import ni.org.ics.webapp.dto.ComparacionMuestrasMA;
 import ni.org.ics.webapp.dto.ComparacionRelFamCartasDto;
 import ni.org.ics.webapp.service.ComparacionCartasService;
+import ni.org.ics.webapp.service.ComparacionMuestrasService;
 import ni.org.ics.webapp.web.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,23 +30,26 @@ public class ComparacionController {
     private static final Logger logger = LoggerFactory.getLogger(ComparacionController.class);
 
     private static final String marcarDiferencia = "<span class='badge badge-danger'>%s</span>";
+
     @Resource(name = "comparacionCartasService")
     private ComparacionCartasService comparacionCartasService;
 
+    @Resource(name = "comparacionMuestrasService")
+    private ComparacionMuestrasService comparacionMuestrasService;
+
     @RequestMapping(value = "cartas", method = RequestMethod.GET)
-    public String list(Model model) throws ParseException {
+    public String letters(Model model) throws ParseException {
         logger.debug("Mostrando diferencias de cartas consentimiento en JSP");
 
         return "comparison/letters";
     }
 
     @RequestMapping(value = "getCartasPartes", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody
-    ResponseEntity<String> getCartasPartes() throws ParseException {
+    public @ResponseBody ResponseEntity<String> getCartasPartes() throws ParseException {
         try {
             logger.debug("buscar diferencias en partes de cartas");
-            List<DiferenciaParteCarta> diferenciaParteCartas = comparacionCartasService.getDiferenciasPartesCartas();
-            for(DiferenciaParteCarta diferencia : diferenciaParteCartas) {
+            List<DiferenciaParteCartaDto> diferenciaParteCartaDtos = comparacionCartasService.getDiferenciasPartesCartas();
+            for(DiferenciaParteCartaDto diferencia : diferenciaParteCartaDtos) {
                 if (!diferencia.getAceptaParteACc().equalsIgnoreCase(diferencia.getAceptaParteASc())) {
                     diferencia.setAceptaParteACc("<span class='badge badge-danger'>"+diferencia.getAceptaParteACc()+"</span>");
                     diferencia.setAceptaParteASc("<span class='badge badge-danger'>"+diferencia.getAceptaParteASc()+"</span>");
@@ -69,7 +74,7 @@ public class ComparacionController {
                 diferencia.setEdadMeses(diferencia.getEdadMeses()/12);
             }
 
-            return JsonUtil.createJsonResponse(diferenciaParteCartas);
+            return JsonUtil.createJsonResponse(diferenciaParteCartaDtos);
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
@@ -77,8 +82,7 @@ public class ComparacionController {
     }
 
     @RequestMapping(value = "getCartasSinDigitar", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody
-    ResponseEntity<String> getCartasSinDigitar() throws ParseException {
+    public @ResponseBody ResponseEntity<String> getCartasSinDigitar() throws ParseException {
         try {
             logger.debug("buscar diferencias de cartas sin digitar");
             List<ComparacionCartasDto> cartas = comparacionCartasService.getConsentimientosSinCarta();
@@ -90,8 +94,7 @@ public class ComparacionController {
     }
 
     @RequestMapping(value = "getCartasRelFam", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody
-    ResponseEntity<String> getDiferenciasRelFam() throws ParseException {
+    public @ResponseBody ResponseEntity<String> getDiferenciasRelFam() throws ParseException {
         try {
             logger.debug("buscar diferencias de cartas sin digitar");
             List<ComparacionRelFamCartasDto> cartas = comparacionCartasService.getDiferenciasRelFam();
@@ -161,4 +164,91 @@ public class ComparacionController {
             return null;
         }
     }
+/*
+    ccalidad.comprojo1=Tubos Rojos del supervisor que no tienen las estaciones
+    ccalidad.comprojo2=Tubos Rojos del supervisor que no tiene el laboratorio
+    ccalidad.comprojo3=Tubos Rojos de las estaciones que no tiene el supervisor
+    ccalidad.comprojo4=Tubos Rojos de las estaciones que no tiene el laboratorio
+    ccalidad.comprojo5=Tubos Rojos de laboratorio que no tiene el supervisor
+    ccalidad.comprojo6=Tubos Rojos de laboratorio que no tienen las estaciones
+    */
+    @RequestMapping(value = "muestras-ma", method = RequestMethod.GET)
+    public String samples(Model model) throws ParseException {
+        logger.debug("Mostrando diferencias en muestras muestreo anual en JSP");
+
+        return "comparison/samples";
+    }
+
+    @RequestMapping(value = "getCompSeroSupNoEstacionesHoy", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody ResponseEntity<String> getCompSeroSupEstacionesHoy() throws ParseException {
+        try {
+            logger.debug("buscar diferencias de tubos Rojos del supervisor que no tienen las estaciones");
+            List<ComparacionMuestrasMA> muestras = comparacionMuestrasService.getCompSeroSupNoEstacionesHoy();
+            return JsonUtil.createJsonResponse(muestras);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "getCompSeroSupNoLaboHoy", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody ResponseEntity<String> getCompSeroSupLaboHoy() throws ParseException {
+        try {
+            logger.debug("Diferencias de tubos Rojos del supervisor que no tiene el laboratorio");
+            List<ComparacionMuestrasMA> muestras = comparacionMuestrasService.getCompSeroSupNoLaboHoy();
+            return JsonUtil.createJsonResponse(muestras);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "getCompSeroEstacionesNoSupHoy", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody ResponseEntity<String> getCompSeroEstacionesNoSupHoy() throws ParseException {
+        try {
+            logger.debug("Diferencias de tubos Rojos de las estaciones que no tiene el supervisor");
+            List<ComparacionMuestrasMA> muestras = comparacionMuestrasService.getCompSeroEstacionesNoSupHoy();
+            return JsonUtil.createJsonResponse(muestras);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "getCompSeroEstacionesNoLabHoy", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody ResponseEntity<String> getCompSeroEstacionesNoLabHoy() throws ParseException {
+        try {
+            logger.debug("Diferencias de tubos Rojos de las estaciones que no tiene el laboratorio");
+            List<ComparacionMuestrasMA> muestras = comparacionMuestrasService.getCompSeroEstacionesNoLabHoy();
+            return JsonUtil.createJsonResponse(muestras);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "getCompSeroLabNoSupHoy", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody ResponseEntity<String> getCompSeroLabNoSupHoy() throws ParseException {
+        try {
+            logger.debug("Diferencias de laboratorio que no tiene el supervisor");
+            List<ComparacionMuestrasMA> muestras = comparacionMuestrasService.getCompSeroLabNoSupHoy();
+            return JsonUtil.createJsonResponse(muestras);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "getCompSeroLabNoEstHoy", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody ResponseEntity<String> getCompSeroLabNoEstHoy() throws ParseException {
+        try {
+            logger.debug("Diferencias de tubos Rojos de laboratorio que no tienen las estaciones");
+            List<ComparacionMuestrasMA> muestras = comparacionMuestrasService.getCompSeroLabNoEstHoy();
+            return JsonUtil.createJsonResponse(muestras);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
 }

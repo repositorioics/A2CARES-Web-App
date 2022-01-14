@@ -122,6 +122,8 @@ public class HojaClinicaController {
             HojaClinica hojaClinica = ParseJsonRequestToHojaClinica(request);
             hojaClinica.setRecordDate(new Date());
             hojaClinica.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
+            //para nuevos registros es necesario poner un valor por defecto en el numero de hoja, aunque se setee con el trigger tg_set_numero_hoja
+            hojaClinica.setNumHojaConsulta(0);
 
             hojaClinicaService.saveOrUpdate(hojaClinica);
             resultado = "Hoja Clinica del participante "+hojaClinica.getCodigoParticipante().getCodigo()+" creada exitosamente";

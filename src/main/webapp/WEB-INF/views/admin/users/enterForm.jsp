@@ -231,6 +231,26 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label class="form-control-label col-md-3" for="authorities"><spring:message code="personal" />
+                                        </label>
+                                            <div class="form-group col-md-9">
+                                                <select class="form-control focusNext" id="seqPersonal" name="seqPersonal">
+                                                    <option selected value=""><spring:message code="select" />...</option>
+                                                    <c:forEach var="item" items="${personal}">
+                                                        <c:choose>
+                                                            <c:when test="${item.codigo eq user.seqPersonal.codigo}">
+                                                                <option selected value="${item.codigo}">${item.idPersona} - ${item.nombre}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <option value="${item.codigo}">${item.idPersona} - ${item.nombre}</option>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="form-control-label col-md-3" for="authorities"><spring:message code="userroles" />
 										<span class="required">
 											 *
@@ -287,6 +307,9 @@
             <c:set var="lenguaje" value="${cookie.eIcsLang.value}"/>
         </c:otherwise>
     </c:choose>
+    <!--  Select2 scripts-->
+    <spring:url value="/resources/js/libs/mySelect2/select2.min.js" var="select2Js" />
+    <script type="text/javascript" src="${select2Js}"></script>
     <spring:url value="/resources/js/libs/jquery.multi-select.js" var="jQueryMultiSelect" />
     <script type="text/javascript" src="${jQueryMultiSelect}"></script>
     <spring:url value="/resources/js/libs/jquery.validate.js" var="validateJs" />

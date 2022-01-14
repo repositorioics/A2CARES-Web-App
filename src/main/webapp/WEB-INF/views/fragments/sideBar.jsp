@@ -5,7 +5,7 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<spring:url value="/" htmlEscape="true "/>"><i class="fas fa-home"></i><spring:message code="dashboard" /></a>
+                <a class="nav-link" href="<spring:url value="/" htmlEscape="true "/>"><i class="fas fa-home"></i><spring:message code="home" /></a>
             </li>
             <sec:authorize access="hasRole('ROLE_ROOT')">
             <li class="nav-item nav-dropdown administracion">
@@ -95,15 +95,33 @@
             <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER')">
                 <li class="nav-item nav-dropdown comparacion">
                     <a class="nav-link nav-dropdown-toggle" href="#">
-                        <i class="fas fa-vial" aria-hidden="true"></i>
+                        <i class="fas fa-not-equal" aria-hidden="true"></i>
                         <spring:message code="comparison" /></a>
                     <ul class="nav-dropdown-items">
-                        <li class="nav-item filedata">
+                        <li class="nav-item">
                             <a class="nav-link" href="<spring:url value="/comparacion/cartas" htmlEscape="true "/>">
-                                <i class="fas fa-list-alt" aria-hidden="true"></i>
+                                <i class="fas fa-clipboard-check" aria-hidden="true"></i>
                                 <spring:message code="letters" /></a>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="<spring:url value="/comparacion/muestras-ma" htmlEscape="true "/>">
+                                <i class="fas fa-vials" aria-hidden="true"></i>
+                                <spring:message code="lbl.samples" /></a>
+                        </li>
+                    </ul>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT', 'ROLE_SUPER')">
+                <li class="nav-item nav-dropdown puntos">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fas fa-map-marked" aria-hidden="true"></i>
+                        <spring:message code="lbl.gps" /></a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<spring:url value="/puntos/" htmlEscape="true "/>">
+                                <i class="fas fa-list-alt" aria-hidden="true"></i>
+                                <spring:message code="lbl.list" /></a>
+                        </li>
                     </ul>
                 </li>
             </sec:authorize>

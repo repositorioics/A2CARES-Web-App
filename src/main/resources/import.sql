@@ -730,6 +730,15 @@ INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES (
 INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.letters.comparison.2', 'Diferencias en partes de la carta','0','0',0);
 INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.letters.comparison.3', 'Diferencias de Tutor y Relación Familiar','0','0',0);
 
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.samples.comparison.1', 'Tubos Rojos del supervisor que no tienen las estaciones','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.samples.comparison.2', 'Tubos Rojos del supervisor que no tiene el laboratorio','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.samples.comparison.3', 'Tubos Rojos de las estaciones que no tiene el supervisor','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.samples.comparison.4', 'Tubos Rojos de las estaciones que no tiene el laboratorio','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.samples.comparison.5', 'Tubos Rojos de laboratorio que no tiene el supervisor','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.samples.comparison.6', 'Tubos Rojos de laboratorio que no tienen las estaciones','0','0',0);
+
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.samples', 'Muestras','0','0',0);
+
 
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('SCANCARTA', NULL, NULL, NULL, '1', 0, '0', 'Catalogo Si/No/No Aplica ScanCarta');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_SCANCARTA_NO', '0','SCANCARTA', NULL, '0', 0, '0', 'NO');
@@ -780,3 +789,35 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_RECEP_MX', NULL, NULL, NULL, '1', 0, '0', 'Catalogo lugar de recepcion muestras');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_RECEP_MX_01', '1', 'CAT_LUGAR_RECEP_MX', NULL, '0', 1, '0', 'Puesto de Salud');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_LUGAR_RECEP_MXC_02', '2', 'CAT_LUGAR_RECEP_MX', NULL, '0', 2, '0', 'Terreno');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_SITIOS_ENVIO_SEROLOGIA', NULL, NULL, NULL, '1', 0, '0', 'Catalogo Sitios de Envios Serologia');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_SITIOS_ENVIO_SEROLOGIA_1', '1', 'CAT_SITIOS_ENVIO_SEROLOGIA', NULL, '0', 1, '0', 'Puesto de Salud Nejapa');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_SITIOS_ENVIO_SEROLOGIA_2', '2', 'CAT_SITIOS_ENVIO_SEROLOGIA', NULL, '0', 2, '0', 'Puesto de Salud Camilo Ortega');
+
+
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.lugar', 'Lugar','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.volumen', 'Volumen','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.fecha.toma', 'Fecha Toma','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.fecha.recepcion', 'Fecha Recepción','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.supervisor', 'Supervisor','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.laboratorista', 'Laboratorista','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.encuestador', 'Encuestador','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.pinchazos', 'Pinchazos','0','0',0);
+
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.neighborhood', 'Barrio','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.latitude', 'Latitud','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.longitude', 'Longitud','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.discarded', 'Descartado','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.discard.reason', 'Razón descarte','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.discard.date', 'Fecha descarte','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.discard.user', 'Usuario descarte','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.gps', 'Puntos Candidatos','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.list', 'Listado','0','0',0);
+
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_OBSERV_MX', NULL, NULL, NULL, '1', 0, '0', 'Catalogo observaciones toma muestra');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_OBSERV_MX_01', '1', 'CAT_OBSERV_MX', NULL, '0', 1, '0', 'Muestra difícil');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_OBSERV_MX_02', '2', 'CAT_OBSERV_MX', NULL, '0', 2, '0', 'Ninguna');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_OBSERV_MX_998', '998', 'CAT_OBSERV_MX', NULL, '0', 3, '0', 'Otra observación');
+
+
