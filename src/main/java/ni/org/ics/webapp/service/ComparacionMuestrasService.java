@@ -93,7 +93,7 @@ public class ComparacionMuestrasService {
         Timestamp timeStamp = DateUtil.getDateWithoutTime();
         Query query = session.createSQLQuery("select t1.CODIGO_ROJO as codigo, DATE_FORMAT(t1.FECHA_MUESTRA, '%d-%m-%Y') as fechaMuestra, t1.NUM_PINCHAZOS as pinchazos, t1.USUARIO_REGISTRO as usuarioRegistro " +
                 "from muestras as t1 left join serologia_recepcion as t2 on t1.CODIGO_ROJO = t2.CODIGO_PARTICIPANTE and date(t1.FECHA_MUESTRA) = date(t2.FECHA_TOMA) " +
-                "where ((t1.FECHA_MUESTRA = :fechaSero and " +
+                "where ((date(t1.FECHA_MUESTRA) = :fechaSero and " +
                 "t1.TOMO_ROJO = '1') and (t2.CODIGO_PARTICIPANTE Is Null or date(t1.FECHA_MUESTRA) <> date(t2.FECHA_TOMA)) " +
                 "and (YEAR(t1.FECHA_MUESTRA) = :anio))");
         query.setParameter("fechaSero", timeStamp);

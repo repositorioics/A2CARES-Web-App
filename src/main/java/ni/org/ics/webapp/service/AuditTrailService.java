@@ -1,6 +1,7 @@
 package ni.org.ics.webapp.service;
 
 import ni.org.ics.webapp.domain.audit.AuditTrail;
+import ni.org.ics.webapp.domain.audit.LogUpdateApk;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -38,6 +39,15 @@ public class AuditTrailService {
      * @param auditTrail a guardar
      */
     public void saveAuditTrail(AuditTrail auditTrail){
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(auditTrail);
+    }
+
+    /**
+     * Guardar un formulario LogUpdateApk
+     * @param auditTrail a guardar
+     */
+    public void saveLogUpdateApk(LogUpdateApk auditTrail){
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(auditTrail);
     }

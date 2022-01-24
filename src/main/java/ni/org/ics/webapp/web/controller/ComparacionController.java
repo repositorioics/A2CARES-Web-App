@@ -111,13 +111,13 @@ public class ComparacionController {
                     diferencia.setNombre1TutorS(String.format(marcarDiferencia, diferencia.getNombre1TutorS()));
                 }
                 //comparar segundo nombre
-                if (diferencia.getNombre2TutorC() == null) {
+                if (diferencia.getNombre2TutorC() == null && diferencia.getNombre2TutorS() != null) {
                     diferencia.setNombre2TutorC(String.format(marcarDiferencia, " "));
                     diferencia.setNombre2TutorS(String.format(marcarDiferencia, diferencia.getNombre2TutorS()));
-                } else if (diferencia.getNombre2TutorS() == null) {
+                } else if (diferencia.getNombre2TutorS() == null && diferencia.getNombre2TutorC() != null) {
                     diferencia.setNombre2TutorS(String.format(marcarDiferencia, " "));
                     diferencia.setNombre2TutorC(String.format(marcarDiferencia, diferencia.getNombre2TutorC()));
-                } else if (!diferencia.getNombre2TutorC().equalsIgnoreCase(diferencia.getNombre2TutorS())) {
+                } else if (diferencia.getNombre2TutorC() != null && (!diferencia.getNombre2TutorC().equalsIgnoreCase(diferencia.getNombre2TutorS()))) {
                     diferencia.setNombre2TutorC(String.format(marcarDiferencia, diferencia.getNombre2TutorC()));
                     diferencia.setNombre2TutorS(String.format(marcarDiferencia, diferencia.getNombre2TutorS()));
                 }
@@ -133,13 +133,13 @@ public class ComparacionController {
                     diferencia.setApellido1TutorS(String.format(marcarDiferencia, diferencia.getApellido1TutorS()));
                 }
                 //comparar segundo apellido
-                if (diferencia.getApellido2TutorC() == null) {
+                if (diferencia.getApellido2TutorC() == null && diferencia.getApellido2TutorS() != null) {
                     diferencia.setApellido2TutorC(String.format(marcarDiferencia, " "));
                     diferencia.setApellido2TutorS(String.format(marcarDiferencia, diferencia.getApellido2TutorS()));
-                } else if (diferencia.getApellido2TutorS() == null) {
+                } else if (diferencia.getApellido2TutorS() == null && diferencia.getApellido2TutorC() != null) {
                     diferencia.setApellido2TutorS(String.format(marcarDiferencia, " "));
                     diferencia.setApellido2TutorC(String.format(marcarDiferencia, diferencia.getApellido2TutorC()));
-                } else if (!diferencia.getApellido2TutorC().equalsIgnoreCase(diferencia.getApellido2TutorS())) {
+                } else if (diferencia.getApellido2TutorC() != null && (!diferencia.getApellido2TutorC().equalsIgnoreCase(diferencia.getApellido2TutorS()))) {
                     diferencia.setApellido2TutorC(String.format(marcarDiferencia, diferencia.getApellido2TutorC()));
                     diferencia.setApellido2TutorS(String.format(marcarDiferencia, diferencia.getApellido2TutorS()));
                 }

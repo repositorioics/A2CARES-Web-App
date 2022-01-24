@@ -7,7 +7,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="<spring:url value="/" htmlEscape="true "/>"><i class="fas fa-home"></i><spring:message code="home" /></a>
             </li>
-            <sec:authorize access="hasRole('ROLE_ROOT')">
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_ADMIN')">
             <li class="nav-item nav-dropdown administracion">
 	            <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-wrench"></i><spring:message code="admin" /></a>
 	            <ul class="nav-dropdown-items">
@@ -43,7 +43,7 @@
 	            </ul>
 	        </li>
             </sec:authorize>
-            <sec:authorize access="hasRole('ROLE_ROOT')">
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI')">
                 <li class="nav-item nav-dropdown fingering">
                     <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-book-open"></i><spring:message code="fingering" /></a>
                     <ul class="nav-dropdown-items">
@@ -54,7 +54,7 @@
                 </li>
             </sec:authorize>
 
-            <sec:authorize access="hasAnyRole('ROLE_ROOT')">
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI')">
                 <li class="nav-item nav-dropdown consentimiento">
                     <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-notebook"></i><spring:message code="letters" /></a>
                     <ul class="nav-dropdown-items">
@@ -74,7 +74,7 @@
                 </li>
             </sec:authorize>
 
-            <sec:authorize access="hasAnyRole('ROLE_ROOT')">
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI')">
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#">
                     <i class="fa fa-user-times" aria-hidden="true"></i>
@@ -90,7 +90,7 @@
             </sec:authorize>
 
 
-            <sec:authorize access="hasAnyRole('ROLE_ROOT')">
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_LABO')">
                 <li class="nav-item nav-dropdown Serologia">
                     <a class="nav-link nav-dropdown-toggle" href="#">
                         <i class="fas fa-vial" aria-hidden="true"></i>
@@ -124,6 +124,20 @@
                             <a class="nav-link" href="<spring:url value="/comparacion/muestras-ma" htmlEscape="true "/>">
                                 <i class="fas fa-vials" aria-hidden="true"></i>
                                 <spring:message code="lbl.samples" /></a>
+                        </li>
+                    </ul>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI')">
+                <li class="nav-item nav-dropdown comparacion">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fas fa-check-double" aria-hidden="true"></i>
+                        <spring:message code="corrections" /></a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<spring:url value="/correcion/tutor/" htmlEscape="true "/>">
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                                <spring:message code="lbl.tutor" /></a>
                         </li>
                     </ul>
                 </li>

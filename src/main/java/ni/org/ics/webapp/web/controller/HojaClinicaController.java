@@ -100,7 +100,7 @@ public class HojaClinicaController {
             if (procesos != null && procesos.getRetirado().equals(1))
                 return JsonUtil.createJsonResponse("Participante retirado");
             else {
-                map.put("codigo", participante.getCodigo().toString());
+                map.put("codigo", participante.getCodigo());
                 map.put("nombre", participante.getNombreCompleto());
                 map.put("fechaNac", DateUtil.DateToString(participante.getFechaNac(), "dd/MM/yyyy"));
                 map.put("edad", participante.getEdad());

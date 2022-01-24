@@ -410,6 +410,7 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_INODOROLET_01', '1', 'CAT_INODOROLET', NULL, '0', 1, '0', 'Inodoro');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_INODOROLET_02', '2', 'CAT_INODOROLET', NULL, '0', 2, '0', 'Letrina');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_INODOROLET_03', '3', 'CAT_INODOROLET', NULL, '0', 3, '0', 'Ambos');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_INODOROLET_996', '996', 'CAT_INODOROLET', NULL, '0', 4, '0', 'Ninguno');
 
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('select', '0', '0', '0', 'Seleccione');
 
@@ -820,4 +821,31 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_OBSERV_MX_02', '2', 'CAT_OBSERV_MX', NULL, '0', 2, '0', 'Ninguna');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_OBSERV_MX_998', '998', 'CAT_OBSERV_MX', NULL, '0', 3, '0', 'Otra observación');
 
+/*RETIRO*/
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ( 'date_of_death', 'Fecha Fallecimiento','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ( 'Details', 'Detalles','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ( 'house', 'Casa','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('others','Otros','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('family_relationship','Relación Familiar','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('close','Cerrado','0','0',0);
 
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('supervised_by','Supervisado Por','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('documented_by','Documentado Por','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('communicated_by','Comunicado Por','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('returned_card','Devolvió Carnet?','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('relationship','Parentesco','0','0',0);
+
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('corrections','Correcciones','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('lbl.correction.tutor','Corregir datos de tutor','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('msg.correction.tutor.success','Tutor del participante %s actualizado exitosamente!!','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('msg.correction.tutor.error','Error al guardar correcciones!!','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('lbl.correction.tutor.actual','Información actuales del tutor','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('lbl.correction.tutor.new','Información nueva del tutor','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('lbl.correction.observacion','Motivo de correción','0','0',0);
+
+
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('receives_document','Personal del Estudio quien recibe el retiro','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('fill_document','Personal quien llena el Documento','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('passed_away','Fallecido','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('person_communicates','Padre o Tutor con quien había comunicación sobre el retiro','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('cause_withdrawal','Causas de la No Participación','0','0',0);

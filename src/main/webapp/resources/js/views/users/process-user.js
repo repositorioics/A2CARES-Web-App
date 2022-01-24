@@ -159,7 +159,7 @@ var EditUser = function () {
         	            	$('#completeName').focus();
         	    			unblockUI();
                             window.setTimeout(function(){
-                                window.location.href = parametros.usuarioUrl;
+                                window.location.href = parametros.newUserUrl;
                             }, 1500);
         	            }
         	            , 'text' )

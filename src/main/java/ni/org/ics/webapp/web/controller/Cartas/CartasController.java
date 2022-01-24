@@ -89,7 +89,7 @@ public class CartasController {
         model.addAttribute("estudio", carta.get(0).getNombre() );
         List<MessageResource> relFam = messageResourceService.getCatalogo("CAT_RF_TUTOR");
         model.addAttribute("relFam", relFam);
-        List<MessageResource> personal = messageResourceService.getCatalogo("CAT_CARGO");
+        List<Personal> personal = scanCartaService.getPersonal();
         model.addAttribute("personal", personal);
         List<MessageResource> scanca = messageResourceService.getCatalogo("SCANCARTA");
         model.addAttribute("scanca", scanca);

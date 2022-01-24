@@ -159,9 +159,9 @@ var SerologiaProcess = function(){
             function saveSerologia(urls){
                 var isAllValid = true;
                 var vol = $("#volumen").val();
-                 if( vol > 6){// valida el volumen de la muestra
+                 if( vol > 7){// valida el volumen de la muestra
                      $("#volumen").val("");
-                    swal("Advertencia!", "Volumen permitido de la Muestra es de 6 ml", "error");
+                    swal("Advertencia!", "Volumen máximo permitido de la Muestra es de 7 ml", "error");
                     isAllValid = false;
                     return;
                 }else if(vol<6){

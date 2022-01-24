@@ -702,13 +702,14 @@
                                                             <option selected value=""><spring:message code="select"/>...</option>
                                                             <c:forEach items="${personal}" var="p">
                                                                 <c:choose>
-                                                                    <c:when test="${p.catKey eq obj.personal}">
-                                                                        <option selected value="${p.catKey}">${p.catKey} - ${p.spanish}</option>
+                                                                    <c:when test="${p.codigo eq obj.personal}">
+                                                                        <option selected value="${p.codigo}">${p.idPersona} - ${p.nombre}</option>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <option value="${p.catKey}">${p.catKey} - ${p.spanish}</option>
+                                                                        <option value="${p.codigo}">${p.idPersona} - ${p.nombre}</option>
                                                                     </c:otherwise>
                                                                 </c:choose>
+
                                                             </c:forEach>
                                                         </select>
                                                         <div class="invalid-feedback">

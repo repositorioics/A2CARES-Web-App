@@ -25,6 +25,7 @@
                     <i class="fa fa-angle-right"></i> <a href="<spring:url value="/admin/users/editUser/${user.username}" htmlEscape="true "/>">${user.username}</a>
                 </li>
             </ol>
+            <spring:url value="/admin/users/newUser" var="newUserUrl"/>
             <spring:url value="/admin/users/saveUser" var="saveUserUrl"/>
             <spring:url value="/admin/users/{username}"
                         var="usuarioUrl">
@@ -336,6 +337,7 @@
         jQuery(document).ready(function() {
             var parameters = {saveUserUrl: "${saveUserUrl}",
                 usuarioUrl: "${usuarioUrl}",
+                newUserUrl: "${newUserUrl}",
                 successmessage: "${successMessage}",
                 error: "${errorProcess}"
             };
