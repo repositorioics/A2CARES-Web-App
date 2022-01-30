@@ -1,6 +1,7 @@
 package ni.org.ics.webapp.movil.controller;
 
 import ni.org.ics.webapp.domain.core.Muestra;
+import ni.org.ics.webapp.domain.core.MuestraEnfermo;
 import ni.org.ics.webapp.service.MuestraService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,4 +76,41 @@ public class MuestraController {
         }
         return "Datos recibidos!";
     }
+
+    /**
+     * Acepta una solicitud GET para JSON
+     * @return JSON
+     */
+    @RequestMapping(value = "muestrasenfermo", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    List<MuestraEnfermo> getMuestrasEnfermos() throws Exception {
+        logger.info("Descargando toda la informacion de formularios muestras enfermos");
+        List<MuestraEnfermo> respuestaList = muestraService.getMuestrasEnfermos();
+        if (respuestaList == null){
+            logger.debug("Nulo");
+        }
+        return respuestaList;
+    }
+
+    /**
+     * Acepta una solicitud POST con un par�metro JSON
+     * @param muestras Objeto serializado de Muestras
+     * @return String con el resultado
+     */
+    @RequestMapping(value = "muestrasenfermo", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    String saveMuestrasEnfermos(@RequestBody MuestraEnfermo[] muestras){
+        logger.debug("Insertando/Actualizando muestras enfermos");
+        if (muestras == null){
+            logger.debug("Nulo");
+            return "No recibi nada!";
+        }else{
+            List<MuestraEnfermo> muestraList = Arrays.asList(muestras);
+            for (MuestraEnfermo muestra : muestraList){
+                muestraService.saveOrUpdateMuestraEnfermo(muestra);
+            }
+        }
+        return "Datos recibidos!";
+    }
+
 }
