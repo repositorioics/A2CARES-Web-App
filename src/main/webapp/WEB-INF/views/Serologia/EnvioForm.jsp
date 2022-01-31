@@ -205,12 +205,14 @@
             </li>
         </ol>
         <spring:url value="/reportes/downloadFileEnviosSerologia/" var="pdfEnvioSeroUrl"/>
+        <spring:url value="/reportes/downloadFileSerologiaExcel/" var="excelEnvioSeroUrl"/>
         <c:set var="successMessage"><spring:message code="process.success" /></c:set>
         <c:set var="errorProcess"><spring:message code="process.error" /></c:set>
         <div class="container-fluid col-8">
             <div class="card">
                 <div class="card-header">
                     <h5 class="page-title">
+                        <i class="far fa-file"></i>
                         <small><spring:message code="Generar" /> <spring:message code="Reporte Envios" /></small>
                     </h5>
                 </div>
@@ -244,13 +246,15 @@
                                     </div>
                                 </div>
 
-
-
-                                <div class="form-actions fluid">
-                                    <div class="col-md-offset-6 col-md-10">
-                                        <button id="toPdf" type="submit" class="btn btn-success btn-ladda" data-style="expand-right"><spring:message code="generate" /> <i class="fa fa-file-pdf-o"></i></button>
+                                <div class="d-flex justify-content-between">
+                                    <div class="p-2 bd-highlight"></div>
+                                    <div class="p-2 bd-highlight">
+                                        <button id="toPdf" type="submit" class="btn btn-success btn-ladda" data-style="expand-right"><i class="far fa-file-pdf"></i> <spring:message code="generate" /> <spring:message code="Pdf" /> </button>
+                                        <button id="toExcel" type="submit" class="btn btn-info btn-ladda" data-style="expand-right"><i class="far fa-file-excel"></i> <spring:message code="generate" /> <spring:message code="Excel" /> </button>
                                     </div>
+                                    <div class="p-2 bd-highlight"></div>
                                 </div>
+
                             </form>
                         </div>
                     </div>
@@ -355,6 +359,18 @@
                 }
             }
         });
+
+
+        $("#toExcel").on("click", function(){
+            var $validarForm = form1.valid();
+            if (!$validarForm) {
+                $validator.focusInvalid();
+                return false;
+            } else {
+                window.open("${excelEnvioSeroUrl}?" + form1.serialize())
+            }
+        });
+
     });
 </script>
 </body>

@@ -1,21 +1,14 @@
 package ni.org.ics.webapp.web.utils.pdf;
 
 import com.lowagie.text.*;
-import com.lowagie.text.Document;
-import com.lowagie.text.Element;
 import com.lowagie.text.Font;
-import com.lowagie.text.FontFactory;
-import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 import com.lowagie.text.pdf.draw.LineSeparator;
-//import com.sun.javafx.font.*;
-
 import ni.org.ics.webapp.domain.Retiros.Retiros;
 import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
 import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
-import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.domain.scancarta.DetalleParte;
@@ -24,20 +17,18 @@ import ni.org.ics.webapp.domain.scancarta.ParticipanteExtension;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
-import sun.font.FontFamily;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.awt.*;
-import java.io.Writer;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
-import java.io.FileOutputStream;
-import java.io.File;
+import java.util.regex.Pattern;
+
+//import com.sun.javafx.font.*;
 
 /**
  * Created by Miguel Salinas on 19/10/2018.
@@ -76,6 +67,9 @@ public class PdfView extends AbstractPdfView {
 
         if (model.get("TipoReporte").equals(Constants.TPR_REPORTERETIRO)){
             ReporteRetiro(model, document, writer);
+        }
+        if (model.get("TipoReporte").equals(Constants.TPR_DATOSGENERALES)){
+            datosGenerales(model, document, writer);
         }
     }
 
@@ -350,6 +344,25 @@ public class PdfView extends AbstractPdfView {
         Phrase watermark = new Phrase(isAnulada, new Font(Font.ITALIC, 180, Font.NORMAL, Color.LIGHT_GRAY));
         ColumnText.showTextAligned(canvas, Element.ALIGN_CENTER, watermark, 330, 425, 45);
 
+            /* prueba rowspan*/
+        table = new PdfPTable(new float[]{18,18,18});
+        table.setWidthPercentage(98f);
+        cell = new PdfPCell(new Phrase("1", mia));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        //2
+        cell = new PdfPCell(new Phrase("2", mia));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        //3
+        cell = new PdfPCell(new Phrase("3", mia));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        document.add(table);
+
+
+         /* fin prueba rowspan*/
 
 //region foreach
         if (ListDetailPart.size() > 0){
@@ -573,6 +586,15 @@ public class PdfView extends AbstractPdfView {
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
+    public PdfPCell createCell(String content, int colspan, int rowspan, int border) {
+        PdfPCell cell = new PdfPCell(new Phrase(content));
+        cell.setColspan(colspan);
+        cell.setRowspan(rowspan);
+        cell.setBorder(border);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        return cell;
+    }
+
     //region todo Reporte Envio de Muestras
     private void ReporteEnvio(Map<String, Object> model, Document document, PdfWriter writer)throws Exception{
         List<SerologiaEnvio> datos_Envio = (List<SerologiaEnvio>)  model.get("SerologiasEnviadas");
@@ -580,12 +602,13 @@ public class PdfView extends AbstractPdfView {
         List<Serologia_Detalles_Envio> Detalles_Muestras_Serologia = (List<Serologia_Detalles_Envio>) model.get("allSerologia");
         messageSitio = (List<MessageResource>) model.get("sitios");
 
-
         Integer numeroEnvios = (Integer) model.get("nEnvios");
         String f1 = (String) model.get("fechaInicio");
         String f2 = (String) model.get("fechaFin");
 
+        //document = new Document(PageSize.A4,20,20,20,20);
         document.newPage();
+
         document.open();
         Date fecha_inicio = DateUtil.StringToDate(f1,"dd/MM/yyyy");
         Calendar calendar2 = Calendar.getInstance();
@@ -606,6 +629,7 @@ public class PdfView extends AbstractPdfView {
         writer.setPageEvent(footer);
 
         Font miaNormal = new Font(Font.COURIER,12, Font.NORMAL);
+        Font FontObservacion = new Font(Font.COURIER,9, Font.NORMAL);
         Font mia = new Font(Font.COURIER,12, Font.BOLDITALIC);
         Font miaEstudio = new Font(Font.COURIER,9);
         Date objDate = new Date();
@@ -613,19 +637,14 @@ public class PdfView extends AbstractPdfView {
         DateFormat hourFormat = new SimpleDateFormat("HH:mm");
         Paragraph fecha = new Paragraph(dateformat.format(objDate) + " " + hourFormat.format(objDate));
         fecha.setAlignment(Element.ALIGN_RIGHT);
-
         float y = 650f; //posicion coordenada y en la pagina.. mientras mas disminuye mas se acerca al fin (botton) de la pagina
-        PdfPTable table = new PdfPTable(new float[]{5,10,10,15,23,25});
+        PdfPTable table = new PdfPTable(new float[]{5,10,10,7,8,23,25});
+        table.setHeaderRows(1);
         table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
-
         PdfPCell cell;
-
         Paragraph paragraph1 = new Paragraph();
         addEmptyLine(paragraph1, 1);
         document.add(paragraph1);
-
-        table.setWidthPercentage(98f);
-        table.setHeaderRows(1);
 
         cell = new PdfPCell(new Phrase("N°",mia));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -639,9 +658,11 @@ public class PdfView extends AbstractPdfView {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        cell = new PdfPCell(new Phrase("EDAD",mia));
+        cell = new PdfPCell(new Phrase("EDAD\nAños|Meses",mia));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setColspan(2);
         table.addCell(cell);
+
 
         cell = new PdfPCell(new Phrase("DESCRIPCIÓN",mia));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -677,7 +698,20 @@ public class PdfView extends AbstractPdfView {
                 //edad
                 double d = obj.getSerologia().getEdadMeses();
                 double edad = d/12;
-                if (edad ==0){
+
+                cell = new PdfPCell(new Phrase(""+Math.round(edad), miaNormal));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+
+                String e = ""+df.format(edad);
+                String[] arrayString = e.split(Pattern.quote(","));
+                String part1 = "0."+arrayString[1];
+                double number = Double.parseDouble(part1);
+                double result = (number/0.08333);
+                cell = new PdfPCell(new Phrase(""+Math.round(result), miaNormal));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+                /*if (edad ==0){
                     cell = new PdfPCell(new Phrase("-", miaNormal));
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                     table.addCell(cell);
@@ -689,29 +723,27 @@ public class PdfView extends AbstractPdfView {
                     cell = new PdfPCell(new Phrase(df.format(edad)+" meses.", miaNormal));
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                     table.addCell(cell);
-                }
+                }*/
                 //Descripcion
-                cell = new PdfPCell(new Phrase(obj.getSerologia().getDescripcion(), miaNormal));
+                cell = new PdfPCell(new Phrase(obj.getSerologia().getDescripcion(), FontObservacion));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
 
                 //observacion
-                cell = new PdfPCell(new Phrase(obj.getSerologia().getObservacion(), miaNormal));
+                cell = new PdfPCell(new Phrase(obj.getSerologia().getObservacion(), FontObservacion));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
                 if (table.getTotalHeight() > 580) {
                     table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
                     document.newPage();
                     y = 650f;
-                    table = new PdfPTable(new float[]{5,10,10,15,23,25});
+                    table = new PdfPTable(new float[]{5,10,10,7,8,23,25});
                     table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
                 }
 
         }
-
         table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
         y = y - table.getTotalHeight() - 10;
-
         table = new PdfPTable(new float[]{100});
         table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
         cell = new PdfPCell(new Phrase("Total: "+ Detalles_Muestras_Serologia.size(),miaEstudio));
@@ -1271,6 +1303,191 @@ public class PdfView extends AbstractPdfView {
     }
 
     //endregion
+
+
+    //region datos generales
+
+    private void datosGenerales(Map<String, Object> model,
+                                Document document,
+                                PdfWriter writer) throws Exception{
+
+        List<DatosGeneralesParticipante> datosParticipantes = (List<DatosGeneralesParticipante>) model.get("datos");
+        if (datosParticipantes.size()<=0){
+            Paragraph h1 = new Paragraph(this.getMessage("noResults", null), new Font(Font.TIMES_ROMAN, 13, Font.BOLD));
+            document.add(h1);
+        }
+        for (DatosGeneralesParticipante datosParticipante : datosParticipantes) {
+            document.newPage();
+            MyFooter footer = new MyFooter();
+            footer.setMensajes(datosParticipante.getMensajes());
+            writer.setPageEvent(footer);
+            Font timesRomanNormal12 = new Font(Font.TIMES_ROMAN, 12, Font.NORMAL);
+            Font timesRomanBold13 = new Font(Font.TIMES_ROMAN, 13, Font.BOLD);
+            Font timesRomanBold12 = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
+            Font timesRomanBoldItalic12 = new Font(Font.TIMES_ROMAN, 12, Font.BOLDITALIC);
+
+            Paragraph h1 = new Paragraph(this.getMessage("title.report.file", null), timesRomanBold13);
+            document.add(h1);
+            LineSeparator ls = new LineSeparator(0.5f, 100, null, 0, -5);
+            ls.setLineWidth(0.5f);
+            document.add(new Chunk(ls));
+
+            PdfPTable table = new PdfPTable(new float[]{10, 13, 10, 67});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.code", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getCodigo(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.date", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getFechaIngreso(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            Paragraph t1 = new Paragraph(this.getMessage("lbl.general.data", null), timesRomanBoldItalic12);
+            t1.setSpacingAfter(5f);
+            document.add(t1);
+
+            table = new PdfPTable(new float[]{23, 77});
+            table.setWidthPercentage(96);
+            table.addCell(createCellUnderline(this.getMessage("lbl.family", null), timesRomanBoldItalic12, Rectangle.NO_BORDER, 2));
+            table.addCell(createCell(this.getMessage("lbl.family.boss", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getJefeFamilia(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.tutor", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getTutor(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.father", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getPadre(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.mother", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getMadre(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{23, 10, 25, 15, 27});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.family.relationship", null), timesRomanBold12, Rectangle.NO_BORDER, 2));
+            table.addCell(createCell(datosParticipante.getRelFamTutor(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.housing.type", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getTipoVivienda(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.neighborhood", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getBarrio(), timesRomanNormal12, Rectangle.NO_BORDER, 2));
+            table.addCell(createCell(this.getMessage("lbl.block", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getManzana(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{23, 77});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.address", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getDireccion(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.phone", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getTelefonos(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCellUnderline(this.getMessage("lbl.contact", null), timesRomanBoldItalic12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.contact.explanation", null), timesRomanBoldItalic12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.name", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getNombreContacto(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.neighborhood", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getBarrioContacto(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.phone", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getTelefonosContacto(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.address", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getDireccionContacto(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            Paragraph t2 = new Paragraph(this.getMessage("lbl.child.data", null), timesRomanBoldItalic12);
+            t2.setSpacingAfter(5f);
+            document.add(t2);
+
+            table = new PdfPTable(new float[]{29, 71});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.names.surnames", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getNombreCompleto(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{8, 8, 23, 17, 7, 8, 15, 14});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.age", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getEdad(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.birthdate", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getFechaNacimiento(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.gender", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getSexo(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.student", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getEstudiante(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{10, 19, 10, 61});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.turn", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getTurno(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.school", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getEscuela(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{29, 71});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.residence.time", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getTiempoResidencia(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{65, 35});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.stay.area", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getPermanecerTresAnios(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{56, 44});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.where.child.attends", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getDondeAsiste(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{56, 44});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.health.unit.attends", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getUnidadAsiste(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            table = new PdfPTable(new float[]{85, 15});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.willing.attends.cssf", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getAsistirCSSF(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            Paragraph t3 = new Paragraph(this.getMessage("lbl.clinical.epi.data", null), timesRomanBoldItalic12);
+            t3.setSpacingAfter(5f);
+            document.add(t3);
+
+            table = new PdfPTable(new float[]{53, 5, 10, 32});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.chronic disease", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getEnfermedadCronica(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.wich", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getCualEnfermedadCronica(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.take.treatment", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getTomaTratamiento(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.wich", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getCualTratamiento(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.diagnosed.dengue", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getTieneDxDengue(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.when", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getFechaDxDengue(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.hospitalized.dengue", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getHospitalizadoDengue(), timesRomanNormal12, Rectangle.NO_BORDER));
+            table.addCell(createCell(this.getMessage("lbl.when", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getFechaHospitalizadoDengue(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+
+            LineSeparator ls2 = new LineSeparator();
+            ls2.setLineWidth(0.5f);
+            document.add(new Chunk(ls2));
+
+            table = new PdfPTable(new float[]{20, 80});
+            table.setWidthPercentage(96);
+            table.addCell(createCell(this.getMessage("lbl.digitador", null), timesRomanBold12, Rectangle.NO_BORDER));
+            table.addCell(createCell(datosParticipante.getDigitador(), timesRomanNormal12, Rectangle.NO_BORDER));
+            document.add(table);
+        }
+    }
+
+
+    //endregion
+
+
+
     private String getDescripcionCatalogo(String codigo,String catroot){
         for(MessageResource rnv : messageExtremidades){
             if (rnv.getCatKey().equals(codigo)) {
@@ -1412,7 +1629,7 @@ class HeaderFooterReporteEnvio extends PdfPageEventHelper {
         table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
         PdfPCell cell = new PdfPCell(new Phrase("MUESTREO ANUAL A2CARES " + anioActual,FontFactory.getFont("COURIER", 14, java.awt.Font.ITALIC)));
         cell.setBorder(PdfPCell.NO_BORDER);
-        cell.setHorizontalAlignment(Element.ALIGN_BOTTOM);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
         cell = new PdfPCell(new Phrase("Viaje: "+ this.getNumeroEnvios() +" \n ",FontFactory.getFont("COURIER", 14, java.awt.Font.ITALIC, Color.black)));
         cell.setBorder(PdfPCell.NO_BORDER);

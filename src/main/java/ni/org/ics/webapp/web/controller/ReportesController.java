@@ -5,7 +5,6 @@ import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
 import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
 import ni.org.ics.webapp.domain.core.Estudio;
-import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.domain.scancarta.DetalleParte;
@@ -26,15 +25,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Miguel Salinas on 9/8/2017.
@@ -43,6 +42,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/reportes/*")
 public class ReportesController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ReportesController.class);
+
+    @Resource(name = "estudioService")
+    private EstudioService estudioService;
 
     @Resource(name = "messageResourceService")
     private MessageResourceService messageResourceService;
@@ -94,7 +98,7 @@ public class ReportesController {
     }
     //endregion
 
-    //region todo Este controlador Genera el Reorte Serologia
+    //region todo Este controlador Genera el Reporte Serologia PDF y EXCEL
     @RequestMapping(value = "/downloadFileEnviosSerologia", method = RequestMethod.GET)
     public ModelAndView downloadFileEnviosSerologia(@RequestParam(value="nEnvios", required=false ) Integer nEnvios,
                                                     @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
@@ -119,7 +123,36 @@ public class ReportesController {
         ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTE);
         return ReporteEnvio;
     }
+
+
+
+    @RequestMapping(value = "downloadFileSerologiaExcel", method = RequestMethod.GET)
+    public ModelAndView SerologiaExcel(@RequestParam(value="nEnvios", required=false ) Integer nEnvios,
+                                       @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                       @RequestParam(value="fechaFin", required=false ) String fechaFin)
+    throws Exception {
+            ModelAndView ReporteEnvio = new ModelAndView("excelView");
+            Date dFechaInicio = null;
+            if (fechaInicio != null && !fechaInicio.isEmpty())
+                dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+            Date dFechaFin = null;
+            if (fechaFin != null && !fechaFin.isEmpty())
+                dFechaFin = DateUtil.StringToDate(fechaFin + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+            List<SerologiaEnvio> SerologiasEnviadas = this.serologiaservice.getSerologiaEnvioByDates(nEnvios, dFechaInicio, dFechaFin);
+            ReporteEnvio.addObject("nEnvios", nEnvios);
+            List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+            ReporteEnvio.addObject("sitios", sitios);
+            ReporteEnvio.addObject("fechaInicio", fechaInicio);
+            ReporteEnvio.addObject("fechaFin", fechaFin);
+            ReporteEnvio.addObject("SerologiasEnviadas", SerologiasEnviadas);
+            List<Serologia_Detalles_Envio> allSerologia = this.serologiaservice.getAllSerologia(nEnvios, dFechaInicio, dFechaFin);
+            ReporteEnvio.addObject("allSerologia", allSerologia);
+            ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTE);
+            return ReporteEnvio;
+    }
+
     //endregion
+
 
     //region todo Reporte Retiro A2CARE /reportes/reporteRetiro
     @RequestMapping(value = "/reporteRetiro", method = RequestMethod.GET)
@@ -151,6 +184,43 @@ public class ReportesController {
         ReporteRetiro.addObject("TipoReporte", Constants.TPR_REPORTERETIRO);
         return ReporteRetiro;
     }
+    //endregion
+
+
+    //region generar reporte datos generales
+
+
+    @RequestMapping(value = "/pdf/fileData", method = RequestMethod.GET)
+    public String fileDataReportForm(Model model) throws ParseException {
+        logger.debug("Mostrando formulario para generar datos generales para agregar al expediente");
+        List<Estudio> estudios = estudioService.getEstudios();
+        model.addAttribute("estudios", estudios);
+        return "/reportes/fileData";
+    }
+
+
+    @RequestMapping(value = "/downloadFileDataReport", method = RequestMethod.GET)
+    public ModelAndView downloadFilaDataReport(@RequestParam(value="estudio", required=false) int estudio,
+                                               @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                               @RequestParam(value="fechaFin", required=false ) String fechaFin,
+                                               @RequestParam(value="codigoParticipante", required=false) String codigoParticipante
+    ) throws Exception{
+        ModelAndView excelView = new ModelAndView("pdfView");
+        Date dFechaInicio = null;
+        if (fechaInicio!=null && !fechaInicio.isEmpty())
+            dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+        Date dFechaFin = null;
+        if (fechaFin!=null && !fechaFin.isEmpty())
+            dFechaFin = DateUtil.StringToDate(fechaFin+ " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+        List<DatosGeneralesParticipante> datosParticipante = reportesPdfService.getDatosGeneralesParticipante(estudio, codigoParticipante, dFechaInicio, dFechaFin);
+        List<MessageResource> messageReports = messageResourceService.loadAllMessagesNoCatalogs();
+        excelView.addObject("labels", messageReports);
+        excelView.addObject("datos", datosParticipante);
+        excelView.addObject("TipoReporte", Constants.TPR_DATOSGENERALES);
+        return excelView;
+    }
+
     //endregion
 
 }
