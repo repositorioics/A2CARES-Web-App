@@ -1,6 +1,7 @@
 package ni.org.ics.webapp.service;
 
 import ni.org.ics.webapp.domain.core.Muestra;
+import ni.org.ics.webapp.domain.core.MuestraEnfermo;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -48,6 +49,22 @@ public class MuestraService {
     
 
     public void saveOrUpdate(Muestra muestra){
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(muestra);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<MuestraEnfermo> getMuestrasEnfermos() throws Exception
+    {
+        Calendar hoy = Calendar.getInstance();
+        int anioActual = hoy.get(Calendar.YEAR);
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from MuestraEnfermo where pasive = '0' and recordDate >= :primerDia");
+        query.setParameter("primerDia", DateUtil.StringToDate("01/01/" + String.valueOf(anioActual), "dd/MM/yyyy"));
+        return  query.list();
+    }
+
+    public void saveOrUpdateMuestraEnfermo(MuestraEnfermo muestra){
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(muestra);
     }

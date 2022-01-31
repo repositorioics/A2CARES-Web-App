@@ -849,3 +849,14 @@ INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES (
 INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('passed_away','Fallecido','0','0',0);
 INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('person_communicates','Padre o Tutor con quien había comunicación sobre el retiro','0','0',0);
 INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('cause_withdrawal','Causas de la No Participación','0','0',0);
+
+/*MODULO MEDICOS*/
+INSERT INTO `a2cares`.`roles` (`ROL`) VALUES ('ROLE_MED');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('ROLE_MED', '0', '0', '0', 'Médico');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FASE_MX', NULL, NULL, NULL, '1', 0, '0', 'Catalogo fases de muestras');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FASE_MX_01', '1', 'CAT_FASE_MX', NULL, '0', 1, '0', 'Aguda');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FASE_MX_02', '2', 'CAT_FASE_MX', NULL, '0', 2, '0', 'Convaleciente');
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_ORDEN', NULL, NULL, NULL, '1', 0, '0', 'Catalogo tipos de ordenes');
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_ORDEN_01', 'R', 'CAT_TIPO_ORDEN', NULL, '0', 1, '0', 'Serología');
