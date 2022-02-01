@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 /**
  * This class builds an Excel spreadsheet document using Apache POI library.
@@ -140,20 +139,13 @@ public class ExcelBuilder extends AbstractExcelView {
                 sheet.autoSizeColumn(4);
                 dataRow.createCell(5).setCellValue("A2CARES");
                 sheet.autoSizeColumn(5);
-                double ageAnios = registro.getSerologia().getEdadMeses()/12;
-                String str = String.valueOf(ageAnios);
-                int intNumber = Integer.parseInt(str.substring(0, str.indexOf('.')));
-                dataRow.createCell(6).setCellValue(intNumber);
+                Double ageAnios = Math.floor(registro.getSerologia().getEdadMeses()/12);
+                dataRow.createCell(6).setCellValue(ageAnios.intValue());
                 sheet.autoSizeColumn(6);
                 //edad Meses
                 double d = registro.getSerologia().getEdadMeses();
-                double edad = d/12;
-                String e = ""+df.format(edad);
-                String[] arrayString = e.split(Pattern.quote(","));
-                String part1 = "0."+arrayString[1];
-                double number = Double.parseDouble(part1);
-                double result = (number/0.08333);
-                dataRow.createCell(7).setCellValue(Math.round(result));
+                Double edadMeses = d % 12;
+                dataRow.createCell(7).setCellValue(edadMeses.intValue());
                 sheet.autoSizeColumn(7);
                 dataRow.createCell(8).setCellValue(registro.getSerologiaEnvio().getIdenvio());
                 sheet.autoSizeColumn(8);

@@ -63,7 +63,7 @@ public class SerologiaService {
     // todo **  Consulta para llenar el reporte **
     public List<Serologia_Detalles_Envio>getAllSerologia(Integer nEnvios, Date fechaInicio, Date fechaFin){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Serologia_Detalles_Envio se where se.serologiaEnvio.fecha between :fechaInicio and :fechaFin and se.serologiaEnvio.idenvio =:nEnvios  order by se.detalle_id asc ");
+        Query query = session.createQuery("from Serologia_Detalles_Envio se where se.serologiaEnvio.fecha between :fechaInicio and :fechaFin and se.serologiaEnvio.idenvio =:nEnvios  order by se.serologia.participante asc ");
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         query.setParameter("nEnvios", nEnvios);
@@ -155,13 +155,13 @@ public class SerologiaService {
     }
 
     @SuppressWarnings("unchecked")
-    public List<SerologiaDto>SeroNoEnviadaDto()throws Exception{
+    public List<SerologiaDto> SerologiaNoEnviadaDto()throws Exception{
         Session session = sessionFactory.getCurrentSession();
         Character noSend ='0';
-        Query query = session.createQuery("select s.idSerologia as idSerologia, s.enviado as enviado, p.codigo as idparticipante, s.fecha as fecha, s.volumen as volumen, s.observacion as observacion, s.precepciona as idpersonal, s.gradilla as gradilla,s.estudio as estudios, " +
-                " s.codigo_casa as codigo_casa, s.recordDate as recordDate  from Serologia s inner join Participante p where s.participante = p.codigo and s.enviado =:noSend ");
+        Query query = session.createQuery("select s.idSerologia as idSerologia, s.enviado as enviado, p.codigo as participante, DATE_FORMAT(s.fecha, '%d/%m/%Y') as fecha, s.volumen as volumen, coalesce(s.observacion, '') as observacion, coalesce(s.descripcion, '') as descripcion, " +
+                " s.codigo_casa as codigoCasa from Serologia s, Participante p where s.participante = p.codigo and s.enviado =:noSend and s.pasive = '0' order by p.codigo asc");
         query.setParameter("noSend", noSend);
-        query.setResultTransformer(Transformers.aliasToBean(Serologia.class));
+        query.setResultTransformer(Transformers.aliasToBean(SerologiaDto.class));
         return query.list();
     }
 
@@ -248,7 +248,7 @@ public class SerologiaService {
 
     public List<SerologiaEnvio> getSerologiaEnvioByDates(Integer nEnvios, Date fechaInicio, Date fechaFin){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from SerologiaEnvio se where se.fecha between :fechaInicio and :fechaFin and se.idenvio =:nEnvios ");
+        Query query = session.createQuery("from SerologiaEnvio se where se.fecha between :fechaInicio and :fechaFin and se.idenvio =:nEnvios");
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         query.setParameter("nEnvios", nEnvios);

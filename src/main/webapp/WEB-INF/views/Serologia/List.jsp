@@ -325,7 +325,7 @@
                                     <th width="12%" class="text-center"><spring:message code="code" /> <spring:message code="lbl.participant" /></th>
                                     <th width="10%" class="text-center"><spring:message code="volumen" /></th>
                                     <th width="10%" class="text-center"><spring:message code="lbl.envoy" /></th>
-                                    <th width="12%" class="text-center"><spring:message code="lbl.descripcion" /></th>
+                                    <th width="12%" class="text-center"><spring:message code="lbl.description" /></th>
                                     <th width="12%" class="text-center"><spring:message code="code" /> <spring:message code="lbl.house" /></th>
                                     <th width="12%" class="text-center"><spring:message code="lbl.Observation" /></th>
                                     <th width="16%" class="text-center"><spring:message code="edit" /></th>
@@ -445,7 +445,7 @@
             "dataTablesLang"        : "${dataTablesLang}",
             "MxNoEnviadasUrl"       : "${MxNoEnviadasUrl}",
             listSerologiaUrl        : "${listSerologiaUrl}"
-        }
+        };
         EnviarSerologiasForm.init(misUrl);
 
         var dt = new Date();

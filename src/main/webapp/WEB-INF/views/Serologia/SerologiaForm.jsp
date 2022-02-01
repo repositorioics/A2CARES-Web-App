@@ -143,7 +143,7 @@
 
                               <div class="form-row">
                                   <div class="col-md-3">
-                                      <label><spring:message code="participant.code" /></label>
+                                      <label><spring:message code="code" /> <spring:message code="lbl.participant" /></label>
                                       <input type="text" class="form-control" id="idParticipante" name="idParticipante" value="${caso.idparticipante}" readonly="readonly">
                                   </div>
                                   <div class="form-group col-md-7">
@@ -153,7 +153,7 @@
 
 
                                   <div class="form-group col-md-2">
-                                      <label for="casaCHF"><spring:message code="chf.house" /></label>
+                                      <label for="casaCHF"><spring:message code="lbl.house" /></label>
                                       <input type="text" class="form-control" name="casaCHF" id="casaCHF" value="${caso.codigo_casa}" readonly>
                                   </div>
 
@@ -211,7 +211,7 @@
 
                               <div class="form-row">
                                   <div class="form-group col-md-12">
-                                      <label for="observacion"><spring:message code="observacion" /></label>
+                                      <label for="observacion"><spring:message code="lbl.Observation" /></label>
                                       <textarea class="form-control submit_on_enter" id="observacion" name="observacion"  cols="3" rows="5">${caso.observacion} </textarea>
                                   </div>
                               </div>

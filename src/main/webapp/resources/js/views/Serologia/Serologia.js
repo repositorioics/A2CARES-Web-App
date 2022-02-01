@@ -124,7 +124,7 @@ var SerologiaProcess = function(){
                         required:true,
                         number: true,
                         min:1,
-                        maxlength: 2
+                        maxlength: 3
                     },
                     fecha:{
                         required:true

@@ -198,7 +198,7 @@ public class ReportesController {
         return "/reportes/fileData";
     }
 
-
+/*
     @RequestMapping(value = "/downloadFileDataReport", method = RequestMethod.GET)
     public ModelAndView downloadFilaDataReport(@RequestParam(value="estudio", required=false) int estudio,
                                                @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
@@ -219,7 +219,7 @@ public class ReportesController {
         excelView.addObject("datos", datosParticipante);
         excelView.addObject("TipoReporte", Constants.TPR_DATOSGENERALES);
         return excelView;
-    }
+    }*/
 
     //endregion
 

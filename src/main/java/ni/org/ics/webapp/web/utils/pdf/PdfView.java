@@ -697,20 +697,18 @@ public class PdfView extends AbstractPdfView {
                 table.addCell(cell);
                 //edad
                 double d = obj.getSerologia().getEdadMeses();
-                double edad = d/12;
+                Double edad = Math.floor(d/12);
 
-                cell = new PdfPCell(new Phrase(""+Math.round(edad), miaNormal));
+                cell = new PdfPCell(new Phrase(""+edad.intValue(), miaNormal));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
 
-                String e = ""+df.format(edad);
-                String[] arrayString = e.split(Pattern.quote(","));
-                String part1 = "0."+arrayString[1];
-                double number = Double.parseDouble(part1);
-                double result = (number/0.08333);
-                cell = new PdfPCell(new Phrase(""+Math.round(result), miaNormal));
+                Double edadMeses = d % 12;
+
+                cell = new PdfPCell(new Phrase(""+edadMeses.intValue(), miaNormal));
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
+
                 /*if (edad ==0){
                     cell = new PdfPCell(new Phrase("-", miaNormal));
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);

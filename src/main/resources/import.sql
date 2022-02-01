@@ -860,3 +860,5 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_ORDEN', NULL, NULL, NULL, '1', 0, '0', 'Catalogo tipos de ordenes');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_ORDEN_01', 'R', 'CAT_TIPO_ORDEN', NULL, '0', 1, '0', 'Serología');
+
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.description', 'Descripción','0','0',0);

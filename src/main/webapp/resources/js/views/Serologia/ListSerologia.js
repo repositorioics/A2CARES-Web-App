@@ -32,22 +32,22 @@ var EnviarSerologiasForm = function(){
                         });
                     }else{
                         for ( var i = 0; i < len; i++) {
-                            var d = new Date(data[i].fecha);
+                            //var d = new Date(data[i].fecha);
                             var partsUrl =  urls.editUrl+ '/'+data[i].idSerologia;
-                            var codParticipante = data[i].participante;
-                            var datestring = ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) + "/" + d.getFullYear();
-                            var fregistro = new Date(data[i].recordDate);
-                            var datestring2 = ("0" + fregistro.getDate()).slice(-2) + "/" + ("0"+(fregistro.getMonth()+1)).slice(-2) + "/" + fregistro.getFullYear();
+                            //var codParticipante = data[i].participante;
+                            //var datestring = ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) + "/" + d.getFullYear();
+                            //var fregistro = new Date(data[i].recordDate);
+                            //var datestring2 = ("0" + fregistro.getDate()).slice(-2) + "/" + ("0"+(fregistro.getMonth()+1)).slice(-2) + "/" + fregistro.getFullYear();
                             var botonUpdate ='<a id="btnEditar" class="btn btn-warning btn-sm btnEditar" data-toggle="tooltip" data-placement="bottom" title="Editar" href='+ partsUrl + '><i class="fa fa-edit" aria-hidden="true"></i></a>';
                             var btnPasive  = '<button type="button" id="btnPasive" data-toggle="tooltip" data-placement="bottom" title="Eliminar"  class="btn btn-danger btn-sm btnPasive" data-id='+ data[i].idSerologia + '> <i class="fas fa-trash" aria-hidden="true"></i>  </button>';
                             table.row.add([
                                 data[i].idSerologia,
-                                datestring,
-                                codParticipante,
+                                data[i].fecha,
+                                data[i].participante,
                                 data[i].volumen,
-                                (data[i].pasive=='0')?"<span class='badge badge-danger'> <i class='fas fa-times' aria-hidden='true'></i></span>":"<span class='badge badge-success'><i class='fas fa-check' aria-hidden='true'></i></span>",
+                                (data[i].enviado=='0')?"<span class='badge badge-danger'> <i class='fas fa-times' aria-hidden='true'></i></span>":"<span class='badge badge-success'><i class='fas fa-check' aria-hidden='true'></i></span>",
                                 data[i].descripcion,
-                                data[i].codigo_casa,
+                                data[i].codigoCasa,
                                 data[i].observacion,
                                 botonUpdate, btnPasive
                             ]).draw(false);

@@ -373,10 +373,11 @@ public class SerologiaController {
 
     //Serologia/listMuestrasNoEnviadas
     @RequestMapping(value = "/listMuestrasNoEnviadas", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody List<Serologia> ListaMuestraToJson() throws ParseException {
-        List<Serologia> seroDtom = null;
+    public @ResponseBody List<SerologiaDto> ListaMuestraToJson() throws ParseException {
+        List<SerologiaDto> seroDtom = null;
         try{
-            seroDtom =  this.serologiaService.SerologiaNoEnviada();
+            //seroDtom =  this.serologiaService.SerologiaNoEnviada();
+            seroDtom =  this.serologiaService.SerologiaNoEnviadaDto();
             return  seroDtom;
         }catch (Exception e){
             logger.error(e.getMessage());
@@ -387,9 +388,9 @@ public class SerologiaController {
 
     @RequestMapping(value = "/listEnviosMuestras", method = RequestMethod.GET, produces = "application/json")
     public String listEnviosMuestras(Model model)throws Exception{
-        List<Serologia> serologias = this.serologiaService.SerologiaNoEnviada();
+        /*List<Serologia> serologias = this.serologiaService.SerologiaNoEnviada();
         model.addAttribute("serologias",serologias);
-
+*/
 
         List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
         model.addAttribute("numero_envio", numero_envio);

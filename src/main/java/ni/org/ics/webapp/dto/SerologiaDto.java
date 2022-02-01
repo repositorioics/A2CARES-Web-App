@@ -9,24 +9,16 @@ import java.util.Date;
 public class SerologiaDto implements Serializable {
 
     private Integer idSerologia;
-    private Integer idparticipante;
-    private String nombreCompleto;
-    private Date fecha;
-    private Date fechaNac;
-    private String cerrado;
-    private Integer volumen;
+    private String participante;
+    private String fecha;
+    private char enviado;
+    private Double volumen;
+    private String descripcion;
+    private Integer codigoCasa;
     private String observacion;
-    private String namePrecepciona;
-    private Integer idpersonal;
-    private Integer edadMeses;
-    private String estudios;
-    private String casaChf;
-    private Date recordDate;
 
     public SerologiaDto() {
     }
-
-
 
     public Integer getIdSerologia() {
         return idSerologia;
@@ -36,44 +28,52 @@ public class SerologiaDto implements Serializable {
         this.idSerologia = idSerologia;
     }
 
-    public Integer getIdparticipante() {
-        return idparticipante;
+    public String getParticipante() {
+        return participante;
     }
 
-    public void setIdparticipante(Integer idparticipante) {
-        this.idparticipante = idparticipante;
+    public void setParticipante(String participante) {
+        this.participante = participante;
     }
 
-    public String getNombreCompleto() {
-        return nombreCompleto;
-    }
-
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
-    }
-
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public String getCerrado() {
-        return cerrado;
+    public char getEnviado() {
+        return enviado;
     }
 
-    public void setCerrado(String cerrado) {
-        this.cerrado = cerrado;
+    public void setEnviado(char enviado) {
+        this.enviado = enviado;
     }
 
-    public Integer getVolumen() {
+    public Double getVolumen() {
         return volumen;
     }
 
-    public void setVolumen(Integer volumen) {
+    public void setVolumen(Double volumen) {
         this.volumen = volumen;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Integer getCodigoCasa() {
+        return codigoCasa;
+    }
+
+    public void setCodigoCasa(Integer codigoCasa) {
+        this.codigoCasa = codigoCasa;
     }
 
     public String getObservacion() {
@@ -82,61 +82,5 @@ public class SerologiaDto implements Serializable {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
-    }
-
-    public String getNamePrecepciona() {
-        return namePrecepciona;
-    }
-
-    public void setNamePrecepciona(String namePrecepciona) {
-        this.namePrecepciona = namePrecepciona;
-    }
-
-    public Integer getIdpersonal() {
-        return idpersonal;
-    }
-
-    public void setIdpersonal(Integer idpersonal) {
-        this.idpersonal = idpersonal;
-    }
-
-    public Integer getEdadMeses() {
-        return edadMeses;
-    }
-
-    public void setEdadMeses(Integer edadMeses) {
-        this.edadMeses = edadMeses;
-    }
-
-    public String getEstudios() {
-        return estudios;
-    }
-
-    public void setEstudios(String estudios) {
-        this.estudios = estudios;
-    }
-
-    public String getCasaChf() {
-        return casaChf;
-    }
-
-    public void setCasaChf(String casaChf) {
-        this.casaChf = casaChf;
-    }
-
-    public Date getRecordDate() {
-        return recordDate;
-    }
-
-    public void setRecordDate(Date recordDate) {
-        this.recordDate = recordDate;
-    }
-
-    public Date getFechaNac() {
-        return fechaNac;
-    }
-
-    public void setFechaNac(Date fechaNac) {
-        this.fechaNac = fechaNac;
     }
 }
