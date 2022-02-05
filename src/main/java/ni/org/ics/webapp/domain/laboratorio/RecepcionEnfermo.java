@@ -1,7 +1,9 @@
 package ni.org.ics.webapp.domain.laboratorio;
 
 import ni.org.ics.webapp.domain.BaseMetaData;
+import ni.org.ics.webapp.domain.audit.Auditable;
 import ni.org.ics.webapp.domain.core.Participante;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
@@ -16,8 +18,8 @@ import java.util.Date;
  **/
 
 @Entity
-@Table(name = "recepciones_enfermos_lab", catalog = "a2cares")
-public class RecepcionEnfermo extends BaseMetaData implements Serializable {
+@Table(name = "mx_enfermos_recepcion_lab", catalog = "a2cares")
+public class RecepcionEnfermo extends BaseMetaData implements Auditable, Serializable {
 
 	/**
 	 * 
@@ -39,6 +41,7 @@ public class RecepcionEnfermo extends BaseMetaData implements Serializable {
 	private String consulta; //Inicial, Seguimiento, Convaleciente
 	private String tipoMuestra; //Aguda, Convaleciente
 	private String estudiosAct;
+    private String enviado = "0";
 
     @Id
     @Column(name = "ID_RECEPCION", nullable = false, length = 50)
@@ -150,4 +153,42 @@ public class RecepcionEnfermo extends BaseMetaData implements Serializable {
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
+
+    @JsonIgnore
+    @Column(name = "ENVIADO", nullable = true, length = 1)
+    public String getEnviado() {
+        return enviado;
+    }
+
+    public void setEnviado(String enviado) {
+        this.enviado = enviado;
+    }
+
+
+    @Override
+    public boolean isFieldAuditable(String fieldname) {
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RecepcionEnfermo that = (RecepcionEnfermo) o;
+
+        if (!idRecepcion.equals(that.idRecepcion)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return idRecepcion.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "idRecepcion='" + idRecepcion;
+    }
 }

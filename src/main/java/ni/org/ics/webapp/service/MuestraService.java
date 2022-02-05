@@ -2,10 +2,13 @@ package ni.org.ics.webapp.service;
 
 import ni.org.ics.webapp.domain.core.Muestra;
 import ni.org.ics.webapp.domain.core.MuestraEnfermo;
+import ni.org.ics.webapp.dto.RecepcionEnfermoDto;
+import ni.org.ics.webapp.dto.SerologiaDto;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +56,7 @@ public class MuestraService {
         session.saveOrUpdate(muestra);
     }
 
+    /*METODOS PARA MUESTRAS DE ENFERMOS**/
     @SuppressWarnings("unchecked")
     public List<MuestraEnfermo> getMuestrasEnfermos() throws Exception
     {

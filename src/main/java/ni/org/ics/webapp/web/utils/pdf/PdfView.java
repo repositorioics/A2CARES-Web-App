@@ -10,11 +10,14 @@ import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
 import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
+import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
+import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.domain.scancarta.DetalleParte;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteCarta;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteExtension;
 import ni.org.ics.webapp.language.MessageResource;
+import ni.org.ics.webapp.web.utils.Constants;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
@@ -26,7 +29,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
-import java.util.regex.Pattern;
 
 //import com.sun.javafx.font.*;
 
@@ -59,17 +61,18 @@ public class PdfView extends AbstractPdfView {
 
         if (model.get("TipoReporte").equals(Constants.TPR_REPORTECARTA)){
             ReporteCarta(model, document, writer);
-        }
-
+        } else
         if (model.get("TipoReporte").equals(Constants.TPR_ENVIOREPORTE)){
             ReporteEnvio(model, document, writer);
-        }
-
+        } else
         if (model.get("TipoReporte").equals(Constants.TPR_REPORTERETIRO)){
             ReporteRetiro(model, document, writer);
-        }
+        } else
         if (model.get("TipoReporte").equals(Constants.TPR_DATOSGENERALES)){
             datosGenerales(model, document, writer);
+        }
+        if (model.get("TipoReporte").equals(Constants.TPR_ENVIO_ENFERMO)){
+            ReporteEnvioMxEnfermo(model, document, writer);
         }
     }
 
@@ -1484,7 +1487,160 @@ public class PdfView extends AbstractPdfView {
 
     //endregion
 
+//region REPORTE ENVIO MUESTRAS DE ENFERMOS
+private void ReporteEnvioMxEnfermo(Map<String, Object> model, Document document, PdfWriter writer)throws Exception{
+    List<MuestraEnfermoEnvio> datos_Envio = (List<MuestraEnfermoEnvio>)  model.get("SerologiasEnviadas");
 
+    List<MuestraEnfermoDetalleEnvio> Detalles_Muestras_Serologia = (List<MuestraEnfermoDetalleEnvio>) model.get("allSerologia");
+    messageSitio = (List<MessageResource>) model.get("sitios");
+
+    Integer numeroEnvios = (Integer) model.get("nEnvios");
+    String f1 = (String) model.get("fechaInicio");
+    String f2 = (String) model.get("fechaFin");
+
+    //document = new Document(PageSize.A4,20,20,20,20);
+    document.newPage();
+
+    document.open();
+    Date fecha_inicio = DateUtil.StringToDate(f1,"dd/MM/yyyy");
+    Calendar calendar2 = Calendar.getInstance();
+    calendar2.setTime(fecha_inicio);
+    int yearsNow  = calendar2.get(Calendar.YEAR);
+
+    String enviado_desde = "";
+    String hora_envio = "";
+    String temp="";
+    for (MuestraEnfermoEnvio obj : datos_Envio){
+        enviado_desde = this.getCatalogoSitio("" + obj.getSitio(), "CAT_SITIOS_ENVIO_SEROLOGIA");
+        hora_envio = obj.getHora();
+        temp= ""+ obj.getTemperatura();
+    }
+
+    //se inicializa y setea el manejador de evento para el encabezado y pie de pagina
+    HeaderFooterReporteEnvio footer = new HeaderFooterReporteEnvio(f1, f2.concat(" Hora: "+hora_envio), numeroEnvios, yearsNow, enviado_desde, temp);
+    writer.setPageEvent(footer);
+
+    Font miaNormal = new Font(Font.COURIER,12, Font.NORMAL);
+    Font FontObservacion = new Font(Font.COURIER,9, Font.NORMAL);
+    Font mia = new Font(Font.COURIER,12, Font.BOLDITALIC);
+    Font miaEstudio = new Font(Font.COURIER,9);
+    Date objDate = new Date();
+    DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat hourFormat = new SimpleDateFormat("HH:mm");
+    Paragraph fecha = new Paragraph(dateformat.format(objDate) + " " + hourFormat.format(objDate));
+    fecha.setAlignment(Element.ALIGN_RIGHT);
+    float y = 650f; //posicion coordenada y en la pagina.. mientras mas disminuye mas se acerca al fin (botton) de la pagina
+    PdfPTable table = new PdfPTable(new float[]{5,10,10,7,8,50});
+    table.setHeaderRows(1);
+    table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
+    PdfPCell cell;
+    Paragraph paragraph1 = new Paragraph();
+    addEmptyLine(paragraph1, 1);
+    document.add(paragraph1);
+
+    cell = new PdfPCell(new Phrase("N°",mia));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("CÓDIGO",mia));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("VOLUMEN",mia));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("EDAD\nAños|Meses",mia));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setColspan(2);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("OBSERVACIONES",mia));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    table.addCell(cell);
+
+    if (datos_Envio.size()==0){
+        table = new PdfPTable(1);
+        table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
+        cell = new PdfPCell(new Phrase("No hay información!",mia));
+        cell.setBorder(1);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
+    }
+    int cont=0;
+    for (MuestraEnfermoDetalleEnvio obj : Detalles_Muestras_Serologia) {
+        cont++;
+        cell = new PdfPCell(new Phrase(""+cont, miaNormal));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        //codigo
+        cell = new PdfPCell(new Phrase( obj.getMuestra().getParticipante().getCodigo(), miaNormal));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        //volumen
+        cell = new PdfPCell(new Phrase(""+obj.getMuestra().getVolumen(), miaNormal));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        //edad
+        Integer edadMeses = DateUtil.getEdadMeses(obj.getMuestra().getFechaRecepcion(), obj.getMuestra().getParticipante().getFechaNac());
+        Double edadAnios = Math.floor(edadMeses.doubleValue()/12);
+
+        cell = new PdfPCell(new Phrase(""+edadAnios.intValue(), miaNormal));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Double restoEdadMeses = edadMeses.doubleValue() % 12;
+
+        cell = new PdfPCell(new Phrase(""+restoEdadMeses.intValue(), miaNormal));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        //observacion
+        cell = new PdfPCell(new Phrase(obj.getMuestra().getObservacion(), FontObservacion));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        if (table.getTotalHeight() > 580) {
+            table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
+            document.newPage();
+            y = 650f;
+            table = new PdfPTable(new float[]{5,10,10,7,8,23,25});
+            table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
+        }
+
+    }
+    table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
+    y = y - table.getTotalHeight() - 10;
+    table = new PdfPTable(new float[]{100});
+    table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
+    cell = new PdfPCell(new Phrase("Total: "+ Detalles_Muestras_Serologia.size(),miaEstudio));
+    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+    cell.setBorder(0);
+    table.addCell(cell);
+    table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
+    y = y - table.getTotalHeight() - 45;
+
+    table = new PdfPTable(new float[]{40,20,40});
+    table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
+    cell = new PdfPCell(new Phrase("Entregado Por: ",miaEstudio));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setBorder(1);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("",miaEstudio));
+    cell.setBorder(0);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("Recibido Por",miaEstudio));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setBorder(1);
+    table.addCell(cell);
+
+    table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
+    document.close();
+}
+
+    //endregion
 
     private String getDescripcionCatalogo(String codigo,String catroot){
         for(MessageResource rnv : messageExtremidades){

@@ -91,7 +91,7 @@ public final class DateUtil {
 
     /* ** fin de la funcion fecha*/
 
-    public Integer getEdadMeses(Date fechaNac){
+    public static Integer getEdadMeses(Date fechaNac){
         Calendar inicio = Calendar.getInstance();
         Calendar fin = Calendar.getInstance();
         inicio.setTime(fechaNac);
@@ -104,6 +104,19 @@ public final class DateUtil {
         return difM;
     }
 
+    public static Integer getEdadMeses(Date dInicio, Date fechaNac){
+        Calendar inicio = Calendar.getInstance();
+        inicio.setTime(dInicio);
+        Calendar fin = Calendar.getInstance();
+        inicio.setTime(fechaNac);
+        fin.setTime(new Date());
+        int difA = fin.get(Calendar.YEAR) - inicio.get(Calendar.YEAR);
+        int difM = difA * 12 + fin.get(Calendar.MONTH) - inicio.get(Calendar.MONTH);
+        int difD = fin.get(Calendar.DAY_OF_MONTH) - inicio.get(Calendar.DAY_OF_MONTH);
+        //aun no ha cumplido mes, restar 1
+        if (difD < 0) difM -=1;
+        return difM;
+    }
     public static String onTimeSet(String hora) {
 
         String partes[] = hora.replaceAll(" ",":").split(":");

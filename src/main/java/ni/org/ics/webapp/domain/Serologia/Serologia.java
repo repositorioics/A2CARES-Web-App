@@ -1,6 +1,7 @@
 package ni.org.ics.webapp.domain.Serologia;
 
 import ni.org.ics.webapp.domain.BaseMetaData;
+import ni.org.ics.webapp.domain.audit.Auditable;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "serologia_recepcion", catalog = "a2cares")
-public class Serologia extends BaseMetaData implements Serializable  {
+public class Serologia extends BaseMetaData implements Auditable, Serializable  {
 
     private static final long serialVersionUID = 1L;
 
@@ -120,4 +121,30 @@ public class Serologia extends BaseMetaData implements Serializable  {
         return this.enviado =='1';
     }
 
+    @Override
+    public boolean isFieldAuditable(String fieldname) {
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Serologia)) return false;
+
+        Serologia serologia = (Serologia) o;
+
+        if (!idSerologia.equals(serologia.idSerologia)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return idSerologia.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "idSerologia=" + idSerologia;
+    }
 }

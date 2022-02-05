@@ -109,6 +109,27 @@
                     </ul>
                 </li>
             </sec:authorize>
+
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_LABO')">
+                <li class="nav-item nav-dropdown Serologia">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fas fa-head-side-mask" aria-hidden="true"></i>
+                        <spring:message code="lbl.mx.sick" /></a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/mx/enfermo/list" htmlEscape="true "/>">
+                                <i class="fas fa-th-list" aria-hidden="true"></i>
+                                <spring:message code="Listado" /></a>
+                        </li>
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/mx/enfermo/generarReporte" htmlEscape="true "/>">
+                                <i class="fas fa-ambulance" aria-hidden="true"></i>
+                                <spring:message code="lbl.shipment.report" /></a>
+                        </li>
+                    </ul>
+                </li>
+            </sec:authorize>
+
             <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER')">
                 <li class="nav-item nav-dropdown comparacion">
                     <a class="nav-link nav-dropdown-toggle" href="#">

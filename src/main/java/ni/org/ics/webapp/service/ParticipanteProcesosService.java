@@ -56,8 +56,7 @@ public class ParticipanteProcesosService {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery("FROM ParticipanteProcesos par where par.codigo = :codigo");
         query.setParameter("codigo", codigo);
-		ParticipanteProcesos participante = (ParticipanteProcesos) query.uniqueResult();
-		return participante;
+		return (ParticipanteProcesos) query.uniqueResult();
 	}
 
 }

@@ -850,7 +850,7 @@ INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES (
 INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('person_communicates','Padre o Tutor con quien había comunicación sobre el retiro','0','0',0);
 INSERT INTO `mensajes` (`messageKey`, `es`, `Pasive`, `isCat`, `orden`) VALUES ('cause_withdrawal','Causas de la No Participación','0','0',0);
 
-/*MODULO MEDICOS*/
+/*MODULO MX ENFERMOS*/
 INSERT INTO `a2cares`.`roles` (`ROL`) VALUES ('ROLE_MED');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('ROLE_MED', '0', '0', '0', 'Médico');
 
@@ -862,3 +862,15 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_TIPO_ORDEN_01', 'R', 'CAT_TIPO_ORDEN', NULL, '0', 1, '0', 'Serología');
 
 INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.description', 'Descripción','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.shipping.start.date', '0', '0', '0', 'Fecha Inicio Envío');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.shipping.end.date', '0', '0', '0', 'Fecha Fin Envío');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.pdf', '0', '0', '0', 'PDF');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.excel', '0', '0', '0', 'Excel');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.report.shipment.specimens.patients', '0', '0', '0', 'Reporte de envio de muestras de enfermos');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.shipment.report', '0', '0', '0', 'Reporte Envío');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.mx.sick', '0', '0', '0', 'Mx Enfermo');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.serologia.enfermo', '0', '0', '0', 'Serología Enfermo');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.sample.type.phase', '0', '0', '0', 'Tipo Muestra');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.fis', '0', '0', '0', 'FIS');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.fif', '0', '0', '0', 'FIF');
+INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.form', '0', '0', '0', 'Formulario');

@@ -6,6 +6,8 @@ import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
 import ni.org.ics.webapp.domain.core.Estudio;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
+import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
+import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.domain.scancarta.DetalleParte;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteCarta;
@@ -14,13 +16,13 @@ import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.service.EstudioService;
 import ni.org.ics.webapp.service.MessageResourceService;
 import ni.org.ics.webapp.service.ParticipanteProcesosService;
+import ni.org.ics.webapp.service.RecepcionEnfermoService;
 import ni.org.ics.webapp.service.Retiro.RetiroService;
 import ni.org.ics.webapp.service.Serologia.SerologiaService;
 import ni.org.ics.webapp.service.reportes.ReportesPdfService;
 import ni.org.ics.webapp.service.scancarta.ScanCartaService;
 import ni.org.ics.webapp.web.utils.DateUtil;
-import ni.org.ics.webapp.web.utils.pdf.Constants;
-import ni.org.ics.webapp.web.utils.pdf.DatosGeneralesParticipante;
+import ni.org.ics.webapp.web.utils.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -58,6 +60,9 @@ public class ReportesController {
 
     @Resource(name = "SerologiaService")
     private SerologiaService serologiaservice;
+
+    @Resource(name = "recepcionEnfermoService")
+    private RecepcionEnfermoService recepcionEnfermoService;
 
     /* Instancia de mi Servicio ScanCarta */
     @Resource(name = "scanCartaService")
@@ -197,6 +202,49 @@ public class ReportesController {
         model.addAttribute("estudios", estudios);
         return "/reportes/fileData";
     }
+
+    //region DESCARGA DE REPORTE DE ENVIO DE MX ENFERMOS
+    @RequestMapping(value = "downloadEnvioMxEnfermoExcel", method = RequestMethod.GET)
+    public ModelAndView downloadEnvioMxEnfermoExcel(@RequestParam(value="nEnvios", required=false ) Integer nEnvios,
+                                       @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                       @RequestParam(value="fechaFin", required=false ) String fechaFin)
+            throws Exception {
+        ModelAndView excelView = new ModelAndView("excelView");
+        setModelAndViewPropertiesForEnvioMxEnfermo(excelView, fechaInicio, fechaFin, nEnvios);
+        return excelView;
+    }
+
+    @RequestMapping(value = "/downloadEnvioMxEnfermoPdf", method = RequestMethod.GET)
+    public ModelAndView downloadEnvioMxEnfermoPdf(@RequestParam(value="nEnvios", required=false ) Integer nEnvios,
+                                                  @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                                  @RequestParam(value="fechaFin", required=false ) String fechaFin)
+            throws Exception{
+        ModelAndView pdfView = new ModelAndView("pdfView");
+        setModelAndViewPropertiesForEnvioMxEnfermo(pdfView, fechaInicio, fechaFin, nEnvios);        return pdfView;
+    }
+
+    private void setModelAndViewPropertiesForEnvioMxEnfermo(ModelAndView ReporteEnvio, String fechaInicio, String fechaFin, Integer nEnvios) throws Exception{
+        Date dFechaInicio = null;
+        if (fechaInicio != null && !fechaInicio.isEmpty())
+            dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+        Date dFechaFin = null;
+        if (fechaFin != null && !fechaFin.isEmpty())
+            dFechaFin = DateUtil.StringToDate(fechaFin + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+        List<MuestraEnfermoEnvio> SerologiasEnviadas = this.recepcionEnfermoService.getMuestraEnfermoEnvioByDatesAndNumber(nEnvios, dFechaInicio, dFechaFin);
+        ReporteEnvio.addObject("nEnvios", nEnvios);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        ReporteEnvio.addObject("sitios", sitios);
+        ReporteEnvio.addObject("fechaInicio", fechaInicio);
+        ReporteEnvio.addObject("fechaFin", fechaFin);
+        ReporteEnvio.addObject("SerologiasEnviadas", SerologiasEnviadas);
+        List<MuestraEnfermoDetalleEnvio> allSerologia = this.recepcionEnfermoService.getAllMuestrasDetalleByDatesAndNumber(nEnvios, dFechaInicio, dFechaFin);
+        ReporteEnvio.addObject("allSerologia", allSerologia);
+        ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIO_ENFERMO);
+    }
+
+
+    //endregion
+
 
 /*
     @RequestMapping(value = "/downloadFileDataReport", method = RequestMethod.GET)

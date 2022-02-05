@@ -95,6 +95,7 @@ public class RecepcionMuestraController {
         }else{
             List<RecepcionEnfermo> recepcionMuestraList = Arrays.asList(recepcionMuestras);
             for (RecepcionEnfermo recepcionMuestra : recepcionMuestraList){
+                recepcionMuestra.setEnviado("0");
                 recepcionEnfermoService.saveOrUpdateRecepcionEnfermo(recepcionMuestra);
             }
         }
