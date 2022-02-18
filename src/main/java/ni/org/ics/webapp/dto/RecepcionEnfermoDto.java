@@ -41,6 +41,8 @@ public class RecepcionEnfermoDto extends BaseMetaData implements Serializable {
     private String edadParteDias;
     private int codigoCasa;
     private String nombreCompleto;
+    private String enviado;
+    private String codigoBarra;
 
     public String getIdRecepcion() {
         return idRecepcion;
@@ -168,5 +170,21 @@ public class RecepcionEnfermoDto extends BaseMetaData implements Serializable {
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
+    }
+
+    public String getEnviado() {
+        return enviado;
+    }
+
+    public void setEnviado(String enviado) {
+        this.enviado = enviado;
+    }
+
+    public String getCodigoBarra() {
+        return codigoBarra;
+    }
+
+    public void setCodigoBarra(String codigoBarra) {
+        this.codigoBarra = codigoBarra;
     }
 }

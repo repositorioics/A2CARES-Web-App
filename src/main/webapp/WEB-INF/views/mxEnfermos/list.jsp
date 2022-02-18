@@ -121,7 +121,14 @@
                                         <select name="sitio" id="sitio" class="form-control" type="text"  required="required">
                                             <option selected value=""><spring:message code="select" />...</option>
                                             <c:forEach items="${sitios}" var="s">
-                                                <option value="${s.catKey}">${s.catKey} - <spring:message code="${s.spanish}" /></option>
+                                                <c:choose>
+                                                    <c:when test="${s.catKey eq '3'}">
+                                                        <option selected value="${s.catKey}">${s.catKey} - <spring:message code="${s.spanish}" /></option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="${s.catKey}">${s.catKey} - <spring:message code="${s.spanish}" /></option>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -267,6 +274,12 @@
 
 <spring:url value="/resources/js/views/mxEnfermos/list.js" var="SeroJs" />
 <script type="text/javascript" src="${SeroJs}"></script>
+
+<spring:url value="/resources/js/views/unicodeEscaper.js" var="escaperJs" />
+<script type="text/javascript" src="${escaperJs}"></script>
+
+<spring:url value="/resources/js/views/printBarcodeLabels.js" var="printJs" />
+<script type="text/javascript" src="${printJs}"></script>
 
 <c:choose>
     <c:when test="${cookie.eIcsLang.value == null}">

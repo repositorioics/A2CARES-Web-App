@@ -114,6 +114,9 @@ var ProcessSickSample = function(){
                     },
                     fis:{
                         required:true
+                    },
+                    fif:{
+                        required:true
                     }
                 },
                 errorPlacement: function ( error, element ) {

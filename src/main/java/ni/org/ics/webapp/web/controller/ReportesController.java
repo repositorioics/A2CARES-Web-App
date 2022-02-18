@@ -231,14 +231,17 @@ public class ReportesController {
         if (fechaFin != null && !fechaFin.isEmpty())
             dFechaFin = DateUtil.StringToDate(fechaFin + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
         List<MuestraEnfermoEnvio> SerologiasEnviadas = this.recepcionEnfermoService.getMuestraEnfermoEnvioByDatesAndNumber(nEnvios, dFechaInicio, dFechaFin);
-        ReporteEnvio.addObject("nEnvios", nEnvios);
+        List<MuestraEnfermoDetalleEnvio> allSerologia = this.recepcionEnfermoService.getAllMuestrasDetalleByDatesAndNumber(nEnvios, dFechaInicio, dFechaFin);
+        List<MessageResource> tiposConsultas = messageResourceService.getCatalogo("CAT_TIPO_CONSULTA");
         List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+
+        ReporteEnvio.addObject("nEnvios", nEnvios);
         ReporteEnvio.addObject("sitios", sitios);
         ReporteEnvio.addObject("fechaInicio", fechaInicio);
         ReporteEnvio.addObject("fechaFin", fechaFin);
         ReporteEnvio.addObject("SerologiasEnviadas", SerologiasEnviadas);
-        List<MuestraEnfermoDetalleEnvio> allSerologia = this.recepcionEnfermoService.getAllMuestrasDetalleByDatesAndNumber(nEnvios, dFechaInicio, dFechaFin);
         ReporteEnvio.addObject("allSerologia", allSerologia);
+        ReporteEnvio.addObject("tiposConsultas", tiposConsultas);
         ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIO_ENFERMO);
     }
 

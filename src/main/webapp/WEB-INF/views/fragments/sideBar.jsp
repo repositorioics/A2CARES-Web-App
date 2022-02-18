@@ -122,6 +122,11 @@
                                 <spring:message code="Listado" /></a>
                         </li>
                         <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/mx/enfermo/search" htmlEscape="true "/>">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <spring:message code="search" /></a>
+                        </li>
+                        <li class="nav-item filedata">
                             <a class="nav-link" href="<spring:url value="/mx/enfermo/generarReporte" htmlEscape="true "/>">
                                 <i class="fas fa-ambulance" aria-hidden="true"></i>
                                 <spring:message code="lbl.shipment.report" /></a>

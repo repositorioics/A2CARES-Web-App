@@ -257,7 +257,7 @@ public class CartaConsentimiento extends BaseMetaData implements Auditable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "CODIGO_TAMIZAJE", nullable = false)
+    @JoinColumn(name = "CODIGO_TAMIZAJE", nullable = true)
     @ForeignKey(name = "FK_TAMIZAJE_CARTACON")
     public Tamizaje getTamizaje() {
         return tamizaje;

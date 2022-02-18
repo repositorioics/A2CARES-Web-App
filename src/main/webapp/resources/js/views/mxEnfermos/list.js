@@ -22,6 +22,7 @@ var ListaMxEnfermosForm = function(){
                 ]
             });
             CargarDatos();
+
             function CargarDatos() {
                 table.clear().draw(false);
                 $.getJSON(urls.MxNoEnviadasUrl, function (data) {
@@ -35,7 +36,7 @@ var ListaMxEnfermosForm = function(){
                         });
                     } else {
                         for (var i = 0; i < len; i++) {
-                            var partsUrl = urls.editUrl + '/' + data[i].idRecepcion;
+                            var partsUrl = urls.editUrl + '/' + data[i].idRecepcion+'/1';
                             var botonUpdate = '<a id="btnEditar" class="btn btn-warning btn-sm btnEditar" data-toggle="tooltip" data-placement="bottom" title="Editar" href=' + partsUrl + '><i class="fa fa-edit" aria-hidden="true"></i></a> ';
                             var btnPasive = '<button type="button" id="btnPasive" data-toggle="tooltip" data-placement="bottom" title="Eliminar"  class="btn btn-danger btn-sm btnPasive" data-id=' + data[i].idRecepcion + '> <i class="fas fa-trash" aria-hidden="true"></i>  </button> ';
                             table.row.add([
@@ -77,10 +78,10 @@ var ListaMxEnfermosForm = function(){
                         required: true
                     },
                     desde: {required: function () {
-                        return $('#desde').val().length > 0;
+                        return $('#hasta').val().length > 0;
                     }},
                     hasta: {required: function () {
-                        return $('#hasta').val().length > 0;
+                        return $('#desde').val().length > 0;
                     }},
                     temperatura:{
                         required: true,
@@ -129,26 +130,46 @@ var ListaMxEnfermosForm = function(){
                     confirmButtonText: "Si, enviar!"
                 }, function () {
                     $.post(urls.envioUrl, form1.serialize(), function (data) {
+                        console.log(data);
                         if (data.mensaje != null) {
                             swal({
                                 title: "¡INFORMACIÓN!",
                                 text: data.mensaje,
+                                icon: "error",
+                                timer: 5000
+                            });
+                        } else {
+                            swal({
+                                title: "¡INFORMACIÓN!",
+                                text: data.total,
                                 icon: "info",
                                 timer: 5000
                             });
+                            imprimirEtiquetas(data.etiquetas);
                         }
                         CargarDatos();
                     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
                         swal({
                             title: "Error 500",
-                            text: "Interno del Servidor",
+                            text: "Sucedió un error. Favor informar al administrador",
                             icon: "error",
                             timer: 5000
                         });
                     });
                 });
             }
-
+/*
+            function imprimirEtiquetas(strBarCodes){
+                $.getJSON("http://localhost:13001/print", {
+                    barcodes: unicodeEscape(strBarCodes),
+                    copias: 1,
+                    ajax:'false'
+                }, function (data) {
+                    console.log(data);
+                }).fail(function (jqXHR) {
+                    console.log(jqXHR);
+                });
+            }*/
 
             /**************************/
             $("#close-form").validate({

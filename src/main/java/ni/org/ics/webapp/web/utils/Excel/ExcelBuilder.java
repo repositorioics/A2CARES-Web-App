@@ -2,6 +2,7 @@ package ni.org.ics.webapp.web.utils.Excel;
 
 import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
+import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.web.utils.*;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -172,6 +173,7 @@ public class ExcelBuilder extends AbstractExcelView {
 
     public void buildExcelReporteEnvioMxEnfermo(Map<String, Object> model, HSSFWorkbook workbook,HttpServletResponse response) throws IOException {
         List<MuestraEnfermoDetalleEnvio> listaSerologia = (List<MuestraEnfermoDetalleEnvio>) model.get("allSerologia");
+        List<MessageResource> tiposConsultas = (List<MessageResource>)  model.get("tiposConsultas");
         logger.log(Level.INFO, "iniciando libro de excel");
         response.setContentType("application/octec-stream");
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
@@ -181,14 +183,18 @@ public class ExcelBuilder extends AbstractExcelView {
         HSSFSheet sheet = workbook.createSheet("Hoja1");
         Font font = workbook.createFont();
         String[] headers = new String[]{
-                "CODIGO",
-                "fecha",
+                "codigo",
+                "codigo_lab",
+                "cat",
+                "consulta",
+                "fis",
+                "fif",
+                "fecha_mx",
                 "volumen",
+                "tubo",
                 "observacion",
                 "PRecepciona",
                 "estudio",
-                "edadA",
-                "edadM",
                 "viaje"
         };
         CellStyle headerStyle = workbook.createCellStyle();
@@ -234,28 +240,45 @@ public class ExcelBuilder extends AbstractExcelView {
             int rowCount = 1;
             for (MuestraEnfermoDetalleEnvio registro : listaSerologia) {
                 HSSFRow dataRow = sheet.createRow(rowCount++);
+                //codigo,
                 dataRow.createCell(0).setCellValue(registro.getMuestra().getParticipante().getCodigo());
                 sheet.autoSizeColumn(0);
-                dataRow.createCell(1).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getMuestra().getFechaRecepcion(), "dd/MM/yyyy"));
+                //codigo_lab
+                dataRow.createCell(1).setCellValue(registro.getMuestra().getCodigo());
                 sheet.autoSizeColumn(1);
-                dataRow.createCell(2).setCellValue(registro.getMuestra().getVolumen());
+                //cat
+                dataRow.createCell(2).setCellValue(registro.getMuestra().getCategoria());
                 sheet.autoSizeColumn(2);
-                dataRow.createCell(3).setCellValue(registro.getMuestra().getObservacion());
+                //consulta
+                dataRow.createCell(3).setCellValue(getMessage(registro.getMuestra().getConsulta(), null, tiposConsultas));
                 sheet.autoSizeColumn(3);
-                dataRow.createCell(4).setCellValue(registro.getMuestra().getRecordUser());
+                //fis
+                dataRow.createCell(4).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getMuestra().getFis(), "dd/MM/yyyy"));
                 sheet.autoSizeColumn(4);
-                dataRow.createCell(5).setCellValue("A2CARES");
+                //fif
+                dataRow.createCell(5).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getMuestra().getFif(), "dd/MM/yyyy"));
                 sheet.autoSizeColumn(5);
-                Integer edadMeses = DateUtil.getEdadMeses(registro.getMuestra().getFechaRecepcion(), registro.getMuestra().getParticipante().getFechaNac());
-                Double ageAnios = Math.floor( edadMeses /12);
-                dataRow.createCell(6).setCellValue(ageAnios.intValue());
+                //fecha_mx
+                dataRow.createCell(6).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getMuestra().getFechaRecepcion(), "dd/MM/yyyy"));
                 sheet.autoSizeColumn(6);
-                //edad Meses
-                Double restoEdadMeses = edadMeses.doubleValue() % 12;
-                dataRow.createCell(7).setCellValue(restoEdadMeses.intValue());
+                //volumen
+                dataRow.createCell(7).setCellValue(registro.getMuestra().getVolumen());
                 sheet.autoSizeColumn(7);
-                dataRow.createCell(8).setCellValue(registro.getEnvio().getNumeroEnvio());
+                //tubo
+                dataRow.createCell(8).setCellValue("ROJO");
                 sheet.autoSizeColumn(8);
+                //observacion
+                dataRow.createCell(9).setCellValue(registro.getMuestra().getObservacion());
+                sheet.autoSizeColumn(9);
+                //PRecepciona
+                dataRow.createCell(10).setCellValue(registro.getMuestra().getRecordUser());
+                sheet.autoSizeColumn(10);
+                //estudio
+                dataRow.createCell(11).setCellValue("A2CARES");
+                sheet.autoSizeColumn(11);
+                //viaje
+                dataRow.createCell(12).setCellValue(registro.getEnvio().getNumeroEnvio());
+                sheet.autoSizeColumn(12);
             }
         }else{
             CellStyle noDataCellStyle = workbook.createCellStyle();
@@ -266,6 +289,24 @@ public class ExcelBuilder extends AbstractExcelView {
             aRow.createCell(0).setCellValue("NO SE ENCONTRARON DATOS!");
             aRow.getCell(0).setCellStyle(noDataCellStyle);
         }
+    }
+
+    /***
+     * Obtiene la descripcion de un elemeento por catKey dentro de un catalogo
+     * @param catKey 1,2,3,4 etc
+     * @param languaje null por defecto para espaniol
+     * @param catalogo Lista con todas las opciones
+     * @return valor del item
+     */
+    private String getMessage(String catKey, String languaje, List<MessageResource> catalogo){
+        for(MessageResource message : catalogo){
+            if (message.getCatKey().equalsIgnoreCase(catKey)){
+                if (languaje!=null && languaje.equalsIgnoreCase("en"))
+                    return message.getEnglish();
+                else return message.getSpanish();
+            }
+        }
+        return "";
     }
 
     public static void setHeaderTable(HSSFRow header, CellStyle style, List<String> columnas){

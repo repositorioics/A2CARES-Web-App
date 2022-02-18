@@ -91,7 +91,14 @@
                           </h3>
                           <spring:url value="/mx/enfermo/guardarRecepcionEnfermo" var="saveFormUrl"/>
                           <spring:url value="/mx/enfermo/searchParticipant" var="searchPartUrl"/>
-                          <spring:url value="/mx/enfermo/list/" var="listaUrl"/>
+                          <c:choose>
+                              <c:when test="${listado}">
+                                  <spring:url value="/mx/enfermo/list/" var="listaUrl"/>
+                              </c:when>
+                              <c:otherwise>
+                                  <spring:url value="/mx/enfermo/search/" var="listaUrl"/>
+                              </c:otherwise>
+                          </c:choose>
                       </div>
                       <div class="card-body">
                           <c:set var="successMessage"><spring:message code="process.success" /></c:set>
@@ -199,13 +206,13 @@
                                   <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                                       <div class="form-group">
                                           <label class="form-control-label" for="fis"><spring:message code="fecha_inicio_sintomas" /></label>
-                                          <input type="text" class="form-control datepicker" id="fis" name="fis" value="${recepcionEnfermo.fis}" />
+                                          <input type="text" class="form-control datepicker" id="fis" name="fis" value="${recepcionEnfermo.fis}" required/>
                                       </div>
                                   </div>
                                   <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                                       <div class="form-group">
                                           <label class="form-control-label" for="fif"><spring:message code="fecha_inicio_fiebre" /></label>
-                                          <input type="text" class="form-control datepicker" id="fif" name="fif" value="${recepcionEnfermo.fif}" />
+                                          <input type="text" class="form-control datepicker" id="fif" name="fif" value="${recepcionEnfermo.fif}" required/>
                                       </div>
 
                                   </div>

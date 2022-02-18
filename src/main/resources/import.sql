@@ -874,3 +874,9 @@ INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES (
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.fis', '0', '0', '0', 'FIS');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.fif', '0', '0', '0', 'FIF');
 INSERT INTO `mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.form', '0', '0', '0', 'Formulario');
+
+INSERT INTO `a2cares`.`mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('code.mx', '0', '0', '0', 'Código Muestra');
+INSERT INTO `a2cares`.`mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`) VALUES ('lbl.print', '0', '0', '0', 'Imprimir');
+UPDATE `a2cares`.`mensajes` SET `es`='Enviada' WHERE  `messageKey`='lbl.envoy';
+
+INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_SITIOS_ENVIO_SEROLOGIA_3', '3', 'CAT_SITIOS_ENVIO_SEROLOGIA', NULL, '0', 3, '0', 'Centro de Salud Edgard Lang');

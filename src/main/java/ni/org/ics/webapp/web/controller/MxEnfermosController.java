@@ -6,12 +6,14 @@ import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.laboratorio.RecepcionEnfermo;
+import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
 import ni.org.ics.webapp.dto.RecepcionEnfermoDto;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.service.*;
 import ni.org.ics.webapp.web.utils.Constants;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import ni.org.ics.webapp.web.utils.JsonUtil;
+import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -49,7 +51,7 @@ public class MxEnfermosController {
     private RecepcionEnfermoService recepcionEnfermoService;
 
     @RequestMapping(value = "list", method = RequestMethod.GET)
-    public String letters(Model model) throws ParseException {
+    public String list(Model model) throws ParseException {
         logger.debug("Mostrando lista de mx de enfermo para envio del dia de hoy en JSP");
 
         List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
@@ -58,6 +60,12 @@ public class MxEnfermosController {
         model.addAttribute("sitios", sitios);
 
         return "mxEnfermos/list";
+    }
+
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public String search(Model model) throws ParseException {
+        logger.debug("Buscar muestras de enfermo en JSP");
+        return "mxEnfermos/search";
     }
 
     @RequestMapping(value = "/list-muestras-no-enviadas", method = RequestMethod.GET, produces = "application/json")
@@ -88,7 +96,7 @@ public class MxEnfermosController {
             model.addAttribute("catCategoria", catCategoria);
             model.addAttribute("catTipoConsulta", catTipoConsulta);
             model.addAttribute("catFaseMuestra", catFaseMuestra);
-
+            model.addAttribute("listado", true);
             return "/mxEnfermos/enterForm";
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -96,8 +104,9 @@ public class MxEnfermosController {
         }
     }
 
-    @RequestMapping(value = "/update/{idRecepcion}", method = RequestMethod.GET)
-    public String editMuestra(Model model, @PathVariable("idRecepcion") String idRecepcion) throws Exception
+    @RequestMapping(value = "/update/{idRecepcion}/{listado}", method = RequestMethod.GET)
+    public String editMuestra(Model model, @PathVariable("idRecepcion") String idRecepcion,
+                              @PathVariable("listado") String listado) throws Exception
     {
         try{
             List<MessageResource> catCategoria = this.messageResourceService.getCatalogo("CAT_CATEGORIA");
@@ -136,6 +145,7 @@ public class MxEnfermosController {
                 model.addAttribute("catFaseMuestra", catFaseMuestra);
                 model.addAttribute("agregando",false);
                 model.addAttribute("editando",true);
+                model.addAttribute("listado", listado.equalsIgnoreCase("1"));
                 return "/mxEnfermos/enterForm";
             }else{
                 return "404";
@@ -196,19 +206,19 @@ public class MxEnfermosController {
     ) throws Exception {
         try{
             if (volumen.equals("0") || volumen.equals("")){
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("msj", "Volumen no puede ser igual a 0." );
-                return JsonUtil.createJsonResponse(map);
+                //Map<String, String> map = new HashMap<String, String>();
+                //map.put("msj", "Volumen no puede ser igual a 0." );
+                return JsonUtil.createJsonResponse("Volumen no puede ser igual a 0.");
             }
             if (fecha.equals("")){
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("msj", "Fecha no puede ser vacía.");
-                return JsonUtil.createJsonResponse(map);
+                //Map<String, String> map = new HashMap<String, String>();
+                //map.put("msj", "Fecha no puede ser vacía.");
+                return JsonUtil.createJsonResponse("Fecha no puede ser vacía.");
             }
             if (!codigoParticipante.matches("^\\d{4}$")){
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("msj", "Código participante no es válido." );
-                return JsonUtil.createJsonResponse(map);
+                //Map<String, String> map = new HashMap<String, String>();
+                //map.put("msj", "Código participante no es válido." );
+                return JsonUtil.createJsonResponse("Código participante no es válido.");
             }
             RecepcionEnfermo recepcionEnfermo = new RecepcionEnfermo();
             String nameComputer = InetAddress.getLocalHost().getHostName();
@@ -239,6 +249,15 @@ public class MxEnfermosController {
                     String obs = (observacion.equals(""))?"":observacion.toUpperCase();
                     recepcionEnfermo.setObservacion(obs);
                     recepcionEnfermo.setVolumen(Double.parseDouble(volumen));
+
+                    //setear codigo a imprimir
+                    String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
+                    String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
+                    String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), anio, recepcionEnfermo.getCategoria(), recepcionEnfermo.getTipoMuestra());
+
+                    recepcionEnfermo.setCodigo(codigoMx);
+                    recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
+
                     recepcionEnfermoService.saveOrUpdateRecepcionEnfermo(recepcionEnfermo);
                     return JsonUtil.createJsonResponse(recepcionEnfermo);
                 }
@@ -266,6 +285,13 @@ public class MxEnfermosController {
                 recepcionEnfermo.setConsulta(tipoConsulta);
                 recepcionEnfermo.setCategoria(categoria);
                 recepcionEnfermo.setTipoMuestra(faseMuestra);
+                //setear codigo a imprimir
+                String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
+                String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
+                String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), anio, recepcionEnfermo.getCategoria(), recepcionEnfermo.getTipoMuestra());
+
+                recepcionEnfermo.setCodigo(codigoMx);
+                recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
                 recepcionEnfermoService.saveOrUpdateRecepcionEnfermo(recepcionEnfermo);
                 return JsonUtil.createJsonResponse(recepcionEnfermo);
             }
@@ -308,6 +334,7 @@ public class MxEnfermosController {
             ,@RequestParam(value="temperatura", required=true ) String temperatura
     )throws Exception {
         try {
+            String codigosImprimir = "";
             Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
             Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
             String computerName = InetAddress.getLocalHost().getHostName();
@@ -327,9 +354,12 @@ public class MxEnfermosController {
             envio.setTemperatura(temp);
             List<RecepcionEnfermo> listaNoEnviadas = this.recepcionEnfermoService.getSerologiaEnfermosNoEnviadas(fdesde, fhasta);// Serologia en pasivo='0'  y enviada='0'
             if (listaNoEnviadas.size() > 0) {
-                this.recepcionEnfermoService.saveMuestraEnfermoDetalleEnvio(envio, listaNoEnviadas);
+                codigosImprimir = this.recepcionEnfermoService.saveMuestraEnfermoDetalleEnvio(envio, listaNoEnviadas);
             }
-            return JsonUtil.createJsonResponse("Registros enviados: " + listaNoEnviadas.size());
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("total", "Registros enviados: " + listaNoEnviadas.size());
+            map.put("etiquetas", codigosImprimir);
+            return JsonUtil.createJsonResponse(map);
 
         } catch (Exception ex) {
             return JsonUtil.createJsonResponse(ex.getMessage());
@@ -344,5 +374,28 @@ public class MxEnfermosController {
         return "/mxEnfermos/envioForm";
     }
 
+    @RequestMapping(value = "search-mx", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    List<RecepcionEnfermoDto> buscarMuestra(
+            @RequestParam(value="desde", required=false ) String desde
+            ,@RequestParam(value="hasta", required=false ) String hasta
+            ,@RequestParam(value="participante", required=false ) String participante
+            ,@RequestParam(value="muestra", required=false ) String muestra
+    ) throws Exception {
+        logger.debug("buscar participante para recepcion mx enfermo");
+
+        FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+        filtro.setCodigoMx(muestra);
+        filtro.setParticipante(participante);
+        filtro.setFechaInicio(DateUtil.StringToDate(desde+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+        filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+        UnicodeEscaper escaper = UnicodeEscaper.above(127);
+
+        List<RecepcionEnfermoDto> recepciones = this.recepcionEnfermoService.getSerologiaEnfermosDto(filtro);
+        for (RecepcionEnfermoDto recepcionEnfermo : recepciones) {
+            recepcionEnfermo.setCodigoBarra(escaper.translate(String.format(Constants.CODIGO_BARRA_FORMAT_PRINT, recepcionEnfermo.getCodigoBarra().replace("A2", "*A2"))));
+        }
+        return recepciones;
+    }
 
 }

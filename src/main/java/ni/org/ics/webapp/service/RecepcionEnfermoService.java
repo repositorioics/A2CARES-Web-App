@@ -3,7 +3,9 @@ package ni.org.ics.webapp.service;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.laboratorio.RecepcionEnfermo;
+import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
 import ni.org.ics.webapp.dto.RecepcionEnfermoDto;
+import ni.org.ics.webapp.web.utils.Constants;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -46,13 +48,38 @@ public class RecepcionEnfermoService {
     @SuppressWarnings("unchecked")
     public List<RecepcionEnfermoDto> getSerologiaEnfermosNoEnviadasDto()throws Exception{
         Session session = sessionFactory.getCurrentSession();
-        Character noSend ='0';
         Query query = session.createQuery("select r.idRecepcion as idRecepcion, DATE_FORMAT(r.fechaRecepcion, '%d/%m/%Y') as fechaRecepcion, " +
-                "p.codigo as participante, r.volumen as volumen, r.observacion as observacion, DATE_FORMAT(r.fis, '%d/%m/%Y') as fis, DATE_FORMAT(r.fif, '%d/%m/%Y') as fif, " +
-                "r.categoria as categoria, r.consulta as consulta, r.tipoMuestra as tipoMuestra " +
+                "r.codigo as participante, r.volumen as volumen, r.observacion as observacion, DATE_FORMAT(r.fis, '%d/%m/%Y') as fis, DATE_FORMAT(r.fif, '%d/%m/%Y') as fif, " +
+                "r.categoria as categoria, (select m.spanish from MessageResource m where m.catRoot = 'CAT_TIPO_CONSULTA' and m.catKey = r.consulta) as consulta, " +
+                "(select m.spanish from MessageResource m where m.catRoot = 'CAT_FASE_MX' and m.catKey = r.tipoMuestra) as tipoMuestra " +
                 "  from RecepcionEnfermo r inner join r.participante p where r.pasive = '0' and r.enviado = '0' " +
                 "order by p.codigo asc");
-        //query.setParameter("noSend", noSend);
+        query.setResultTransformer(Transformers.aliasToBean(RecepcionEnfermoDto.class));
+        return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<RecepcionEnfermoDto> getSerologiaEnfermosDto(FiltroMxEnfermoDto filtro)throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select r.idRecepcion as idRecepcion, DATE_FORMAT(r.fechaRecepcion, '%d/%m/%Y') as fechaRecepcion, " +
+                "r.codigo as participante, r.volumen as volumen, r.observacion as observacion, DATE_FORMAT(r.fis, '%d/%m/%Y') as fis, DATE_FORMAT(r.fif, '%d/%m/%Y') as fif, " +
+                "r.categoria as categoria, (select m.spanish from MessageResource m where m.catRoot = 'CAT_TIPO_CONSULTA' and m.catKey = r.consulta) as consulta, " +
+                "(select m.spanish from MessageResource m where m.catRoot = 'CAT_FASE_MX' and m.catKey = r.tipoMuestra) as tipoMuestra, r.enviado as enviado, r.codigoBarra as codigoBarra " +
+                "from RecepcionEnfermo r inner join r.participante p where r.pasive = '0' " +
+                (filtro.getParticipante()!=null && !filtro.getParticipante().isEmpty()? " and p.codigo = :participante ":" ")+
+                (filtro.getCodigoMx()!=null  && !filtro.getCodigoMx().isEmpty()? " and r.codigo like :codigoMx ":" ")+
+                (filtro.getFechaInicio()!=null  && filtro.getFechaFin() != null ? " and r.fechaRecepcion between :fechaInicio and :fechaFin ":" ")+
+                "order by p.codigo asc");
+        if (filtro.getParticipante() != null && !filtro.getParticipante().isEmpty()) {
+            query.setParameter("participante", filtro.getParticipante());
+        }
+        if (filtro.getCodigoMx() != null && !filtro.getCodigoMx().isEmpty()) {
+            query.setParameter("codigoMx", "%"+filtro.getCodigoMx()+"%");
+        }
+        if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
+            query.setParameter("fechaInicio", filtro.getFechaInicio());
+            query.setParameter("fechaFin", filtro.getFechaFin());
+        }
         query.setResultTransformer(Transformers.aliasToBean(RecepcionEnfermoDto.class));
         return query.list();
     }
@@ -129,8 +156,9 @@ public class RecepcionEnfermoService {
         }
     }
 
-    public void saveMuestraEnfermoDetalleEnvio(MuestraEnfermoEnvio envio, List<RecepcionEnfermo> listaNoEnviadas){
+    public String saveMuestraEnfermoDetalleEnvio(MuestraEnfermoEnvio envio, List<RecepcionEnfermo> listaNoEnviadas){
         Session session = sessionFactory.openSession();
+        String codigosImprimir = null;
         try {
             if (listaNoEnviadas.size() > 0) {
                 session.beginTransaction();
@@ -145,6 +173,13 @@ public class RecepcionEnfermoService {
                         //se marca como enviada
                         recepcionEnfermo.setEnviado("1");
                         session.update(recepcionEnfermo);
+                        //FIF|FTOMA|1ESPACIO|*CODIGO_LAB|*QRBARCODE|*CANTIDADCOPIAS
+                        //6/12/202117/12/2021 *A2.0001.R21.A.1*1*1
+                        if (codigosImprimir == null) {
+                            codigosImprimir = String.format(Constants.CODIGO_BARRA_FORMAT_PRINT, recepcionEnfermo.getCodigoBarra().replace("A2", "*A2"));
+                        } else {
+                            codigosImprimir = codigosImprimir+","+String.format(Constants.CODIGO_BARRA_FORMAT_PRINT, recepcionEnfermo.getCodigoBarra().replace("A2", "*A2"));
+                        }
                     }
                 }
                 session.getTransaction().commit();
@@ -155,5 +190,6 @@ public class RecepcionEnfermoService {
         }finally {
             session.close();
         }
+        return codigosImprimir;
     }
 }

@@ -4,6 +4,8 @@ import ni.org.ics.webapp.domain.laboratorio.RecepcionEnfermo;
 import ni.org.ics.webapp.domain.supervisor.RecepcionMuestra;
 import ni.org.ics.webapp.service.RecepcionEnfermoService;
 import ni.org.ics.webapp.service.RecepcionMuestraService;
+import ni.org.ics.webapp.web.utils.Constants;
+import ni.org.ics.webapp.web.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -94,9 +96,17 @@ public class RecepcionMuestraController {
             return "No recibi nada!";
         }else{
             List<RecepcionEnfermo> recepcionMuestraList = Arrays.asList(recepcionMuestras);
-            for (RecepcionEnfermo recepcionMuestra : recepcionMuestraList){
-                recepcionMuestra.setEnviado("0");
-                recepcionEnfermoService.saveOrUpdateRecepcionEnfermo(recepcionMuestra);
+            for (RecepcionEnfermo obj : recepcionMuestraList){
+                obj.setEnviado("0");
+                String anio = DateUtil.DateToString(obj.getFechaRecepcion(), "YY");
+                String fis = DateUtil.DateToString(obj.getFis(), Constants.STRING_FORMAT_DD_MM_YYYY);
+                String fToma = DateUtil.DateToString(obj.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
+                String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, obj.getParticipante().getCodigo(), obj.getTipoTubo(), anio, obj.getCategoria(), obj.getTipoMuestra());
+
+                obj.setCodigo(codigoMx);
+                obj.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
+
+                recepcionEnfermoService.saveOrUpdateRecepcionEnfermo(obj);
             }
         }
         return "Datos recibidos!";

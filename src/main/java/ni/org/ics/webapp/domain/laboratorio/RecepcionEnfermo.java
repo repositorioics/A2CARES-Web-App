@@ -42,6 +42,8 @@ public class RecepcionEnfermo extends BaseMetaData implements Auditable, Seriali
 	private String tipoMuestra; //Aguda, Convaleciente
 	private String estudiosAct;
     private String enviado = "0";
+    private String codigo;
+    private String codigoBarra;
 
     @Id
     @Column(name = "ID_RECEPCION", nullable = false, length = 50)
@@ -164,6 +166,25 @@ public class RecepcionEnfermo extends BaseMetaData implements Auditable, Seriali
         this.enviado = enviado;
     }
 
+    @JsonIgnore
+    @Column(name = "CODIGO_MX", nullable = true, length = 32)
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    @JsonIgnore
+    @Column(name = "CODIGO_BARRA", nullable = true, length = 64)
+    public String getCodigoBarra() {
+        return codigoBarra;
+    }
+
+    public void setCodigoBarra(String codigoBarra) {
+        this.codigoBarra = codigoBarra;
+    }
 
     @Override
     public boolean isFieldAuditable(String fieldname) {
