@@ -11,6 +11,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+
 <html>
 <head>
     <jsp:include page="../fragments/headTag.jsp" />
@@ -276,6 +278,32 @@
                                           </select>
                                       </div>
                                   </div>
+
+                                  <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                                      <div class="form-group">
+
+                                              <label for="evento"><spring:message code="evento" /></label>
+                                          <input type="text" id="evento" name="evento"  value="${recepcionEnfermo.evento}"
+                                                 data-toggle="tooltip" data-state="primary"
+                                                 data-placement="right"
+                                                 title="El evento está relacionado a la cantidad de consultas, la primera consulta inicial es A y su convaleciente tambien es A, la segunda consulta incial es B y su convaleciente es B......."
+                                                 class="form-control" readonly
+                                                 >
+
+                                      </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <label class="form-control-label"><spring:message code="Cuadro Febril" />:
+
+                                      </label>
+                                      <select class="form-control focusNext" id="tieneFiebre" name="tieneFiebre" required title ="Si el participante presenta cuadro febril y tiene una convaleciente pendiente, la muestra tomada es INICIAL aunque no se haya tomado la convaleciente y pasa al siguiente EVENTO.">
+                                          <option selected value="">Seleccione</option>
+                                          <option  value="0">Tiene Fiebre</option>
+                                          <option  value="1">NO Tiene Fiebre</option>
+                                      </select>
+                                  </div>
+
                               </div>
                               <div class="form-row">
                                   <div class="form-group col-md-12">
@@ -372,8 +400,11 @@
             format: 'L',
             locale: "${lenguaje}",
             maxDate: new Date(),
-            useCurrent: false
+            useCurrent: true
+
         });
+        $("#fis").val("");
+        $("#fif").val("");
 
         if ($("#tiporequest").val() === 'false') {//es nuevo
             $('#fecha').val(moment().format('DD/MM/YYYY'));
@@ -393,8 +424,15 @@
                 $("#volumen").val(0);
             }
         }
+
+
+
+
+
+
         document.addEventListener('keypress', function(evt) {
             // Si el evento NO es una tecla Enter
+
             if (evt.key !== 'Enter') {
                 return;
             }

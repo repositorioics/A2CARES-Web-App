@@ -643,7 +643,7 @@ INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_VA_AGUA_4', '4', 'CAT_FREC_VA_AGUA', NULL, '0', 4, '0', 'Cada 3 días');
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_FREC_VA_AGUA_998', '998', 'CAT_FREC_VA_AGUA', NULL, '0', 5, '0', 'Otros');
 
-/ * LABEL SCANCARTA * /
+/* LABEL SCANCARTA */
 INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'more', 'mas','0','0',0);
 INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'back.list', 'Volver al Listado','0','0',0);
 INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.Back', 'Volver','0','0',0);

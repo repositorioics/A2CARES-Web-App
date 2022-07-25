@@ -73,6 +73,7 @@ var ProcessSickSample = function(){
                             });
                             LimpiarParticipante();
                         }else{
+
                             $("#codigoParticipante").val(data.codigo);
                             $("#nombreCompleto").val(data.nombreCompleto);
                             $("#casa").val(data.casa);
@@ -80,8 +81,11 @@ var ProcessSickSample = function(){
                             $("#edad_year").val(data.edadA);
                             $("#edad_meses").val(data.edadM);
                             $("#edad_dias").val(data.edadD);
+                            $("#evento").val(data.evento);
                             $("#volumen").val("");
+
                        }
+
                     }
                 }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
                     swal({
@@ -225,6 +229,8 @@ var ProcessSickSample = function(){
                 $("#tipoConsulta").val("").change();
                 $("#categoria").val("").change();
                 $("#faseMuestra").val("").change();
+                $("#evento").val("");
+
             }
 
             function LimpiarParticipante(){

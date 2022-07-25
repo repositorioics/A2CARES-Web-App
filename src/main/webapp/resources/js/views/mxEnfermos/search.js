@@ -54,7 +54,7 @@ var SearchMxEnfermosForm = function(){
                                     var partsUrl = urls.editUrl + '/' + data[i].idRecepcion+'/0';
                                     //var printUrl = 'http://localhost:13001/print?barcodes=' + data[i].codigoBarra;
                                     var botonUpdate = '<a id="btnEditar" class="btn rounded-pill btn-outline-warning btn-sm btnEditar" data-toggle="tooltip" data-placement="bottom" title="Editar" href=' + partsUrl + '><i class="fa fa-edit" aria-hidden="true"></i></a> ';
-                                    var botonPrint  = '<button type="button" id="btnPrint" data-toggle="tooltip" data-placement="bottom" title="Eliminar"  class="btn rounded-pill btn-outline-primary btn-sm btnPrint" data-id="'+ data[i].codigoBarra + '"> <i class="fas fa-print" aria-hidden="true"></i>  </button>';
+                                    var botonPrint  = '<button type="button" id="btnPrint" data-toggle="tooltip" data-placement="bottom" title="Imprimir"  class="btn rounded-pill btn-outline-primary btn-sm btnPrint" data-id="'+ data[i].codigoBarra + '"> <i class="fas fa-print" aria-hidden="true"></i>  </button>';
 
                                     var enviado = "<span class='badge badge-danger'><i class='fas fa-thumbs-down'></i></span>";
                                     if (data[i].enviado === '1') {

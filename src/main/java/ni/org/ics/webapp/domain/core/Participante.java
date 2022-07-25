@@ -306,6 +306,9 @@ public class Participante extends BaseMetaData implements Auditable {
         return nombreCompleto;
     }
 
+
+
+
     @Transient
     @JsonIgnore
     public String getTutor(){

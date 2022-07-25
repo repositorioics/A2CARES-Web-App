@@ -43,7 +43,9 @@ public class RecepcionEnfermo extends BaseMetaData implements Auditable, Seriali
 	private String estudiosAct;
     private String enviado = "0";
     private String codigo;
+    private String evento;
     private String codigoBarra;
+
 
     @Id
     @Column(name = "ID_RECEPCION", nullable = false, length = 50)
@@ -156,6 +158,15 @@ public class RecepcionEnfermo extends BaseMetaData implements Auditable, Seriali
 		this.observacion = observacion;
 	}
 
+    @Column(name = "EVENTO",nullable = true, length = 50)
+    public String getEvento() {
+        return evento;
+    }
+
+    public void setEvento(String evento) {
+        this.evento = evento;
+    }
+
     @JsonIgnore
     @Column(name = "ENVIADO", nullable = true, length = 1)
     public String getEnviado() {
@@ -175,6 +186,9 @@ public class RecepcionEnfermo extends BaseMetaData implements Auditable, Seriali
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
+
+
+
 
     @JsonIgnore
     @Column(name = "CODIGO_BARRA", nullable = true, length = 64)
@@ -213,3 +227,4 @@ public class RecepcionEnfermo extends BaseMetaData implements Auditable, Seriali
         return "idRecepcion='" + idRecepcion;
     }
 }
+

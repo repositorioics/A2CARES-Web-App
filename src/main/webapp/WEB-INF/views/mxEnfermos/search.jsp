@@ -11,6 +11,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page  import = "ni.org.ics.webapp.web.utils.Constants" %>
 <html>
 <head>
     <jsp:include page="../fragments/headTag.jsp" />
@@ -129,11 +130,55 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
+
+
+                    </div>
+
                     </div>
                     </div>
                 </div>
+
+            </div>
+
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="page-title">
+                        <i class="fa fa-list-alt"></i>&nbsp;<strong><spring:message code="lbl.enfermo.BHC" /></strong>
+                    </h5>
+                </div>
+        <div class="row">
+            <table id="lsita_BHC" width="30%">
+                <thead>
+                <tr>
+                    <div class="col-md-4">
+                        <td>
+
+                            <input type="text" id="codigo_lineal"
+                                   name="codigo_lineal" data-toggle="tooltip"
+                                   data-state="primary" data-placement="right"
+                                   title="Codigo Lineal BHC"
+                                   class="form-control"
+                                   placeholder="Digitar el Codigo de Participante para BHC">
+
+                        </td>
+                    </div>
+                    <td>
+
+                        <button type="button" id="btnPrint" data-toggle="tooltip" data-placement="bottom" title="Imprimir Codigo BHC"  class="btn rounded-pill btn-outline-primary btn-sm btnPrint" data-id="'+ data[i].codigoBarra + '" onclick="print_bhc()"> <i class="fas fa-print" aria-hidden="true"></i>
+
+                        </button>
+
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
             </div>
         </div>
+        </div>
+
+
 
     </div>
 </div>
@@ -241,6 +286,12 @@
         }
         $('[data-toggle="tooltip"]').tooltip();
     });
+    function print_bhc(){
+        if($("#codigo_lineal").text !=""){
+        var id ="100"+ $("#codigo_lineal").val()+"*1*2";
+        imprimirEtiquetas(id);
+        }
+    }
 </script>
 </body>
 </html>

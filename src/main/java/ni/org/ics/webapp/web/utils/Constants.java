@@ -25,4 +25,5 @@ public class Constants {
 
     public static final String CODIGO_BARRA_FORMAT = "%s%s %s"; //16/12/202117/12/2021 A2.0001.R21.A.1
     public static final String CODIGO_BARRA_FORMAT_PRINT = "%s*1*1"; //16/12/202117/12/2021 *A2.0001.R21.A.1*1*1
+    public static final String CODIGO_BARRA_FORMAT_PRINTB = "100%s*1*2"; //16/12/202117/12/2021 *A2.0001.R21.A.1*1*1
 }

@@ -1677,18 +1677,48 @@ private void ReporteEnvioMxEnfermo(Map<String, Object> model, Document document,
 
     table = new PdfPTable(new float[]{30,40,30});
     table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
-    cell = new PdfPCell(new Phrase("Entregado Por: ",miaEstudio));
-    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-    cell.setBorder(1);
+    cell = new PdfPCell(new Phrase("Entrega Bioanalista: _________________",miaEstudio));
+    cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+    cell.setBorder(0);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase(""));
+    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+    cell.setBorder(PdfPCell.NO_BORDER);
     table.addCell(cell);
 
     cell = new PdfPCell(new Phrase("",miaEstudio));
     cell.setBorder(0);
     table.addCell(cell);
 
-    cell = new PdfPCell(new Phrase("Recibido Por",miaEstudio));
+    cell = new PdfPCell(new Phrase("Cod. Bioanalista: _____________",miaEstudio));
+    cell.setVerticalAlignment(Element.ALIGN_LEFT);
+    cell.setBorder(0);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("Firma: ______________",miaEstudio));
+    cell.setVerticalAlignment(Element.ALIGN_CENTER);
+    cell.setBorder(0);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("Recibe CNDR: ______________",miaEstudio));
     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-    cell.setBorder(1);
+    cell.setBorder(0);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase(""));
+    cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+    cell.setBorder(PdfPCell.NO_BORDER);
+    table.addCell(cell);
+
+    cell = new PdfPCell(new Phrase("",miaEstudio));
+    cell.setBorder(0);
+    table.addCell(cell);
+
+
+    cell = new PdfPCell(new Phrase("Recibe Conductor: ______________",miaEstudio));
+    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    cell.setBorder(0);
     table.addCell(cell);
 
     table.writeSelectedRows(0, -1, 42, y, writer.getDirectContent());
@@ -1967,7 +1997,7 @@ class HeaderFooterReporteEnvioEnfermo extends PdfPageEventHelper {
         PdfPTable table = new PdfPTable(new float[]{50, 50});
         table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
 
-        PdfPCell cell = new PdfPCell(new Phrase("Estudio A2CARES", FontFactory.getFont("COURIER", 20, java.awt.Font.BOLD, Color.black)));
+        PdfPCell cell = new PdfPCell(new Phrase("ESTUDIO A2CARES", FontFactory.getFont("COURIER", 20, java.awt.Font.BOLD, Color.black)));
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setBorder(PdfPCell.NO_BORDER);
         table.addCell(cell);
@@ -1977,7 +2007,7 @@ class HeaderFooterReporteEnvioEnfermo extends PdfPageEventHelper {
         cell.setBorder(PdfPCell.NO_BORDER);
         table.addCell(cell);
 
-        cell = new PdfPCell(new Phrase("ENVIO DE MUESTRAS DE ENFERMOS", FontFactory.getFont("COURIER", 16, java.awt.Font.ITALIC)));
+        cell = new PdfPCell(new Phrase("Envío de muestras Serológicas", FontFactory.getFont("COURIER", 16, java.awt.Font.ITALIC)));
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         cell.setBorder(PdfPCell.NO_BORDER);
         table.addCell(cell);
@@ -2007,12 +2037,16 @@ class HeaderFooterReporteEnvioEnfermo extends PdfPageEventHelper {
 */
         table = new PdfPTable(new float[]{25, 25, 15, 17, 18});
         table.setTotalWidth(document.getPageSize().getRight() - document.getPageSize().getLeft(84));
-        cell = new PdfPCell(new Phrase("Fecha Inicio: "+ this.getFechaInicio(), courier10Normal));
+       /* cell = new PdfPCell(new Phrase("Fecha Inicio: "+ this.getFechaInicio(), courier10Normal));
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        table.addCell(cell);*/
+        cell = new PdfPCell(new Phrase(""));
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         cell.setBorder(PdfPCell.NO_BORDER);
         table.addCell(cell);
 
-        cell = new PdfPCell(new Phrase("Fecha Fin: "+ this.getFechaFin(), courier10Normal));
+        cell = new PdfPCell(new Phrase("Fecha : "+ this.getFechaFin(), courier10Normal));
         cell.setBorder(PdfPCell.NO_BORDER);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);

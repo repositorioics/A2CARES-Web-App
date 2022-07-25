@@ -113,6 +113,14 @@ public class MxEnfermosController {
             List<MessageResource> catTipoConsulta = this.messageResourceService.getCatalogo("CAT_TIPO_CONSULTA");
             List<MessageResource> catFaseMuestra = this.messageResourceService.getCatalogo("CAT_FASE_MX");
 
+            String evento = "";
+            try {
+                evento = this.recepcionEnfermoService.ObtenerEvento(idRecepcion).toString();
+
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+
             RecepcionEnfermo recepcionEnfermo = this.recepcionEnfermoService.getRecepcionEnfermoById(idRecepcion);
             if (recepcionEnfermo.getParticipante()!=null){
                 RecepcionEnfermoDto recepcionEnfermoDto = new RecepcionEnfermoDto();
@@ -125,6 +133,7 @@ public class MxEnfermosController {
                 recepcionEnfermoDto.setCategoria(recepcionEnfermo.getCategoria());
                 recepcionEnfermoDto.setTipoMuestra(recepcionEnfermo.getTipoMuestra());
                 recepcionEnfermoDto.setConsulta(recepcionEnfermo.getConsulta());
+                recepcionEnfermoDto.setEvento(evento);
                 recepcionEnfermoDto.setObservacion(recepcionEnfermo.getObservacion());
                 recepcionEnfermoDto.setVolumen(recepcionEnfermo.getVolumen());
                 recepcionEnfermoDto.setCodigoCasa(recepcionEnfermo.getParticipante().getCasa().getCodigo());
@@ -164,8 +173,17 @@ public class MxEnfermosController {
         logger.debug("buscar participante para recepcion mx enfermo");
         Map<String, String> map = new HashMap<String, String>();
         Participante participante = this.participanteService.getParticipanteByCodigo(codigo);
+        String evento = "";
+        try {
+             evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
+             evento = evento.substring(1,2);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+
         if (participante!=null) {
             ParticipanteProcesos procesos = this.participanteProcesosService.getParticipante(codigo);
+
             if (procesos != null && procesos.getRetirado().equals(1))
                 return JsonUtil.createJsonResponse("Participante retirado");
             else {
@@ -173,6 +191,9 @@ public class MxEnfermosController {
                 map.put("nombreCompleto", participante.getNombreCompleto());
                 map.put("casa", participante.getCasa().getCodigo().toString());
                 map.put("fechaNac", DateUtil.DateToString(participante.getFechaNac(), Constants.STRING_FORMAT_DD_MM_YYYY));
+
+                map.put("evento",evento);
+
                 if (!participante.getEdad().equalsIgnoreCase(Constants.NO_DATA)) {
                     String[] edad = participante.getEdad().split("/");
                     map.put("edadA", edad[0]);
@@ -201,6 +222,7 @@ public class MxEnfermosController {
             ,@RequestParam( value = "categoria",          required = false, defaultValue=""  ) String categoria
             ,@RequestParam( value = "faseMuestra",          required = false, defaultValue=""  ) String faseMuestra
             ,@RequestParam( value = "volumen",        required = false, defaultValue=""  ) String volumen
+            ,@RequestParam( value = "evento",        required = false, defaultValue=""  ) String evento
             ,@RequestParam( value = "observacion",    required = false, defaultValue=""  ) String observacion
             ,@RequestParam( value = "tiporequest",    required = false, defaultValue=""  ) String tiporequest
     ) throws Exception {
@@ -246,6 +268,7 @@ public class MxEnfermosController {
                     recepcionEnfermo.setConsulta(tipoConsulta);
                     recepcionEnfermo.setCategoria(categoria);
                     recepcionEnfermo.setTipoMuestra(faseMuestra);
+                    recepcionEnfermo.setEvento(evento);
                     String obs = (observacion.equals(""))?"":observacion.toUpperCase();
                     recepcionEnfermo.setObservacion(obs);
                     recepcionEnfermo.setVolumen(Double.parseDouble(volumen));
@@ -253,7 +276,7 @@ public class MxEnfermosController {
                     //setear codigo a imprimir
                     String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
                     String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
-                    String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), anio, recepcionEnfermo.getCategoria(), recepcionEnfermo.getTipoMuestra());
+                    String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), anio, recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
 
                     recepcionEnfermo.setCodigo(codigoMx);
                     recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
@@ -284,11 +307,12 @@ public class MxEnfermosController {
                 recepcionEnfermo.setTipoTubo(Constants.TIPO_TUBO_SEROLOGIA);
                 recepcionEnfermo.setConsulta(tipoConsulta);
                 recepcionEnfermo.setCategoria(categoria);
+                recepcionEnfermo.setEvento(evento);
                 recepcionEnfermo.setTipoMuestra(faseMuestra);
                 //setear codigo a imprimir
                 String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
                 String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
-                String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), anio, recepcionEnfermo.getCategoria(), recepcionEnfermo.getTipoMuestra());
+                String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), anio, recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
 
                 recepcionEnfermo.setCodigo(codigoMx);
                 recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));

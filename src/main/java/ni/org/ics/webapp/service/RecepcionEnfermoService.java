@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.sql.CallableStatement;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -77,7 +78,7 @@ public class RecepcionEnfermoService {
             query.setParameter("codigoMx", "%"+filtro.getCodigoMx()+"%");
         }
         if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
-            query.setParameter("fechaInicio", filtro.getFechaInicio());
+                query.setParameter("fechaInicio", filtro.getFechaInicio());
             query.setParameter("fechaFin", filtro.getFechaFin());
         }
         query.setResultTransformer(Transformers.aliasToBean(RecepcionEnfermoDto.class));
@@ -100,6 +101,18 @@ public class RecepcionEnfermoService {
             query.setParameter("fecha", fecha);
             query.setParameter("codigo", codigo);
             return  query.list().size()>0;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    public List<String> ObtenerEvento(String codigo) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("select  fn_Obtener_Evento_MxEnfermo(:codigo)");
+            query.setParameter("codigo", codigo);
+            return  query.list() ;
         }catch (Exception e){
             System.err.println(e.toString());
             throw e;
