@@ -123,7 +123,8 @@ public class HojaClinicaController {
             hojaClinica.setRecordDate(new Date());
             hojaClinica.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
             //para nuevos registros es necesario poner un valor por defecto en el numero de hoja, aunque se setee con el trigger tg_set_numero_hoja
-            hojaClinica.setNumHojaConsulta(0);
+           //
+           // hojaClinica.setNumHojaConsulta(0);
 
             hojaClinicaService.saveOrUpdate(hojaClinica);
             resultado = "Hoja Clinica del participante "+hojaClinica.getCodigoParticipante().getCodigo()+" creada exitosamente";
@@ -170,7 +171,7 @@ public class HojaClinicaController {
 
         Date fechaConsulta = null;
         Time horaConsulta = null;
-
+        Integer numeroHoja = null;
         //Datos de enfermería
         BigDecimal pesoKg = null;
         BigDecimal tallaCm = null;
@@ -330,6 +331,9 @@ public class HojaClinicaController {
 
         if (jsonpObject.get("fechaCons")!=null && !jsonpObject.get("fechaCons").getAsString().isEmpty()) fechaConsulta = DateUtil.StringToDate(jsonpObject.get("fechaCons").getAsString(), "dd/MM/yyyy");
         if (jsonpObject.get("horaCons")!=null && !jsonpObject.get("horaCons").getAsString().isEmpty()) horaConsulta = Time.valueOf(DateUtil.onTimeSet(jsonpObject.get("horaCons").getAsString()));
+
+        if (jsonpObject.get("numHoja")!=null && !jsonpObject.get("numHoja").getAsString().isEmpty()) numeroHoja = Integer.valueOf((jsonpObject.get("numHoja").getAsString()));
+
         if (jsonpObject.get("peso")!=null && !jsonpObject.get("peso").getAsString().isEmpty()) pesoKg = jsonpObject.get("peso").getAsBigDecimal();
         if (jsonpObject.get("talla")!=null && !jsonpObject.get("talla").getAsString().isEmpty()) tallaCm = jsonpObject.get("talla").getAsBigDecimal();
         if (jsonpObject.get("pa")!=null && !jsonpObject.get("pa").getAsString().isEmpty()) presion = jsonpObject.get("pa").getAsString();
@@ -470,6 +474,9 @@ public class HojaClinicaController {
 
         hojaClinica.setFechaConsulta(fechaConsulta);
         hojaClinica.setHoraConsulta(horaConsulta);
+
+        hojaClinica.setNumHojaConsulta(numeroHoja);
+
         hojaClinica.setPesoKg(pesoKg);
         hojaClinica.setTallaCm(tallaCm);
         hojaClinica.setPresion(presion);

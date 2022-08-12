@@ -45,6 +45,7 @@ public class RecepcionEnfermo extends BaseMetaData implements Auditable, Seriali
     private String codigo;
     private String evento;
     private String codigoBarra;
+    private String positivo;
 
 
     @Id
@@ -165,6 +166,15 @@ public class RecepcionEnfermo extends BaseMetaData implements Auditable, Seriali
 
     public void setEvento(String evento) {
         this.evento = evento;
+    }
+
+    @Column(name = "POSITIVO",nullable = true, length = 50)
+    public String getPositivo() {
+        return positivo;
+    }
+
+    public void setPositivo(String positivo) {
+        this.positivo = positivo;
     }
 
     @JsonIgnore

@@ -724,8 +724,18 @@ var ClinicalSheet = function () {
                     $("#rbtratamiento_7N").prop('checked', true);
                     $("#rbtratamiento_8N").prop('checked', true);
                     $("#rbtratamiento_9N").prop('checked', true);
-                    updateReadOnly("descOtroTratamiento", true);
+                  //  updateReadOnly("descOtroTratamiento", true);
                 }
+//alert ($("#rbtratamiento_9").toString());
+
+
+            /*    if  ($("#rbtratamiento_9S").checked)
+                {
+                    updateReadOnly("descOtroTratamiento", false);
+                }else{
+                    updateReadOnly("descOtroTratamiento", true);
+                }*/
+
             });
 
             function save() {

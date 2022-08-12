@@ -287,21 +287,10 @@
                                                  data-toggle="tooltip" data-state="primary"
                                                  data-placement="right"
                                                  title="El evento está relacionado a la cantidad de consultas, la primera consulta inicial es A y su convaleciente tambien es A, la segunda consulta incial es B y su convaleciente es B......."
-                                                 class="form-control" readonly
+                                                 class="form-control"
                                                  >
 
                                       </div>
-                                  </div>
-
-                                  <div class="form-group">
-                                      <label class="form-control-label"><spring:message code="Cuadro Febril" />:
-
-                                      </label>
-                                      <select class="form-control focusNext" id="tieneFiebre" name="tieneFiebre" required title ="Si el participante presenta cuadro febril y tiene una convaleciente pendiente, la muestra tomada es INICIAL aunque no se haya tomado la convaleciente y pasa al siguiente EVENTO.">
-                                          <option selected value="">Seleccione</option>
-                                          <option  value="0">Tiene Fiebre</option>
-                                          <option  value="1">NO Tiene Fiebre</option>
-                                      </select>
                                   </div>
 
                               </div>
