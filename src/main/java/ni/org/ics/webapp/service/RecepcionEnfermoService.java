@@ -119,6 +119,18 @@ public class RecepcionEnfermoService {
         }
     }
 
+    public List<String> Ultima_consulta_evento(String codigo) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("select  fn_Ultima_consulta_evento_mxEnfermo(:codigo)");
+            query.setParameter("codigo", codigo);
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
     public RecepcionEnfermo getRecepcionEnfermoById(String idRecepcion){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from RecepcionEnfermo where idRecepcion = :idRecepcion");

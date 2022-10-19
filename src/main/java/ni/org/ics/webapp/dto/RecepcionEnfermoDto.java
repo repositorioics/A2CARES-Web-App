@@ -44,6 +44,8 @@ public class RecepcionEnfermoDto extends BaseMetaData implements Serializable {
     private String enviado;
     private String evento;
     private String codigoBarra;
+    private String positivo;
+    private String ultimo_evento;
 
     public String getIdRecepcion() {
         return idRecepcion;
@@ -195,5 +197,21 @@ public class RecepcionEnfermoDto extends BaseMetaData implements Serializable {
 
     public void setCodigoBarra(String codigoBarra) {
         this.codigoBarra = codigoBarra;
+    }
+
+    public String getPositivo() {
+        return positivo;
+    }
+
+    public void setPositivo(String positivo) {
+        this.positivo = positivo;
+    }
+
+    public String getUltimo_evento() {
+        return ultimo_evento;
+    }
+
+    public void setUltimo_evento(String ultimo_evento) {
+        this.ultimo_evento = ultimo_evento;
     }
 }

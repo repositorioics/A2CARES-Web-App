@@ -20,6 +20,11 @@
     <link href="${boot}" rel="stylesheet" type="text/css"/>
     <spring:url value="/resources/css/bootstrap-datetimepicker.css" var="datetimepickerCss" />
     <link href="${datetimepickerCss}" rel="stylesheet" type="text/css"/>
+    <spring:url value="/resources/css/sweetalert.css" var="swalcss" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="${swalcss}" rel="stylesheet" type="text/css"/>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+
 
     <style>
 
@@ -223,7 +228,7 @@
                                           <label class="form-control-label"><spring:message code="consulta" />
                                               <span class="required">*</span>
                                           </label>
-                                          <select class="form-control focusNext" id="tipoConsulta" name="tipoConsulta" required>
+                                          <select class="form-control focusNext" id="tipoConsulta" name="tipoConsulta" required onchange="ValEvento();">
                                               <option selected value=""><spring:message code="select" />...</option>
                                               <c:forEach var="item" items="${catTipoConsulta}">
                                                   <c:choose>
@@ -293,6 +298,20 @@
                                       </div>
                                   </div>
 
+                                  <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+                                      <div class="form-group">
+
+
+                                          <input type="hidden" id="ultima_consulta" name="ultima_consulta"  value="${recepcionEnfermo.ultimo_evento}"
+                                                 data-toggle="tooltip" data-state="primary"
+                                                 data-placement="right"
+                                                 class="form-control"
+
+                                                  >
+
+                                      </div>
+                                  </div>
+
                               </div>
                               <div class="form-row">
                                   <div class="form-group col-md-12">
@@ -303,7 +322,7 @@
 
                               <div class="form-row">
                                   <div class="col-md-4">
-                                      <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                      <button type="submit" class="btn btn-primary btn-block btn-lg" onchange="ValEvento_guardar();">
                                           <i class="fa fa-save"></i>
                                           <spring:message code="save" />
                                       </button>
@@ -440,7 +459,46 @@
             }
         });
         $("#parametro").focus();
+        $('#evento').attr('readonly', true);
+
+
     });
+
+
+    function ValEvento(){
+
+        if ($("#ultima_consulta").val().substr(1,1) === $("#tipoConsulta").val() )
+        {
+            var evento_letra = $("#ultima_consulta").val().substr(3,1);
+            var evento_ascii = evento_letra.charCodeAt(0);
+            evento_ascii = evento_ascii + 1;
+
+            Swal.fire({
+                title: 'Alerta A2CARES!',
+                text: 'Ultima muestra de Participante es Inicial y evento:'+ ' ' +$("#ultima_consulta").val().substr(3,1) + ' Cambiará a siguiente Evento: ' + (String.fromCharCode(evento_ascii)),
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+            $("#evento").val(String.fromCharCode(evento_ascii));
+            $('#evento').attr('readonly', false);
+        } else {
+            $('#evento').attr('readonly', true);
+        }
+
+    };
+
+    function ValEvento_guardar(){
+
+        if ($("#ultima_consulta").val().substr(3,1) === $("#evento").val() )
+        {
+            Swal.fire({
+                title: 'Alerta A2CARES!',
+                text: 'Ultima muestra de Participante es Inicial y evento:'+ ' ' +$("#ultima_consulta").val().substr(3,1) + ' Cambiar a siguiente Evento.',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+
+        }};
 </script>
 
 </body>
