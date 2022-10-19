@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -48,6 +49,8 @@ public class ExcelBuilder extends AbstractExcelView {
             buildExcelDocumentVigDx(model, workbook, response);
         } else if (reporte.equalsIgnoreCase(Constants.TPR_ENVIO_ENFERMO)) {
             buildExcelReporteEnvioMxEnfermo(model, workbook, response);
+        } else if (reporte.equalsIgnoreCase(Constants.TPR_ENTO)) {
+            BuildEntoData.buildExcel(model, workbook, response);
         }
 
 	}
@@ -434,4 +437,45 @@ public class ExcelBuilder extends AbstractExcelView {
         createCell(row, value, posicionValue, esFormula, style);
     }
 
+    /***
+     * Método para crear una celda y ponerle el valor que va a contener deacuerdo al tipo de dato
+     * @param aRow Fila en la que se creará la celda
+     * @param dato Valor que se le asignará
+     * @param indice número de la columna en la fila (recordar que la primera celda tiene posición 0)
+     * @param esFormula TRUE para indicar si la celda contendrá una fórmula
+     * @param contentCellStyle Estilo que se le aplicará a la celda cuándo no es fecha
+     * @param dateCellStyle Estilo que se le aplicará a la celda cuándo es fecha
+     */
+    public static void setCellData(HSSFRow aRow, Object dato, int indice, boolean esFormula, CellStyle contentCellStyle, CellStyle dateCellStyle){
+        aRow.createCell(indice);
+        boolean isDate= false;
+        if (dato !=null){
+            if (esFormula){
+                aRow.getCell(indice).setCellFormula(dato.toString());
+                aRow.getCell(indice).setCellType(CellType.FORMULA);
+            }else {
+                if (dato instanceof Date) {
+                    aRow.getCell(indice).setCellValue((Date) dato);
+                    isDate = true;
+                } else if (dato instanceof Integer) {
+                    aRow.getCell(indice).setCellValue((Integer) dato);
+                } else if (dato instanceof Long) {
+                    aRow.getCell(indice).setCellValue((Long) dato);
+                } else if (dato instanceof Float) {
+                    aRow.getCell(indice).setCellValue((Float) dato);
+                } else if (dato instanceof Double) {
+                    aRow.getCell(indice).setCellValue((Double) dato);
+                } else if (dato instanceof BigInteger) {
+                    aRow.getCell(indice).setCellValue(((BigInteger) dato).intValue());
+                } else {
+                    aRow.createCell(indice).setCellValue(dato.toString());
+                }
+            }
+        }
+        if (!isDate)
+            aRow.getCell(indice).setCellStyle(contentCellStyle);
+        else
+            aRow.getCell(indice).setCellStyle(dateCellStyle);
+
+    }
 }

@@ -6,6 +6,9 @@ import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
 import ni.org.ics.webapp.domain.core.Estudio;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
+import ni.org.ics.webapp.domain.entomologia.CuestionarioHogar;
+import ni.org.ics.webapp.domain.entomologia.CuestionarioHogarPoblacion;
+import ni.org.ics.webapp.domain.entomologia.CuestionarioPuntoClave;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.personal.Personal;
@@ -19,6 +22,8 @@ import ni.org.ics.webapp.service.ParticipanteProcesosService;
 import ni.org.ics.webapp.service.RecepcionEnfermoService;
 import ni.org.ics.webapp.service.Retiro.RetiroService;
 import ni.org.ics.webapp.service.Serologia.SerologiaService;
+import ni.org.ics.webapp.service.entomologia.CuestionarioHogarService;
+import ni.org.ics.webapp.service.entomologia.CuestionarioPuntoClaveService;
 import ni.org.ics.webapp.service.reportes.ReportesPdfService;
 import ni.org.ics.webapp.service.scancarta.ScanCartaService;
 import ni.org.ics.webapp.web.utils.DateUtil;
@@ -34,6 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +77,12 @@ public class ReportesController {
     /* Instancia de mi Servicio Retiro */
     @Resource(name = "RetiroService")
     private RetiroService retiroService;
+
+    @Resource(name = "cuestionarioHogarService")
+    private CuestionarioHogarService cuestionarioHogarService;
+
+    @Resource(name = "cuestionarioPuntoClaveService")
+    private CuestionarioPuntoClaveService cuestionarioPuntoClaveService;
 
     //region todo Genera el Reporte de ScanCarta /reportes/ReporteCarta
     @RequestMapping(value = "/ReporteCarta", method = RequestMethod.GET)
@@ -274,4 +286,36 @@ public class ReportesController {
 
     //endregion
 
+    @RequestMapping(value = "downloadEntoInfo", method = RequestMethod.GET)
+    public ModelAndView downloadEntoInfo(@RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                         @RequestParam(value="fechaFin", required=false ) String fechaFin)
+            throws Exception {
+        ModelAndView reporteDatosEntomologia = new ModelAndView("excelView");
+        Date dFechaInicio = null;
+        Date dFechaFin = null;
+        //List<CuestionarioHogar> cuestionarios = new ArrayList<CuestionarioHogar>();
+        //List<CuestionarioHogarPoblacion> poblacion = new ArrayList<CuestionarioHogarPoblacion>();
+        List<CuestionarioPuntoClave> puntosClaves = new ArrayList<CuestionarioPuntoClave>();
+
+        if ((fechaInicio != null && !fechaInicio.isEmpty()) && (fechaFin != null && !fechaFin.isEmpty())) {
+            dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+            dFechaFin = DateUtil.StringToDate(fechaFin + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+            //cuestionarios = this.cuestionarioHogarService.getCuestionariosHogarByRangoFechas(dFechaInicio, dFechaFin);
+            //poblacion = this.cuestionarioHogarService.getCuestionariosHogarPobByRangoFechas(dFechaInicio, dFechaFin);
+            puntosClaves = this.cuestionarioPuntoClaveService.getCuestionariosPuntoClaveByRangoFechas(dFechaInicio, dFechaFin);
+        } else {
+            //cuestionarios = this.cuestionarioHogarService.getCuestionariosHogar();
+            //poblacion = this.cuestionarioHogarService.getCuestionariosHogarPoblacion();
+            puntosClaves = this.cuestionarioPuntoClaveService.getCuestionariosPuntoClave();
+        }
+
+        reporteDatosEntomologia.addObject("fechaInicio", fechaInicio);
+        reporteDatosEntomologia.addObject("fechaFin", fechaFin);
+        //reporteDatosEntomologia.addObject("cuestionarios", cuestionarios);
+        //reporteDatosEntomologia.addObject("poblacion", poblacion);
+        reporteDatosEntomologia.addObject("puntosClaves", puntosClaves);
+        reporteDatosEntomologia.addObject("TipoReporte", Constants.TPR_ENTO);
+
+        return reporteDatosEntomologia;
+    }
 }

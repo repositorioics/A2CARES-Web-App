@@ -10,7 +10,7 @@
 		<intercept-url pattern="/loginfailed" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/logout" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/resources/.*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <intercept-url pattern="/reportes/.*" access="ROLE_ROOT, ROLE_SUPER"/>
+        <intercept-url pattern="/reportes/.*" access="ROLE_ROOT,ROLE_SUPER,ROLE_ENTO"/>
         <intercept-url pattern="/movil/.*" access="ROLE_MOVIL"/>
         <intercept-url pattern="/hojaclinica/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_DIGI"/>
         <intercept-url pattern="/comparacion/.*" access="ROLE_ROOT, ROLE_SUPER"/>
@@ -20,7 +20,8 @@
         <intercept-url pattern="/cartas/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_DIGI"/>
         <intercept-url pattern="/admin/.*" access="ROLE_ROOT, ROLE_ADMIN"/>
         <intercept-url pattern="/correcion/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_DIGI"/>
-        <intercept-url pattern="/" access="ROLE_ADMIN,ROLE_ROOT,ROLE_SUPER,ROLE_LABO,ROLE_DIGI"/>
+        <intercept-url pattern="/" access="ROLE_ADMIN,ROLE_ROOT,ROLE_SUPER,ROLE_LABO,ROLE_DIGI,ROLE_ENTO"/>
+        <intercept-url pattern="/ento/.*" access="ROLE_ENTO"/>
         <intercept-url pattern="/.*" access="ROLE_ADMIN,ROLE_ROOT"/>
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/loginfailed" />

@@ -880,3 +880,12 @@ INSERT INTO `a2cares`.`mensajes` (`messageKey`, `isCat`, `orden`, `pasive`, `es`
 UPDATE `a2cares`.`mensajes` SET `es`='Enviada' WHERE  `messageKey`='lbl.envoy';
 
 INSERT INTO `mensajes` (`messageKey`, `catKey`, `catRoot`, `en`, `isCat`, `orden`, `pasive`, `es`) VALUES ('CAT_SITIOS_ENVIO_SEROLOGIA_3', '3', 'CAT_SITIOS_ENVIO_SEROLOGIA', NULL, '0', 3, '0', 'Centro de Salud Edgard Lang');
+
+/*ENTOMOLOGIA**/
+INSERT INTO roles (rol) VALUES ('ROLE_ENTO');
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'ROLE_ENTO', 'Entomologia - Equipo Harold','0','0',0);
+
+
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.ento', 'Entomología','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.ento.start.date', 'Fecha Inicio Cuestionario','0','0',0);
+INSERT INTO `mensajes` (`messageKey`, `es`, `pasive`, `isCat`, `orden`) VALUES ( 'lbl.ento.end.date', 'Fecha Fin Cuestionario','0','0',0);
