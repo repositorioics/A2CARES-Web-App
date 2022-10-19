@@ -97,6 +97,7 @@ public class MxEnfermosController {
             model.addAttribute("catTipoConsulta", catTipoConsulta);
             model.addAttribute("catFaseMuestra", catFaseMuestra);
             model.addAttribute("listado", true);
+
             return "/mxEnfermos/enterForm";
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -114,8 +115,10 @@ public class MxEnfermosController {
             List<MessageResource> catFaseMuestra = this.messageResourceService.getCatalogo("CAT_FASE_MX");
 
             String evento = "";
+
             try {
                 evento = this.recepcionEnfermoService.ObtenerEvento(idRecepcion).toString();
+
 
             }catch (Exception e){
                 logger.error(e.getMessage());
@@ -174,9 +177,17 @@ public class MxEnfermosController {
         Map<String, String> map = new HashMap<String, String>();
         Participante participante = this.participanteService.getParticipanteByCodigo(codigo);
         String evento = "";
+        String positivo = "";
+        String ultima_consulta="";
+
         try {
              evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
              evento = evento.substring(1,2);
+
+            ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
+            positivo = ultima_consulta;
+
+            map.put("ultima_consulta",ultima_consulta);
         }catch (Exception e){
             logger.error(e.getMessage());
         }
@@ -193,6 +204,7 @@ public class MxEnfermosController {
                 map.put("fechaNac", DateUtil.DateToString(participante.getFechaNac(), Constants.STRING_FORMAT_DD_MM_YYYY));
 
                 map.put("evento",evento);
+
 
                 if (!participante.getEdad().equalsIgnoreCase(Constants.NO_DATA)) {
                     String[] edad = participante.getEdad().split("/");

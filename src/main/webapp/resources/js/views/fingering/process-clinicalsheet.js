@@ -121,7 +121,7 @@ var ClinicalSheet = function () {
                     fc: {
                         required: true,
                         digits: true,
-                        range: [60, 140]
+                        range: [60, 200]
                     },
                     temp: {
                         required: true,
@@ -726,15 +726,8 @@ var ClinicalSheet = function () {
                     $("#rbtratamiento_9N").prop('checked', true);
                   //  updateReadOnly("descOtroTratamiento", true);
                 }
-//alert ($("#rbtratamiento_9").toString());
 
 
-            /*    if  ($("#rbtratamiento_9S").checked)
-                {
-                    updateReadOnly("descOtroTratamiento", false);
-                }else{
-                    updateReadOnly("descOtroTratamiento", true);
-                }*/
 
             });
 

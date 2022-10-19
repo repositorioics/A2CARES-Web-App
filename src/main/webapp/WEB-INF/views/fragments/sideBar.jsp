@@ -51,7 +51,14 @@
                             <a class="nav-link" href="<spring:url value="/hojaclinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="clinical_sheet" /></a>
                         </li>
                     </ul>
+
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item users">
+                            <a class="nav-link" href="<spring:url value="/hojaclinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="Ficha Epidemiológica" /></a>
+                        </li>
+                    </ul>
                 </li>
+
             </sec:authorize>
 
             <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI')">

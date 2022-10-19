@@ -82,7 +82,11 @@ var ProcessSickSample = function(){
                             $("#edad_meses").val(data.edadM);
                             $("#edad_dias").val(data.edadD);
                             $("#evento").val(data.evento);
+                            $("#ultima_consulta").val(data.ultima_consulta);
+
                             $("#volumen").val("");
+
+
 
                        }
 

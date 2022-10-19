@@ -16,6 +16,8 @@
     <spring:url value="/resources/css/bootstrap-datetimepicker.css" var="datetimepickerCss" />
     <link href="${datetimepickerCss}" rel="stylesheet" type="text/css"/>
 
+    <spring:url value="/resources/css/sweetalert.css" var="swalcss" />
+    <link href="${swalcss}" rel="stylesheet" type="text/css"/>
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
 <jsp:include page="../fragments/bodyHeader.jsp" />
@@ -2606,7 +2608,7 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="form-group">
                         <label for="medico" class="form-control-label"><spring:message code="medico" /><span class="required">*</span></label>
-                        <select class="form-control focusNext" id="medico" name="medico" required="required">
+                        <select class="form-control focusNext" id="medico" name="medico" required="required"  onchange="fech_Hora_medico();">
                             <option selected value=""><spring:message code="select" />...</option>
                             <c:forEach var="item" items="${medicos}">
                                 <option value="${item.codigo}">${item.idPersona} - ${item.nombre}</option>
@@ -2640,11 +2642,12 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="form-group">
                         <label for="enfermeria" class="form-control-label"><spring:message code="enfermeria" /><span class="required">*</span></label>
-                        <select class="form-control focusNext" id="enfermeria" name="enfermeria" required="required">
+                        <select class="form-control focusNext" id="enfermeria" name="enfermeria" required="required" onchange="fech_Hora_medico();">
                             <option selected value=""><spring:message code="select" />...</option>
                             <c:forEach var="item" items="${enfermeria}">
                                 <option value="${item.codigo}">${item.idPersona} - ${item.nombre}</option>
                             </c:forEach>
+
                         </select>
                     </div>
                 </div>
@@ -2785,9 +2788,62 @@
             // Si encontramos un elemento
             if (next) {
                 next.focus();
-                event.preventDefault();
+         event.preventDefault();
             }
         });*/
+
+        $('#medico').append('<option value="-1">N/A</option>');
+        $('#enfermeria').append('<option value="-1">N/A</option>');
+
     });
+
+
+
+
+    function fech_Hora_medico(){
+        if ($("#medico").val() === '-1' && $("#enfermeria").val() !== '-1')
+        {
+            $('#fechaMedico').attr("disabled", true);
+            $('#horaMedico').attr("disabled", true);
+
+            $('#fechaMedico').attr("text",'1900-01-01');
+            $('#horaMedico').attr("text",'00:00:001');
+
+        } else
+        {
+           if ($("#medico").val() !== '-1'){
+            $('#fechaMedico').attr("disabled", false);
+            $('#horaMedico').attr("disabled", false);
+           };
+
+
+        };
+
+
+        if ($("#enfermeria").val() === '-1' && $("#medico").val() !== '-1')
+        {
+            $("#fechaEnfermeria").attr("disabled", true);
+            $("#horaEnfermeria").attr("disabled", true);
+
+            $('#fechaEnfermeria').attr("text",'1900-01-01');
+            $('#horaEnfermeria').attr("text",'00:00:001');
+
+        }else {
+            if ($("#enfermeria").val() !== '-1'){
+                $("#fechaEnfermeria").attr("disabled", false);
+            $("#horaEnfermeria").attr("disabled", false);
+        };
+
+            if ($("#medico").val() === '-1' && $("#enfermeria").val() === '-1')
+            {
+                swal.fire({
+                    title: "A2CARES",
+                    text: "No se puede utilizar el valor N/A en Medícos y en Enfermería",
+                    type: "warning",
+                    cancelButtonText: 'Cancelar'
+                });
+            };
+        };
+    };
 </script>
 </html>

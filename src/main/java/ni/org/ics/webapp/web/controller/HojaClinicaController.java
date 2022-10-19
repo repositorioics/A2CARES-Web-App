@@ -77,6 +77,7 @@ public class HojaClinicaController {
         List<MessageResource> catLugarConsulta = this.messageResourceService.getCatalogo("CAT_LUGAR_CONS_HC");
         List<Personal> medicos = this.personalService.getByCargo("CAT_CARGO_1");
         List<Personal> enfermeria = this.personalService.getByCargo("CAT_CARGO_2");
+
         //List<UserSistema> usuarios = usuarioService.getUsers();
         //model.addAttribute("usuarios", usuarios);
         model.addAttribute("catSiNo", catSiNo);
