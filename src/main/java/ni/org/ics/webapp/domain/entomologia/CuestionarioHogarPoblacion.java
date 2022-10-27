@@ -11,8 +11,8 @@ import javax.persistence.Table;
 /**
  * Created by miguel on 15/8/2022.
  */
-//@Entity
-//@Table(name = "ento_cuestionario_hogar_pob", catalog = "a2cares")
+@Entity
+@Table(name = "ento_cuestionario_hogar_pob", catalog = "a2cares")
 public class CuestionarioHogarPoblacion extends BaseMetaData implements Auditable {
 
     private String codigoPoblacion;

@@ -293,26 +293,26 @@ public class ReportesController {
         ModelAndView reporteDatosEntomologia = new ModelAndView("excelView");
         Date dFechaInicio = null;
         Date dFechaFin = null;
-        //List<CuestionarioHogar> cuestionarios = new ArrayList<CuestionarioHogar>();
-        //List<CuestionarioHogarPoblacion> poblacion = new ArrayList<CuestionarioHogarPoblacion>();
+        List<CuestionarioHogar> cuestionarios = new ArrayList<CuestionarioHogar>();
+        List<CuestionarioHogarPoblacion> poblacion = new ArrayList<CuestionarioHogarPoblacion>();
         List<CuestionarioPuntoClave> puntosClaves = new ArrayList<CuestionarioPuntoClave>();
 
         if ((fechaInicio != null && !fechaInicio.isEmpty()) && (fechaFin != null && !fechaFin.isEmpty())) {
             dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
             dFechaFin = DateUtil.StringToDate(fechaFin + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
-            //cuestionarios = this.cuestionarioHogarService.getCuestionariosHogarByRangoFechas(dFechaInicio, dFechaFin);
-            //poblacion = this.cuestionarioHogarService.getCuestionariosHogarPobByRangoFechas(dFechaInicio, dFechaFin);
+            cuestionarios = this.cuestionarioHogarService.getCuestionariosHogarByRangoFechas(dFechaInicio, dFechaFin);
+            poblacion = this.cuestionarioHogarService.getCuestionariosHogarPobByRangoFechas(dFechaInicio, dFechaFin);
             puntosClaves = this.cuestionarioPuntoClaveService.getCuestionariosPuntoClaveByRangoFechas(dFechaInicio, dFechaFin);
         } else {
-            //cuestionarios = this.cuestionarioHogarService.getCuestionariosHogar();
-            //poblacion = this.cuestionarioHogarService.getCuestionariosHogarPoblacion();
+            cuestionarios = this.cuestionarioHogarService.getCuestionariosHogar();
+            poblacion = this.cuestionarioHogarService.getCuestionariosHogarPoblacion();
             puntosClaves = this.cuestionarioPuntoClaveService.getCuestionariosPuntoClave();
         }
 
         reporteDatosEntomologia.addObject("fechaInicio", fechaInicio);
         reporteDatosEntomologia.addObject("fechaFin", fechaFin);
-        //reporteDatosEntomologia.addObject("cuestionarios", cuestionarios);
-        //reporteDatosEntomologia.addObject("poblacion", poblacion);
+        reporteDatosEntomologia.addObject("cuestionarios", cuestionarios);
+        reporteDatosEntomologia.addObject("poblacion", poblacion);
         reporteDatosEntomologia.addObject("puntosClaves", puntosClaves);
         reporteDatosEntomologia.addObject("TipoReporte", Constants.TPR_ENTO);
 

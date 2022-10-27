@@ -7,18 +7,40 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by miguel on 15/8/2022.
  */
-//@Entity
-//@Table(name = "ento_cuestionario_hogar", catalog = "a2cares")
+@Entity
+@Table(name = "ento_cuestionario_hogar", catalog = "a2cares")
 public class CuestionarioHogar  extends BaseMetaData implements Auditable {
 
     private String codigoEncuesta;
 
-    //00.	Código de la casa
-    private int codigoCasa;
+
+    private Date fechaCuestionario;
+    private Integer barrio;
+    private String direccion;
+    private Double latitud;
+    private Double longitud;
+    private String tipoIngresoCodigo;
+    private String codigoVivienda;
+    private String tipoVivienda;
+
+    private String hayAmbientePERI;
+    private String horaCapturaPERI;
+    private Double humedadRelativaPERI;
+    private Double temperaturaPERI;
+    private String tipoIngresoCodigoPERI;
+    private String codigoPERI;
+
+    private String hayAmbienteINTRA;
+    private String horaCapturaINTRA;
+    private Double humedadRelativaINTRA;
+    private Double temperaturaINTRA;
+    private String tipoIngresoCodigoINTRA;
+    private String codigoINTRA;
 
     //01.	¿Quién está contestando éste cuestionario?
     private String quienContesta;
@@ -128,6 +150,13 @@ public class CuestionarioHogar  extends BaseMetaData implements Auditable {
     //33.	¿Cuál es el mayor criadero de Zancudos de este barrio?
     private String mayorCriaderoBarrio;
 
+    private String materialParedes;
+    private String materialPiso;
+    private String materialTecho;
+    private String otroMaterialParedes;
+    private String otroMaterialPiso;
+    private String otroMaterialTecho;
+
     @Id
     @Column(name = "codigo_cuestionario", nullable = false, length = 36)
     public String getCodigoEncuesta() {
@@ -138,13 +167,186 @@ public class CuestionarioHogar  extends BaseMetaData implements Auditable {
         this.codigoEncuesta = codigoEncuesta;
     }
 
-    @Column(name = "codigo_casa", nullable = false)
-    public int getCodigoCasa() {
-        return codigoCasa;
+    @Column(name = "fecha_cuestionario", nullable = false)
+    public Date getFechaCuestionario() {
+        return fechaCuestionario;
     }
 
-    public void setCodigoCasa(int codigoCasa) {
-        this.codigoCasa = codigoCasa;
+    public void setFechaCuestionario(Date fechaCuestionario) {
+        this.fechaCuestionario = fechaCuestionario;
+    }
+
+    @Column(name = "codigo_barrio", nullable = false)
+    public Integer getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(Integer barrio) {
+        this.barrio = barrio;
+    }
+
+    @Column(name = "direccion", nullable = false, length = 500)
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+
+    @Column(name = "latitud", nullable = true)
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    @Column(name = "longitud", nullable = true)
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+    @Column(name = "tipo_ingreso_codigo", nullable = false, length = 2)
+    public String getTipoIngresoCodigo() {
+        return tipoIngresoCodigo;
+    }
+
+    public void setTipoIngresoCodigo(String tipoIngresoCodigo) {
+        this.tipoIngresoCodigo = tipoIngresoCodigo;
+    }
+
+    @Column(name = "codigo_vivienda", nullable = false, length = 4)
+    public String getCodigoVivienda() {
+        return codigoVivienda;
+    }
+
+    public void setCodigoVivienda(String codigoVivienda) {
+        this.codigoVivienda = codigoVivienda;
+    }
+
+    @Column(name = "tipo_vivienda", nullable = false, length = 2)
+    public String getTipoVivienda() {
+        return tipoVivienda;
+    }
+
+    public void setTipoVivienda(String tipoVivienda) {
+        this.tipoVivienda = tipoVivienda;
+    }
+
+
+    @Column(name = "hay_ambiente_peri", nullable = false, length = 2)
+    public String getHayAmbientePERI() {
+        return hayAmbientePERI;
+    }
+
+    public void setHayAmbientePERI(String hayAmbientePERI) {
+        this.hayAmbientePERI = hayAmbientePERI;
+    }
+
+    @Column(name = "hora_captura_peri", nullable = true, length = 16)
+    public String getHoraCapturaPERI() {
+        return horaCapturaPERI;
+    }
+
+    public void setHoraCapturaPERI(String horaCaptura) {
+        this.horaCapturaPERI = horaCaptura;
+    }
+
+    @Column(name = "porcentaje_humedad_peri", nullable = true)
+    public Double getHumedadRelativaPERI() {
+        return humedadRelativaPERI;
+    }
+
+    public void setHumedadRelativaPERI(Double porcentajeHumedadRelativa) {
+        this.humedadRelativaPERI = porcentajeHumedadRelativa;
+    }
+
+    @Column(name = "temperatura_peri", nullable = true)
+    public Double getTemperaturaPERI() {
+        return temperaturaPERI;
+    }
+
+    public void setTemperaturaPERI(Double temperatura) {
+        this.temperaturaPERI = temperatura;
+    }
+
+    @Column(name = "tipo_ingreso_cod_peri", nullable = true, length = 2)
+    public String getTipoIngresoCodigoPERI() {
+        return tipoIngresoCodigoPERI;
+    }
+
+    public void setTipoIngresoCodigoPERI(String tipoIngresoCodigoPERI) {
+        this.tipoIngresoCodigoPERI = tipoIngresoCodigoPERI;
+    }
+
+    @Column(name = "codigo_peri", nullable = true, length = 16)
+    public String getCodigoPERI() {
+        return codigoPERI;
+    }
+
+    public void setCodigoPERI(String codigoPERI) {
+        this.codigoPERI = codigoPERI;
+    }
+
+    @Column(name = "hay_ambiente_intra", nullable = false, length = 2)
+    public String getHayAmbienteINTRA() {
+        return hayAmbienteINTRA;
+    }
+
+    public void setHayAmbienteINTRA(String hayAmbienteINTRA) {
+        this.hayAmbienteINTRA = hayAmbienteINTRA;
+    }
+
+    @Column(name = "hora_captura_intra", nullable = true, length = 16)
+    public String getHoraCapturaINTRA() {
+        return horaCapturaINTRA;
+    }
+
+    public void setHoraCapturaINTRA(String horaCapturaINTRA) {
+        this.horaCapturaINTRA = horaCapturaINTRA;
+    }
+
+    @Column(name = "porcentaje_humedad_intra", nullable = true)
+    public Double getHumedadRelativaINTRA() {
+        return humedadRelativaINTRA;
+    }
+
+    public void setHumedadRelativaINTRA(Double humedadRelativaINTRA) {
+        this.humedadRelativaINTRA = humedadRelativaINTRA;
+    }
+
+    @Column(name = "temperatura_intra", nullable = true)
+    public Double getTemperaturaINTRA() {
+        return temperaturaINTRA;
+    }
+
+    public void setTemperaturaINTRA(Double temperaturaINTRA) {
+        this.temperaturaINTRA = temperaturaINTRA;
+    }
+
+    @Column(name = "tipo_ingreso_cod_intra", nullable = true, length = 2)
+    public String getTipoIngresoCodigoINTRA() {
+        return tipoIngresoCodigoINTRA;
+    }
+
+    public void setTipoIngresoCodigoINTRA(String tipoIngresoCodigoINTRA) {
+        this.tipoIngresoCodigoINTRA = tipoIngresoCodigoINTRA;
+    }
+
+    @Column(name = "codigo_intra", nullable = true, length = 16)
+    public String getCodigoINTRA() {
+        return codigoINTRA;
+    }
+
+    public void setCodigoINTRA(String codigoINTRA) {
+        this.codigoINTRA = codigoINTRA;
     }
 
     @Column(name = "quien_contesta", nullable = false, length = 4)
@@ -523,6 +725,61 @@ public class CuestionarioHogar  extends BaseMetaData implements Auditable {
 
     public void setMayorCriaderoBarrio(String mayorCreaderoBarrio) {
         this.mayorCriaderoBarrio = mayorCreaderoBarrio;
+    }
+
+
+    @Column(name = "meterial_paredes", length = 20)
+    public String getMaterialParedes() {
+        return materialParedes;
+    }
+
+    public void setMaterialParedes(String materialParedes) {
+        this.materialParedes = materialParedes;
+    }
+
+    @Column(name = "material_piso", length = 16)
+    public String getMaterialPiso() {
+        return materialPiso;
+    }
+
+    public void setMaterialPiso(String materialPiso) {
+        this.materialPiso = materialPiso;
+    }
+
+    @Column(name = "material_techo", length = 3)
+    public String getMaterialTecho() {
+        return materialTecho;
+    }
+
+    public void setMaterialTecho(String materialTecho) {
+        this.materialTecho = materialTecho;
+    }
+
+    @Column(name = "otro_meterial_paredes")
+    public String getOtroMaterialParedes() {
+        return otroMaterialParedes;
+    }
+
+    public void setOtroMaterialParedes(String otroMaterialParedes) {
+        this.otroMaterialParedes = otroMaterialParedes;
+    }
+
+    @Column(name = "otro_material_piso")
+    public String getOtroMaterialPiso() {
+        return otroMaterialPiso;
+    }
+
+    public void setOtroMaterialPiso(String otroMaterialPiso) {
+        this.otroMaterialPiso = otroMaterialPiso;
+    }
+
+    @Column(name = "otro_material_techo")
+    public String getOtroMaterialTecho() {
+        return otroMaterialTecho;
+    }
+
+    public void setOtroMaterialTecho(String otroMaterialTecho) {
+        this.otroMaterialTecho = otroMaterialTecho;
     }
 
     @Override

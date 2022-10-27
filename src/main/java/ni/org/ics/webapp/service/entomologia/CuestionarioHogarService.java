@@ -34,7 +34,7 @@ public class CuestionarioHogarService {
 
     public List<CuestionarioHogar> getCuestionariosHogar(){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from CuestionarioHogar where pasive = '0' order by recordDate, codigoCasa");
+        Query query = session.createQuery("from CuestionarioHogar where pasive = '0' order by recordDate, codigoVivienda");
         return query.list();
     }
 
@@ -46,7 +46,7 @@ public class CuestionarioHogarService {
 
     public List<CuestionarioHogar> getCuestionariosHogarByRangoFechas(Date fechaInicio, Date fechaFin){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from CuestionarioHogar where pasive = '0' and recordDate between :fechaInicio and :fechaFin order by recordDate, codigoCasa");
+        Query query = session.createQuery("from CuestionarioHogar where pasive = '0' and recordDate between :fechaInicio and :fechaFin order by recordDate, codigoVivienda");
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         return query.list();

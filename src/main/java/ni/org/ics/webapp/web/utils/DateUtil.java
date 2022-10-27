@@ -152,9 +152,9 @@ public final class DateUtil {
         return new Timestamp(dateWithoutTime.getTime());
     }
 
-    public static String getHoraFormateada(String hora){
+    public static String getHoraFormateada(String hora, String formato){
         if (hora != null && !hora.isEmpty()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat(formato);
             Date date = null;
             String formattedTime = "Wrong time";
             try {

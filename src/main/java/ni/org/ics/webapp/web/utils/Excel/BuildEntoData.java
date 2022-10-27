@@ -28,8 +28,8 @@ public class BuildEntoData {
     public static void buildExcel(Map<String, Object> model, HSSFWorkbook workbook,HttpServletResponse response) throws IOException {
         String fechaInicio = model.get("fechaInicio").toString();
         String fechaFin = model.get("fechaFin").toString();
-        //List<CuestionarioHogar> listaCuestionario = (List<CuestionarioHogar>) model.get("cuestionarios");
-        //List<CuestionarioHogarPoblacion> listaPoblacion = (List<CuestionarioHogarPoblacion>) model.get("poblacion");
+        List<CuestionarioHogar> listaCuestionario = (List<CuestionarioHogar>) model.get("cuestionarios");
+        List<CuestionarioHogarPoblacion> listaPoblacion = (List<CuestionarioHogarPoblacion>) model.get("poblacion");
         List<CuestionarioPuntoClave> listaPuntosClaves = (List<CuestionarioPuntoClave>) model.get("puntosClaves");
 
         response.setContentType("application/octec-stream");
@@ -78,57 +78,90 @@ public class BuildEntoData {
             cell.setCellValue(header);
         }
 
-        /*if (listaCuestionario.size()>0) {
+        if (listaCuestionario.size()>0) {
             int rowCount = 1;
             for (CuestionarioHogar registro : listaCuestionario) {
                 HSSFRow dataRow = sheet.createRow(rowCount++);
 
-                ExcelBuilder.setCellData(dataRow, registro.getCodigoCasa(), 0, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQuienContesta(), 1, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQuienContestaOtro(), 2, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getEdadContest(), 3, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getEscolaridadContesta(), 4, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getTiempoVivirBarrio(), 5, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getCuantasPersonasViven(), 6, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getEdadesFemenino(), 7, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getEdadesMasculino(), 8, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getUsaronMosquitero(), 9, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQuienesUsaronMosquitero(), 10, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getUsaronRepelente(), 11, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQuienesUsaronRepelente(), 12, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getConoceLarvas(), 13, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getAlguienVisEliminarLarvas(), 14, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQuienVisEliminarLarvas(), 15, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQuienVisEliminarLarvasOtro(), 16, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getAlguienDedicaElimLarvasCasa(), 17, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQuienDedicaElimLarvasCasa(), 18, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getTiempoElimanCridaros(), 19, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getHayBastanteZancudos(), 20, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQueFaltaCasaEvitarZancudos(), 21, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQueFaltaCasaEvitarZancudosOtros(), 22, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getGastaronDineroProductos(), 23, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQueProductosCompraron(), 24, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQueProductosCompraronOtros(), 25, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getCuantoGastaron(), 26, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getUltimaVisitaMinsaBTI(), 27, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getUltimaVezMinsaFumigo(), 28, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getRiesgoCasaDengue(), 29, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getProblemasAbastecimiento(), 30, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getCadaCuantoVaAgua(), 31, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getCadaCuantoVaAguaOtro(), 32, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getHorasSinAguaDia(), 33, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQueHacenBasuraHogar(), 34, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQueHacenBasuraHogarOtro(), 35, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getRiesgoBarrioDengue(), 36, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getAccionesCriaderosBarrio(), 37, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQueAcciones(), 38, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQueAccionesOtro(), 39, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getAlguienParticipo(), 40, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getQuienParticipo(), 41, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getMayorCriaderoBarrio(), 42, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getRecordUser(), 43, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getRecordDate(), "dd/MM/yyyy"), 44, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, registro.getCodigoEncuesta(), 45, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getFechaCuestionario(), "dd/MM/yyyy"), 0, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getBarrio(), 1, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getDireccion(), 2, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getLatitud(), 3, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getLongitud(), 4, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getTipoIngresoCodigo(), 5, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getCodigoVivienda(), 6, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getTipoVivienda(), 7, false, contentCellStyle, dateCellStyle);
+
+                ExcelBuilder.setCellData(dataRow, registro.getHayAmbientePERI(), 8, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraCapturaPERI(), "HH:mm"), 9, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getHumedadRelativaPERI(), 10, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getTemperaturaPERI(), 11, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getTipoIngresoCodigoPERI(), 12, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getCodigoPERI(), 13, false, contentCellStyle, dateCellStyle);
+
+                ExcelBuilder.setCellData(dataRow, registro.getHayAmbienteINTRA(), 14, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraCapturaINTRA(),"HH:mm"), 15, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getHumedadRelativaINTRA(), 16, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getTemperaturaINTRA(), 17, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getTipoIngresoCodigoINTRA(), 18, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getCodigoINTRA(), 19, false, contentCellStyle, dateCellStyle);
+
+                ExcelBuilder.setCellData(dataRow, registro.getQuienContesta(), 20, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQuienContestaOtro(), 21, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getEdadContest(),22, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getEscolaridadContesta(), 23, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getTiempoVivirBarrio(), 24, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getCuantasPersonasViven(), 25, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getEdadesFemenino(), 26, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getEdadesMasculino(), 27, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getUsaronMosquitero(), 28, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQuienesUsaronMosquitero(), 29, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getUsaronRepelente(), 30, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQuienesUsaronRepelente(), 31, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getConoceLarvas(), 32, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getAlguienVisEliminarLarvas(), 33, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQuienVisEliminarLarvas(), 34, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQuienVisEliminarLarvasOtro(), 35, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getAlguienDedicaElimLarvasCasa(), 36, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQuienDedicaElimLarvasCasa(), 37, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getTiempoElimanCridaros(), 38, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getHayBastanteZancudos(), 39, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQueFaltaCasaEvitarZancudos(), 40, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQueFaltaCasaEvitarZancudosOtros(), 41, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getGastaronDineroProductos(), 42, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQueProductosCompraron(), 43, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQueProductosCompraronOtros(), 44, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getCuantoGastaron(), 45, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getUltimaVisitaMinsaBTI(), 46, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getUltimaVezMinsaFumigo(), 47, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getRiesgoCasaDengue(), 48, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getProblemasAbastecimiento(), 49, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getCadaCuantoVaAgua(), 50, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getCadaCuantoVaAguaOtro(), 51, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getHorasSinAguaDia(), 52, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQueHacenBasuraHogar(), 53, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQueHacenBasuraHogarOtro(), 54, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getRiesgoBarrioDengue(), 55, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getAccionesCriaderosBarrio(), 56, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQueAcciones(), 57, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQueAccionesOtro(), 58, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getAlguienParticipo(), 59, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getQuienParticipo(), 60, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getMayorCriaderoBarrio(), 61, false, contentCellStyle, dateCellStyle);
+
+                ExcelBuilder.setCellData(dataRow, registro.getMaterialParedes(), 62, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getOtroMaterialParedes(), 63, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getMaterialPiso(), 64, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getOtroMaterialPiso(), 65, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getMaterialTecho(), 66, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getOtroMaterialTecho(), 67, false, contentCellStyle, dateCellStyle);
+
+                ExcelBuilder.setCellData(dataRow, registro.getRecordUser(), 68, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getRecordDate(), "dd/MM/yyyy"), 69, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, registro.getCodigoEncuesta(), 70, false, contentCellStyle, dateCellStyle);
+
+
+
             }
 
             for (int i = 0; i < Constants.ENTO_COLUMNAS_TBL_CUEST_HOGAR.length ; i++){
@@ -181,7 +214,7 @@ public class BuildEntoData {
             sheet.addMergedRegion(new CellRangeAddress(aRow.getRowNum(), aRow.getRowNum(), 0, Constants.ENTO_COLUMNAS_TBL_CUEST_HOGAR_POB.length - 1));
             aRow.createCell(0).setCellValue("NO SE ENCONTRARON DATOS!");
             aRow.getCell(0).setCellStyle(noDataCellStyle);
-        }*/
+        }
 
         //se crea la tercera hoja para los puntos claves
         sheet = workbook.createSheet("ento_cuestionario_punto_clave");
@@ -210,8 +243,8 @@ public class BuildEntoData {
                 ExcelBuilder.setCellData(dataRow, registro.getTipoPuntoAglomeracionOtro(), 8, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getCuantasPersonasReunen(), 9, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getCuantosDiasSemanaReunen(),10 , false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraInicioReunion()), 11, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraFinReunion()), 12, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraInicioReunion(),"HH:mm:ss"), 11, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraFinReunion(), "HH:mm:ss"), 12, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getPuntoGps(), 13, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getLatitud(), 14, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getLongitud(), 15, false, contentCellStyle, dateCellStyle);
@@ -221,14 +254,14 @@ public class BuildEntoData {
                 ExcelBuilder.setCellData(dataRow, registro.getCodigoSitio(), 17, false, contentCellStyle, dateCellStyle);
 
                 ExcelBuilder.setCellData(dataRow, registro.getHayAmbientePERI(), 18, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraCapturaPERI()), 19, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraCapturaPERI(), "HH:mm:ss"), 19, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getHumedadRelativaPERI(), 20, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getTemperaturaPERI(), 21, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getTipoIngresoCodigoPERI(), 22, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getCodigoPERI(), 23, false, contentCellStyle, dateCellStyle);
 
                 ExcelBuilder.setCellData(dataRow, registro.getHayAmbienteINTRA(), 24, false, contentCellStyle, dateCellStyle);
-                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraCapturaINTRA()), 25, false, contentCellStyle, dateCellStyle);
+                ExcelBuilder.setCellData(dataRow, ni.org.ics.webapp.web.utils.DateUtil.getHoraFormateada(registro.getHoraCapturaINTRA(),"HH:mm:ss"), 25, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getHumedadRelativaINTRA(), 26, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getTemperaturaINTRA(), 27, false, contentCellStyle, dateCellStyle);
                 ExcelBuilder.setCellData(dataRow, registro.getTipoIngresoCodigoINTRA(), 28, false, contentCellStyle, dateCellStyle);
@@ -254,11 +287,11 @@ public class BuildEntoData {
         }
     }
 
-    private static int obtenerCodigoCasaCuestionario(List<CuestionarioHogar> listaCuestionario, String codigoEncuesta) {
-        int codigoCasa = 0;
+    private static String obtenerCodigoCasaCuestionario(List<CuestionarioHogar> listaCuestionario, String codigoEncuesta) {
+        String codigoCasa = "";
         for(CuestionarioHogar cuest : listaCuestionario) {
             if (cuest.getCodigoEncuesta().equalsIgnoreCase(codigoEncuesta)) {
-                codigoCasa = cuest.getCodigoCasa();
+                codigoCasa = cuest.getCodigoVivienda();
                 break;
             }
         }
