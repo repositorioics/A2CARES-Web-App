@@ -20,8 +20,10 @@
         <intercept-url pattern="/cartas/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_DIGI"/>
         <intercept-url pattern="/admin/.*" access="ROLE_ROOT, ROLE_ADMIN"/>
         <intercept-url pattern="/correcion/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_DIGI"/>
+        <intercept-url pattern="/mx/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_LABO"/>
         <intercept-url pattern="/" access="ROLE_ADMIN,ROLE_ROOT,ROLE_SUPER,ROLE_LABO,ROLE_DIGI,ROLE_ENTO"/>
         <intercept-url pattern="/ento/.*" access="ROLE_ENTO"/>
+        <intercept-url pattern="/entomologia/.*" access="ROLE_ENTO"/>
         <intercept-url pattern="/.*" access="ROLE_ADMIN,ROLE_ROOT"/>
 		<form-login login-page="/login" default-target-url="/"
 			authentication-failure-url="/loginfailed" />

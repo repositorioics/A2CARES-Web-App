@@ -78,7 +78,7 @@
                                         <thead>
                                         <tr>
                                             <th><spring:message code="code"/></th>
-                                            <th><spring:message code="fecha"/></th>
+                                            <th><spring:message code="echa"/></th>
                                             <th><spring:message code="usuario"/></th>
                                             <th><spring:message code="edad_actual"/></th>
                                             <th><spring:message code="edad_firma"/></th>

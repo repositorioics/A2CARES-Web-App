@@ -2559,17 +2559,17 @@
 <div class="card-block">
     <div class="row">
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
-            <label class="form-control-label" for="planes"><spring:message code="planes" /><span class="required">*</span>
+            <label class="form-control-label" for="planes"><spring:message code="planes" />
             </label>
-            <textarea  class="form-control focusNext" id="planes" name="planes" cols="30" rows="4" required="required" placeholder="Ingrese los planes"></textarea>
+            <textarea  class="form-control focusNext" id="planes" name="planes" cols="30" rows="4"  required="required"  placeholder="Ingrese los planes"></textarea>
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
-            <label class="form-control-label" for="historia"><spring:message code="historia_clinica" /><span class="required">*</span></label>
-            <textarea  class="form-control focusNext" id="historia" name="historia" cols="30" rows="6" required="required" placeholder="Ingrese la historia clínica"></textarea>
+            <label class="form-control-label" for="historia"><spring:message code="historia_clinica" /> </label>
+            <textarea  class="form-control focusNext" id="historia" name="historia" cols="30" rows="6"  placeholder="Ingrese la historia clínica"></textarea>
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
-            <label class="form-control-label" for="dx"><spring:message code="diagnostico" /><span class="required">*</span></label>
-            <textarea  class="form-control focusNext" id="dx" name="dx" cols="30" rows="2" required="required" placeholder="Ingrese el diagnóstico"></textarea>
+            <label class="form-control-label" for="dx"><spring:message code="diagnostico" /> </label>
+            <textarea  class="form-control focusNext" id="dx" name="dx" cols="30" rows="2" required="required"   placeholder="Ingrese el diagnóstico"></textarea>
         </div>
     </div>
     <div class="row">

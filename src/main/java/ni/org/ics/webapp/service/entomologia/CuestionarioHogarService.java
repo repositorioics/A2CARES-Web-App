@@ -51,6 +51,12 @@ public class CuestionarioHogarService {
         query.setParameter("fechaFin", fechaFin);
         return query.list();
     }
+    public List<CuestionarioHogar> getCuestionariosHogarByCodigoVivienda(String codigoVivienda){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from CuestionarioHogar where pasive = '0' and codigoVivienda = codigoVivienda");
+        query.setParameter("codigoVivienda", codigoVivienda);
+        return query.list();
+    }
 
     public List<CuestionarioHogarPoblacion> getCuestionariosHogarPobByRangoFechas(Date fechaInicio, Date fechaFin){
         Session session = sessionFactory.getCurrentSession();

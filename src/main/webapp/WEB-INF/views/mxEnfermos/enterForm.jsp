@@ -248,8 +248,8 @@
                                           <label class="form-control-label"><spring:message code="categoria" />:
                                               <span class="required">*</span>
                                           </label>
-                                          <select class="form-control focusNext" id="categoria" name="categoria" required>
-                                              <option selected value=""><spring:message code="select" />...</option>
+                                          <select class="form-control focusNext" id="categoria" name="categoria" required onchange="ValCatD();" >
+                                              <option selected value=""><spring:message code="" /><spring:message code="select" />...</option>
                                               <c:forEach var="item" items="${catCategoria}">
                                                   <c:choose>
                                                       <c:when test="${item.catKey eq recepcionEnfermo.categoria}">
@@ -269,7 +269,7 @@
                                               <span class="required">*</span>
                                           </label>
                                           <select class="form-control focusNext" id="faseMuestra" name="faseMuestra" required>
-                                              <option selected value=""><spring:message code="select" />...</option>
+                                              <option selected value= ""><spring:message code="select" />...</option>
                                               <c:forEach var="item" items="${catFaseMuestra}">
                                                   <c:choose>
                                                       <c:when test="${item.catKey eq recepcionEnfermo.tipoMuestra}">
@@ -487,6 +487,21 @@
 
     };
 
+    function ValCatD(){
+
+        if ($("#categoria").val() === "D" )
+        {
+            Swal.fire({
+                title: 'Alerta A2CARES!',
+                text: 'Por orientación de CNDR, cuando se trate de una categoria D, se indicará en FIF 10/10/3000',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            });
+            $('#fif').val("10/10/3000");
+
+
+        }
+    };
     function ValEvento_guardar(){
 
         if ($("#ultima_consulta").val().substr(3,1) === $("#evento").val() )

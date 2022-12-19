@@ -52,11 +52,7 @@
                         </li>
                     </ul>
 
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item users">
-                            <a class="nav-link" href="<spring:url value="/hojaclinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="Ficha Epidemiológica" /></a>
-                        </li>
-                    </ul>
+
                 </li>
 
             </sec:authorize>
@@ -138,6 +134,17 @@
                                 <i class="fas fa-ambulance" aria-hidden="true"></i>
                                 <spring:message code="lbl.shipment.report" /></a>
                         </li>
+                        <li class="nav-item filedata">
+                        <a class="nav-link" href="<spring:url value="/mx/enfermo/controldeIngresosMx" htmlEscape="true "/>">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                            <spring:message code="Control de Ingreso Mx" /></a>
+                        </li>
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/mx/enfermo/convalecientesMx" htmlEscape="true "/>">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <spring:message code="Convalecientes Mx" /></a>
+                        </li>
+
                     </ul>
                 </li>
             </sec:authorize>
@@ -209,7 +216,15 @@
                                 <i class="fa fa-flag-checkered" aria-hidden="true"></i><spring:message code="Information" /></a>
                         </li>
                     </ul>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<spring:url value="/entomologia/editdata/" htmlEscape="true "/>">
+                                <i class="fa fa-flag-checkered" aria-hidden="true"></i><spring:message code="Editar Tablas" /></a>
+                        </li>
+                    </ul>
                 </li>
+
+
             </sec:authorize>
 
 	        <li class="nav-item">

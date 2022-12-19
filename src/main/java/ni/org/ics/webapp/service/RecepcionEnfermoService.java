@@ -5,6 +5,9 @@ import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.laboratorio.RecepcionEnfermo;
 import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
 import ni.org.ics.webapp.dto.RecepcionEnfermoDto;
+import ni.org.ics.webapp.dto.MuestrasEnfermosDto;
+import ni.org.ics.webapp.dto.ConvalecientesEnfermoDto;
+import ni.org.ics.webapp.dto.OrdenLaboratorioDto;
 import ni.org.ics.webapp.web.utils.Constants;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import org.hibernate.Query;
@@ -92,6 +95,125 @@ public class RecepcionEnfermoService {
         query.setParameter("fechaFin", fechaFin);
         return query.list();
     }
+
+    public List<String> getMxOrdenLaboratorio(Date fechaInicio, Date fechaFin){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from OrdenLaboratorio s where s.fechaOrden between :fechaInicio and :fechaFin ");
+        query.setParameter("fechaInicio", fechaInicio);
+        query.setParameter("fechaFin", fechaFin);
+        return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<MuestrasEnfermosDto> getMxMuestraEnfermo(FiltroMxEnfermoDto filtro) throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select r.idMuestra as idMuestra, DATE_FORMAT(r.fechaMuestra, '%d/%m/%Y') as fechaMuestra, r.horaMuestra as horaMuestra, r.tipoTubo as tipoTubo, " +
+                "p.codigo as participante, r.volumen as volumen, r.observacion as observacion, DATE_FORMAT(r.fis, '%d/%m/%Y') as fis, DATE_FORMAT(r.fif, '%d/%m/%Y') as fif, " +
+                "r.categoria as categoria, (select m.spanish from MessageResource m where m.catRoot = 'CAT_TIPO_CONSULTA' and m.catKey = r.consulta) as consulta, " +
+                "(select m.spanish from MessageResource m where m.catRoot = 'CAT_FASE_MX' and m.catKey = r.tipoMuestra) as tipoMuestra, r.recordUser as recordUser " +
+                "from MuestraEnfermo r inner join r.participante p where r.pasive = '0' " +
+                (filtro.getFechaInicio()!=null  && filtro.getFechaFin() != null ? " and r.fechaMuestra between :fechaInicio and :fechaFin ":" ")+
+                "order by p.codigo asc");
+        if (filtro.getParticipante() != null && !filtro.getParticipante().isEmpty()) {
+            query.setParameter("participante", filtro.getParticipante());
+        }
+        if (filtro.getCodigoMx() != null && !filtro.getCodigoMx().isEmpty()) {
+            query.setParameter("codigoMx", "%"+filtro.getCodigoMx()+"%");
+        }
+        if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
+            query.setParameter("fechaInicio", filtro.getFechaInicio());
+            query.setParameter("fechaFin", filtro.getFechaFin());
+        }
+        query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+        return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<OrdenLaboratorioDto> getMxOrdenLaboratorio(FiltroMxEnfermoDto filtro) throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select  DATE_FORMAT(r.fechaOrden, '%d/%m/%Y') as fechaOrden, r.tipoOrden  as tipoOrden, " +
+                "p.codigo as participante, r.observacion as observacion, DATE_FORMAT(r.fis, '%d/%m/%Y') as fis, DATE_FORMAT(r.fif, '%d/%m/%Y') as fif, " +
+                "r.categoria as categoria, (select m.spanish from MessageResource m where m.catRoot = 'CAT_TIPO_CONSULTA' and m.catKey = r.consulta) as consulta, " +
+                "(select m.spanish from MessageResource m where m.catRoot = 'CAT_FASE_MX' and m.catKey = r.tipoMuestra) as tipoMuestra, r.recordUser as recordUser " +
+                "from OrdenLaboratorio r inner join r.participante p where r.pasive = '0' " +
+                (filtro.getFechaInicio()!=null  && filtro.getFechaFin() != null ? " and r.fechaOrden between :fechaInicio and :fechaFin ":" ")+
+                "order by p.codigo asc");
+
+        if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
+            query.setParameter("fechaInicio", filtro.getFechaInicio());
+            query.setParameter("fechaFin", filtro.getFechaFin());
+        }
+        query.setResultTransformer(Transformers.aliasToBean(OrdenLaboratorioDto.class));
+        return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<RecepcionEnfermoDto> getMxRecepcionEnfermo(FiltroMxEnfermoDto filtro)throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("select r.idRecepcion as idRecepcion, DATE_FORMAT(r.fechaRecepcion, '%d/%m/%Y') as fechaRecepcion, " +
+                "r.codigo as participante, r.volumen as volumen, r.observacion as observacion, DATE_FORMAT(r.fis, '%d/%m/%Y') as fis, DATE_FORMAT(r.fif, '%d/%m/%Y') as fif, " +
+                "r.categoria as categoria, (select m.spanish from MessageResource m where m.catRoot = 'CAT_TIPO_CONSULTA' and m.catKey = r.consulta) as consulta, " +
+                "(select m.spanish from MessageResource m where m.catRoot = 'CAT_FASE_MX' and m.catKey = r.tipoMuestra) as tipoMuestra, r.enviado as enviado, r.codigoBarra as codigoBarra " +
+                "from RecepcionEnfermo r inner join r.participante p where r.pasive = '0' " +
+
+                (filtro.getFechaInicio()!=null  && filtro.getFechaFin() != null ? " and r.fechaRecepcion between :fechaInicio and :fechaFin ":" ")+
+                "order by p.codigo asc");
+        if (filtro.getParticipante() != null && !filtro.getParticipante().isEmpty()) {
+            query.setParameter("participante", filtro.getParticipante());
+        }
+        if (filtro.getCodigoMx() != null && !filtro.getCodigoMx().isEmpty()) {
+            query.setParameter("codigoMx", "%"+filtro.getCodigoMx()+"%");
+        }
+        if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
+            query.setParameter("fechaInicio", filtro.getFechaInicio());
+            query.setParameter("fechaFin", filtro.getFechaFin());
+        }
+        query.setResultTransformer(Transformers.aliasToBean(RecepcionEnfermoDto.class));
+        return query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<ConvalecientesEnfermoDto> getMxConvalecientesEnfermo()throws Exception{
+        try{
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery("call fn_Obtener_ConvalecientesMx()");
+
+        query.setResultTransformer(Transformers.aliasToBean(ConvalecientesEnfermoDto.class));
+        return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<ConvalecientesEnfermoDto> getMxMedicosRegUltimo(String codigo)throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call sp_obtener_Reg_Medicos_Reciente(:codigo)");
+            query.setParameter("codigo", codigo);
+            query.setResultTransformer(Transformers.aliasToBean(ConvalecientesEnfermoDto.class));
+            return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<ConvalecientesEnfermoDto> getMxRecepcionRegUltimo(String codigo)throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call sp_obtener_Reg_Recepcion_Reciente(:codigo)");
+            query.setParameter("codigo", codigo);
+            query.setResultTransformer(Transformers.aliasToBean(ConvalecientesEnfermoDto.class));
+            return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
 
 
     public boolean existeSerologia(Date fecha, String codigo) throws Exception{

@@ -91,7 +91,7 @@ public class OrdenLaboratorio extends BaseMetaData implements Serializable {
 	}
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "FIF", nullable = false)
+    @Column(name = "FIF", nullable = true)
 	public Date getFif() {
 		return fif;
 	}

@@ -72,7 +72,7 @@ var ProcessSickSample = function(){
                                 timer: 2000
                             });
                             LimpiarParticipante();
-                        }else{
+                        }else {
 
                             $("#codigoParticipante").val(data.codigo);
                             $("#nombreCompleto").val(data.nombreCompleto);
@@ -86,9 +86,103 @@ var ProcessSickSample = function(){
 
                             $("#volumen").val("");
 
+                            var evento_letra = $("#evento").val();
+                            var evento_ascii = evento_letra.charCodeAt(0);
+                            var evento_ascii1 = evento_letra.charCodeAt(0);
+
+                            evento_ascii = evento_ascii + 1;
+                            evento_ascii1 = evento_ascii1 - 1;
+
+                            if (!(data.isNull)) {
+                                if ((data.consulta === "1" )) {
+                                $("#fif").val(data.fif);
+                                $("#fis").val(data.fis);
+
+                                // $("#categoria option[value="+ data.categoria +"]").attr("selected",true);
+                                $("#categoria").val(data.categoria);
+                                    $('#categoria').trigger('change');
+                                swal({
+                                    title: "¡Alerta A2CARES!",
+                                    text: "El participante " + $("#codigoParticipante").val() + " tiene pendiente Muestra Convaleciente, está en su evento: " + $("#evento").val() + ", se cargarán FIS y FIF de muestra INICIAL de tabla de Recepción.",
+                                    icon: "warning"
+                                });
+                                    $('#faseMuestra').val("2");
+                                    $('#faseMuestra').trigger('change');
+
+                                    $('#tipoConsulta').val("3");
+                                    $('#tipoConsulta').trigger('change');
+
+                                    $("#categoria").val(data.categoria);
+                                    $('#categoria').trigger('change');
+
+                                } else {
+                                if ((data.consulta === "3")) {
+
+                                    swal({
+                                        title: "¡Alerta A2CARES!",
+                                        text: "El participante " + $("#codigoParticipante").val() + " tiene completo su evento " + (String.fromCharCode(evento_ascii1)) + " se le puede recepcionar INICIAL del siguiente Evento: " + $("#evento").val(),
+                                        icon: "warning"
+                                    });
+                                    $("#fif").val("");
+                                    $("#fis").val("");
+                                    $('#faseMuestra').val("1");
+                                    $('#faseMuestra').trigger('change');
+
+                                    $('#tipoConsulta').val("1");
+                                    $('#tipoConsulta').trigger('change');
+
+                                    $("#categoria").val("");
+                                    $('#categoria').trigger('change');
+                                } else {
+
+                                    if (!(data.codigo == null )) {
+
+                                        swal({
+                                            title: "¡Alerta A2CARES!",
+                                            text: "El participante " + $("#codigoParticipante").val() + ", es su primer evento A, se le puede recepcionar INICIAL",
+                                            icon: "warning"
+                                        });
+                                        $("#fif").val("");
+                                        $("#fis").val("");
+
+                                        $('#faseMuestra').val('1');
+                                        $('#faseMuestra').trigger('change');
+
+                                        $('#tipoConsulta').val('1');
+                                        $('#tipoConsulta').trigger('change');
+                                        $("#categoria").val("");
+                                        $('#categoria').trigger('change');
+
+                                        $("#evento").val("A");
+                                    }else{
+                                        swal({
+                                            title: "¡Alerta A2CARES!",
+                                            text: "El participante " + $("#codigoParticipante").val() + ", No existe",
+                                            icon: "error"
+                                        });
+                                        $("#fif").val("");
+                                        $("#fis").val("");
+
+                                        $('#faseMuestra').val("");
+                                        $('#faseMuestra').trigger('change');
+
+                                        $('#tipoConsulta').val("");
+                                        $('#tipoConsulta').trigger('change');
+                                        $("#categoria").val("");
+                                        $('#categoria').trigger('change');
+
+                                    }
+
+                                }
+
+                            }
+                        }//fin de data.Isnull
 
 
-                       }
+
+
+
+                        }
 
                     }
                 }).fail(function(XMLHttpRequest, textStatus, errorThrown) {

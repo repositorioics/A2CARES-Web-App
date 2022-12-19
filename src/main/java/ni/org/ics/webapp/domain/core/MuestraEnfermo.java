@@ -106,7 +106,7 @@ public class MuestraEnfermo extends BaseMetaData implements Serializable {
 		this.fis = fis;
 	}
 
-    @Column(name = "FIF", nullable = false)
+    @Column(name = "FIF", nullable = true)
 	public Date getFif() {
 		return fif;
 	}

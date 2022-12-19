@@ -9,6 +9,7 @@ public class Constants {
     public static final String TPR_REPORTERETIRO = "RETIROREPORTE";
     public static final String TPR_DATOSGENERALES = "DATOSGENERALES";
     public static final String TPR_ENVIO_ENFERMO  = "ENVIO_ENFERMO";
+    public static final String TPR_CONVALECIENTES_ENFERMO  = "CONVALECIENTES_ENFERMO";
 
     public static final String TIPO_TUBO_SEROLOGIA = "R";
 

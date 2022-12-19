@@ -1,13 +1,17 @@
 package ni.org.ics.webapp.web.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.laboratorio.RecepcionEnfermo;
+import ni.org.ics.webapp.dto.ConvalecientesEnfermoDto;
 import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
+import ni.org.ics.webapp.dto.OrdenLaboratorioDto;
 import ni.org.ics.webapp.dto.RecepcionEnfermoDto;
+import ni.org.ics.webapp.dto.MuestrasEnfermosDto;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.service.*;
 import ni.org.ics.webapp.web.utils.Constants;
@@ -25,9 +29,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.text.ParseException;
 import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Created by miguel on 1/2/2022.
@@ -61,6 +69,157 @@ public class MxEnfermosController {
 
         return "mxEnfermos/list";
     }
+
+    @RequestMapping(value = "controldeIngresosMx", method = RequestMethod.GET)
+    public String controlIngresosMx(Model model) throws ParseException {
+        logger.debug("Mostrando lista de mx de enfermo JSP");
+
+        List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+        model.addAttribute("numero_envio", numero_envio);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        model.addAttribute("sitios", sitios);
+
+        return "mxEnfermos/controldeIngresosMx";
+    }
+
+    @RequestMapping(value = "convalecientesMx", method = RequestMethod.GET)
+    public String convalecientesMx(Model model) throws ParseException {
+        logger.debug("Mostrando lista de convalecientes mx de enfermo JSP");
+
+        List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+        model.addAttribute("numero_envio", numero_envio);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        model.addAttribute("sitios", sitios);
+
+        return "mxEnfermos/convalecientesMxEnfermos";
+    }
+
+    @RequestMapping(value = "getTablasMxEnfermos", method = RequestMethod.GET, produces = "application/json")
+   // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+   public @ResponseBody List<MuestrasEnfermosDto> getTablasMxEnfermos(
+    @RequestParam(value="desde", required=false ) String desde
+    ,@RequestParam(value="hasta", required=false ) String hasta)
+            throws ParseException {
+
+        List<MuestrasEnfermosDto> enfermeria = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de muestras de enfermos - enfermeria");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+         //   filtro.setCodigoMx(muestra);
+          //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(desde+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+         //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+          //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+                 enfermeria = this.recepcionEnfermoService.getMxMuestraEnfermo(filtro);
+              //  return JsonUtil.createJsonResponse(enfermeria);
+            return enfermeria;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @RequestMapping(value = "getMxOrdenLaboratorio", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody List<OrdenLaboratorioDto> getMxOrdenLaboratorio(
+            @RequestParam(value="desde", required=false ) String desde
+            ,@RequestParam(value="hasta", required=false ) String hasta)
+            throws ParseException {
+
+        List<OrdenLaboratorioDto> medicos = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de muestras de enfermos - medicos");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(desde+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            filtro.setFechaFin(DateUtil.StringToDate(hasta+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+            //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            medicos = this.recepcionEnfermoService.getMxOrdenLaboratorio(filtro) ;
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return medicos;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+
+
+    @RequestMapping(value = "getMxRecepcionEnfermo", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody List<RecepcionEnfermoDto> getMxRecepcionEnfermo(
+            @RequestParam(value="desde", required=false ) String desde
+            ,@RequestParam(value="hasta", required=false ) String hasta)
+            throws ParseException {
+
+        List<RecepcionEnfermoDto> recepcion = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de muestras de enfermos - recepcion");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(desde+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+            //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            recepcion = this.recepcionEnfermoService.getMxRecepcionEnfermo(filtro) ;
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return recepcion;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @RequestMapping(value = "getConvalecientesMx", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody List<ConvalecientesEnfermoDto> getConvalecientesMx(
+            @RequestParam(value="desde", required=false ) String desde
+            ,@RequestParam(value="hasta", required=false ) String hasta)
+            throws ParseException {
+
+        List<ConvalecientesEnfermoDto> recepcion = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de muestras de enfermos - recepcion");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(desde+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+            //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            recepcion = this.recepcionEnfermoService.getMxConvalecientesEnfermo() ;
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return recepcion;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
     public String search(Model model) throws ParseException {
@@ -176,11 +335,26 @@ public class MxEnfermosController {
         logger.debug("buscar participante para recepcion mx enfermo");
         Map<String, String> map = new HashMap<String, String>();
         Participante participante = this.participanteService.getParticipanteByCodigo(codigo);
+        List<ConvalecientesEnfermoDto> ultimregRec = null;
+
         String evento = "";
         String positivo = "";
         String ultima_consulta="";
+        String fis = "";
+        String fif = "";
+        String categoria="";
+        String consulta = "";
+        String tipoMuestra="";
+
 
         try {
+            ultimregRec = this.recepcionEnfermoService.getMxRecepcionRegUltimo(codigo);
+            map.put("fis",ultimregRec.get(0).getFis());
+            map.put("fif",ultimregRec.get(0).getFif());
+            map.put("categoria",ultimregRec.get(0).getCategoria());
+            map.put("consulta",ultimregRec.get(0).getConsulta() );
+            map.put("tipoMuestra",ultimregRec.get(0).getTipoMuestra());
+
              evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
              evento = evento.substring(1,2);
 
@@ -188,6 +362,8 @@ public class MxEnfermosController {
             positivo = ultima_consulta;
 
             map.put("ultima_consulta",ultima_consulta);
+            map.put("evento",evento);
+
         }catch (Exception e){
             logger.error(e.getMessage());
         }

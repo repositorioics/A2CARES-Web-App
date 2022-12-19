@@ -15,6 +15,7 @@ import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.domain.scancarta.DetalleParte;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteCarta;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteExtension;
+import ni.org.ics.webapp.dto.ConvalecientesEnfermoDto;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.service.EstudioService;
 import ni.org.ics.webapp.service.MessageResourceService;
@@ -257,8 +258,34 @@ public class ReportesController {
         ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIO_ENFERMO);
     }
 
-
     //endregion
+    @RequestMapping(value = "/downloadConvalecientesMxEnfermoPdf", method = RequestMethod.GET)
+    public ModelAndView downloadConvalecientesMxEnfermoPdf()
+            throws Exception{
+        ModelAndView pdfView = new ModelAndView("pdfView");
+        setModelAndViewPropertiesForConvalecientesMxEnfermo(pdfView);        return pdfView;
+    }
+
+    private void setModelAndViewPropertiesForConvalecientesMxEnfermo(ModelAndView ReporteEnvio ) throws Exception{
+        Date dFechaInicio = null;
+        /*if (fechaInicio != null && !fechaInicio.isEmpty())
+            dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+        Date dFechaFin = null;
+        if (fechaFin != null && !fechaFin.isEmpty())
+            dFechaFin = DateUtil.StringToDate(fechaFin + " 23:59:59", "dd/MM/yyyy HH:mm:ss");*/
+        List<ConvalecientesEnfermoDto> ConvalecientesPrint = this.recepcionEnfermoService.getMxConvalecientesEnfermo();
+
+        List<MessageResource> tiposConsultas = messageResourceService.getCatalogo("CAT_TIPO_CONSULTA");
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+
+
+        ReporteEnvio.addObject("sitios", sitios);
+
+        ReporteEnvio.addObject("ConvalecientesPrint", ConvalecientesPrint);
+
+        ReporteEnvio.addObject("tiposConsultas", tiposConsultas);
+        ReporteEnvio.addObject("TipoReporte", Constants.TPR_CONVALECIENTES_ENFERMO);
+    }
 
 
 /*

@@ -16,7 +16,7 @@ public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(Model model) {
-    	logger.info("Estudios ICS Iniciados...");
+    	logger.info("Estudios A2CARES Iniciados...");
     	return "home";
     }
     
