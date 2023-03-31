@@ -289,6 +289,7 @@
     function print_bhc(){
         if($("#codigo_lineal").text !=""){
         var id ="100"+ $("#codigo_lineal").val()+"*1*2";
+
         imprimirEtiquetas(id);
         }
     }

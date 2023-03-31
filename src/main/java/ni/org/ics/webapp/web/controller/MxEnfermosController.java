@@ -464,7 +464,7 @@ public class MxEnfermosController {
                     //setear codigo a imprimir
                     String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
                     String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
-                    String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), anio, recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                    String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
 
                     recepcionEnfermo.setCodigo(codigoMx);
                     recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
@@ -499,8 +499,9 @@ public class MxEnfermosController {
                 recepcionEnfermo.setTipoMuestra(faseMuestra);
                 //setear codigo a imprimir
                 String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
+
                 String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
-                String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), anio, recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
 
                 recepcionEnfermo.setCodigo(codigoMx);
                 recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));

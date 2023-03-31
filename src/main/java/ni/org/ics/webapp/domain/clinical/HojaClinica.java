@@ -161,6 +161,11 @@ public class HojaClinica extends BaseMetaData {
     private String planes;
     private String historiaClinica;
     private String diagnostico;
+    private String diagnostico1;
+    private String diagnostico2;
+    private String diagnostico3;
+    private String diagnostico4;
+
     //Cierre
     private String telefonoEmergencia;
     private Date proximaCita;
@@ -1280,9 +1285,40 @@ public class HojaClinica extends BaseMetaData {
     public String getDiagnostico() {
         return this.diagnostico;
     }
-
     public void setDiagnostico(String diagnostico) {
         this.diagnostico = diagnostico;
+    }
+
+    @Column(name = "diagnostico1", length = 5)
+    public String getDiagnostico1() {
+        return this.diagnostico1;
+    }
+    public void setDiagnostico1(String diagnostico1) {
+        this.diagnostico1 = diagnostico1;
+    }
+
+    @Column(name = "diagnostico2", length = 5)
+    public String getDiagnostico2() {
+        return this.diagnostico2;
+    }
+    public void setDiagnostico2(String diagnostico2) {
+        this.diagnostico2 = diagnostico2;
+    }
+
+    @Column(name = "diagnostico3", length = 5)
+    public String getDiagnostico3() {
+        return this.diagnostico3;
+    }
+    public void setDiagnostico3(String diagnostico3) {
+        this.diagnostico3 = diagnostico3;
+    }
+
+    @Column(name = "diagnostico4", length = 5)
+    public String getDiagnostico4() {
+        return this.diagnostico4;
+    }
+    public void setDiagnostico4(String diagnostico4) {
+        this.diagnostico4 = diagnostico4;
     }
 
     @Column(name = "telefono_emergencia", length = 32)

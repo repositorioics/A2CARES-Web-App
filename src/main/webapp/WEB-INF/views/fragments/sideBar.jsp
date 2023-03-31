@@ -40,6 +40,12 @@
                     </li>
                     <!-- fin Catalogos Cartas Consentimientos -->
 
+                    <li class="nav-item impresionStickers">
+                        <a class="nav-link" href="<spring:url value="/ps/stickers/list" htmlEscape="true "/>">
+                            <i class="fab fa-ad"></i>
+                            <spring:message code="Impresion Stickers" /></a>
+                    </li>
+
 	            </ul>
 	        </li>
             </sec:authorize>
@@ -219,7 +225,13 @@
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link" href="<spring:url value="/entomologia/editdata/" htmlEscape="true "/>">
-                                <i class="fa fa-flag-checkered" aria-hidden="true"></i><spring:message code="Editar Tablas" /></a>
+                                <i class="fa fa-database" aria-hidden="true"></i><spring:message code="Editar Tablas" /></a>
+                        </li>
+                    </ul>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<spring:url value="/entomologia/dobledigitacion/" htmlEscape="true "/>">
+                                <i class="fa fa-book-open" aria-hidden="true"></i><spring:message code="Doble Digitación" /></a>
                         </li>
                     </ul>
                 </li>

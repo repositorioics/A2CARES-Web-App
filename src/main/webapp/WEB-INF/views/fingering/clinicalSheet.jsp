@@ -454,7 +454,7 @@
             <span class="input-group-addon">
                 <i class="fas fa-calendar"></i>
             </span>
-                        <input type="text" class="form-control date-picker" id="ultimoDiaFiebre" name="ultimoDiaFiebre" value="" />
+                        <input type="text" class="form-control date-picker" id="ultimoDiaFiebre" name="ultimoDiaFiebre" value="" onclick="fech_ultimo_dia_fiebre();" />
                     </div>
                 </div>
 
@@ -466,7 +466,7 @@
             <span class="input-group-addon">
                 <i class="fas fa-clock"></i>
             </span>
-                        <input type="text" class="form-control time-picker" id="horaUltimoDiaF" name="horaUltimoDiaF" value="" />
+                        <input type="text" class="form-control time-picker" id="horaUltimoDiaF" name="horaUltimoDiaF" value="" onclick="fech_ultimo_dia_fiebre();" />
                     </div>
                 </div>
 
@@ -478,7 +478,7 @@
             <span class="input-group-addon">
                 <i class="fas fa-calendar"></i>
             </span>
-                        <input type="text" class="form-control date-picker" id="ultimaDosisAntip" name="ultimaDosisAntip" value="" />
+                        <input type="text" class="form-control date-picker" id="ultimaDosisAntip" name="ultimaDosisAntip" value="" onclick="fech_ultimo_dia_anti();"/>
                     </div>
                 </div>
             </div>
@@ -489,7 +489,7 @@
             <span class="input-group-addon">
                 <i class="fas fa-clock"></i>
             </span>
-                        <input type="text" class="form-control time-picker" id="horaUltimaDosisAntip" name="horaUltimaDosisAntip" value="" />
+                        <input type="text" class="form-control time-picker" id="horaUltimaDosisAntip" name="horaUltimaDosisAntip" value="" onclick="fech_ultimo_dia_anti();"/>
                     </div>
                 </div>
             </div>
@@ -2567,9 +2567,57 @@
             <label class="form-control-label" for="historia"><spring:message code="historia_clinica" /> </label>
             <textarea  class="form-control focusNext" id="historia" name="historia" cols="30" rows="6"  placeholder="Ingrese la historia clínica"></textarea>
         </div>
+
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="form-group">
+                <label for="medico" class="form-control-label"><spring:message code="Diagnóstico 1" /><span class="required">*</span></label>
+                <select class="form-control focusNext" id="diagnostico1" name="diagnostico1" required="required"  onchange="valida_diag();">
+                    <option selected value=""><spring:message code="select" />...</option>
+                    <c:forEach var="item" items="${CAT_DIAGNOSTICOS}">
+                        <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="form-group">
+                <label for="medico" class="form-control-label"><spring:message code="Diagnóstico 2" /></label>
+                <select class="form-control focusNext" id="diagnostico2" name="diagnostico2"  onchange="valida_diag();">
+                    <option selected value=""><spring:message code="select" />...</option>
+                    <c:forEach var="item" items="${CAT_DIAGNOSTICOS}">
+                        <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="form-group">
+                <label for="medico" class="form-control-label"><spring:message code="Diagnóstico 3" /></label>
+                <select class="form-control focusNext" id="diagnostico3" name="diagnostico3"   onchange="valida_diag();">
+                    <option selected value=""><spring:message code="select" />...</option>
+                    <c:forEach var="item" items="${CAT_DIAGNOSTICOS}">
+                        <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-6">
+            <div class="form-group">
+                <label for="medico" class="form-control-label"><spring:message code="Diagnóstico 4" /></label>
+                <select class="form-control focusNext" id="diagnostico4" name="diagnostico4"   onchange="valida_diag();">
+                    <option selected value=""><spring:message code="select" />...</option>
+                    <c:forEach var="item" items="${CAT_DIAGNOSTICOS}">
+                        <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
+
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
-            <label class="form-control-label" for="dx"><spring:message code="diagnostico" /> </label>
-            <textarea  class="form-control focusNext" id="dx" name="dx" cols="30" rows="2" required="required"   placeholder="Ingrese el diagnóstico"></textarea>
+            <label class="form-control-label" for="dx"><spring:message code="Otro diagnostico:" /> </label>
+            <textarea  class="form-control focusNext" id="dx" name="dx" cols="30" rows="2"    placeholder="Ingrese el diagnóstico"></textarea>
         </div>
     </div>
     <div class="row">
@@ -2795,11 +2843,90 @@
         $('#medico').append('<option value="-1">N/A</option>');
         $('#enfermeria').append('<option value="-1">N/A</option>');
 
+
+     //   $('#dx').attr("disabled", false);
+        $('#dx').hide();
     });
 
 
+    function valida_diag() {
+        if ($("#diagnostico1").val() !== "" && $("#diagnostico2").val() !== ""&& $("#diagnostico1").val() === $("#diagnostico2").val() ) {
+            swal.fire({
+                title: "A2CARES",
+                text: "Diagnóstico 2 ya está seleccionado",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
 
+            });
 
+            $("#diagnostico2").val("");
+        };
+        if ($("#diagnostico1").val() !== "" && $("#diagnostico3").val() !== "" && $("#diagnostico1").val() === $("#diagnostico3").val() ) {
+            swal.fire({
+                title: "A2CARES",
+                text: "Diagnóstico 3 ya está seleccionado",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+            $("#diagnostico3").val("");
+        };
+        if ($("#diagnostico1").val() !== "" && $("#diagnostico4").val() !== "" && $("#diagnostico1").val() === $("#diagnostico4").val() ) {
+            swal.fire({
+                title: "A2CARES",
+                text: "Diagnóstico 4  ya está seleccionado",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+            $("#diagnostico4").val("");
+        };
+        if ($("#diagnostico2").val() !== "" && $("#diagnostico3").val() !== "" && $("#diagnostico2").val() === $("#diagnostico3").val() ) {
+            swal.fire({
+                title: "A2CARES",
+                text: "Diagnóstico 3 ya está seleccionado",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+            $("#diagnostico3").val("");
+        };
+        if ($("#diagnostico2").val() !== "" && $("#diagnostico4").val() !== "" && $("#diagnostico2").val() === $("#diagnostico4").val() ) {
+            swal.fire({
+                title: "A2CARES",
+                text: "Diagnóstico 4 ya está seleccionado",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+            $("#diagnostico4").val("");
+        };
+        if ($("#diagnostico3").val() !== "" && $("#diagnostico4").val() !== ""&& $("#diagnostico3").val() === $("#diagnostico4").val() ) {
+            swal.fire({
+                title: "A2CARES",
+                text: "Diagnóstico 4 ya está seleccionado",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+            $("#diagnostico4").val("");
+        };
+
+        if ($("#diagnostico4").val() !== "" && $("#diagnostico4").val() === "47") {
+            $('#dx').attr("disabled", false);
+            $('#dx').show();
+        }else
+        if ($("#diagnostico3").val() !== "" && $("#diagnostico3").val() === "47") {
+            $('#dx').attr("disabled", false);
+            $('#dx').show();
+        }else
+        if ($("#diagnostico2").val() !== "" && $("#diagnostico2").val() === "47") {
+            $('#dx').attr("disabled", false);
+            $('#dx').show();
+        }else
+        if ($("#diagnostico1").val() !== "" && $("#diagnostico1").val() === "47") {
+            $('#dx').attr("disabled", false);
+            $('#dx').show();
+        }else {
+                $('#dx').hide();
+        };
+
+    };
     function fech_Hora_medico(){
         if ($("#medico").val() === '-1' && $("#enfermeria").val() !== '-1')
         {
@@ -2844,6 +2971,68 @@
                 });
             };
         };
+    };
+
+    function fech_ultimo_dia_fiebre(){
+
+
+        if ($("#ultimoDiaFiebre").val() !== "" && $("#horaUltimoDiaF").val()=== "")
+        {
+           // $("horaUltimoDiaF").prop(required, "required");
+          //   $('#horaUltimoDiaF').attr('required', 'required');
+            swal.fire({
+                title: "A2CARES",
+                text: "Campo ULTIMA HORA DE FIEBRE, necesita un valor",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+
+        };
+
+        if (  $("#horaUltimoDiaF").val()!== "" && $("#ultimoDiaFiebre").val() === ""  )
+        {
+           // $("ultimoDiaFiebre").prop("required", true);
+          //    $('#ultimoDiaFiebre').attr('required', 'required');
+            swal.fire({
+                title: "A2CARES",
+                text: "Campo ULTIMO DIA DE FIEBRE, necesita un valor",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+
+        };
+
+
+
+    };
+
+    function fech_ultimo_dia_anti(){
+        if ($("#ultimaDosisAntip").val() !== "" && $("#horaUltimaDosisAntip").val()=== "")
+        {
+            // $("horaUltimoDiaF").prop(required, "required");
+            //   $('#horaUltimoDiaF').attr('required', 'required');
+            swal.fire({
+                title: "A2CARES",
+                text: "Campo ULTIMA HORA DE ANTIPIRETICO, necesita un valor",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+
+        };
+        if (  $("#horaUltimaDosisAntip").val()!== "" && $("#ultimaDosisAntip").val() === ""  )
+        {
+            // $("ultimoDiaFiebre").prop("required", true);
+            //    $('#ultimoDiaFiebre').attr('required', 'required');
+            swal.fire({
+                title: "A2CARES",
+                text: "Campo ULTIMA DOSIS DE ANTIPIRETICO, necesita un valor",
+                type: "warning",
+                cancelButtonText: 'Cancelar'
+            });
+
+        };
+
+
     };
 </script>
 </html>

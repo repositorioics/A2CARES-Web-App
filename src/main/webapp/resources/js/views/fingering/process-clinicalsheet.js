@@ -144,7 +144,7 @@ var ClinicalSheet = function () {
                     frMedico: {
                         required: true,
                         digits: true,
-                        range: [12, 45]
+                        range: [12, 60]
                     },
                     soMedico: {
                         required: true,
@@ -381,6 +381,12 @@ var ClinicalSheet = function () {
                     save();
                 }
             });
+
+
+
+
+
+
 
             function updateReadOnly(id, add)
             {

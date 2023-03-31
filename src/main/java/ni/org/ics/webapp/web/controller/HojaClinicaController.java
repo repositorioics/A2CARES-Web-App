@@ -75,6 +75,7 @@ public class HojaClinicaController {
         List<MessageResource> catCategoria = this.messageResourceService.getCatalogo("CAT_CATEGORIA");
         List<MessageResource> catTipoConsulta = this.messageResourceService.getCatalogo("CAT_TIPO_CONSULTA");
         List<MessageResource> catLugarConsulta = this.messageResourceService.getCatalogo("CAT_LUGAR_CONS_HC");
+        List<MessageResource> CAT_DIAGNOSTICOS = this.messageResourceService.getCatalogo("CAT_DIAGNOSTICOS");
         List<Personal> medicos = this.personalService.getByCargo("CAT_CARGO_1");
         List<Personal> enfermeria = this.personalService.getByCargo("CAT_CARGO_2");
 
@@ -87,6 +88,7 @@ public class HojaClinicaController {
         model.addAttribute("catLugarConsulta", catLugarConsulta);
         model.addAttribute("medicos", medicos);
         model.addAttribute("enfermeria", enfermeria);
+        model.addAttribute("CAT_DIAGNOSTICOS", CAT_DIAGNOSTICOS);
         return "fingering/clinicalSheet";
     }
 
@@ -308,6 +310,12 @@ public class HojaClinicaController {
         String planes = null;
         String historiaClinica = null;
         String diagnostico = null;
+
+        String diagnostico1 = null;
+        String diagnostico2 = null;
+        String diagnostico3 = null;
+        String diagnostico4 = null;
+
         //Cierre
         String telefonoEmergencia = null;
         Date proximaCita = null;
@@ -464,6 +472,12 @@ public class HojaClinicaController {
         if (jsonpObject.get("planes")!=null && !jsonpObject.get("planes").getAsString().isEmpty()) planes = jsonpObject.get("planes").getAsString();
         if (jsonpObject.get("historia")!=null && !jsonpObject.get("historia").getAsString().isEmpty()) historiaClinica = jsonpObject.get("historia").getAsString();
         if (jsonpObject.get("dx")!=null && !jsonpObject.get("dx").getAsString().isEmpty()) diagnostico = jsonpObject.get("dx").getAsString();
+
+        if (jsonpObject.get("diagnostico1")!=null && !jsonpObject.get("diagnostico1").getAsString().isEmpty()) diagnostico1 = jsonpObject.get("diagnostico1").getAsString();
+        if (jsonpObject.get("diagnostico2")!=null && !jsonpObject.get("diagnostico2").getAsString().isEmpty()) diagnostico2 = jsonpObject.get("diagnostico2").getAsString();
+        if (jsonpObject.get("diagnostico3")!=null && !jsonpObject.get("diagnostico3").getAsString().isEmpty()) diagnostico3 = jsonpObject.get("diagnostico3").getAsString();
+        if (jsonpObject.get("diagnostico4")!=null && !jsonpObject.get("diagnostico4").getAsString().isEmpty()) diagnostico4 = jsonpObject.get("diagnostico4").getAsString();
+
         if (jsonpObject.get("telefono")!=null && !jsonpObject.get("telefono").getAsString().isEmpty()) telefonoEmergencia = jsonpObject.get("telefono").getAsString();
         if (jsonpObject.get("cita")!=null && !jsonpObject.get("cita").getAsString().isEmpty()) proximaCita = DateUtil.StringToDate(jsonpObject.get("cita").getAsString(), "dd/MM/yyyy");
         if (jsonpObject.get("medico")!=null && !jsonpObject.get("medico").getAsString().isEmpty()) medico = jsonpObject.get("medico").getAsShort();
@@ -595,6 +609,12 @@ public class HojaClinicaController {
         hojaClinica.setPlanes(planes);
         hojaClinica.setHistoriaClinica(historiaClinica);
         hojaClinica.setDiagnostico(diagnostico);
+
+        hojaClinica.setDiagnostico1(diagnostico1);
+        hojaClinica.setDiagnostico2(diagnostico2);
+        hojaClinica.setDiagnostico3(diagnostico3);
+        hojaClinica.setDiagnostico4(diagnostico4);
+
         hojaClinica.setTelefonoEmergencia(telefonoEmergencia);
         hojaClinica.setProximaCita(proximaCita);
         hojaClinica.setMedico(medico);

@@ -12,3 +12,15 @@ function imprimirEtiquetas(strBarCodes){
         console.log(jqXHR);
     });
 }
+
+function imprimirEtiquetas1(strBarCodes){
+    $.getJSON("http://localhost:13001/print", {
+        barcodes: unicodeEscape(strBarCodes),
+        copias: 1,
+        ajax:'false'
+    }, function (data) {
+        console.log(data);
+    }).fail(function (jqXHR) {
+        console.log(jqXHR);
+    });
+}

@@ -8,3 +8,11 @@
     });
     return decodeURIComponent(cadena);
 }
+
+function unicodeEscape1(cadena) {
+    var r = /([]{7})/g;
+    cadena = cadena.replace(r, function (match, grp) {
+        return String.fromCharCode(parseInt(grp, 16));
+    });
+    return decodeURIComponent(cadena);
+}
