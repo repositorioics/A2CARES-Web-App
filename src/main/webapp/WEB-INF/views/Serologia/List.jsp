@@ -278,19 +278,33 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" for="sitio"><spring:message code="Sitio" />
+                                <label class="col-sm-2 col-form-label" for="sitio"><spring:message code="Sitio Destino:" />
                                     <span class="text-danger">*</span>
                                 </label>
 
                                 <div class="col-sm-10">
-                                    <select name="sitio" id="sitio" class="form-control" type="text"  required="required">
+                                    <select name="sitioDestino" id="sitioDestino" class="form-control" type="text"  required="required">
                                         <option selected value=""><spring:message code="select" />...</option>
-                                        <c:forEach items="${sitios}" var="s">
+                                        <c:forEach items="${sitiosDestino}" var="s">
                                             <option value="${s.catKey}">${s.catKey} - <spring:message code="${s.spanish}" /></option>
                                         </c:forEach>
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="sitio"><spring:message code="Sitio:" />
+                                    <span class="text-danger">*</span>
+                                </label>
+                            <div class="col-sm-10">
+                                <select name="sitio" id="sitio" class="form-control" type="text"  required="required">
+                                    <option selected value=""><spring:message code="select" />...</option>
+                                    <c:forEach items="${sitios}" var="s">
+                                        <option value="${s.catKey}">${s.catKey} - <spring:message code="${s.spanish}" /></option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                    </div>
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label" for="temperatura"><spring:message code="Temperatura" />

@@ -16,6 +16,8 @@ public class SerologiaDto implements Serializable {
     private String descripcion;
     private Integer codigoCasa;
     private String observacion;
+    private String sitio_destino;
+
 
     public SerologiaDto() {
     }
@@ -82,5 +84,13 @@ public class SerologiaDto implements Serializable {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
+    }
+
+    public String getSitio_destino() {
+        return sitio_destino;
+    }
+
+    public void setSitio_destino(String sitio_destino) {
+        this.sitio_destino = sitio_destino;
     }
 }

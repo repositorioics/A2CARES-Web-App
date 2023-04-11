@@ -12,6 +12,7 @@ public class SerologiaEnviarDto implements Serializable {
     private Integer nenvios;
     private String fechaenvio;
     private String hora;
+    private String sitio_destino;
 
 
     public SerologiaEnviarDto() {
@@ -22,6 +23,7 @@ public class SerologiaEnviarDto implements Serializable {
         this.nenvios = nenvios;
         this.fechaenvio = fechaenvio;
         this.hora = hora;
+
     }
 
     public Integer getIdserologia() {
@@ -54,5 +56,13 @@ public class SerologiaEnviarDto implements Serializable {
 
     public void setHora(String hora) {
         this.hora = hora;
+    }
+
+    public String getSitio_destino() {
+        return sitio_destino;
+    }
+
+    public void setSitio_destino(String sitio_destino) {
+        this.sitio_destino = sitio_destino;
     }
 }

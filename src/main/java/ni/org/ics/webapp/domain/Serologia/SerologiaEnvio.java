@@ -23,6 +23,7 @@ public class SerologiaEnvio extends BaseMetaData implements Auditable {
     private Date fecha;
     private String hora;
     private Integer sitio;
+    private Integer sitio_destino;
     private double temperatura;
 
     @Id
@@ -77,9 +78,16 @@ public class SerologiaEnvio extends BaseMetaData implements Auditable {
     public Integer getSitio() {
         return sitio;
     }
-
     public void setSitio(Integer sitio) {
         this.sitio = sitio;
+    }
+
+    @Column(name = "ENVIADO_HACIA", nullable = false)
+    public Integer getSitio_destino() {
+        return sitio_destino;
+    }
+    public void setSitio_destino(Integer sitio_destino) {
+        this.sitio_destino = sitio_destino;
     }
 
     @Column(name = "TEMPERATURA", nullable = false)

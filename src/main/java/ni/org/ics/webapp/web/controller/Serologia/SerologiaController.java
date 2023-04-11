@@ -171,6 +171,7 @@ public class SerologiaController {
             ,@RequestParam(value="fechaEnvio", required=false ) String fechaEnvio
             ,@RequestParam(value="horaEnvio", required=false ) String horaEnvio
             ,@RequestParam(value="sitio", required=true ) Integer sitio
+            ,@RequestParam(value="sitioDestino", required=true ) Integer sitioDestino
             ,@RequestParam(value="temperatura", required=true ) String temperatura
     )throws Exception{
         try{
@@ -189,6 +190,7 @@ public class SerologiaController {
             envio.setHora(horaEnvio);
             envio.setIdenvio(numenvio);
             envio.setSitio(sitio);
+            envio.setSitio_destino(sitioDestino);
             double temp = Double.parseDouble(temperatura);
             envio.setTemperatura(temp);
             this.serologiaService.save_Envio_Serologia(envio);// aqui guardo los datos del envio
@@ -366,8 +368,11 @@ public class SerologiaController {
     public String listSerologia(Model model)throws Exception{
         List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
         model.addAttribute("numero_envio", numero_envio);
+
         List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        List<MessageResource> sitiosDestino = messageResourceService.getCatalogo("CAT_SITIOS_DESTINO_SEROLOGIA");
         model.addAttribute("sitios", sitios);
+        model.addAttribute("sitiosDestino", sitiosDestino);
         return "/Serologia/List";
     }
 
