@@ -39,7 +39,8 @@ public class ParticipanteProcesos extends BaseMetaData implements Serializable, 
     @Column(name = "pendiente_obsequio", nullable = false, length = 2)
     private String pendienteObseq;
 
-
+    @Column(name = "esat_usuario", nullable = false, length = 2)
+    private String esatUsuario;
 
     public String getCodigo() {
         return codigo;
@@ -133,5 +134,13 @@ public class ParticipanteProcesos extends BaseMetaData implements Serializable, 
     @Override
     public int hashCode() {
         return codigo.hashCode();
+    }
+
+    public String getEsatUsuario() {
+        return esatUsuario;
+    }
+
+    public void setEsatUsuario(String esatUsuario) {
+        this.esatUsuario = esatUsuario;
     }
 }

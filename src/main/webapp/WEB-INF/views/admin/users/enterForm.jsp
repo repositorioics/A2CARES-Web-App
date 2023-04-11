@@ -229,6 +229,17 @@
                                                 </c:choose>
                                                 <spring:message code="esatisfaccion" />
                                             </label>
+                                            <label class="checkbox-inline">
+                                                <c:choose>
+                                                    <c:when test="${permisos.encSatUsu}">
+                                                        <input type="checkbox" id="chk_encSatUsu" name="chk_encSatUsu" checked>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <input type="checkbox" id="chk_encSatUsu" name="chk_encSatUsu">
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <spring:message code="Encuesta Satisfacción Usuario" />
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="form-group row">

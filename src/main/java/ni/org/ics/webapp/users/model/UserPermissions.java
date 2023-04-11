@@ -25,6 +25,7 @@ public class UserPermissions {
 	private Boolean visitas=false;
 	private Boolean recepcion=false;
 	private Boolean consentimiento=false;
+	private Boolean encSatUsu=false; //Encuesta satisfaccion usuario
 
 	@Id
 	@Column(name = "username", nullable = false, length =50)
@@ -105,5 +106,13 @@ public class UserPermissions {
 	}
 	public void setConsentimiento(Boolean consentimiento) {
 		this.consentimiento = consentimiento;
+	}
+
+	@Column(name = "encsatusu", nullable = false)
+	public Boolean getEncSatUsu() {
+		return encSatUsu;
+	}
+	public void setEncSatUsu(Boolean encSatUsu) {
+		this.encSatUsu = encSatUsu;
 	}
 }

@@ -120,7 +120,8 @@ public class AdminUsuariosController {
             , @RequestParam( value="chk_pesotalla", required=false, defaultValue="" ) String chkPesotalla
             , @RequestParam( value="chk_ecasa", required=false, defaultValue="" ) String chkEcasa
             , @RequestParam( value="chk_eparticipante", required=false, defaultValue="" ) String chkEparticipante
-            , @RequestParam( value="chk_esatisfaccion", required=false, defaultValue="" ) String chkEsatisfaccion,
+            , @RequestParam( value="chk_esatisfaccion", required=false, defaultValue="" ) String chkEsatisfaccion
+			, @RequestParam( value="chk_encSatUsu", required=false, defaultValue="" ) String chkEncSatUsu,
               @RequestParam(value="seqPersonal", required=true ) Integer seqPersonal
 	        )
 	{
@@ -155,6 +156,7 @@ public class AdminUsuariosController {
                 permissions.setEncuestaCasa(!chkEcasa.isEmpty());
                 permissions.setEncuestaParticipante(!chkEparticipante.isEmpty());
                 permissions.setEncuestaSatisfaccion(!chkEsatisfaccion.isEmpty());
+				permissions.setEncSatUsu(!chkEncSatUsu.isEmpty());
                 this.usuarioService.saveUserPermissions(permissions);
 
 	    		for(String a:authorities){
@@ -186,6 +188,7 @@ public class AdminUsuariosController {
                 permissions.setEncuestaCasa(!chkEcasa.isEmpty());
                 permissions.setEncuestaParticipante(!chkEparticipante.isEmpty());
                 permissions.setEncuestaSatisfaccion(!chkEsatisfaccion.isEmpty());
+				permissions.setEncSatUsu(!chkEncSatUsu.isEmpty());
                 this.usuarioService.saveUserPermissions(permissions);
 
 				//Recupera los roles activos de este usuario de la base de datos y pone el username en una lista
