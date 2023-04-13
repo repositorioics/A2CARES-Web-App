@@ -108,7 +108,7 @@ public class UserPermissions {
 		this.consentimiento = consentimiento;
 	}
 
-	@Column(name = "encsatusu", nullable = false)
+	@Column(name = "encSatUsu", nullable = false)
 	public Boolean getEncSatUsu() {
 		return encSatUsu;
 	}

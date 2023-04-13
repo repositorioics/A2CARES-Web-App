@@ -192,7 +192,7 @@
     $('[data-toggle="tooltip"]').tooltip();
     function print_nuevo_part(){
           var ulpart = $("#imprmir_participante").val()
-        if(ulpart.len != 4)
+        if(ulpart.length != 4)
         {
             toastr.error("LONGITUD DE CODIGO DEBE SER DE 4 POSICIONES",{timeOut: 6000});
 
@@ -214,8 +214,9 @@
     }
     function print_nuevo_part_bhc(){
         var ulpart = $("#imprmir_participanteBHC").val()
-        if(ulpart.len != 4)
+        if(ulpart.length  != 4)
         {
+            alert(ulpart.length );
             toastr.error("LONGITUD DE CODIGO DEBE SER DE 4 POSICIONES",{timeOut: 6000});
 
         }else{

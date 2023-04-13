@@ -103,12 +103,17 @@
                 <li class="nav-item nav-dropdown Serologia">
                     <a class="nav-link nav-dropdown-toggle" href="#">
                         <i class="fas fa-vial" aria-hidden="true"></i>
-                        <spring:message code="Serologia" /></a>
+                        <spring:message code="Recepción Muestreo" /></a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item filedata">
                             <a class="nav-link" href="<spring:url value="/Serologia/listSerologia" htmlEscape="true "/>">
                                 <i class="fas fa-list-alt" aria-hidden="true"></i>
-                                <spring:message code="Listado" /></a>
+                                <spring:message code="Serología" /></a>
+                        </li>
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/Serologia/listBHC" htmlEscape="true "/>">
+                                <i class="fas fa-list-alt" aria-hidden="true"></i>
+                                <spring:message code="BHC" /></a>
                         </li>
                         <li class="nav-item filedata">
                             <a class="nav-link" href="<spring:url value="/Serologia/listEnviosMuestras" htmlEscape="true "/>">

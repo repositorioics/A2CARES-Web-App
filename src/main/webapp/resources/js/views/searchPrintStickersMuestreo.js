@@ -53,14 +53,10 @@ var SearchPrintStickersMuestreoFormVal = function(){
 
 
                             for (var p = 0; p < len; p++) {
-                                setTimeout(() => {
-                                    console.log("3 Segundo esperado")
-                            }, 4000);
+
                                 imprimirEtiquetas(data[p].codigo_participante + "*1*3");
 
-                                setTimeout(() => {
-                                    console.log("3 Segundo esperado")
-                            }, 4000);
+
                             }
 
                         for (var p = 0; p < len; p++) {
