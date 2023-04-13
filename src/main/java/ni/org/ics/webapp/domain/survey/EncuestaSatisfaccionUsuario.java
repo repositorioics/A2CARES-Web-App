@@ -79,8 +79,6 @@ public class EncuestaSatisfaccionUsuario {
     private Date fechaRegistro;
     private String creado;
     private String usuarioRegistro;
-
-    //Nuevos campos agregados el 06/03/2023
     private String nombre1Tutor;
     private String nombre2Tutor;
     private String apellido1Tutor;
