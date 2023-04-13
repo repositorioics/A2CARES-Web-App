@@ -13,7 +13,7 @@ import java.util.Date;
 public class EncuestaSatisfaccionUsuario {
     private static final long serialVersionUID = 1L;
     private Long codigo;
-    private Integer codigoParticipante;
+    private String codigoParticipante;
     private String atencionMedica;
     private String familaAmistades;
     private String desicionPropia;
@@ -99,12 +99,12 @@ public class EncuestaSatisfaccionUsuario {
         this.codigo = codigo;
     }
 
-    @Column(name="CODIGO_PARTICIPANTE", nullable = true)
-    public Integer getCodigoParticipante() {
+    @Column(name="CODIGO_PARTICIPANTE", nullable = true, length = 50)
+    public String getCodigoParticipante() {
         return codigoParticipante;
     }
 
-    public void setCodigoParticipante(Integer codigoParticipante) {
+    public void setCodigoParticipante(String codigoParticipante) {
         this.codigoParticipante = codigoParticipante;
     }
 
