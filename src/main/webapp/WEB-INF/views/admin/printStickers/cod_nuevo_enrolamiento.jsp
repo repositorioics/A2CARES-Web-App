@@ -47,22 +47,28 @@
                                             <div class="btn-group">
 
 
-                                                <div style="width: 190px; height: 60px; margin-left: 125px" >
+                                                <div style="width: 100px;" >
                                                     <label   ><spring:message code="Ultima casa Enrolada:" />
                                                     </label>
                                                     <input type="text"   id="utlima_casa_enrolada" name="utlima_casa_enrolada" class="form-control" placeholder="última Casa Enrolada" aria-describedby="basic-addon1" readonly >
                                                 </div>
-                                                <div style="width: 190px; height: 60px; margin-left: 160px" >
+                                                <div style="width: 100px;" >
                                                     <label ><spring:message code="Ultima casa Impresa:" />
                                                     </label>
                                                     <input type="text"  id="utlima_casa_impresa" name="utlima_casa_impresa" class="form-control" placeholder="último Código de Casa Impresa" aria-describedby="basic-addon1" readonly>
                                                 </div>
-
-
-
                                             </div>
-                                            <button type="button" id="btnPrint1" style="width: 60px; height: 60px"  data-toggle="tooltip" data-placement="bottom" title="Imprimir Casa"  class="btn btn-outline-success"   onclick="print_nuevo_casa()"> <i class="fas fa-print"></i>
-                                            </button>
+
+                                                <div style="width: 200px;">
+                                                    <label ><spring:message code="Cantidad de Casas a Imprimir:" />
+                                                    </label>
+                                                    <input type="text"  id="cantidad_casa_imprimir" name="cantidad_casa_imprimir" class="form-control" placeholder="Cantidad de Casa a Generar" aria-describedby="basic-addon1">
+                                                    <button type="button" id="btnPrint1" style="width: 60px; height: 60px"  data-toggle="tooltip" data-placement="bottom" title="Imprimir Casa"  class="btn btn-outline-success"   onclick="print_nuevo_casa()"> <i class="fas fa-print"></i>
+                                                    </button>
+                                                </div>
+
+
+
                                         </div>
                                             </div>
                                     <br>
@@ -76,24 +82,43 @@
                                         <div  class="col-md-12"  >
                                             <div class="btn-group"  >
 
-                                                <div  style="width: 250px; height: 60px; margin-left: 125px" >
+                                                <div  style="width: 100px;" >
                                                     <label   ><spring:message code="Ultimo Participante Enrolado:" />
                                                     </label>
                                                     <input type="text"   id="utlimo_participante_enrolado" name="utlimo_participante_enrolado" class="form-control" placeholder="Ultimo Participante Enrolado" aria-describedby="basic-addon1" readonly>
                                                 </div>
 
-                                                <div style="width: 250px; height: 60;margin-left: 160px" >
+                                                <div style="width: 100px;" >
                                                     <label ><spring:message code="Ultimo Participante Impreso:" />
                                                     </label>
                                                     <input type="text"  id="utlimo_participante_impreso" name="utlimo_participante_impreso" class="form-control" placeholder="Ultimo Participante Impreso" aria-describedby="basic-addon1" readonly>
                                                 </div>
 
                                             </div>
+                                            <div style="width: 200px;" >
+                                                <label ><spring:message code="Cantidad de Participantes a Imprimir:" />
+                                                </label>
+                                                <input type="text"  id="cantidad_part_imprimir" name="cantidad_part_imprimir" class="form-control" placeholder="Cantidad de Participantes a Generar" aria-describedby="basic-addon1">
+                                            </div>
                                             <button type="button" id="btnPrint" style="width: 60px; height: 60px"  data-toggle="tooltip" data-placement="bottom" title="Imprimir Participante"  class="btn btn-outline-success"   onclick="print_nuevo()"> <i class="fas fa-print"></i>
                                             </button>
 
-                                        </div>
 
+                                        </div>
+                                        <div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        </div>
+                                        <div  class="col-md-12"  >
+                                        <div  style="width: 220px;">
+                                            <label ><spring:message code="Texto Libre a Imprimir:" />
+                                            </label>
+                                            <input type="text"  id="print_texto" name="print_texto" class="form-control" placeholder="Texto a Imprimir" aria-describedby="basic-addon1">
+                                            <button type="button" id="btnPrintText" style="width: 60px; height: 60px"  data-toggle="tooltip" data-placement="bottom" title="Imprimir Texto"  class="btn btn-outline-success"   onclick="print_texto_function()"> <i class="fas fa-print"></i>
+                                            </button>
+                                        </div>
+                                        </div>
                                     </div>
 
                                         </div>
@@ -185,7 +210,21 @@
     $('[data-toggle="tooltip"]').tooltip();
     function print_nuevo(){
           var ulpart = $("#utlimo_participante_impreso").val()
+        var cant = $("#cantidad_part_imprimir").val()
+
+        if (cant === ""){
         ulpart = parseInt(ulpart) + 1 ;
+
+            var misUrl ={
+                "setIncrementarPart"     : "${setIncrementarPart}",
+                "getcontrol"             : "1",
+                "envioUrl"              : "${envioUrl}",
+                "successMessage"        : "${successMessage}",
+                "dataTablesLang"        : "${dataTablesLang}",
+                "searchUrl"       : "${getTablasMxEnfermos}"
+            };
+            SearchPrintStickersMuestreoFormVal.init(misUrl);
+
           var id = "100" + ulpart + "*1*4";
             imprimirEtiquetas(id);
 
@@ -196,42 +235,105 @@
         imprimirEtiquetas(id1);
 
 
-        var misUrl ={
-            "setIncrementarPart"     : "${setIncrementarPart}",
-            "getcontrol"             : "1",
-            "envioUrl"              : "${envioUrl}",
-            "successMessage"        : "${successMessage}",
-            "dataTablesLang"        : "${dataTablesLang}",
-            "searchUrl"       : "${getTablasMxEnfermos}"
-        };
-        SearchPrintStickersMuestreoFormVal.init(misUrl);
 
+        }else
+        {
+            print_cantidad_participantes();
+        }
+
+    }
+    function print_texto_function(){
+        var ulpart = $("#print_texto").val()
+
+            var id1 = ulpart + "*.*1*6";
+            imprimirEtiquetas(id1);
 
     }
     function print_nuevo_casa(){
         var ulpart = $("#utlima_casa_impresa").val()
+        var cant = $("#cantidad_casa_imprimir").val()
         ulpart = parseInt(ulpart) + 1 ;
 /*
         var id1 =  ulpart + "*.*1*5";
         imprimirEtiquetas(id1);*/
 
-        var id1 = ulpart + "*.*1*5";
-        imprimirEtiquetas(id1);
+        if (cant === ""){
+           var id1 = ulpart + "*.*1*5";
 
+            var misUrl ={
+                "setIncrementarCasa"     : "${setIncrementarCasa}",
+                "getcontrol"             : "0",
+                "envioUrl"              : "${envioUrl}",
+                "successMessage"        : "${successMessage}",
+                "dataTablesLang"        : "${dataTablesLang}",
+                "searchUrl"       : "${getTablasMxEnfermos}"
+            };
+            SearchPrintStickersMuestreoFormVal.init(misUrl);
 
+            imprimirEtiquetas(id1);
+        }else
+        {
+            print_cantidad_casa();
+        }
+    }
+    function print_cantidad_casa(){
+        var cant = $("#cantidad_casa_imprimir").val()
+        var ulpart = $("#utlima_casa_impresa").val()
+        ulpart = parseInt(ulpart) + 1 ;
+        /*
+         var id1 =  ulpart + "*.*1*5";
+         imprimirEtiquetas(id1);*/
 
-        var misUrl ={
-            "setIncrementarCasa"     : "${setIncrementarCasa}",
-            "getcontrol"             : "0",
-            "envioUrl"              : "${envioUrl}",
-            "successMessage"        : "${successMessage}",
-            "dataTablesLang"        : "${dataTablesLang}",
-            "searchUrl"       : "${getTablasMxEnfermos}"
-        };
-        SearchPrintStickersMuestreoFormVal.init(misUrl);
+        for (var i = 0; i < cant; i++) {
 
+           // ulpart = parseInt(ulpart) + i ;
+            var id1 = ulpart + i + "*.*1*5";
 
+            var misUrl ={
+                "setIncrementarCasa"     : "${setIncrementarCasa}",
+                "getcontrol"             : "0",
+                "envioUrl"              : "${envioUrl}",
+                "successMessage"        : "${successMessage}",
+                "dataTablesLang"        : "${dataTablesLang}",
+                "searchUrl"       : "${getTablasMxEnfermos}"
+            };
+            SearchPrintStickersMuestreoFormVal.init(misUrl);
 
+            imprimirEtiquetas(id1);
+        }
+    }
+    function print_cantidad_participantes(){
+        var cant = $("#cantidad_part_imprimir").val()
+        var ulpart = $("#utlimo_participante_impreso").val()
+        ulpart = parseInt(ulpart) + 1 ;
+        /*
+         var id1 =  ulpart + "*.*1*5";
+         imprimirEtiquetas(id1);*/
+
+        for (var i = 0; i < cant; i++) {
+
+            ulpart = parseInt(ulpart) + i ;
+            var id = "100" + ulpart   + "*1*4";
+
+            var misUrl ={
+                "setIncrementarCasa"     : "${setIncrementarCasa}",
+                "getcontrol"             : "0",
+                "envioUrl"              : "${envioUrl}",
+                "successMessage"        : "${successMessage}",
+                "dataTablesLang"        : "${dataTablesLang}",
+                "searchUrl"       : "${getTablasMxEnfermos}"
+            };
+            SearchPrintStickersMuestreoFormVal.init(misUrl);
+
+            imprimirEtiquetas(id);
+
+            var id1 =  ulpart   + "*.*1*3";
+            imprimirEtiquetas(id1);
+
+            var id1 = ulpart   + "*.*1*3";
+            imprimirEtiquetas(id1);
+
+        }
     }
 </script>
 </body>

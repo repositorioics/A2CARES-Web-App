@@ -42,6 +42,9 @@ public class ParticipanteProcesos extends BaseMetaData implements Serializable, 
     @Column(name = "esat_usuario", nullable = false, length = 2)
     private String esatUsuario;
 
+    @Column(name = "reconsent", nullable = false, length = 2)
+    private String reconsent;
+
     public String getCodigo() {
         return codigo;
     }
@@ -142,5 +145,13 @@ public class ParticipanteProcesos extends BaseMetaData implements Serializable, 
 
     public void setEsatUsuario(String esatUsuario) {
         this.esatUsuario = esatUsuario;
+    }
+
+    public String getReconsent() {
+        return reconsent;
+    }
+
+    public void setReconsent(String reconsent) {
+        this.reconsent = reconsent;
     }
 }

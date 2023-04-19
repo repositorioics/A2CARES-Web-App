@@ -1,6 +1,8 @@
 package ni.org.ics.webapp.web.controller;
 
 import ni.org.ics.webapp.domain.Retiros.Retiros;
+import ni.org.ics.webapp.domain.Serologia.BhcEnvio;
+import ni.org.ics.webapp.domain.Serologia.Bhc_Detalles_Envio;
 import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
 import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
@@ -167,6 +169,61 @@ public class ReportesController {
             ReporteEnvio.addObject("allSerologia", allSerologia);
             ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTE);
             return ReporteEnvio;
+    }
+
+    //endregion
+
+    //region todo Este controlador Genera el Reporte Serologia PDF y EXCEL
+    @RequestMapping(value = "/downloadFileEnviosBhc", method = RequestMethod.GET)
+    public ModelAndView downloadFileEnviosBhc(@RequestParam(value="nEnvios", required=false ) Integer nEnvios,
+                                                    @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                                    @RequestParam(value="fechaFin", required=false ) String fechaFin)
+            throws Exception{
+        ModelAndView ReporteEnvioBhc = new ModelAndView("pdfView");
+        Date dFechaInicio = null;
+        if (fechaInicio!=null && !fechaInicio.isEmpty())
+            dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+        Date dFechaFin = null;
+        if (fechaFin!=null && !fechaFin.isEmpty())
+            dFechaFin = DateUtil.StringToDate(fechaFin+ " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+        List<BhcEnvio> BhcEnviadas =  this.serologiaservice.getBhcEnvioByDates(nEnvios,dFechaInicio,dFechaFin);
+        ReporteEnvioBhc.addObject("nEnvios",nEnvios);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        ReporteEnvioBhc.addObject("sitios", sitios);
+        ReporteEnvioBhc.addObject("fechaInicio",fechaInicio);
+        ReporteEnvioBhc.addObject("fechaFin",fechaFin);
+        ReporteEnvioBhc.addObject("BhcEnviadas",BhcEnviadas);
+        List<Bhc_Detalles_Envio> allBhc = this.serologiaservice.getAllBhc(nEnvios,dFechaInicio,dFechaFin);
+        ReporteEnvioBhc.addObject("allBhc",allBhc);
+        ReporteEnvioBhc.addObject("TipoReporte", Constants.TPR_ENVIOREPORTEBHC);
+        return ReporteEnvioBhc;
+    }
+
+
+
+    @RequestMapping(value = "downloadFileBhcExcel", method = RequestMethod.GET)
+    public ModelAndView BhcExcel(@RequestParam(value="nEnvios", required=false ) Integer nEnvios,
+                                       @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                       @RequestParam(value="fechaFin", required=false ) String fechaFin)
+            throws Exception {
+        ModelAndView ReporteEnvio = new ModelAndView("excelView");
+        Date dFechaInicio = null;
+        if (fechaInicio != null && !fechaInicio.isEmpty())
+            dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+        Date dFechaFin = null;
+        if (fechaFin != null && !fechaFin.isEmpty())
+            dFechaFin = DateUtil.StringToDate(fechaFin + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+        List<BhcEnvio> BhcEnviadas = this.serologiaservice.getBhcEnvioByDates(nEnvios, dFechaInicio, dFechaFin);
+        ReporteEnvio.addObject("nEnvios", nEnvios);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        ReporteEnvio.addObject("sitios", sitios);
+        ReporteEnvio.addObject("fechaInicio", fechaInicio);
+        ReporteEnvio.addObject("fechaFin", fechaFin);
+        ReporteEnvio.addObject("BhcEnviadas", BhcEnviadas);
+        List<Bhc_Detalles_Envio> allBhc = this.serologiaservice.getAllBhc(nEnvios, dFechaInicio, dFechaFin) ;
+        ReporteEnvio.addObject("allBhc", allBhc);
+        ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTE);
+        return ReporteEnvio;
     }
 
     //endregion

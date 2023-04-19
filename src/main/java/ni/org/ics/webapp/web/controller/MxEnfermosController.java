@@ -464,8 +464,12 @@ public class MxEnfermosController {
                     //setear codigo a imprimir
                     String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
                     String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
-                    String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
-
+                    String codigoMx = "";
+                    if (faseMuestra.equals("1")) {
+                          codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                    } if (faseMuestra.equals("2")) {
+                          codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                    }
                     recepcionEnfermo.setCodigo(codigoMx);
                     recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
 

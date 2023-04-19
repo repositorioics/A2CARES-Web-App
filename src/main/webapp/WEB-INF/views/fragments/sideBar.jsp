@@ -105,21 +105,29 @@
                         <i class="fas fa-vial" aria-hidden="true"></i>
                         <spring:message code="Recepción Muestreo" /></a>
                     <ul class="nav-dropdown-items">
+
                         <li class="nav-item filedata">
                             <a class="nav-link" href="<spring:url value="/Serologia/listSerologia" htmlEscape="true "/>">
                                 <i class="fas fa-list-alt" aria-hidden="true"></i>
                                 <spring:message code="Serología" /></a>
                         </li>
+                            <li class="nav-item filedata">
+                                <a class="nav-link" href="<spring:url value="/Serologia/listEnviosMuestras" htmlEscape="true "/>">
+                                    <i class="fas fa-ambulance" aria-hidden="true"></i>
+                                    <spring:message code="Reporte Envios Serologia" /></a>
+                            </li>
+
                         <li class="nav-item filedata">
                             <a class="nav-link" href="<spring:url value="/Serologia/listBHC" htmlEscape="true "/>">
                                 <i class="fas fa-list-alt" aria-hidden="true"></i>
                                 <spring:message code="BHC" /></a>
                         </li>
                         <li class="nav-item filedata">
-                            <a class="nav-link" href="<spring:url value="/Serologia/listEnviosMuestras" htmlEscape="true "/>">
+                            <a class="nav-link" href="<spring:url value="/Serologia/listEnviosMuestrasBhc" htmlEscape="true "/>">
                                 <i class="fas fa-ambulance" aria-hidden="true"></i>
-                                <spring:message code="Envios" /></a>
+                                <spring:message code="Reporte Envios BHC" /></a>
                         </li>
+
                     </ul>
                 </li>
             </sec:authorize>

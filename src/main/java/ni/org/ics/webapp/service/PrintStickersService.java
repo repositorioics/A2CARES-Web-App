@@ -68,16 +68,10 @@ public class PrintStickersService {
 
     @SuppressWarnings("unchecked")
     public List<ControlSecCodigosDto> setIncCodCasa() {
-        try{
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createSQLQuery("call  fn_Set_Inc_Codigo_Casa()");
             return query.list();
-        }catch (Exception e){
-            System.err.println(e.toString());
-            throw e;
-        }
-        //query.setResultTransformer(Transformers.aliasToBean(CasasExistMuestreoDto.class));
-      //  return query.toString();
+
     }
 
 

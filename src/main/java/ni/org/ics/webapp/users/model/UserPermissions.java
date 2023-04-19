@@ -26,6 +26,7 @@ public class UserPermissions {
 	private Boolean recepcion=false;
 	private Boolean consentimiento=false;
 	private Boolean encSatUsu=false; //Encuesta satisfaccion usuario
+    private Boolean reconsent=false; //Reconsentimiento
 
 	@Id
 	@Column(name = "username", nullable = false, length =50)
@@ -115,4 +116,12 @@ public class UserPermissions {
 	public void setEncSatUsu(Boolean encSatUsu) {
 		this.encSatUsu = encSatUsu;
 	}
+
+    @Column(name = "reconsent", nullable = false)
+    public Boolean getReconsent() {
+        return reconsent;
+    }
+    public void setReconsent(Boolean reconsent) {
+        this.reconsent = reconsent;
+    }
 }

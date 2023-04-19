@@ -26,6 +26,8 @@ public class VisitaTerrenoParticipante extends BaseMetaData {
 	private String visitaExitosa;
 	private String razonVisitaNoExitosa;
     private String otraRazonVisitaNoExitosa;
+    private String direccion_cambio_domicilio;
+    private String telefono_cambio_domicilio;
 
     @Id
     @Column(name = "CODIGO", nullable = false, length = 50)
@@ -82,6 +84,22 @@ public class VisitaTerrenoParticipante extends BaseMetaData {
 
     public void setOtraRazonVisitaNoExitosa(String otraRazonVisitaNoExitosa) {
         this.otraRazonVisitaNoExitosa = otraRazonVisitaNoExitosa;
+    }
+
+    @Column(name="DIRECCION_CAMBIO_DOMICILIO", nullable = true, length = 100)
+    public String getDireccion_cambio_domicilio() {
+        return direccion_cambio_domicilio;
+    }
+    public void setDireccion_cambio_domicilio(String direccion_cambio_domicilio) {
+        this.direccion_cambio_domicilio = direccion_cambio_domicilio;
+    }
+
+    @Column(name="TELEFONO_CAMBIO_DOMICILIO", nullable = true, length = 100)
+    public String getTelefono_cambio_domicilio() {
+        return telefono_cambio_domicilio;
+    }
+    public void setTelefono_cambio_domicilio(String telefono_cambio_domicilio) {
+        this.telefono_cambio_domicilio = telefono_cambio_domicilio;
     }
 
     @Override
