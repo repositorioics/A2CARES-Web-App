@@ -19,6 +19,6 @@ public class EncuestaSatisfaccionUsuarioService {
 
     public void saveOrUpdateEncuestaSatisfaccionUsuario(EncuestaSatisfaccionUsuario encuestaSatisfaccionUsuario){
         Session session = sessionFactory.getCurrentSession();
-        session.save(encuestaSatisfaccionUsuario);
+        session.saveOrUpdate(encuestaSatisfaccionUsuario);
     }
 }
