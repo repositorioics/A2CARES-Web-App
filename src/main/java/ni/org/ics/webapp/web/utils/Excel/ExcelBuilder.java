@@ -1,5 +1,6 @@
 package ni.org.ics.webapp.web.utils.Excel;
 
+import ni.org.ics.webapp.domain.Serologia.Bhc_Detalles_Envio;
 import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.language.MessageResource;
@@ -52,9 +53,130 @@ public class ExcelBuilder extends AbstractExcelView {
         } else if (reporte.equalsIgnoreCase(Constants.TPR_ENTO)) {
             BuildEntoData.buildExcel(model, workbook, response);
         }
+        else if (reporte.equalsIgnoreCase(Constants.TPR_ENVIOREPORTEBHC)) {
+            buildExcelDocumentVigDxBhc(model, workbook, response);
+        }
 
 	}
 
+
+    public void buildExcelDocumentVigDxBhc(Map<String, Object> model, HSSFWorkbook workbook,HttpServletResponse response) throws IOException {
+        List<Bhc_Detalles_Envio> listaSerologia = (List<Bhc_Detalles_Envio>) model.get("allBhc");
+        logger.log(Level.INFO, "iniciando libro de excel");
+        response.setContentType("application/octec-stream");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
+        String fechaActual = dateFormat.format(new Date());
+        String fileName = "ENVIO_BHC_SOCRATES_FLORES_"+ fechaActual +".xls";
+        response.setHeader("Content-Disposition", "attachment; filename="+ fileName);
+        HSSFSheet sheet = workbook.createSheet("Hoja1");
+        Font font = workbook.createFont();
+        String[] headers = new String[]{
+                "CODIGO",
+                "fecha",
+                "volumen",
+                "observacion",
+                "PRecepciona",
+                "estudio",
+                "edadA",
+                "edadM",
+                "viaje"
+        };
+        CellStyle headerStyle = workbook.createCellStyle();
+        font.setBold(true);
+        headerStyle.setFont(font);
+
+        HSSFRow headerRow = sheet.createRow(0);
+        for (int i = 0; i < headers.length; ++i) {
+            String header = headers[i];
+            HSSFCell cell = headerRow.createCell(i);
+            cell.setCellStyle(headerStyle);
+            cell.setCellValue(header);
+        }
+
+        if (listaSerologia.size()>0) {
+            File archivo = new File(fileName);
+            String filePath = "C:\\Users\\ICS\\Downloads" + fileName;
+
+            //Cell style for content cells
+            font = workbook.createFont();
+            font.setFontName("Calibri");
+            font.setFontHeight((short) (11 * 20));
+            font.setColor(HSSFColor.BLACK.index);
+
+            CellStyle dateCellStyle = workbook.createCellStyle();
+            CreationHelper createHelper = workbook.getCreationHelper();
+            dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("MM/dd/yyyy"));
+            dateCellStyle.setBorderBottom(BorderStyle.THIN);
+            dateCellStyle.setBorderTop(BorderStyle.THIN);
+            dateCellStyle.setBorderLeft(BorderStyle.THIN);
+            dateCellStyle.setBorderRight(BorderStyle.THIN);
+            dateCellStyle.setFont(font);
+
+            CellStyle style = workbook.createCellStyle();
+            style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            CellStyle contentCellStyle = workbook.createCellStyle();
+            contentCellStyle.setBorderBottom(BorderStyle.THIN);
+            contentCellStyle.setBorderTop(BorderStyle.THIN);
+            contentCellStyle.setBorderLeft(BorderStyle.THIN);
+            contentCellStyle.setBorderRight(BorderStyle.THIN);
+            contentCellStyle.setFont(font);
+
+
+            int rowCount = 1;
+            for (Bhc_Detalles_Envio registro : listaSerologia) {
+                HSSFRow dataRow = sheet.createRow(rowCount++);
+                dataRow.createCell(0).setCellValue(registro.getBhc().getParticipante().toString());
+
+                sheet.autoSizeColumn(0);
+                dataRow.createCell(1).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getBhc().getFecha(), "dd/MM/yyyy"));
+                sheet.autoSizeColumn(1);
+                dataRow.createCell(2).setCellValue(registro.getBhc().getVolumen());
+                sheet.autoSizeColumn(2);
+                dataRow.createCell(3).setCellValue(registro.getBhc().getObservacion());
+                sheet.autoSizeColumn(3);
+                dataRow.createCell(4).setCellValue(registro.getBhc().getRecordUser());
+                sheet.autoSizeColumn(4);
+                dataRow.createCell(5).setCellValue("A2CARES");
+                sheet.autoSizeColumn(5);
+                Double ageAnios = Math.floor(registro.getBhc().getEdadMeses()/12);
+                dataRow.createCell(6).setCellValue(ageAnios.intValue());
+                sheet.autoSizeColumn(6);
+                //edad Meses
+                double d = registro.getBhc().getEdadMeses();
+                Double edadMeses = d % 12;
+                dataRow.createCell(7).setCellValue(edadMeses.intValue());
+                sheet.autoSizeColumn(7);
+                dataRow.createCell(8).setCellValue(registro.getBhcEnvio().getIdenvio());
+                sheet.autoSizeColumn(8);
+            }
+
+            File excelFile;
+            excelFile = new File(filePath);
+            try {
+                FileOutputStream fileOuS = new FileOutputStream(excelFile);
+                if (excelFile.exists()) {
+                    excelFile.delete();
+                    logger.log(Level.INFO, "Archivo eliminado.!");
+                }
+                workbook.write(fileOuS);
+                fileOuS.flush();
+                fileOuS.close();
+                logger.log(Level.INFO, "Archivo Creado.!");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }else{
+            CellStyle noDataCellStyle = workbook.createCellStyle();
+            noDataCellStyle.setAlignment(HorizontalAlignment.CENTER);
+            noDataCellStyle.setFont(font);
+            HSSFRow aRow = sheet.createRow(1);
+            sheet.addMergedRegion(new CellRangeAddress(aRow.getRowNum(), aRow.getRowNum(), 0, headers.length - 1));
+            aRow.createCell(0).setCellValue("NO SE ENCONTRARON DATOS!");
+            aRow.getCell(0).setCellStyle(noDataCellStyle);
+        }
+    }
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public void buildExcelDocumentVigDx(Map<String, Object> model, HSSFWorkbook workbook,HttpServletResponse response) throws IOException {
@@ -124,7 +246,8 @@ public class ExcelBuilder extends AbstractExcelView {
             int rowCount = 1;
             for (Serologia_Detalles_Envio registro : listaSerologia) {
                 HSSFRow dataRow = sheet.createRow(rowCount++);
-                dataRow.createCell(0).setCellValue(registro.getSerologia().getParticipante());
+                dataRow.createCell(0).setCellValue(registro.getSerologia().getParticipante().toString());
+
                 sheet.autoSizeColumn(0);
                 dataRow.createCell(1).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getSerologia().getFecha(), "dd/MM/yyyy"));
                 sheet.autoSizeColumn(1);

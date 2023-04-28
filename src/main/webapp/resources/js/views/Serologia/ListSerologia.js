@@ -56,15 +56,6 @@ var EnviarSerologiasForm = function(){
                 });
             }//fin funccion
 
-            $('#temperatura').on('change', function() {
-                if(isNaN(this.value)){
-                    this.value = "";
-                }else{
-                    this.value = parseFloat(this.value).toFixed(2);
-                }
-            });
-
-
             var form1 = $('#envio-allserologia-form');
             var $validator = form1.validate({
                 errorElement: 'span', //default input error message container

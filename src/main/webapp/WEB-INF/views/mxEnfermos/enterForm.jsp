@@ -459,7 +459,7 @@
             }
         });
         $("#parametro").focus();
-        $('#evento').attr('readonly', true);
+       // $('#evento').attr('readonly', true);
 
 
     });

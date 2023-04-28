@@ -355,10 +355,18 @@ public class MxEnfermosController {
             map.put("consulta",ultimregRec.get(0).getConsulta() );
             map.put("tipoMuestra",ultimregRec.get(0).getTipoMuestra());
 
-             evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
-             evento = evento.substring(1,2);
+            if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3")) {
+                evento = this.recepcionEnfermoService.ObtenerEvento1(codigo).toString();
+                evento = evento.substring(1, 2);
+                ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento1(codigo).toString();
+            }
+            if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("1")) {
+                evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
+                evento = evento.substring(1, 2);
+                ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
+            }
 
-            ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
+
             positivo = ultima_consulta;
 
             map.put("ultima_consulta",ultima_consulta);
@@ -466,8 +474,20 @@ public class MxEnfermosController {
                     String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
                     String codigoMx = "";
                     if (faseMuestra.equals("1")) {
+
+                          ParticipanteProcesos pp = new ParticipanteProcesos();
+                           pp = participanteProcesosService.getParticipante(codigoParticipante);
+                           pp.setPendienteMxTx("1");
+                           participanteProcesosService.saveOrUpdateParticipanteProc(pp);
+
                           codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
                     } if (faseMuestra.equals("2")) {
+
+                        ParticipanteProcesos pp1 = new ParticipanteProcesos();
+                        pp1 = participanteProcesosService.getParticipante(codigoParticipante);
+                        pp1.setPendienteMxTx("0");
+                        participanteProcesosService.saveOrUpdateParticipanteProc(pp1);
+
                           codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
                     }
                     recepcionEnfermo.setCodigo(codigoMx);

@@ -77,7 +77,7 @@ public class SerologiaService {
     }
     public List<Bhc_Detalles_Envio>getAllBhc(Integer nEnvios, Date fechaInicio, Date fechaFin){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Bhc_Detalles_Envio se where se.bhcEnvio.fecha between :fechaInicio and :fechaFin and se.bhcEnvio.idbhcenvio =:nEnvios  order by se.bhc.participante asc ");
+        Query query = session.createQuery("from Bhc_Detalles_Envio se where se.bhcEnvio.fecha between :fechaInicio and :fechaFin and se.bhcEnvio.idenvio =:nEnvios  order by se.bhc.participante asc ");
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         query.setParameter("nEnvios", nEnvios);
@@ -363,7 +363,7 @@ public class SerologiaService {
     }
     public List<BhcEnvio> getBhcEnvioByDates(Integer nEnvios, Date fechaInicio, Date fechaFin){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from BhcEnvio se where se.fecha between :fechaInicio and :fechaFin and se.idbhcenvio =:nEnvios");
+        Query query = session.createQuery("from BhcEnvio se where se.fecha between :fechaInicio and :fechaFin and se.idenvio =:nEnvios");
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         query.setParameter("nEnvios", nEnvios);

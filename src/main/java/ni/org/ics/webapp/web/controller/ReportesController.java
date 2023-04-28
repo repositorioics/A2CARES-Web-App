@@ -222,7 +222,7 @@ public class ReportesController {
         ReporteEnvio.addObject("BhcEnviadas", BhcEnviadas);
         List<Bhc_Detalles_Envio> allBhc = this.serologiaservice.getAllBhc(nEnvios, dFechaInicio, dFechaFin) ;
         ReporteEnvio.addObject("allBhc", allBhc);
-        ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTE);
+        ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTEBHC);
         return ReporteEnvio;
     }
 

@@ -311,7 +311,7 @@
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input name="temperatura" id="temperatura" class="form-control" type="text" minlength="1" maxlength="4"  required="required" />
+                                    <input name="temperatura" id="temperatura" class="form-control" type="text"   required="required" />
                                 </div>
                             </div>
 
