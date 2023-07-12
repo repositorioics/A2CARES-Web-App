@@ -48,6 +48,7 @@ public class RecepcionMuestraController {
         return respuestaList;
     }
 
+
     /**
      * Acepta una solicitud POST con un par�metro JSON
      * @param recepcionMuestras Objeto serializado de RecepcionMuestra
@@ -67,6 +68,7 @@ public class RecepcionMuestraController {
         }
         return "Datos recibidos!";
     }
+
 
     /**
      * Acepta una solicitud GET para JSON

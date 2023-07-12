@@ -3,11 +3,7 @@ package ni.org.ics.webapp.service;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.laboratorio.RecepcionEnfermo;
-import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
-import ni.org.ics.webapp.dto.RecepcionEnfermoDto;
-import ni.org.ics.webapp.dto.MuestrasEnfermosDto;
-import ni.org.ics.webapp.dto.ConvalecientesEnfermoDto;
-import ni.org.ics.webapp.dto.OrdenLaboratorioDto;
+import ni.org.ics.webapp.dto.*;
 import ni.org.ics.webapp.web.utils.Constants;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import org.hibernate.Query;
@@ -36,11 +32,15 @@ public class RecepcionEnfermoService {
     @SuppressWarnings("unchecked")
     public List<RecepcionEnfermo> getRecepcionsEnfermos() throws Exception
     {
+        /*cargar */
         Calendar hoy = Calendar.getInstance();
         int anioActual = hoy.get(Calendar.YEAR);
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from RecepcionEnfermo where pasive = '0' and recordDate >= :primerDia");
-        query.setParameter("primerDia", DateUtil.StringToDate("01/01/" + String.valueOf(anioActual), "dd/MM/yyyy"));
+       /* Query query = session.createQuery("from RecepcionEnfermo where pasive = '0' and recordDate >= :primerDia");
+        query.setParameter("primerDia", DateUtil.StringToDate("01/01/" + String.valueOf(anioActual), "dd/MM/yyyy"));*/
+        Query query = session.createSQLQuery("call sp_obtener_Reg_Enfermos_Conv()");
+        query.setResultTransformer(Transformers.aliasToBean(RecepcionEnfermoMovilDto.class));
+
         return  query.list();
     }
 

@@ -25,7 +25,6 @@ public class PrintStickersService {
 
     @Resource(name = "sessionFactory")
     private SessionFactory sessionFactory;
-
     
 	@SuppressWarnings("unchecked")
 	public List<ControlSecCodigosDto> getControlSecCodigos(){
@@ -37,6 +36,7 @@ public class PrintStickersService {
 
     @SuppressWarnings("unchecked")
     public List<CasasExistMuestreoDto> getExtraeCasaMuestreo(String codigo_casa){
+        try{
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createSQLQuery("call  fn_Get_Casa_Participantes_Muestreo(:codigo_casa)")
         .addScalar("indice", Hibernate.INTEGER)
@@ -45,6 +45,10 @@ public class PrintStickersService {
         query.setParameter("codigo_casa", codigo_casa);
         query.setResultTransformer(Transformers.aliasToBean(CasasExistMuestreoDto.class));
         return query.list();
+    }catch (Exception e){
+        System.err.println(e.toString());
+        throw e;
+    }
     }
 
     @SuppressWarnings("unchecked")
@@ -59,18 +63,29 @@ public class PrintStickersService {
 
     @SuppressWarnings("unchecked")
     public  List<ControlSecCodigosDto>  setIncCodPart(){
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("call  fn_Set_Inc_Codigo_Participantes()");
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  fn_Set_Inc_Codigo_Participantes()");
 
         //query.setResultTransformer(Transformers.aliasToBean(CasasExistMuestreoDto.class));
         return query.list();
+    }catch (Exception e){
+            System.err.println(e.toString());
+        throw e;
+    }
     }
 
     @SuppressWarnings("unchecked")
-    public List<ControlSecCodigosDto> setIncCodCasa() {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createSQLQuery("call  fn_Set_Inc_Codigo_Casa()");
+    public  List<ControlSecCodigosDto> setIncCodCasa() {
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  fn_Set_Inc_Codigo_Casa()");
             return query.list();
+
+    }catch (Exception e){
+            System.err.println(e.toString());
+        throw e;
+    }
 
     }
 

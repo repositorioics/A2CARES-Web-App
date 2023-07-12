@@ -35,7 +35,10 @@ import java.net.InetAddress;
 import java.text.ParseException;
 import java.util.*;
 import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+//import java.text.SimpleDateFormat;
 
 /**
  * Created by miguel on 1/2/2022.
@@ -295,7 +298,7 @@ public class MxEnfermosController {
                 recepcionEnfermoDto.setCategoria(recepcionEnfermo.getCategoria());
                 recepcionEnfermoDto.setTipoMuestra(recepcionEnfermo.getTipoMuestra());
                 recepcionEnfermoDto.setConsulta(recepcionEnfermo.getConsulta());
-                recepcionEnfermoDto.setEvento(evento);
+                recepcionEnfermoDto.setEvento(evento.substring(1,2));
                 recepcionEnfermoDto.setObservacion(recepcionEnfermo.getObservacion());
                 recepcionEnfermoDto.setVolumen(recepcionEnfermo.getVolumen());
                 recepcionEnfermoDto.setCodigoCasa(recepcionEnfermo.getParticipante().getCasa().getCodigo());
@@ -345,20 +348,30 @@ public class MxEnfermosController {
         String categoria="";
         String consulta = "";
         String tipoMuestra="";
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
+
+        Date  fechaF2 = formato.parse("2023-04-18");
 
 
         try {
             ultimregRec = this.recepcionEnfermoService.getMxRecepcionRegUltimo(codigo);
+            Date  fechaI1 = formato.parse(ultimregRec.get(0).getFechaRecepcion().toString());
             map.put("fis",ultimregRec.get(0).getFis());
             map.put("fif",ultimregRec.get(0).getFif());
             map.put("categoria",ultimregRec.get(0).getCategoria());
             map.put("consulta",ultimregRec.get(0).getConsulta() );
             map.put("tipoMuestra",ultimregRec.get(0).getTipoMuestra());
 
-            if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3")) {
+            if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3") && fechaI1.before(fechaF2) ) {
                 evento = this.recepcionEnfermoService.ObtenerEvento1(codigo).toString();
                 evento = evento.substring(1, 2);
                 ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento1(codigo).toString();
+            }
+           if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3") && fechaI1.after(fechaF2)) {
+                evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
+                evento = evento.substring(1, 2);
+                ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
             }
             if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("1")) {
                 evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
@@ -423,6 +436,7 @@ public class MxEnfermosController {
             ,@RequestParam( value = "tiporequest",    required = false, defaultValue=""  ) String tiporequest
     ) throws Exception {
         try{
+            List<ConvalecientesEnfermoDto> ultimregRec = null;
             if (volumen.equals("0") || volumen.equals("")){
                 //Map<String, String> map = new HashMap<String, String>();
                 //map.put("msj", "Volumen no puede ser igual a 0." );
@@ -438,9 +452,17 @@ public class MxEnfermosController {
                 //map.put("msj", "Código participante no es válido." );
                 return JsonUtil.createJsonResponse("Código participante no es válido.");
             }
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
+
+            Date  fechaF2 = formato.parse("2023-04-18");
             RecepcionEnfermo recepcionEnfermo = new RecepcionEnfermo();
             String nameComputer = InetAddress.getLocalHost().getHostName();
             String ComputerIp = InetAddress.getLocalHost().getHostAddress();
+
+            ultimregRec = this.recepcionEnfermoService.getMxRecepcionRegUltimo(codigoParticipante);
+
+           // Date  fechaI1 = formato.parse(ultimregRec.get(0).getFechaRecepcion().toString());
             Participante participante = participanteService.getParticipanteByCodigo(codigoParticipante);
             if (tiporequest.equals("false")){//Guardar Nuevo Registro
                 if (!recepcionEnfermoService.existeSerologia(DateUtil.StringToDate(fecha, Constants.STRING_FORMAT_DD_MM_YYYY), codigoParticipante)){
@@ -473,29 +495,43 @@ public class MxEnfermosController {
                     String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
                     String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
                     String codigoMx = "";
-                    if (faseMuestra.equals("1")) {
+
+                    if (faseMuestra.equals("1") ) {
 
                           ParticipanteProcesos pp = new ParticipanteProcesos();
                            pp = participanteProcesosService.getParticipante(codigoParticipante);
                            pp.setPendienteMxTx("1");
                            participanteProcesosService.saveOrUpdateParticipanteProc(pp);
 
-                          codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
-                    } if (faseMuestra.equals("2")) {
+                        //  codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                   // if (faseMuestra.equals("2")) {
 
+                  //     if (  fechaI1.before(fechaF2) ) {
+
+
+                   //    }
+                  //    if ( fechaI1.after(fechaF2)) {
+
+                           // codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                       // }
+
+
+
+
+                    }
+                    if ( faseMuestra.equals("2") ) {
                         ParticipanteProcesos pp1 = new ParticipanteProcesos();
                         pp1 = participanteProcesosService.getParticipante(codigoParticipante);
                         pp1.setPendienteMxTx("0");
                         participanteProcesosService.saveOrUpdateParticipanteProc(pp1);
-
-                          codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
                     }
+                    codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
                     recepcionEnfermo.setCodigo(codigoMx);
                     recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
 
                     recepcionEnfermoService.saveOrUpdateRecepcionEnfermo(recepcionEnfermo);
                     return JsonUtil.createJsonResponse(recepcionEnfermo);
-                }
+               }
                 else {
                     Map<String, String> map = new HashMap<String, String>();
                     map.put("msj", "Muestra ya existe." );

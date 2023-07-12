@@ -62,7 +62,37 @@
                 </li>
 
             </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_PRINT_STICKERS')">
+                <li class="nav-item nav-dropdown fingering">
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="fab fa-ad"></i><spring:message code="Códigos Muestreo" /></a>
+                    <ul class="nav-dropdown-items">
+                        <<li class="nav-item impresionStickers">
+                        <a class="nav-link" href="<spring:url value="/ps/stickers/list" htmlEscape="true "/>">
+                            <i class="fab fa-ad"></i>
+                            <spring:message code="Impresion Stickers" /></a>
+                    </li>
+                    </ul>
 
+
+                </li>
+
+            </sec:authorize>
+
+            <sec:authorize access="hasAnyRole('ROLE_INFO')">
+                <li class="nav-item nav-dropdown fingering">
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="fab fa-ad"></i><spring:message code="Informes A2CARES" /></a>
+                    <ul class="nav-dropdown-items">
+                        <<li class="nav-item impresionStickers">
+                        <a class="nav-link" href="<spring:url value="/ps/stickers/list" htmlEscape="true "/>">
+                            <i class="fab fa-ad"></i>
+                            <spring:message code="Impresion Stickers" /></a>
+                    </li>
+                    </ul>
+
+
+                </li>
+
+            </sec:authorize>
             <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI')">
                 <li class="nav-item nav-dropdown consentimiento">
                     <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-notebook"></i><spring:message code="letters" /></a>
@@ -127,6 +157,8 @@
                                 <i class="fas fa-ambulance" aria-hidden="true"></i>
                                 <spring:message code="Reporte Envios BHC" /></a>
                         </li>
+
+
 
                     </ul>
                 </li>

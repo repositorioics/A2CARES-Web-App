@@ -180,7 +180,8 @@ public class PrintStickersController {
         LocalDate localDate = LocalDate.now();
         try {
 
-            printStick = printstickersservice.setIncCodCasa();
+            //printStick = printstickersservice.setIncCodCasa();
+            printstickersservice.setIncCodCasa();
                 //  return JsonUtil.createJsonResponse(enfermeria);
 
             return printStick;
