@@ -53,6 +53,7 @@
                 <br>
             </div>
         </div>
+
         <form action="#" autocomplete="off" id="search-participant-form" name="search-participant-form" class="form-horizontal">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -69,8 +70,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
+
         </form>
+
 
 </div>
 <hr/>
@@ -116,6 +120,28 @@
     </div>
 
 </div>
+<form action="#" autocomplete="off" id="search-cod-form" name="search-participant-form" class="form-horizontal">
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="form-group">
+                &ensp;
+                &ensp;
+                <label class="form-control-label" for="codigoSupervisor"><spring:message code="Código Supervisor" />
+                    <span class="required">*</span>
+                </label>
+                <div class="input-group"  align="center">
+                    &ensp;
+                    &ensp;
+                  <span class="input-group-addon" >
+                       <i class="fa fa-book-medical"></i>
+                  </span>
+
+                    <input type="text" id="codigoSupervisor" required  name="codigoSupervisor" value=""   />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 <form name="form-clinicalsheet" autocomplete="off" role="form" action="#" id="form-clinicalsheet" method="post" class="form-horizontal">
 
 <div class="card-block">
@@ -162,13 +188,20 @@
                 <i class="fa fa-pen"></i>
             </span>
                 <input type="text" id="numHoja" required name="numHoja" value="" />
+                <input type="text" id="codigoSuper"   name="codigoSuper" value="" hidden />
             </div>
         </div>
-
     </div>
 
+
+
 </div>
-<div class="row">
+<div class="col-md-12">
+    <a id="desactivarEnfermeria"  onclick="desactivar_Enfermeria();" style="font-size: 30px; color:#FF0000">Desactivar Datos de Enfermería</a>
+    <a id="activarEnfermeria"  onclick="activar_Enfermeria();" style="font-size: 30px; color:#FF0000">Activar Datos de Enfermería</a>
+
+</div>
+<div class="row" id="datos_enfermeria_div"  >
     <div class="col-lg-12 col-md-12 col-sm-12">
         <h4 class="text-capitalize"><spring:message code="datos_enfermeria" /></h4>
     </div>
@@ -176,14 +209,14 @@
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="form-group">
-                    <label class="form-control-label" for="peso" class="form-control-label"><spring:message code="peso" />
-                        <span class="required">*</span>
+                      <label class="form-control-label" for="peso" class="form-control-label"><spring:message code="peso" />
+                  <!--   <span class="required">*</span> -->
                     </label>
                     <div class="input-group">
                     <span class="input-group-addon">
                         <i class="fas fa-weight"></i>
                     </span>
-                        <input type="text" class="form-control" required id="peso" name="peso"
+                        <input type="text" class="form-control"  id="peso" name="peso"
                                value=""/>
                     </div>
                 </div>
@@ -191,13 +224,13 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label class="form-control-label" for="talla"><spring:message code="talla" />
-                        <span class="required">*</span>
+                        <!--   <span class="required">*</span> -->
                     </label>
                     <div class="input-group">
             <span class="input-group-addon">
                 <i class="fas fa-sort-numeric-up"></i>
             </span>
-                        <input type="text" class="form-control" required id="talla" name="talla"
+                        <input type="text" class="form-control"  id="talla" name="talla"
                                value="" />
                     </div>
                 </div>
@@ -206,13 +239,13 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label class="form-control-label" for="edad"><spring:message code="edad" />
-                        <span class="required">*</span>
+                        <!--   <span class="required">*</span> -->
                     </label>
                     <div class="input-group">
             <span class="input-group-addon">
                 <i class="fas fa-pen"></i>
             </span>
-                        <input type="text" class="form-control" id="edad" required name="edad" value="" />
+                        <input type="text" class="form-control" id="edad"  name="edad" value="" />
                     </div>
                 </div>
 
@@ -220,9 +253,9 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label class="form-control-label" for="sexo"><spring:message code="sexo" />
-                        <span class="required">*</span>
+                        <!--   <span class="required">*</span> -->
                     </label>
-                    <select class="form-control focusNext" id="sexo" name="sexo" required="required">
+                    <select class="form-control focusNext" id="sexo" name="sexo" >
                         <option selected value=""><spring:message code="select" />...</option>
                         <c:forEach var="item" items="${catSexo}">
                             <option value="${item.catKey}">${item.spanish}</option>
@@ -238,13 +271,13 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label class="form-control-label" for="pa" class="form-control-label"><spring:message code="presion_arterial" />
-                        <span class="required">*</span>
+                        <!--   <span class="required">*</span> -->
                     </label>
                     <div class="input-group">
             <span class="input-group-addon">
                 <i class="fas fa-heart"></i>
             </span>
-                        <input type="text" class="form-control" required id="pa" name="pa"
+                        <input type="text" class="form-control"  id="pa" name="pa"
                                value=""/>
                     </div>
                 </div>
@@ -252,13 +285,13 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label class="form-control-label" for="fc"><spring:message code="frecuencia_cardiaca" />
-                        <span class="required">*</span>
+                        <!--   <span class="required">*</span> -->
                     </label>
                     <div class="input-group">
             <span class="input-group-addon">
                 <i class="fas fa-heartbeat"></i>
             </span>
-                        <input type="text" class="form-control" required id="fc" name="fc"
+                        <input type="text" class="form-control"  id="fc" name="fc"
                                value="" />
                     </div>
                 </div>
@@ -267,13 +300,13 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label class="form-control-label" for="temp"><spring:message code="temperatura" />
-                        <span class="required">*</span>
+                        <!--   <span class="required">*</span> -->
                     </label>
                     <div class="input-group">
             <span class="input-group-addon">
                 <i class="fas fa-thermometer-half"></i>
             </span>
-                        <input type="text" class="form-control" id="temp" required name="temp" value="" />
+                        <input type="text" class="form-control" id="temp"  name="temp" value="" />
                     </div>
                 </div>
 
@@ -281,7 +314,7 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="form-group">
                     <label class="form-control-label" for="so"><spring:message code="saturacion_oxigeno" />
-                        <span class="required">*</span>
+                        <!--   <span class="required">*</span> -->
                     </label>
                     <div class="input-group">
             <span class="input-group-addon">
@@ -295,6 +328,8 @@
         </div>
     </div>
 </div>
+<!-- Fin seccion de enfermeria -->
+
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <h4 class="text-capitalize"><spring:message code="datos_medico" /></h4>
@@ -2690,8 +2725,9 @@
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="form-group">
                         <label for="enfermeria" class="form-control-label"><spring:message code="enfermeria" /><span class="required">*</span></label>
-                        <select class="form-control focusNext" id="enfermeria" name="enfermeria" required="required" onchange="fech_Hora_medico();">
-                            <option selected value=""><spring:message code="select" />...</option>
+                        <!--     <select class="form-control focusNext" id="enfermeria" name="enfermeria" required="required" onchange="fech_Hora_medico();"> -->
+                        <select class="form-control focusNext" id="enfermeria" name="enfermeria">
+                        <option selected value=""><spring:message code="select" />...</option>
                             <c:forEach var="item" items="${enfermeria}">
                                 <option value="${item.codigo}">${item.idPersona} - ${item.nombre}</option>
                             </c:forEach>
@@ -2701,12 +2737,13 @@
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="form-group">
-                        <label for="fechaEnfermeria" class="form-control-label"><spring:message code="fecha" /><span class="required">*</span></label>
+                   <!--     <label for="fechaEnfermeria" class="form-control-label"> <span class="required">*</span></label> -->
+                        <label for="fechaEnfermeria" class="form-control-label"><spring:message code="fecha" /></label>
                         <div class="input-group">
             <span class="input-group-addon">
                 <i class="fas fa-calendar"></i>
             </span>
-                            <input type="text" class="form-control date-picker" required id="fechaEnfermeria" name="fechaEnfermeria"
+                            <input type="text" class="form-control date-picker"  id="fechaEnfermeria" name="fechaEnfermeria"
                                    value="" />
                         </div>
                     </div>
@@ -2714,12 +2751,13 @@
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="form-group">
-                        <label for="horaEnfermeria" class="form-control-label"><spring:message code="hora" /><span class="required">*</span></label>
+                        <!--     <label for="horaEnfermeria" class="form-control-label"> <span class="required">*</span></label> -->
+                        <label for="horaEnfermeria" class="form-control-label"><spring:message code="hora" /></label>
                         <div class="input-group">
             <span class="input-group-addon">
                 <i class="fas fa-clock"></i>
             </span>
-                            <input type="text" class="form-control time-picker" id="horaEnfermeria" required name="horaEnfermeria" value="" />
+                            <input type="text" class="form-control time-picker" id="horaEnfermeria"  name="horaEnfermeria" value="" />
                         </div>
                     </div>
 
@@ -2805,6 +2843,7 @@
 
 <spring:url value="/hojaclinica/searchParticipant" var="searchUrl"/>
 <spring:url value="/hojaclinica/save" var="saveUrl"/>
+<spring:url value="/hojaclinica/getcodSupervisor" var="getcodSupervisor"/>
 
 </body>
 <script>
@@ -2815,7 +2854,8 @@
             listaUrl: "${listaUrl}",
             successmessage: "${successMessage}",
             error: "${errorProcess}",
-            locale : "${lenguaje}"
+            locale : "${lenguaje}",
+            getcodSupervisor : "${getcodSupervisor}",
         };
 
         ClinicalSheet.init(parameters);
@@ -2846,9 +2886,62 @@
 
      //   $('#dx').attr("disabled", false);
         $('#dx').hide();
+        $('#activarEnfermeria').css("visibility","hidden");
+
     });
 
+    function buscar_codigosup() {
+        var parametro = {
+            getcodSupervisor : "${getcodSupervisor}",
+            saveCatalogCartaUrl: "${saveCatalogCartaUrl}",
+            delCatalogCartaUrl: "${delCatalogCartaUrl}"
+        };
 
+      /*  $.getJSON(parametro.getcodSupervisor, { codigo: $("#codigoSupervisor").val(), ajax: 'true'  }, function (data) {
+            if (data.result == null) {
+                console.log(data);
+                if (data != null ) {
+                    swal.fire({
+                        title: "A2CARES",
+                        text: data.nombrecompleto,
+                        type: "warning",
+                        cancelButtonText: 'Cancelar'
+
+                    });
+            } else {
+
+                    swal.fire({
+                        title: "A2CARES",
+                        text: "Código ingresado no pertence a un Médico Supervisor.",
+                        type: "warning",
+                        cancelButtonText: 'Cancelar'
+
+                    });
+            }
+        });*/
+    }
+      function desactivar_Enfermeria() {
+
+              $('#datos_enfermeria_div').css("visibility","hidden");
+          $('#activarEnfermeria').css("visibility","visible");
+          $('#desactivarEnfermeria').css("visibility","hidden");
+
+          $('#peso').val(0);
+          $('#talla').val(0);
+          $('#edad').val(0);
+          $('#sexo').val("Null");
+          $('#pa').val(0);
+          $('#fc').val(60);
+          $('#temp').val(34);
+          $('#so').val(0);
+
+
+       }
+    function activar_Enfermeria() {
+            $('#datos_enfermeria_div').css("visibility","visible");
+        $('#activarEnfermeria').css("visibility","hidden");
+        $('#desactivarEnfermeria').css("visibility","visible");
+    }
     function valida_diag() {
         if ($("#diagnostico1").val() !== "" && $("#diagnostico2").val() !== ""&& $("#diagnostico1").val() === $("#diagnostico2").val() ) {
             swal.fire({

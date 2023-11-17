@@ -363,7 +363,7 @@ public class MxEnfermosController {
             map.put("consulta",ultimregRec.get(0).getConsulta() );
             map.put("tipoMuestra",ultimregRec.get(0).getTipoMuestra());
 
-            if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3") && fechaI1.before(fechaF2) ) {
+            if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3")) {
                 evento = this.recepcionEnfermoService.ObtenerEvento1(codigo).toString();
                 evento = evento.substring(1, 2);
                 ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento1(codigo).toString();
@@ -374,7 +374,7 @@ public class MxEnfermosController {
                 ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
             }
             if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("1")) {
-                evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
+                evento = this.recepcionEnfermoService.ObtenerEvento1(codigo).toString();
                 evento = evento.substring(1, 2);
                 ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
             }

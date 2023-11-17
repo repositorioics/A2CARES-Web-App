@@ -46,6 +46,12 @@
                             <spring:message code="Impresion Stickers" /></a>
                     </li>
 
+                    <li class="nav-item filedata">
+                        <a class="nav-link" href="<spring:url value="/movil/getcontrolAsistencia" htmlEscape="true "/>">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                            <spring:message code="Control de Asistencia de Colaboradores" /></a>
+                    </li>
+
 	            </ul>
 	        </li>
             </sec:authorize>
@@ -56,9 +62,22 @@
                         <li class="nav-item users">
                             <a class="nav-link" href="<spring:url value="/hojaclinica/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="clinical_sheet" /></a>
                         </li>
+
                     </ul>
+                </li>
 
 
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI_DOBLE')">
+
+                <li class="nav-item nav-dropdown fingering">
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-book-open"></i><spring:message code="Digitación 2" /></a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item users">
+                            <a class="nav-link" href="<spring:url value="/hojaclinicaDD/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="Hoja Clínica Doble Digitación" /></a>
+                        </li>
+
+                    </ul>
                 </li>
 
             </sec:authorize>
@@ -215,6 +234,11 @@
                             <a class="nav-link" href="<spring:url value="/comparacion/muestras-ma" htmlEscape="true "/>">
                                 <i class="fas fa-vials" aria-hidden="true"></i>
                                 <spring:message code="lbl.samples" /></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<spring:url value="/hojaclinica/HCComparacion" htmlEscape="true "/>">
+                                <i class="fas fa-vials" aria-hidden="true"></i>
+                                <spring:message code="Hojas Clínicas Digitadas" /></a>
                         </li>
                     </ul>
                 </li>

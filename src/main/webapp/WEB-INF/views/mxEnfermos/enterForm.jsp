@@ -480,9 +480,9 @@
                 confirmButtonText: 'Aceptar'
             });
             $("#evento").val(String.fromCharCode(evento_ascii));
-            $('#evento').attr('readonly', false);
+          //  $('#evento').attr('readonly', false);
         } else {
-            $('#evento').attr('readonly', true);
+          //  $('#evento').attr('readonly', true);
         }
 
     };

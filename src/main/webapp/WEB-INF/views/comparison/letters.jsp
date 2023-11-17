@@ -159,6 +159,7 @@
     <spring:url value="/comparacion/getCartasPartes" var="sCartas2Url"/>
     <spring:url value="/comparacion/getCartasRelFam" var="sCartas3Url"/>
 
+
 <script>
     jQuery(document).ready(function() {
         $('#lista_cartas1').DataTable({

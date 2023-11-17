@@ -6,6 +6,7 @@ import ni.org.ics.webapp.domain.Serologia.Bhc_Detalles_Envio;
 import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
 import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
+import ni.org.ics.webapp.domain.core.ControlAsistencia;
 import ni.org.ics.webapp.domain.core.Estudio;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioHogar;
@@ -18,11 +19,10 @@ import ni.org.ics.webapp.domain.scancarta.DetalleParte;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteCarta;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteExtension;
 import ni.org.ics.webapp.dto.ConvalecientesEnfermoDto;
+import ni.org.ics.webapp.dto.ControlAsistenciaDto;
+import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
 import ni.org.ics.webapp.language.MessageResource;
-import ni.org.ics.webapp.service.EstudioService;
-import ni.org.ics.webapp.service.MessageResourceService;
-import ni.org.ics.webapp.service.ParticipanteProcesosService;
-import ni.org.ics.webapp.service.RecepcionEnfermoService;
+import ni.org.ics.webapp.service.*;
 import ni.org.ics.webapp.service.Retiro.RetiroService;
 import ni.org.ics.webapp.service.Serologia.SerologiaService;
 import ni.org.ics.webapp.service.entomologia.CuestionarioHogarService;
@@ -31,6 +31,7 @@ import ni.org.ics.webapp.service.reportes.ReportesPdfService;
 import ni.org.ics.webapp.service.scancarta.ScanCartaService;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import ni.org.ics.webapp.web.utils.Constants;
+import org.apache.commons.lang3.text.translate.UnicodeEscaper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -86,6 +87,9 @@ public class ReportesController {
 
     @Resource(name = "cuestionarioPuntoClaveService")
     private CuestionarioPuntoClaveService cuestionarioPuntoClaveService;
+
+    @Resource(name = "controlAsistenciaService")
+    private ControlAsistenciaService controlAsistenciaService;
 
     //region todo Genera el Reporte de ScanCarta /reportes/ReporteCarta
     @RequestMapping(value = "/ReporteCarta", method = RequestMethod.GET)
@@ -401,5 +405,33 @@ public class ReportesController {
         reporteDatosEntomologia.addObject("TipoReporte", Constants.TPR_ENTO);
 
         return reporteDatosEntomologia;
+    }
+
+    @RequestMapping(value = "downloadControlAsistenciaPdf", method = RequestMethod.GET)
+    public ModelAndView downloadControlAsistencia(@RequestParam(value="desde", required=false ) String desde,
+                                         @RequestParam(value="hasta", required=false ) String hasta)
+            throws Exception {
+        ModelAndView reporteControlAsistencia = new ModelAndView("pdfView");
+        Date dFechaInicio = null;
+        Date dFechaFin = null;
+        List<ControlAsistenciaDto> controlAsist = new ArrayList<ControlAsistenciaDto>();
+
+
+            dFechaInicio = DateUtil.StringToDate(desde, "dd/MM/yyyy");
+            dFechaFin = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+
+            filtro.setFechaInicio(DateUtil.StringToDate(desde + " 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            controlAsist = this.controlAsistenciaService.getControlAsistenciaPersonal(filtro);
+
+
+        reporteControlAsistencia.addObject("fechaInicio", desde);
+        reporteControlAsistencia.addObject("fechaFin", hasta);
+        reporteControlAsistencia.addObject("controlAsist", controlAsist);
+        reporteControlAsistencia.addObject("TipoReporte", Constants.TPR_CONTROL_ASISTENCIA);
+
+        return reporteControlAsistencia;
     }
 }

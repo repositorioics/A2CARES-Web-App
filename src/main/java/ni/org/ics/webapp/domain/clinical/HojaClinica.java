@@ -21,6 +21,7 @@ public class HojaClinica extends BaseMetaData {
      */
     private static final long serialVersionUID = 1L;
     private int secHojaConsulta;
+    private String codigo_supervisor;
     private Participante codigoParticipante;
     private int numHojaConsulta;
     private Date fechaConsulta;
@@ -207,6 +208,15 @@ public class HojaClinica extends BaseMetaData {
 
     public void setNumHojaConsulta(int numHojaConsulta) {
         this.numHojaConsulta = numHojaConsulta;
+    }
+
+    @Column(name = "codigo_supervisor",  nullable = false)
+    public String getCodigo_supervisor() {
+        return this.codigo_supervisor;
+    }
+
+    public void setCodigo_supervisor(String codigo_supervisor) {
+        this.codigo_supervisor = codigo_supervisor;
     }
 
     @Temporal(TemporalType.DATE)

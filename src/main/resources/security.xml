@@ -11,9 +11,9 @@
 		<intercept-url pattern="/logout" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/resources/.*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <intercept-url pattern="/reportes/.*" access="ROLE_ROOT,ROLE_SUPER,ROLE_ENTO"/>
-        <intercept-url pattern="/reportes/.*" access="ROLE_INFO"/>
         <intercept-url pattern="/movil/.*" access="ROLE_MOVIL"/>
         <intercept-url pattern="/hojaclinica/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_DIGI"/>
+        <intercept-url pattern="/hojaclinicaDD/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_DIGI_DOBLE"/>
         <intercept-url pattern="/comparacion/.*" access="ROLE_ROOT, ROLE_SUPER"/>
         <intercept-url pattern="/puntos/.*" access="ROLE_ADMIN, ROLE_ROOT, ROLE_SUPER"/>
         <intercept-url pattern="/Serologia/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_LABO"/>
@@ -23,7 +23,7 @@
         <intercept-url pattern="/ps/stickers/.*" access="ROLE_PRINT_STICKERS"/>
         <intercept-url pattern="/correcion/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_DIGI"/>
         <intercept-url pattern="/mx/.*" access="ROLE_ROOT, ROLE_SUPER, ROLE_LABO"/>
-        <intercept-url pattern="/" access="ROLE_ADMIN,ROLE_ROOT,ROLE_SUPER,ROLE_LABO,ROLE_DIGI,ROLE_ENTO"/>
+        <intercept-url pattern="/" access="ROLE_ADMIN,ROLE_ROOT,ROLE_SUPER,ROLE_LABO,ROLE_DIGI,ROLE_ENTO,ROLE_DIGI_DOBLE"/>
         <intercept-url pattern="/ento/.*" access="ROLE_ENTO"/>
         <intercept-url pattern="/entomologia/.*" access="ROLE_ENTO"/>
         <intercept-url pattern="/.*" access="ROLE_ADMIN,ROLE_ROOT"/>

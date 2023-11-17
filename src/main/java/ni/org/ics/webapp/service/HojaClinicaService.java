@@ -1,6 +1,8 @@
 package ni.org.ics.webapp.service;
 
 import ni.org.ics.webapp.domain.clinical.HojaClinica;
+import ni.org.ics.webapp.domain.clinical.HojaClinicaDobleDigitacion;
+import ni.org.ics.webapp.dto.DiferenciasHojasDigitadasDto;
 import ni.org.ics.webapp.dto.HojaClinicaDto;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -26,6 +28,27 @@ public class HojaClinicaService {
     public void saveOrUpdate(HojaClinica hojaClinica){
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(hojaClinica);
+    }
+    public void deleteHc(HojaClinica hojaClinica){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery("SET FOREIGN_KEY_CHECKS=0");
+        session.delete(hojaClinica);
+    }
+
+    public HojaClinica getHC1(Integer numero_hoja) {
+        // Retrieve session from Hibernate
+        try {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM HojaClinica where " +
+                "numHojaConsulta =:numero_hoja");
+        query.setParameter("numero_hoja",numero_hoja);
+
+        query.setResultTransformer(Transformers.aliasToBean(HojaClinica.class));
+        return (HojaClinica) query.uniqueResult();
+    }catch (Exception e){
+        System.err.println(e.toString());
+        throw e;
+    }
     }
 
     public List<HojaClinica> getAll(){
@@ -55,4 +78,78 @@ public class HojaClinicaService {
 
         return query.list();
     }
+
+
+    @SuppressWarnings("unchecked")
+    public List<String> getcodigoSupervisor(String codigo)throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call fn_extaer_codigo_medico_supervisor(:codigo)");
+            query.setParameter("codigo", codigo);
+           // query.setResultTransformer(Transformers.aliasToBean(String.class));
+            return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    @SuppressWarnings("unchecked")
+    public List<DiferenciasHojasDigitadasDto> getObtenerDiferenciasHC(Date fecha_digitacion1, Date fecha_digitacion2) throws Exception{
+        try{
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery("call extrae_hojas_doble_digitacion_pfecha(:fecha_digitacion1,:fecha_digitacion2)");
+        query.setParameter("fecha_digitacion1", fecha_digitacion1);
+        query.setParameter("fecha_digitacion2", fecha_digitacion2);
+        query.setResultTransformer(Transformers.aliasToBean(DiferenciasHojasDigitadasDto.class));
+        return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public DiferenciasHojasDigitadasDto getObtenerRegHojaClinica(String codigo_participante1, String numero_hoja) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call getObtenerRegHojaClinica(:codigo_participante1,:numero_hoja)");
+            query.setParameter("codigo_participante1", codigo_participante1);
+            query.setParameter("numero_hoja", numero_hoja);
+            query.setResultTransformer(Transformers.aliasToBean(DiferenciasHojasDigitadasDto.class));
+            return (DiferenciasHojasDigitadasDto) query.uniqueResult();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    @SuppressWarnings("unchecked")
+    public Integer getObtenerDatosHojaClinica(String codigo_participante1, Integer numero_hoja) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("select getFnObtenerDatosHojaClinica(:codigo_participante1,:numero_hoja)");
+            query.setParameter("codigo_participante1", codigo_participante1);
+            query.setParameter("numero_hoja", numero_hoja);
+            //   query.setResultTransformer(Transformers.aliasToBean(DiferenciasHojasDigitadasDto.class));
+            return Integer.parseInt(query.list().toString().substring(1,query.list().toString().length()-1));
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    @SuppressWarnings("unchecked")
+    public DiferenciasHojasDigitadasDto getObtenerRegHojaClinica2(String codigo_participante1, String numero_hoja) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call getObtenerRegHojaClinica2(:codigo_participante1,:numero_hoja)");
+            query.setParameter("codigo_participante1", codigo_participante1);
+            query.setParameter("numero_hoja", numero_hoja);
+            query.setResultTransformer(Transformers.aliasToBean(DiferenciasHojasDigitadasDto.class));
+            return (DiferenciasHojasDigitadasDto) query.uniqueResult();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+
 }

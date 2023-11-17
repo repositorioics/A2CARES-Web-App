@@ -110,6 +110,39 @@ var ClinicalSheet = function () {
                 },
                 submitHandler: function (form) {
                     search();
+
+                }
+            });
+            var formSearchCod = $('#search-cod-form');
+            formSearchCod.validate({
+                errorElement: 'span', //default input error message container
+                focusInvalid: false, // do not focus the last invalid input
+                rules: {
+                    codigoSupervisor : {
+                        required: true
+                    }
+                },
+                errorPlacement: function ( error, element ) {
+                    // Add the `help-block` class to the error element
+                    error.addClass( 'form-control-feedback' );
+                    if ( element.prop( 'type' ) === 'checkbox' ) {
+                        error.insertAfter( element.parent( 'label' ) );
+                    } else {
+                        //error.insertAfter( element ); //cuando no es input-group
+                        error.insertAfter(element.parent('.input-group'));
+                    }
+                },
+                highlight: function ( element, errorClass, validClass ) {
+                    $( element ).addClass( 'form-control-danger' ).removeClass( 'form-control-success' );
+                    $( element ).parents( '.form-group' ).addClass( 'has-danger' ).removeClass( 'has-success' );
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $( element ).addClass( 'form-control-success' ).removeClass( 'form-control-danger' );
+                    $( element ).parents( '.form-group' ).addClass( 'has-success' ).removeClass( 'has-danger' );
+                },
+                submitHandler: function (form) {
+
+                    buscarsup();
                 }
             });
 
@@ -118,28 +151,33 @@ var ClinicalSheet = function () {
                 errorElement: 'span', //default input error message container
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
-                    fc: {
-                        required: true,
-                        digits: true,
-                        range: [60, 200]
+                     fc: {
+
+                         required: true,
+                         digits: true,
+                         range: [0, 140]
+
                     },
                     temp: {
                         required: true,
-                        range: [34, 44]
+                        range: [0, 44]
+
                     },
                     so: {
-                        required: true,
+                    //    required: true,
                         digits: true,
-                        range: [0, 100]
+                    //    range: [0, 100]
                     },
                     fcMedico: {
                         required: true,
                         digits: true,
-                        range: [60, 140]
+                      //  range: [60, 140]
+                        range: [0, 140]
                     },
                     tempMedico: {
                         required: true,
-                        range: [34, 44]
+                       // range: [34, 44]
+                        range: [0, 44]
                     },
                     frMedico: {
                         required: true,
@@ -789,6 +827,37 @@ var ClinicalSheet = function () {
                             $("#fechanac").val(data.fechaNac);
                             $("#edadPart").val(data.edad);
                             $("#sexoPart").val(data.sexo);
+                        }
+                    }
+                ).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                        console.log("error");
+                        toastr.error( "error:" + errorThrown);
+                    });
+            }
+            function buscarsup()
+            {
+                $.getJSON( parametros.getcodSupervisor , formSearchCod.serialize() , function( data )   {
+
+                        if (data.mensaje != undefined) {
+                            toastr.success( "Código no Auotrizado:");
+                            swal.fire({
+                                title: "A2CARES",
+                                text: "Código No Autorizado, contacte con el Administrador",
+                                type: "warning",
+                                cancelButtonText: 'Cancelar'
+                            });
+                            $("#codigoSupervisor").val('');
+                        }
+                        else {
+                            $("#codigoSuper").val($("#codigoSupervisor").val());
+                            toastr.success( "Supervisor Auotrizado:" + data[0].toString() );
+                            swal.fire({
+                                title: "A2CARES",
+                                text: data[0].toString(),
+                                type: "Info",
+                                cancelButtonText: 'Cancelar'
+                            });
+
                         }
                     }
                 ).fail(function(XMLHttpRequest, textStatus, errorThrown) {
