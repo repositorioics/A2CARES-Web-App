@@ -4,7 +4,7 @@
 var EnviarBhcForm = function(){
     return {
         init: function(urls){
-            var table = $("#Lista_Muestra").DataTable({
+            var table = $("#Lista_Muestra1").DataTable({
                 "oLanguage": {
                     "sUrl": urls.dataTablesLang
                 },
@@ -19,10 +19,13 @@ var EnviarBhcForm = function(){
                     }
                 ]
             });
+
             CargarDatos();
             function CargarDatos(){
                 $.getJSON(urls.MxNoEnviadasUrl, function(data){
+
                     var len = data.length;
+
                     if(data==0){
                         swal({
                             title: "¡Serologia!",
@@ -31,8 +34,9 @@ var EnviarBhcForm = function(){
                             timer: 2000
                         });
                     }else{
+
                         for ( var i = 0; i < len; i++) {
-                            //var d = new Date(data[i].fecha);
+                            var d = new Date(data[i].fecha);
                             var partsUrl =  urls.editUrl+ '/'+data[i].idbhc;
 
 
@@ -47,10 +51,10 @@ var EnviarBhcForm = function(){
                                 data[i].idbhc,
                                 data[i].fecha,
                                 data[i].participante,
-                                data[i].volumen,
-                                (data[i].enviado=='0')?"<span class='badge badge-danger'> <i class='fas fa-times' aria-hidden='true'></i></span>":"<span class='badge badge-success'><i class='fas fa-check' aria-hidden='true'></i></span>",
-                                data[i].descripcion,
-                             //   data[i].codigoCasa,
+                               data[i].volumen,
+                               (data[i].enviado=='0')?"<span class='badge badge-danger'> <i class='fas fa-times' aria-hidden='true'></i></span>":"<span class='badge badge-success'><i class='fas fa-check' aria-hidden='true'></i></span>",
+                               data[i].descripcion,
+                              //  data[i].codigoCasa,
                                 data[i].observacion,
                                 botonUpdate, btnPasive
                             ]).draw(false);
@@ -221,13 +225,13 @@ var EnviarBhcForm = function(){
                             title: "¡INFORMACIÓN!",
                             text: errorThrown,
                             type: "error",
-                            timer: 2000
+                             timer: 2000
                         });
                     });
             }
             $("#Lista_Muestra tbody").on("click", ".btnPasive",function(){
                 var id = $(this).data('id');
-                $("#idAccion").val(id);
+                $("#").val(id);
                 $("#basic").modal('show');
             });
             /**************************/

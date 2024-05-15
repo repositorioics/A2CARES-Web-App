@@ -41,11 +41,11 @@ public class ControlAsistenciaController {
     private ControlAsistenciaService controlAsistenciaService;
 
 
-    @RequestMapping(value = "getcontrolAsistencia", method = RequestMethod.GET)
+   @RequestMapping(value = "getcontrolAsistencia", method = RequestMethod.GET)
     public String controlIngresosMx(Model model) throws ParseException {
         logger.debug("Mostrando lista de control de asistencia JSP");
 
-        return "admin/personal/controldeAsistencia";
+        return "admin/personal/controlAsistencia1";
     }
 
 
@@ -61,7 +61,9 @@ public class ControlAsistenciaController {
 
             logger.debug("buscar datos de control de asistencia de personal");
             FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
-
+            if (desde.equals("")){
+                desde = hasta;
+            }
             filtro.setFechaInicio(DateUtil.StringToDate(desde + " 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
             filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
             UnicodeEscaper escaper = UnicodeEscaper.above(127);
@@ -104,17 +106,30 @@ public class ControlAsistenciaController {
                     String fecasist = ("2023" +"-"+ controlAsistencia.getFechaasistencia().getMonth() +"-"+controlAsistencia.getFechaasistencia().getDay());
                     java.util.Date fechaConvertida = null;
                     java.util.Date fechaConvertidaact = null;
-                    fechaConvertida = (Date) dateFormat.parse(fecasist);
+             /*       fechaConvertida = (Date) dateFormat.parse(controlAsistencia.getFechaasistencia().toString());
                     fechaConvertidaact = (Date) dateFormat.parse(fechaactual.toString());
-                    System.out.println(fechaConvertida);
+                    System.out.println(fechaConvertida);*/
 
-                    if (verificaEntrada.equals("0") && controlAsistencia.getFechaasistencia().equals(fechaConvertidaact)) {
+                 //   if ( controlAsistencia.getFechaasistencia().equals(fechaConvertidaact)) {
+                    if ( verificaEntrada.equalsIgnoreCase("0")) {
+                        if (controlAsistencia.getHoraentrada() == null) {
+                            controlAsistencia.setHoraentrada(controlAsistencia.getHorasalida());
+                            controlAsistencia.setHorasalida("");
+                        }
 
                          controlAsistenciaService.saveOrUpdateControlAsistencia(controlAsistencia);
-                    }
-                    if (verificaSalida.equals("1") && controlAsistencia.getFechaasistencia().equals(fechaConvertidaact)) {
-                    // controlAsistencia.setId(Integer.parseInt(numIdAsist)+1);
-                    controlAsistenciaService.saveOrUpdateControlAsistencia(controlAsistencia);
+                    }else {
+                        if ( verificaSalida.equalsIgnoreCase("0") && controlAsistencia.getHorasalida() != null) {
+
+                            controlAsistenciaService.saveOrUpdateControlAsistencia(controlAsistencia);
+                        }else {
+                            if (!verificaEntrada.equalsIgnoreCase("0") && controlAsistencia.getHorasalida() == null) {
+                                return "Usuario: " + controlAsistencia.getRecordUser().toUpperCase() + ", tiene Hora de entrada hoy: " + fechaactual + "  Error al Guardar.";
+                            }
+                            if (!verificaSalida.equalsIgnoreCase("0")) {
+                                return "Usuario: " + controlAsistencia.getRecordUser().toUpperCase() + ", tiene Hora de Salida hoy: " + fechaactual + "   Error al Guardar.";
+                            }
+                        }
                     }
                 }catch(Exception ex) {
                     ex.printStackTrace();

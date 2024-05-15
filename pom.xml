@@ -318,9 +318,16 @@
             <artifactId>poi</artifactId>
             <version>3.15</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>2.2</version>
+        </dependency>
 
 
-	</dependencies>
+
+    </dependencies>
 	<repositories>
 		<!-- For testing against latest Spring snapshots -->
 		<repository>

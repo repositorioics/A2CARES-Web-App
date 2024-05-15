@@ -45,7 +45,7 @@ public class HojaClinicaDDService {
     public void saveOrUpdate2(HojaClinicaDobleDigitacion hojaClinica){
         try {
             Session session = sessionFactory.getCurrentSession();
-            session.delete(hojaClinica);
+           // session.delete(hojaClinica);
             session.saveOrUpdate(hojaClinica);
         }catch (Exception e){
             System.err.println(e.toString());
@@ -77,6 +77,7 @@ public class HojaClinicaDDService {
     public List<HojaClinicaDobleDDto> get(String codigoPart, Date fechaInicioCons, Date fechaFinCons){
         Session session = sessionFactory.getCurrentSession();
         String strQuery = "select h.codigoParticipante.codigo as codigo, concat(h.codigoParticipante.nombre1, ' ', h.codigoParticipante.nombre2, ' ', h.codigoParticipante.apellido1, ' ', h.codigoParticipante.apellido2) as nombreCompleto," +
+                "h.numHojaConsulta as numHojaConsulta, h.recordUser as usuarioRegistro, "+
                 " DATE_FORMAT(h.fechaConsulta, '%d/%m/%Y') as fechaConsulta, " +
                 "(select p.spanish from MessageResource p where p.catKey = h.lugarAtencion and p.catRoot = 'CAT_LUGAR_CONS_HC') as lugarAtencion, " +
                 "(select p.spanish from MessageResource p where p.catKey = h.consulta and p.catRoot = 'CAT_TIPO_CONSULTA') as tipoConsulta, " +
@@ -104,6 +105,34 @@ public class HojaClinicaDDService {
             Query query = session.createSQLQuery("call fn_extaer_codigo_medico_supervisor(:codigo)");
             query.setParameter("codigo", codigo);
            // query.setResultTransformer(Transformers.aliasToBean(String.class));
+            return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getNumHojaDigitadaH1(Integer codigo)throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call fn_extaer_si_existe_hoja_en_H1(:codigo)");
+            query.setParameter("codigo", codigo);
+            // query.setResultTransformer(Transformers.aliasToBean(String.class));
+            return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getNumHojaDigitadaH2(Integer codigo)throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call fn_extaer_si_existe_hoja_en_H2(:codigo)");
+            query.setParameter("codigo", codigo);
+            // query.setResultTransformer(Transformers.aliasToBean(String.class));
             return query.list();
         }catch (Exception e){
             System.err.println(e.toString());

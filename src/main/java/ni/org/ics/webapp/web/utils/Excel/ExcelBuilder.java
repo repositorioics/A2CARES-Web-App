@@ -79,7 +79,9 @@ public class ExcelBuilder extends AbstractExcelView {
                 "estudio",
                 "edadA",
                 "edadM",
-                "viaje"
+                "viaje",
+                "Procesada CSFV",
+                "Puesto"
         };
         CellStyle headerStyle = workbook.createCellStyle();
         font.setBold(true);
@@ -127,7 +129,7 @@ public class ExcelBuilder extends AbstractExcelView {
             int rowCount = 1;
             for (Bhc_Detalles_Envio registro : listaSerologia) {
                 HSSFRow dataRow = sheet.createRow(rowCount++);
-                dataRow.createCell(0).setCellValue(registro.getBhc().getParticipante().toString());
+                dataRow.createCell(0).setCellValue(registro.getBhc().getParticipante());
 
                 sheet.autoSizeColumn(0);
                 dataRow.createCell(1).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getBhc().getFecha(), "dd/MM/yyyy"));
@@ -150,6 +152,10 @@ public class ExcelBuilder extends AbstractExcelView {
                 sheet.autoSizeColumn(7);
                 dataRow.createCell(8).setCellValue(registro.getBhcEnvio().getIdenvio());
                 sheet.autoSizeColumn(8);
+                dataRow.createCell(9).setCellValue(registro.getBhc().getProcesadaCSFV());
+                sheet.autoSizeColumn(9);
+                dataRow.createCell(10).setCellValue(registro.getBhc().getPuesto());
+                sheet.autoSizeColumn(10);
             }
 
             File excelFile;

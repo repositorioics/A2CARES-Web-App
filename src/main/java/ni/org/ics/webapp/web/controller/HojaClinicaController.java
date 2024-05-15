@@ -6,10 +6,12 @@ import ni.org.ics.webapp.domain.clinical.HojaClinica;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.personal.Personal;
+import ni.org.ics.webapp.dto.BhcDto;
 import ni.org.ics.webapp.dto.DiferenciasHojasDigitadasDto;
 import ni.org.ics.webapp.dto.HojaClinicaDto;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.service.*;
+import ni.org.ics.webapp.web.utils.Constants;
 import ni.org.ics.webapp.web.utils.DateUtil;
 import ni.org.ics.webapp.web.utils.JsonUtil;
 import org.slf4j.Logger;
@@ -33,6 +35,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -90,6 +93,233 @@ public class HojaClinicaController {
         return "fingering/clinicalSheet";
     }
 
+    @RequestMapping(value = "getNumHojaDigitadaH1", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getNumHojaDigitadaH1(@RequestParam(value="numHoja", required=false ) Integer numHoja) throws ParseException {
+        try {
+            logger.debug("buscar numHoja");
+            logger.debug("numeroHoja" + numHoja);
+            if (numHoja != null) {
+                String numeroH;
+                numeroH = hojaClinicaService.getNumHojaDigitadaH1(numHoja);
+                logger.debug("regresoSP: " + numeroH.toString());
+                if (numeroH.equals("[1]")) {
+                    return JsonUtil.createJsonResponse("Número de Hoja ingresada existe en DIGITACION 1");
+                } else
+                    return JsonUtil.createJsonResponse("Número de Hoja ingresada NO existe en DIGITACION 1");
+            } else return JsonUtil.createJsonResponse(new ArrayList<HojaClinicaDto>());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        // return null;
+    }
+
+    @RequestMapping(value = "getNumHojaDigitadaH2", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getNumHojaDigitadaH2(@RequestParam(value="numHoja", required=false ) Integer numHoja) throws ParseException {
+        try {
+            logger.debug("buscar numHoja");
+            if (numHoja != null) {
+                String numeroH;
+                numeroH = hojaClinicaService.getNumHojaDigitadaH2(numHoja);
+                if (numeroH.equals("[1]")) {
+                    return JsonUtil.createJsonResponse("Número de Hoja ingresada existe en DIGITACION 2");
+                } else
+                    return JsonUtil.createJsonResponse("Número de Hoja ingresada NO existe en DIGITACION 2");
+            } else return JsonUtil.createJsonResponse(new ArrayList<HojaClinicaDto>());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        // return null;
+    }
+   // @RequestMapping(value = "/editarBHC/{codigo_participante}/{bhc_id}/", method = RequestMethod.GET)
+   //@RequestMapping(value = "/editarBHC/{participante}/{idbhc}/{fecha}/{numEnvio}/", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json")
+    @RequestMapping(value = "/editarBHC1/{participante}/{idbhc}/{fecha}/{numEnvio}/", method = RequestMethod.GET, produces = "application/json")
+    //public @ResponseBody
+ //   ResponseEntity<String> editarBHC1(Model model, @PathVariable("participante") String participante,
+    public String editarBHC1(Model model, @PathVariable("participante") String participante,
+                           @PathVariable("idbhc") int idbhc,@PathVariable("fecha") String fecha,
+                           @PathVariable("numEnvio") String numEnvio) throws ParseException
+    {
+        try{
+            logger.debug("Mostrando formulario registro hoja clinica en JSP");
+            List<MessageResource> catSiNo = this.messageResourceService.getCatalogo("CAT_SINO");
+            List<MessageResource> catSexo = this.messageResourceService.getCatalogo("CAT_SEXO");
+            List<MessageResource> catCategoria = this.messageResourceService.getCatalogo("CAT_CATEGORIA");
+            List<MessageResource> catTipoConsulta = this.messageResourceService.getCatalogo("CAT_TIPO_CONSULTA");
+            List<MessageResource> catLugarConsulta = this.messageResourceService.getCatalogo("CAT_LUGAR_CONS_HC");
+            List<MessageResource> CAT_DIAGNOSTICOS = this.messageResourceService.getCatalogo("CAT_DIAGNOSTICOS");
+            List<Personal> medicos = this.personalService.getByCargo("CAT_CARGO_1");
+            List<Personal> enfermeria = this.personalService.getByCargo("CAT_CARGO_2");
+
+            //List<UserSistema> usuarios = usuarioService.getUsers();
+            //model.addAttribute("usuarios", usuarios);
+            model.addAttribute("catSiNo", catSiNo);
+            model.addAttribute("catSexo", catSexo);
+            model.addAttribute("catCategoria", catCategoria);
+            model.addAttribute("catTipoConsulta", catTipoConsulta);
+            model.addAttribute("catLugarConsulta", catLugarConsulta);
+            model.addAttribute("medicos", medicos);
+            model.addAttribute("enfermeria", enfermeria);
+            model.addAttribute("CAT_DIAGNOSTICOS", CAT_DIAGNOSTICOS);
+            Map<String, String> map = new HashMap<String, String>();
+           // Participante participante = this.participanteService.getParticipanteByCodigo(participante);
+
+        //   String ResultModificarBhc = this.hojaClinicaService.getGuardarEdicionBHC(participante, idbhc);
+           // DiferenciasHojasDigitadasDto hojaClinicaList2 = this.hojaClinicaService.getObtenerRegHojaClinica2(codigo_participante1,numero_hoja);
+            List<BhcDto> Bhclist;
+         //   logger.debug("ResultModificarBhc " + ResultModificarBhc);
+                logger.debug("Buscar BHC Procesadas");
+
+                logger.debug("numEnvio" + numEnvio );
+            logger.debug("fechaInicioCons" + participante );
+            logger.debug("nEnvios: " + idbhc );
+
+            List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+            model.addAttribute("numero_envio", numero_envio);
+                if (fecha != null) {
+                    Bhclist = this.hojaClinicaService.getObtenerBHCEnviadas(DateUtil.StringToDate(fecha, Constants.STRING_FORMAT_DD_MM_YYYY), numEnvio,participante,idbhc);
+                    // logger.debug("getIdbhc: " + Bhclist.get().getParticipante() );
+                    // logger.debug("getParticipante: " + Bhclist.get().getParticipante() );
+                    //return JsonUtil.createJsonResponse(hojaClinicaList);
+                    for(BhcDto bhclst : Bhclist) {
+                        //bhclst.getIdbhc();
+
+                     //  return JsonUtil.createJsonResponse(Bhclist);
+
+                        model.addAttribute("fecha", (fecha.substring(8,2)+"/"+fecha.substring(5,2)+"/"+fecha.substring(1,4)));
+                        model.addAttribute("numEnvio", numEnvio);
+                        logger.debug("fecha" + fecha);
+
+                    }
+                } //else
+                 //   return JsonUtil.createJsonResponse("No se encontró Hoja Clínica según el código ingresado");
+         //   return "fingering/procesamientoBHCSocratesFlores";
+             //  return JsonUtil.createJsonResponse(new ArrayList<BhcDto>());
+
+               return "fingering/procesamientoBHCSocratesFlores1";
+             // return JsonUtil.createJsonResponse("BHC de participante " + participante + " Marcada con éxito el campo. Campo: PROCESADA_CSFV = S ");
+           // return JsonUtil.createJsonResponse(new ArrayList<BhcDto>());
+        }
+        catch (Exception e){
+            logger.error(e.getMessage());
+            return "fingering/procesamientoBHCSocratesFlores1";
+          //  return JsonUtil.createJsonResponse("Error procesando Edición de BHC. ");
+        }
+    }
+    @RequestMapping(value = "/editarBHC2/{participante}/{idbhc}/{fecha}/{numEnvio}/", method = RequestMethod.GET, produces = "application/json")
+    //public @ResponseBody
+    //   ResponseEntity<String> editarBHC1(Model model, @PathVariable("participante") String participante,
+    public String editarBHC2(Model model, @PathVariable("participante") String participante,
+                             @PathVariable("idbhc") int idbhc,@PathVariable("fecha") String fecha,
+                             @PathVariable("numEnvio") String numEnvio) throws ParseException
+    {
+        try{
+            logger.debug("Mostrando formulario registro hoja clinica en JSP");
+            List<MessageResource> catSiNo = this.messageResourceService.getCatalogo("CAT_SINO");
+            List<MessageResource> catSexo = this.messageResourceService.getCatalogo("CAT_SEXO");
+            List<MessageResource> catCategoria = this.messageResourceService.getCatalogo("CAT_CATEGORIA");
+            List<MessageResource> catTipoConsulta = this.messageResourceService.getCatalogo("CAT_TIPO_CONSULTA");
+            List<MessageResource> catLugarConsulta = this.messageResourceService.getCatalogo("CAT_LUGAR_CONS_HC");
+            List<MessageResource> CAT_DIAGNOSTICOS = this.messageResourceService.getCatalogo("CAT_DIAGNOSTICOS");
+            List<Personal> medicos = this.personalService.getByCargo("CAT_CARGO_1");
+            List<Personal> enfermeria = this.personalService.getByCargo("CAT_CARGO_2");
+
+            //List<UserSistema> usuarios = usuarioService.getUsers();
+            //model.addAttribute("usuarios", usuarios);
+            model.addAttribute("catSiNo", catSiNo);
+            model.addAttribute("catSexo", catSexo);
+            model.addAttribute("catCategoria", catCategoria);
+            model.addAttribute("catTipoConsulta", catTipoConsulta);
+            model.addAttribute("catLugarConsulta", catLugarConsulta);
+            model.addAttribute("medicos", medicos);
+            model.addAttribute("enfermeria", enfermeria);
+            model.addAttribute("CAT_DIAGNOSTICOS", CAT_DIAGNOSTICOS);
+            Map<String, String> map = new HashMap<String, String>();
+            // Participante participante = this.participanteService.getParticipanteByCodigo(participante);
+
+            //   String ResultModificarBhc = this.hojaClinicaService.getGuardarEdicionBHC(participante, idbhc);
+            // DiferenciasHojasDigitadasDto hojaClinicaList2 = this.hojaClinicaService.getObtenerRegHojaClinica2(codigo_participante1,numero_hoja);
+            List<BhcDto> Bhclist;
+            //   logger.debug("ResultModificarBhc " + ResultModificarBhc);
+            logger.debug("Buscar BHC Procesadas");
+
+            logger.debug("numEnvio" + numEnvio );
+            logger.debug("fechaInicioCons" + participante );
+            logger.debug("nEnvios: " + idbhc );
+
+            List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+            model.addAttribute("numero_envio", numero_envio);
+            if (fecha != null) {
+                Bhclist = this.hojaClinicaService.getObtenerBHCEnviadas2(DateUtil.StringToDate(fecha, Constants.STRING_FORMAT_DD_MM_YYYY), numEnvio,participante,idbhc);
+                // logger.debug("getIdbhc: " + Bhclist.get().getParticipante() );
+                // logger.debug("getParticipante: " + Bhclist.get().getParticipante() );
+                //return JsonUtil.createJsonResponse(hojaClinicaList);
+                for(BhcDto bhclst : Bhclist) {
+                    //bhclst.getIdbhc();
+
+                    //  return JsonUtil.createJsonResponse(Bhclist);
+
+                    model.addAttribute("fecha", (fecha.substring(8,2)+"/"+fecha.substring(5,2)+"/"+fecha.substring(1,4)));
+                    model.addAttribute("numEnvio", numEnvio);
+                    logger.debug("fecha" + fecha);
+
+                }
+            } //else
+            //   return JsonUtil.createJsonResponse("No se encontró Hoja Clínica según el código ingresado");
+            //   return "fingering/procesamientoBHCSocratesFlores";
+            //  return JsonUtil.createJsonResponse(new ArrayList<BhcDto>());
+
+            return "fingering/procesamientoBHCSocratesFlores1";
+            // return JsonUtil.createJsonResponse("BHC de participante " + participante + " Marcada con éxito el campo. Campo: PROCESADA_CSFV = S ");
+            // return JsonUtil.createJsonResponse(new ArrayList<BhcDto>());
+        }
+        catch (Exception e){
+            logger.error(e.getMessage());
+            return "fingering/procesamientoBHCSocratesFlores1";
+            //  return JsonUtil.createJsonResponse("Error procesando Edición de BHC. ");
+        }
+    }
+
+
+
+    @RequestMapping(value = "/editarBHC/{participante}/{idbhc}/{fecha}/{numEnvio}/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/json")
+    protected void editarBHC(HttpServletRequest request, HttpServletResponse response,@PathVariable("participante") String participante,
+                             @PathVariable("idbhc") int idbhc,@PathVariable("fecha") String fecha,
+                             @PathVariable("numEnvio") String numEnvio) throws ServletException, IOException {
+        logger.debug("Guardando BHC");
+        String resultado = "";
+        String error = "";
+        try {
+          //  HojaClinica hojaClinica = ParseJsonRequestToHojaClinica(request);
+         //   hojaClinica.setRecordDate(new Date());
+        //    hojaClinica.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
+            //para nuevos registros es necesario poner un valor por defecto en el numero de hoja, aunque se setee con el trigger tg_set_numero_hoja
+            //
+            // hojaClinica.setNumHojaConsulta(0);
+
+         //   hojaClinicaService.saveOrUpdate(hojaClinica);
+            resultado = "participante " + participante;
+        }catch (Exception ex) {
+            logger.error(ex.getMessage(),ex);
+            ex.printStackTrace();
+            error = "error al guardar hoja clinica";// messageResourceService.getMensaje("msg.receipt.error").getSpanish();
+            error=error+". \n "+ex.getMessage();
+        } finally {
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("mensaje",resultado);
+            map.put("error",error);
+            //JsonUtil.createJsonResponse(map);
+            String jsonResponse = new Gson().toJson(map);
+            response.getOutputStream().write(jsonResponse.getBytes());
+            response.getOutputStream().close();
+        }
+
+    }
+
+
 
 
     @RequestMapping(value = "/editarHC/{codigo_participante1}/{numero_hoja1}/", method = RequestMethod.GET)
@@ -138,10 +368,12 @@ public class HojaClinicaController {
                    }else{
                        model.addAttribute("codigo_supervisor1", hojaClinicaList.getCodigo_supervisor1());
                    }
-                   if (!hojaClinicaList.getFecha_consulta1().equalsIgnoreCase(hojaClinicaList2.getFecha_consulta1())) {
-                       model.addAttribute("fecha_consulta1", "/N");
-                   }else{
-                       model.addAttribute("fecha_consulta1", hojaClinicaList.getFecha_consulta1());
+                   if (hojaClinicaList.getFecha_consulta1() != null) {
+                       if (!hojaClinicaList.getFecha_consulta1().equalsIgnoreCase(hojaClinicaList2.getFecha_consulta1())) {
+                           model.addAttribute("fecha_consulta1", "/N");
+                       } else {
+                           model.addAttribute("fecha_consulta1", hojaClinicaList.getFecha_consulta1());
+                       }
                    }
                    if (!hojaClinicaList.getHora_consulta1().equalsIgnoreCase(hojaClinicaList2.getHora_consulta1())) {
                        model.addAttribute("hora_consulta1", "/N");
@@ -223,30 +455,38 @@ public class HojaClinicaController {
                    }else{
                        model.addAttribute("saturaciono2_medico1", hojaClinicaList.getSaturaciono2_medico1());
                    }
-                   if (!hojaClinicaList.getFif1().equalsIgnoreCase(hojaClinicaList2.getFif1())) {
-                       model.addAttribute("fis1", "/N");
-                   }else{
-                       model.addAttribute("fis1", hojaClinicaList.getFif1());
+                   if (hojaClinicaList.getFis1() != null) {
+                       if (!hojaClinicaList.getFis1().equalsIgnoreCase(hojaClinicaList2.getFis1())) {
+                           model.addAttribute("fis1", "/N");
+                       } else {
+                           model.addAttribute("fis1", hojaClinicaList.getFis1());
+                       }
                    }
-                   if (!hojaClinicaList.getFif1().equalsIgnoreCase(hojaClinicaList2.getFif1())) {
-                       model.addAttribute("fif1", "/N");
-                   }else{
-                       model.addAttribute("fif1", hojaClinicaList.getFif1());
+                   if (hojaClinicaList.getFif1() != null) {
+                       if (!hojaClinicaList.getFif1().equalsIgnoreCase(hojaClinicaList2.getFif1())) {
+                           model.addAttribute("fif1", "/N");
+                       } else {
+                           model.addAttribute("fif1", hojaClinicaList.getFif1());
+                       }
                    }
-                   if (!hojaClinicaList.getHora_ult_dia_fiebre1().equalsIgnoreCase(hojaClinicaList2.getHora_ult_dia_fiebre1())) {
-                       model.addAttribute("ult_dia_fiebre1", "/N");
-                   }else{
-                       model.addAttribute("ult_dia_fiebre1", hojaClinicaList.getHora_ult_dia_fiebre1());
+                   if (hojaClinicaList.getHora_ult_dia_fiebre1() != null) {
+                       if (!hojaClinicaList.getHora_ult_dia_fiebre1().equalsIgnoreCase(hojaClinicaList2.getHora_ult_dia_fiebre1())) {
+                           model.addAttribute("ult_dia_fiebre1", "/N");
+                       } else {
+                           model.addAttribute("ult_dia_fiebre1", hojaClinicaList.getHora_ult_dia_fiebre1());
+                       }
                    }
                    if (!hojaClinicaList.getHora_ult_dia_fiebre1().equalsIgnoreCase(hojaClinicaList2.getHora_ult_dia_fiebre1())) {
                        model.addAttribute("hora_ult_dia_fiebre1", "/N");
                    }else{
                        model.addAttribute("hora_ult_dia_fiebre1", hojaClinicaList.getHora_ult_dia_fiebre1());
                    }
-                   if (!hojaClinicaList.getUlt_dosis_antipiretico1().equalsIgnoreCase(hojaClinicaList2.getUlt_dosis_antipiretico1())) {
-                       model.addAttribute("ult_dosis_antipiretico1", "/N");
-                   }else{
-                       model.addAttribute("ult_dosis_antipiretico1", hojaClinicaList.getUlt_dosis_antipiretico1());
+                   if (hojaClinicaList.getUlt_dosis_antipiretico1() != null) {
+                       if (!hojaClinicaList.getUlt_dosis_antipiretico1().equalsIgnoreCase(hojaClinicaList2.getUlt_dosis_antipiretico1())) {
+                           model.addAttribute("ult_dosis_antipiretico1", "/N");
+                       } else {
+                           model.addAttribute("ult_dosis_antipiretico1", hojaClinicaList.getUlt_dosis_antipiretico1());
+                       }
                    }
                    if (!hojaClinicaList.getHora_ult_dosis_antipiretico1().equalsIgnoreCase(hojaClinicaList2.getHora_ult_dosis_antipiretico1())) {
                        model.addAttribute("hora_ult_dosis_antipiretico1", "/N");
@@ -763,45 +1003,58 @@ public class HojaClinicaController {
                    }else{
                        model.addAttribute("telefonoEmergencia1", hojaClinicaList.getTelefonoEmergencia1());
                    }
-                   if (!hojaClinicaList.getProximaCita1().equalsIgnoreCase(hojaClinicaList2.getProximaCita1())) {
-                       model.addAttribute("proximaCita1", "/N");
-                   }else{
-                       model.addAttribute("proximaCita1", hojaClinicaList.getProximaCita1());
+                   if (hojaClinicaList.getProximaCita1() != null) {
+                       if (!hojaClinicaList.getProximaCita1().equalsIgnoreCase(hojaClinicaList2.getProximaCita1())) {
+                           model.addAttribute("proximaCita1", "/N");
+                       } else {
+                           model.addAttribute("proximaCita1", hojaClinicaList.getProximaCita1());
+                       }
                    }
-                   if (!hojaClinicaList.getProximaCita1().equalsIgnoreCase(hojaClinicaList2.getProximaCita1())) {
-                       model.addAttribute("proximaCita1", "/N");
-                   }else{
-                       model.addAttribute("proximaCita1", hojaClinicaList.getProximaCita1());
+                   if (hojaClinicaList.getProximaCita1() != null) {
+                       if (!hojaClinicaList.getProximaCita1().equalsIgnoreCase(hojaClinicaList2.getProximaCita1())) {
+                           model.addAttribute("proximaCita1", "/N");
+                       } else {
+                           model.addAttribute("proximaCita1", hojaClinicaList.getProximaCita1());
+                       }
                    }
                    if (!hojaClinicaList.getMedico1().equalsIgnoreCase(hojaClinicaList2.getMedico1())) {
                        model.addAttribute("medico1", "/N");
                    }else{
                        model.addAttribute("medico1", hojaClinicaList.getMedico1());
                    }
-                   if (!hojaClinicaList.getFechaMedico1().equalsIgnoreCase(hojaClinicaList2.getFechaMedico1())) {
-                       model.addAttribute("fechaMedico1", "/N");
-                   }else{
-                       model.addAttribute("fechaMedico1", hojaClinicaList.getFechaMedico1());
+                   if (hojaClinicaList.getFechaMedico1() != null) {
+                       if (!hojaClinicaList.getFechaMedico1().equalsIgnoreCase(hojaClinicaList2.getFechaMedico1())) {
+                           model.addAttribute("fechaMedico1", "/N");
+                       } else {
+                           model.addAttribute("fechaMedico1", hojaClinicaList.getFechaMedico1());
+                       }
                    }
-                   if (!hojaClinicaList.getHoraMedico1().equalsIgnoreCase(hojaClinicaList2.getHoraMedico1())) {
-                       model.addAttribute("horaMedico1", "/N");
-                   }else{
-                       model.addAttribute("horaMedico1", hojaClinicaList.getHoraMedico1());
+                   if(hojaClinicaList.getHoraMedico1() != null ) {
+                       if (!hojaClinicaList.getHoraMedico1().equalsIgnoreCase(hojaClinicaList2.getHoraMedico1())) {
+                           model.addAttribute("horaMedico1", "/N");
+                       } else {
+                           model.addAttribute("horaMedico1", hojaClinicaList.getHoraMedico1());
+                       }
                    }
+
                    if (!hojaClinicaList.getEnfermeria1().equalsIgnoreCase(hojaClinicaList2.getEnfermeria1())) {
                        model.addAttribute("enfermeria1", "/N");
                    }else{
                        model.addAttribute("enfermeria1", hojaClinicaList.getEnfermeria1());
                    }
-                   if (!hojaClinicaList.getFechaEnfermeria1().equalsIgnoreCase(hojaClinicaList2.getFechaEnfermeria1())) {
-                       model.addAttribute("fechaEnfermeria1", "/N");
-                   }else{
-                       model.addAttribute("fechaEnfermeria1", hojaClinicaList.getFechaEnfermeria1());
+                   if (hojaClinicaList.getFechaEnfermeria1() != null) {
+                       if (!hojaClinicaList.getFechaEnfermeria1().equalsIgnoreCase(hojaClinicaList2.getFechaEnfermeria1())) {
+                           model.addAttribute("fechaEnfermeria1", "/N");
+                       } else {
+                           model.addAttribute("fechaEnfermeria1", hojaClinicaList.getFechaEnfermeria1());
+                       }
                    }
-                   if (!hojaClinicaList.getHoraEnfermeria1().equalsIgnoreCase(hojaClinicaList2.getHoraEnfermeria1())) {
-                       model.addAttribute("horaEnfermeria1", "/N");
-                   }else{
-                       model.addAttribute("horaEnfermeria1", hojaClinicaList.getHoraEnfermeria1());
+                   if(hojaClinicaList.getHoraEnfermeria1() != null ) {
+                       if (!hojaClinicaList.getHoraEnfermeria1().equalsIgnoreCase(hojaClinicaList2.getHoraEnfermeria1())) {
+                           model.addAttribute("horaEnfermeria1", "/N");
+                       } else {
+                           model.addAttribute("horaEnfermeria1", hojaClinicaList.getHoraEnfermeria1());
+                       }
                    }
 
 
@@ -829,8 +1082,15 @@ public class HojaClinicaController {
         Participante participante = this.participanteService.getParticipanteByCodigo(codigo);
         if (participante!=null) {
             ParticipanteProcesos procesos = this.participanteProcesosService.getParticipante(codigo);
-            if (procesos != null && procesos.getRetirado().equals(1))
-                return JsonUtil.createJsonResponse("Participante retirado");
+            if (procesos != null && procesos.getRetirado().equals(1)) {
+               //  return JsonUtil.createJsonResponse("Participante retirado, confirmar que desea realizar digitación");
+                map.put("codigo", participante.getCodigo());
+                map.put("nombre", participante.getNombreCompleto());
+                map.put("fechaNac", DateUtil.DateToString(participante.getFechaNac(), "dd/MM/yyyy"));
+                map.put("edad", participante.getEdad());
+                map.put("sexo", participante.getSexo());
+                map.put("retirado", "1");
+            }
             else {
                 map.put("codigo", participante.getCodigo());
                 map.put("nombre", participante.getNombreCompleto());
@@ -882,6 +1142,52 @@ public class HojaClinicaController {
 
         return "fingering/comparacionHojasClinicas";
     }
+    @RequestMapping(value = "ProcesarBHC", method = RequestMethod.GET)
+    public String letters1(Model model) throws ParseException {
+        logger.debug("Mostrando BHC enviadas en JSP");
+        List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+        model.addAttribute("numero_envio", numero_envio);
+        return "fingering/procesamientoBHCSocratesFlores";
+    }
+
+    @RequestMapping(value = "getBHCEnviadas", method = RequestMethod.GET, produces = "application/json")
+   // @RequestMapping(value = "/getBHCEnviadas1/{participante}/{idbhc}/{fecha}/{numEnvio}/", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getBHCEnviadas(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="nEnvios", required=false ) String nEnvios,
+            @RequestParam(value="participante", required=false ) String participante,
+            @RequestParam(value="bhcId", required=false ) int bhcId) throws ParseException {
+        List<BhcDto> Bhclist;
+        try {
+            logger.debug("buscar BHC enviadas");
+            logger.debug("fechaInicioCons: " + fechaInicioCons );
+            logger.debug("nEnvios: " + nEnvios );
+            LocalDate localDate = LocalDate.now();
+
+             if (fechaInicioCons != null) {
+                Bhclist = this.hojaClinicaService.getObtenerBHCEnviadas( DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY), nEnvios,participante,bhcId);
+                // logger.debug("getIdbhc: " + Bhclist.get().getParticipante() );
+                // logger.debug("getParticipante: " + Bhclist.get().getParticipante() );
+                 //return JsonUtil.createJsonResponse(hojaClinicaList);
+
+                 for(BhcDto bhclst : Bhclist) {
+                     //bhclst.getIdbhc();
+                     return JsonUtil.createJsonResponse(Bhclist);
+                 }
+                 } else
+                 return JsonUtil.createJsonResponse("No se encontró Hoja Clínica según el código ingresado");
+
+            return JsonUtil.createJsonResponse(new ArrayList<BhcDto>());
+              //  return JsonUtil.createJsonResponse(new ArrayList<Bhclist>());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+
     @RequestMapping(value = "getHCDigitadas", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     ResponseEntity<String> getHCDigitadas(
@@ -905,9 +1211,11 @@ public class HojaClinicaController {
                             diferencia.setCodigo_supervisor1("<span class='badge badge-danger'>"+diferencia.getCodigo_supervisor1()+"</span>");
                             diferencia.setCodigo_supervisor2("<span class='badge badge-danger'>"+diferencia.getCodigo_supervisor2()+"</span>");
                         }
-                        if (!diferencia.getFecha_consulta1().equalsIgnoreCase(diferencia.getFecha_consulta2())) {
-                            diferencia.setFecha_consulta1("<span class='badge badge-danger'>"+diferencia.getFecha_consulta1()+"</span>");
-                            diferencia.setFecha_consulta2("<span class='badge badge-danger'>"+diferencia.getFecha_consulta2()+"</span>");
+                        if(diferencia.getFecha_consulta1() != null ) {
+                            if (!diferencia.getFecha_consulta1().equalsIgnoreCase(diferencia.getFecha_consulta2())) {
+                                diferencia.setFecha_consulta1("<span class='badge badge-danger'>" + diferencia.getFecha_consulta1() + "</span>");
+                                diferencia.setFecha_consulta2("<span class='badge badge-danger'>" + diferencia.getFecha_consulta2() + "</span>");
+                            }
                         }
                         if (!diferencia.getHora_consulta1().equalsIgnoreCase(diferencia.getHora_consulta2())) {
                             diferencia.setHora_consulta1("<span class='badge badge-danger'>"+diferencia.getHora_consulta1()+"</span>");
@@ -969,13 +1277,17 @@ public class HojaClinicaController {
                             diferencia.setSaturaciono2_medico1("<span class='badge badge-danger'>"+diferencia.getSaturaciono2_medico1()+"</span>");
                             diferencia.setSaturaciono2_medico2("<span class='badge badge-danger'>"+diferencia.getSaturaciono2_medico2()+"</span>");
                         }
-                        if (!diferencia.getFis1().equalsIgnoreCase(diferencia.getFis2())) {
-                            diferencia.setFis1("<span class='badge badge-danger'>"+diferencia.getFis1()+"</span>");
-                            diferencia.setFis2("<span class='badge badge-danger'>"+diferencia.getFis2()+"</span>");
+                        if(diferencia.getFis1() != null ) {
+                            if (!diferencia.getFis1().equalsIgnoreCase(diferencia.getFis2())) {
+                                diferencia.setFis1("<span class='badge badge-danger'>" + diferencia.getFis1() + "</span>");
+                                diferencia.setFis2("<span class='badge badge-danger'>" + diferencia.getFis2() + "</span>");
+                            }
                         }
-                        if (!diferencia.getFif1().equalsIgnoreCase(diferencia.getFif2())) {
-                            diferencia.setFif1("<span class='badge badge-danger'>"+diferencia.getFif1()+"</span>");
-                            diferencia.setFif2("<span class='badge badge-danger'>"+diferencia.getFif2()+"</span>");
+                        if(diferencia.getFif1() != null ) {
+                            if (!diferencia.getFif1().equalsIgnoreCase(diferencia.getFif2())) {
+                                diferencia.setFif1("<span class='badge badge-danger'>" + diferencia.getFif1() + "</span>");
+                                diferencia.setFif2("<span class='badge badge-danger'>" + diferencia.getFif2() + "</span>");
+                            }
                         }
                         if (!diferencia.getUlt_dia_fiebre1().equalsIgnoreCase(diferencia.getUlt_dia_fiebre2())) {
                             diferencia.setUlt_dia_fiebre1("<span class='badge badge-danger'>"+diferencia.getUlt_dia_fiebre1()+"</span>");
@@ -1365,6 +1677,10 @@ public class HojaClinicaController {
                             diferencia.setSueroOral1("<span class='badge badge-danger'>"+diferencia.getSueroOral1()+"</span>");
                             diferencia.setSueroOral2("<span class='badge badge-danger'>"+diferencia.getSueroOral2()+"</span>");
                         }
+                        if (!diferencia.getLiquidosiv1 ().equalsIgnoreCase(diferencia.getLiquidosiv2())) {
+                            diferencia.setLiquidosiv1("<span class='badge badge-danger'>"+diferencia.getLiquidosiv1()+"</span>");
+                            diferencia.setLiquidosiv2("<span class='badge badge-danger'>"+diferencia.getLiquidosiv2()+"</span>");
+                        }
                         if (!diferencia.getOtroTratamiento1 ().equalsIgnoreCase(diferencia.getOtroTratamiento2())) {
                             diferencia.setOtroTratamiento1("<span class='badge badge-danger'>"+diferencia.getOtroTratamiento1()+"</span>");
                             diferencia.setOtroTratamiento2("<span class='badge badge-danger'>"+diferencia.getOtroTratamiento2()+"</span>");
@@ -1425,30 +1741,34 @@ public class HojaClinicaController {
                             diferencia.setMedico1 ("<span class='badge badge-danger'>"+diferencia.getMedico1 ()+"</span>");
                             diferencia.setMedico2("<span class='badge badge-danger'>"+diferencia.getMedico2()+"</span>");
                         }
-
-                        if (!diferencia.getFechaMedico1 ().equalsIgnoreCase(diferencia.getFechaMedico2())) {
-                            diferencia.setFechaMedico1("<span class='badge badge-danger'>"+diferencia.getFechaMedico1 ()+"</span>");
-                            diferencia.setFechaMedico2("<span class='badge badge-danger'>"+diferencia.getFechaMedico2()+"</span>");
+                        if(diferencia.getFechaMedico1() != null ) {
+                            if (!diferencia.getFechaMedico1().equalsIgnoreCase(diferencia.getFechaMedico2())) {
+                                diferencia.setFechaMedico1("<span class='badge badge-danger'>" + diferencia.getFechaMedico1() + "</span>");
+                                diferencia.setFechaMedico2("<span class='badge badge-danger'>" + diferencia.getFechaMedico2() + "</span>");
+                            }
                         }
-
-                        if (!diferencia.getHoraMedico1 ().equalsIgnoreCase(diferencia.getHoraMedico2())) {
-                            diferencia.setHoraMedico1 ("<span class='badge badge-danger'>"+diferencia.getHoraMedico1 ()+"</span>");
-                            diferencia.setHoraMedico2("<span class='badge badge-danger'>"+diferencia.getHoraMedico2()+"</span>");
+                        if(diferencia.getHoraMedico1() != null ) {
+                            if (!diferencia.getHoraMedico1().equalsIgnoreCase(diferencia.getHoraMedico2())) {
+                                diferencia.setHoraMedico1("<span class='badge badge-danger'>" + diferencia.getHoraMedico1() + "</span>");
+                                diferencia.setHoraMedico2("<span class='badge badge-danger'>" + diferencia.getHoraMedico2() + "</span>");
+                            }
                         }
 
                         if (!diferencia.getEnfermeria1 ().equalsIgnoreCase(diferencia.getEnfermeria2())) {
                             diferencia.setEnfermeria1 ("<span class='badge badge-danger'>"+diferencia.getEnfermeria1 ()+"</span>");
                             diferencia.setEnfermeria2("<span class='badge badge-danger'>"+diferencia.getEnfermeria2()+"</span>");
                         }
-
-                        if (!diferencia.getFechaEnfermeria1 ().equalsIgnoreCase(diferencia.getFechaEnfermeria2())) {
-                            diferencia.setFechaEnfermeria1 ("<span class='badge badge-danger'>"+diferencia.getFechaEnfermeria1 ()+"</span>");
-                            diferencia.setFechaEnfermeria2("<span class='badge badge-danger'>"+diferencia.getFechaEnfermeria2()+"</span>");
+                        if(diferencia.getFechaEnfermeria1() != null ) {
+                            if (!diferencia.getFechaEnfermeria1().equalsIgnoreCase(diferencia.getFechaEnfermeria2())) {
+                                diferencia.setFechaEnfermeria1("<span class='badge badge-danger'>" + diferencia.getFechaEnfermeria1() + "</span>");
+                                diferencia.setFechaEnfermeria2("<span class='badge badge-danger'>" + diferencia.getFechaEnfermeria2() + "</span>");
+                            }
                         }
-
-                        if (!diferencia.getHoraEnfermeria1 ().equalsIgnoreCase(diferencia.getHoraEnfermeria2())) {
-                            diferencia.setHoraEnfermeria1 ("<span class='badge badge-danger'>"+diferencia.getHoraEnfermeria1 ()+"</span>");
-                            diferencia.setHoraEnfermeria2("<span class='badge badge-danger'>"+diferencia.getHoraEnfermeria2()+"</span>");
+                        if(diferencia.getHoraEnfermeria1() != null ) {
+                            if (!diferencia.getHoraEnfermeria1().equalsIgnoreCase(diferencia.getHoraEnfermeria2())) {
+                                diferencia.setHoraEnfermeria1("<span class='badge badge-danger'>" + diferencia.getHoraEnfermeria1() + "</span>");
+                                diferencia.setHoraEnfermeria2("<span class='badge badge-danger'>" + diferencia.getHoraEnfermeria2() + "</span>");
+                            }
                         }
 
 
@@ -1461,7 +1781,9 @@ public class HojaClinicaController {
                  //   return JsonUtil.createJsonResponse(hojaClinicaList);
                 } else
                     return JsonUtil.createJsonResponse("No se encontró Hoja Clínica según el código ingresado");
-            } else return JsonUtil.createJsonResponse(new ArrayList<HojaClinicaDto>());
+            } else
+
+                return JsonUtil.createJsonResponse(new ArrayList<HojaClinicaDto>());
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
@@ -1644,6 +1966,8 @@ public class HojaClinicaController {
         String metronidazolTinidazol = null;
         String albendazolMebendazol = null;
         String sueroOral = null;
+        String liquidos4 = null;
+        String referenciaPordengue = null;
         String otroTratamiento = null;
         String otroTratamientoEspecificar = null;
         //planes, historia y diagnostico
@@ -1679,12 +2003,12 @@ public class HojaClinicaController {
 
         JsonObject jsonpObject = new Gson().fromJson(hojaStr, JsonObject.class);
 
-        if (jsonpObject.get("codigoSuper")!=null && !jsonpObject.get("codigoSuper").getAsString().isEmpty()) codigosupe = jsonpObject.get("codigoSuper").getAsString();
+        if (jsonpObject.get("codSup1")!=null && !jsonpObject.get("codSup1").getAsString().isEmpty()) codigosupe = jsonpObject.get("codSup1").getAsString();
 
         if (jsonpObject.get("fechaCons")!=null && !jsonpObject.get("fechaCons").getAsString().isEmpty()) fechaConsulta = DateUtil.StringToDate(jsonpObject.get("fechaCons").getAsString(), "dd/MM/yyyy");
         if (jsonpObject.get("horaCons")!=null && !jsonpObject.get("horaCons").getAsString().isEmpty()) horaConsulta = Time.valueOf(DateUtil.onTimeSet(jsonpObject.get("horaCons").getAsString()));
 
-        if (jsonpObject.get("numHoja")!=null && !jsonpObject.get("numHoja").getAsString().isEmpty()) numeroHoja = Integer.valueOf((jsonpObject.get("numHoja").getAsString()));
+        if (jsonpObject.get("numHoja1")!=null && !jsonpObject.get("numHoja1").getAsString().isEmpty()) numeroHoja = Integer.valueOf((jsonpObject.get("numHoja1").getAsString()));
 
         if (jsonpObject.get("peso")!=null && !jsonpObject.get("peso").getAsString().isEmpty()) pesoKg = jsonpObject.get("peso").getAsBigDecimal();
         if (jsonpObject.get("talla")!=null && !jsonpObject.get("talla").getAsString().isEmpty()) tallaCm = jsonpObject.get("talla").getAsBigDecimal();
@@ -1811,6 +2135,8 @@ public class HojaClinicaController {
         if (jsonpObject.get("rbtratamiento_7")!=null && !jsonpObject.get("rbtratamiento_7").getAsString().isEmpty()) albendazolMebendazol = jsonpObject.get("rbtratamiento_7").getAsString();
         if (jsonpObject.get("rbtratamiento_8")!=null && !jsonpObject.get("rbtratamiento_8").getAsString().isEmpty()) sueroOral = jsonpObject.get("rbtratamiento_8").getAsString();
         if (jsonpObject.get("rbtratamiento_9")!=null && !jsonpObject.get("rbtratamiento_9").getAsString().isEmpty()) otroTratamiento = jsonpObject.get("rbtratamiento_9").getAsString();
+        if (jsonpObject.get("rbtratamiento_10")!=null && !jsonpObject.get("rbtratamiento_10").getAsString().isEmpty()) liquidos4 = jsonpObject.get("rbtratamiento_10").getAsString();
+        if (jsonpObject.get("rbtratamiento_11")!=null && !jsonpObject.get("rbtratamiento_11").getAsString().isEmpty()) referenciaPordengue = jsonpObject.get("rbtratamiento_11").getAsString();
         if (jsonpObject.get("descOtroTratamiento")!=null && !jsonpObject.get("descOtroTratamiento").getAsString().isEmpty()) otroTratamientoEspecificar = jsonpObject.get("descOtroTratamiento").getAsString();
         if (jsonpObject.get("planes")!=null && !jsonpObject.get("planes").getAsString().isEmpty()) planes = jsonpObject.get("planes").getAsString();
         if (jsonpObject.get("historia")!=null && !jsonpObject.get("historia").getAsString().isEmpty()) historiaClinica = jsonpObject.get("historia").getAsString();
@@ -1830,6 +2156,7 @@ public class HojaClinicaController {
         if (jsonpObject.get("fechaEnfermeria")!=null && !jsonpObject.get("fechaEnfermeria").getAsString().isEmpty()) fechaEnfermeria = DateUtil.StringToDate(jsonpObject.get("fechaEnfermeria").getAsString(), "dd/MM/yyyy");
         if (jsonpObject.get("horaEnfermeria")!=null && !jsonpObject.get("horaEnfermeria").getAsString().isEmpty()) horaEnfermeria = Time.valueOf(DateUtil.onTimeSet(jsonpObject.get("horaEnfermeria").getAsString()));
 
+      //  hojaClinica.setCodigoParticipante(codigoParticipante);
         hojaClinica.setFechaConsulta(fechaConsulta);
         hojaClinica.setHoraConsulta(horaConsulta);
         hojaClinica.setCodigo_supervisor(codigosupe); ;
@@ -1947,6 +2274,8 @@ public class HojaClinicaController {
         hojaClinica.setMetronidazolTinidazol(metronidazolTinidazol);
         hojaClinica.setAlbendazolMebendazol(albendazolMebendazol);
         hojaClinica.setSueroOral(sueroOral);
+        hojaClinica.setLiquidos4(liquidos4);
+        hojaClinica.setReferencia_por_dengue(referenciaPordengue);
         hojaClinica.setOtroTratamiento(otroTratamiento);
         hojaClinica.setOtroTratamientoEspecificar(otroTratamientoEspecificar);
         hojaClinica.setPlanes(planes);

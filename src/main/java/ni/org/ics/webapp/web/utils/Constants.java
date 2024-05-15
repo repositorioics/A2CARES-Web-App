@@ -7,6 +7,7 @@ public class Constants {
     public static final String TPR_REPORTECARTA  = "REPORTECARTA";
     public static final String TPR_ENVIOREPORTE  = "ENVIOREPORTE";
     public static final String TPR_ENVIOREPORTEBHC  = "ENVIOREPORTEBHC";
+    public static final String TPR_ENVIOREPORTEBHC1  = "ENVIOREPORTEBHC1";
     public static final String TPR_REPORTERETIRO = "RETIROREPORTE";
     public static final String TPR_DATOSGENERALES = "DATOSGENERALES";
     public static final String TPR_ENVIO_ENFERMO  = "ENVIO_ENFERMO";

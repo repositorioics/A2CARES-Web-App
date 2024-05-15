@@ -332,19 +332,21 @@
                         <hr/>
                         <div class="table-responsive">
                             <spring:url value="/Serologia/listMuestrasNoEnviadasBhc" var="MxNoEnviadasUrl"/>
-                            <table id="Lista_Muestra" class="table table-hover table-bordered">
+                            <table id="Lista_Muestra1" class="table table-hover table-bordered">
                                 <thead>
                                 <tr>
-                                    <th width="12%" class="text-center"><spring:message code="lbl.serologia" /></th>
+                                   <th width="12%" class="text-center"><spring:message code="lbl.serologia" /></th>
                                     <th width="12%" class="text-center"><spring:message code="dateAdded" /></th>
-                                    <th width="12%" class="text-center"><spring:message code="code" /> <spring:message code="lbl.participant" /></th>
+                                       <th width="12%" class="text-center"><spring:message code="code" />
+                                        <spring:message code="lbl.participant" /></th>
                                     <th width="10%" class="text-center"><spring:message code="volumen" /></th>
                                     <th width="10%" class="text-center"><spring:message code="lbl.envoy" /></th>
                                     <th width="12%" class="text-center"><spring:message code="lbl.description" /></th>
 
-                                    <th width="12%" class="text-center"><spring:message code="lbl.Observation" /></th>
+                                   <th width="12%" class="text-center"><spring:message code="lbl.Observation" /></th>
                                     <th width="16%" class="text-center"><spring:message code="edit" /></th>
                                     <th width="16%" class="text-center"><spring:message code="delete" /></th>
+
                                 </tr>
                                 </thead>
                                 <tbody></tbody>

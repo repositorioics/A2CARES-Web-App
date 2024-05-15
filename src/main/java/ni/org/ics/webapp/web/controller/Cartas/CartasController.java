@@ -1513,6 +1513,8 @@ public class CartasController {
 
     private ResponseEntity<String> createJsonResponse( Object o )
     {
+
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         Gson gson = new Gson();

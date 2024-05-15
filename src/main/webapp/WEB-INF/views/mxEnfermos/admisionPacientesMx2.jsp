@@ -1,0 +1,402 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: ICS
+  Date: 17/10/2020
+  Time: 12:13
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page  import = "ni.org.ics.webapp.web.utils.Constants" %>
+<html>
+<head>
+    <jsp:include page="../fragments/headTag.jsp" />
+    <spring:url value="/resources/css/bootstrap.css" var="boot" />
+    <link href="${boot}" rel="stylesheet" type="text/css"/>
+
+    <spring:url value="/resources/css/bootstrap-datetimepicker.css" var="datetimepickerCss" />
+    <link href="${datetimepickerCss}" rel="stylesheet" type="text/css"/>
+
+    <style>
+        div.dataTables_wrapper div.dataTables_filter {
+            text-align: right !important;
+        }
+    </style>
+    <spring:url value="/resources/css/sweetalert.css" var="swalcss" />
+    <link href="${swalcss}" rel="stylesheet" type="text/css"/>
+
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+<jsp:include page="../fragments/bodyHeader.jsp" />
+<div class="app-body">
+    <jsp:include page="../fragments/sideBar.jsp" />
+    <div class="main">
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="<spring:url value="/" htmlEscape="true "/>"><spring:message code="home" /></a>
+                <i class="fa fa-angle-right"></i> <a href="<spring:url value="/mx/enfermo/getInformeFinDiaMedicos" htmlEscape="true "/>"></a>
+            </li>
+        </ol>
+        <c:set var="successMessage"><spring:message code="process.success" /></c:set>
+        <spring:url value="/reportes/downloadConvalecientesMxEnfermoPdf/" var="pdfConvalecientesUrl"/>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="page-title">
+                    <i class="fa fa-list-alt"></i>&nbsp;<strong><spring:message code="Informe Fin de Día Médicos - Puestos" /></strong>
+                    </h5>
+                </div>
+                <div class="card-block">
+
+                    <form action="#" autocomplete="off" id="search-form" name="search-form" class="form-horizontal">
+
+                    <div class="row">
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 col-xl-2">
+                        </div>
+
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 col-xl-2">
+                        </div>
+                    </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-block">
+                    <div class="row">
+
+
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="fechaInicioCons"><spring:message code="fecha_inicio" />
+                                                <span class="required">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                                <input type="text" class="form-control date-picker" id="fechaInicioCons" name="fechaInicioCons" placeholder="<spring:message code="fecha_holder" />"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="fechaFinCons"><spring:message code="fecha_fin" />
+                                                <span class="required">*</span>
+                                            </label>
+                                            <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                                <input type="text" class="form-control date-picker" id="fechaFinCons" name="fechaFinCons" placeholder="<spring:message code="fecha_holder" />"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="btn-group float-left">
+                                            <button id="searchClinicalSheet" class="btn btn-lg btn-primary " type="submit">
+                                                <i class="fa fa-search"></i> <spring:message code="search" />
+                                            </button>
+                                        </div>
+                                        <br>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <hr/>
+                    <div  class="row"   style="width:1400px; height:500px; overflow-x:scroll ; padding-bottom:10px;">
+                    <table id="Lista_Informe_Fin_Dia"  class="table table-condensed table-bordered table-hover"">
+                        <thead>
+                        <tr>
+
+                            <th class="text-center"><spring:message code="Fecha de Consulta" /></th>
+                            <th  class="text-center"><spring:message code="Puesto de Salud" /></th>
+                            <th  class="text-center"><spring:message code="Nombre Médico" /></th>
+                            <th  class="text-center"><spring:message code="# Participantes Cohorte" /></th>
+                            <th  class="text-center"><spring:message code="# Participantes No Cohorte" /></th>
+                            <th  class="text-center"><spring:message code="# Total Atendidos" /></th>
+                            <th  class="text-center"><spring:message code="# Febril Aguda" /></th>
+                            <th  class="text-center"><spring:message code="# PAP" /></th>
+                            <th  class="text-center"><spring:message code="# Gota Gruesa" /></th>
+                            <th  class="text-center"><spring:message code="# Crónicos" /></th>
+
+                            <th  class="text-center"><spring:message code="# Traslados" /></th>
+                            <th  class="text-center"><spring:message code="# Traslados Dengue" /></th>
+
+                            <th  class="text-center"><spring:message code="# Captación A" /></th>
+                            <th  class="text-center"><spring:message code="# Captación B" /></th>
+                            <th  class="text-center"><spring:message code="# Captación C" /></th>
+                            <th  class="text-center"><spring:message code="# Captación D" /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 1 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 1 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 2 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 2 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 3 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 3 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 4 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 4 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 5 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 5 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 6 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 6 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 7 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 7 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 8 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 8 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 9 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 9 Aten." /></th>
+                            <th  class="text-center"><spring:message code="Cod. Part. 10 Atendido" /></th>
+                            <th  class="text-center"><spring:message code="Diagnóstico Cod. Part. 10 Aten." /></th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+                </div>
+                </div>
+
+
+        <div class="row">
+            <table id="lsita_BHC" width="30%">
+                <thead>
+                <tr>
+
+                    <td>
+
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<jsp:include page="../fragments/bodyFooter.jsp" />
+<jsp:include page="../fragments/corePlugins.jsp" />
+<c:choose>
+    <c:when test="${cookie.eIcsLang.value == null}">
+        <c:set var="lenguaje" value="es"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="lenguaje" value="${cookie.eIcsLang.value}"/>
+    </c:otherwise>
+</c:choose>
+<!-- GenesisUI main scripts -->
+<spring:url value="/resources/js/app.js" var="App" />
+<script src="${App}" type="text/javascript"></script>
+
+<spring:url value="/resources/js/libs/jquery.validate.js" var="validateJs" />
+<script src="${validateJs}" type="text/javascript"></script>
+<spring:url value="/resources/js/libs/jquery-validation/additional-methods.js" var="validateAMJs" />
+<script src="${validateAMJs}" type="text/javascript"></script>
+
+<spring:url value="/resources/js/libs/jquery-validation/localization/messages_{language}.js" var="jQValidationLoc">
+    <spring:param name="language" value="${lenguaje}" />
+</spring:url>
+<script src="${jQValidationLoc}"></script>
+
+<!-- Datatables  -->
+<spring:url value="/resources/js/libs/DataTables/datatables.min.js" var="dataTableJs" />
+<script src="${dataTableJs}" type="text/javascript"></script>
+<spring:url value="/resources/js/libs/DataTables/i18n/label_{language}.json" var="dataTablesLang">
+    <spring:param name="language" value="${lenguaje}" />
+</spring:url>
+
+<!-- bootstrap datetimepicker -->
+<spring:url value="/resources/js/libs/bootstrap-datetimepicker/moment-with-locales.js" var="moment" />
+<script src="${moment}"></script>
+<spring:url value="/resources/js/libs/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js" var="datetimepicker" />
+<script src="${datetimepicker}"></script>
+
+
+<spring:url value="/resources/js/libs/sweetalert.js" var="sw" />
+<script type="text/javascript" src="${sw}"></script>
+
+
+<spring:url value="/resources/js/views/unicodeEscaper.js" var="escaperJs" />
+<script type="text/javascript" src="${escaperJs}"></script>
+
+<spring:url value="/resources/js/views/printBarcodeLabels.js" var="printJs" />
+<script type="text/javascript" src="${printJs}"></script>
+
+<c:choose>
+    <c:when test="${cookie.eIcsLang.value == null}">
+        <c:set var="lenguaje" value="es"/>
+    </c:when>
+    <c:otherwise>
+        <c:set var="lenguaje" value="${cookie.eIcsLang.value}"/>
+    </c:otherwise>
+</c:choose>
+
+
+<spring:url value="/mx/enfermo/getInformeFinDiaMedicos" var="getInformeFinDiaMedicos"/>
+
+
+
+<script>
+jQuery(document).ready(function() {
+
+
+    $('.date-picker').datetimepicker({
+        format: 'L',
+        locale: "${lenguaje}",
+        maxDate: new Date(),
+        useCurrent: true
+    });
+
+
+
+    var edithoja = "EditarHC";
+    var table = $('#Lista_Informe_Fin_Dia').DataTable({
+        dom: "<'row'<'col-sm-12 col-md-12'B>>" +
+                "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        "oLanguage": {
+            "sUrl": "${dataTablesLang}"
+        },
+        "bFilter": true,
+        "bInfo": true,
+        "bPaginate": true,
+        "bDestroy": true,
+        "responsive": true,
+        "pageLength": 10,
+        "bLengthChange": true,
+        "buttons": [
+            {
+                extend: 'excel'
+            }
+        ],
+        "ajax":{
+            url: "${getInformeFinDiaMedicos}", // Change this URL to where your json data comes from
+            type: "GET",
+            data: function(d) {
+                d.fechaInicioCons = $("#fechaInicioCons").val();
+                d.fechaFinCons = $("#fechaFinCons").val();
+            },
+            dataSrc: ""
+
+        },
+        "columns": [
+
+            { data: 'fechaConsulta', defaultContent: ""},
+            { data: 'puestoSalud', defaultContent: ""},
+            { data: 'nomMedico', defaultContent: ""},
+            { data: 'numPartCohorte', defaultContent: ""},
+            { data: 'numPartNoCohorte', defaultContent: ""},
+            { data: 'numTotalAtendidos', defaultContent: ""},
+            { data: 'numFebrilA', defaultContent: ""},
+            { data: 'numPap', defaultContent: ""},
+            { data: 'numGotaGruesa', defaultContent: ""},
+            { data: 'numCronicos', defaultContent: ""},
+            { data: 'numTraslados', defaultContent: ""},
+            { data: 'numTrasladosDengue', defaultContent: ""},
+            { data: 'numCaptacionA', defaultContent: ""},
+            { data: 'numCaptacionB', defaultContent: ""},
+            { data: 'numCaptacionC', defaultContent: ""},
+            { data: 'numCaptacionD', defaultContent: ""},
+            { data: 'codPartAtend1', defaultContent: ""},
+            { data: 'codPartAtend1Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend2', defaultContent: ""},
+            { data: 'codPartAtend2Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend3', defaultContent: ""},
+            { data: 'codPartAtend3Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend4', defaultContent: ""},
+            { data: 'codPartAtend4Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend5', defaultContent: ""},
+            { data: 'codPartAtend5Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend6', defaultContent: ""},
+            { data: 'codPartAtend6Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend7', defaultContent: ""},
+            { data: 'codPartAtend7Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend8', defaultContent: ""},
+            { data: 'codPartAtend8Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend9', defaultContent: ""},
+            { data: 'codPartAtend9Diagnostico', defaultContent: ""},
+            { data: 'codPartAtend10', defaultContent: ""},
+            { data: 'codPartAtend10Diagnostico', defaultContent: ""}
+
+        ]
+    });
+
+    $("#fechaInicioCons").on("dp.change", function (e) {
+        $('#fechaFinCons').data("DateTimePicker").minDate(e.date);
+        $('#fechaInicioCons').data("DateTimePicker").maxDate(e.date);
+    });
+    $("#fechaFinCons").on("dp.change", function (e) {
+        $('#fechaInicioCons').data("DateTimePicker").maxDate(e.date);
+    });
+
+
+
+    if ($('html').attr('dir') === 'rtl') {
+        $('.tooltip-demo [data-placement=right]').attr('data-placement', 'left').addClass('rtled');
+        $('.tooltip-demo [data-placement=left]:not(.rtled)').attr('data-placement', 'right').addClass('rtled');
+    }
+    $('[data-toggle="tooltip"]').tooltip();
+
+
+    var formSearch = $('#search-form');
+    formSearch.validate({
+        focusInvalid: false, // do not focus the last invalid input
+        rules: {
+            fechaInicioCons: {required: function () {
+                return $('#fechaFinCons').val().length > 0;
+            }},
+            fechaFinCons: {required: function () {
+                return $('#fechaInicioCons').val().length > 0;
+            }}
+        },
+
+        submitHandler: function (form) {
+            console.log("buscar");
+            search();
+        }
+    });
+
+    function search()
+    {
+        table.ajax.reload();
+    }
+    /* $('#lista_cartas1').on('click', 'td.editor-enabled', function (e) {
+     e.preventDefault();
+     console.log(table.cell( this ).data());
+     var objeto= table.cell( this ).data();
+     if (objeto.enabled){
+     mostrarDeshabilitar("${disableUrl}"+objeto.username);
+     } else {
+     mostrarHabilitar("${enableUrl}"+objeto.username);
+     }
+     });*/
+    function ejecutarAccion() {
+        window.location.href = $('#accionUrl').val();
+    }
+} );
+</script>
+</body>
+</html>
+

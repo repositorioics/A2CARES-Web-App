@@ -26,7 +26,7 @@ public class OrdenLaboratorioController {
     @Resource(name = "ordenLaboratorioService")
     private OrdenLaboratorioService ordenLaboratorioService;
 
-    @RequestMapping(value = "ordeneslab", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "ordeneslab1", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     List<OrdenLaboratorio> getOrdenesLaboratorio(){
         logger.info("Descargando toda la informacion de los datos de las OrdenLaboratorio");
@@ -37,7 +37,7 @@ public class OrdenLaboratorioController {
         return  ordenesLaboratorio;
     }
 
-    @RequestMapping(value = "ordeneslab", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "ordeneslab1", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
     String saveOrdenLaboratorio(@RequestBody OrdenLaboratorio[] objetos){
         logger.debug("Insertando/Actualizando OrdenLaboratorio");

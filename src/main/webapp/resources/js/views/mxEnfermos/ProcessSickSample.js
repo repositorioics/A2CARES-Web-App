@@ -92,7 +92,7 @@ var ProcessSickSample = function(){
 
                             evento_ascii = evento_ascii + 1;
                             evento_ascii1 = evento_ascii1 - 1;
-
+                            //alert ("consulta = " + data.consulta.toString());
                             if (!(data.isNull)) {
                                 if ((data.consulta === "1" )) {
                                 $("#fif").val(data.fif);
@@ -139,7 +139,7 @@ var ProcessSickSample = function(){
 
                                         swal({
                                             title: "¡Alerta A2CARES!",
-                                            text: "El participante " + $("#codigoParticipante").val() + ", es su primer evento A, se le puede recepcionar INICIAL",
+                                            text: "El participante " + $("#codigoParticipante").val() + ", es su primer evento A <--> R24, se le puede recepcionar INICIAL",
                                             icon: "warning"
                                         });
                                         $("#fif").val("");

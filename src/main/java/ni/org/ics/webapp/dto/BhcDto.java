@@ -16,6 +16,17 @@ public class BhcDto implements Serializable {
     private Integer codigoCasa;
     private String observacion;
     private String sitio_destino;
+    private Integer numEnvio;
+    private String procesaCSFV;
+    private String usuarioRegistro;
+    private String estudio;
+    private String puesto;
+    private Integer edadMeses;
+
+
+
+
+
 
 
     public BhcDto() {
@@ -91,5 +102,49 @@ public class BhcDto implements Serializable {
 
     public void setSitio_destino(String sitio_destino) {
         this.sitio_destino = sitio_destino;
+    }
+
+    public String getProcesaCSFV() {
+        return procesaCSFV;
+    }
+
+    public void setProcesaCSFV(String procesaCSFV) {
+        this.procesaCSFV = procesaCSFV;
+    }
+    public String getUsuarioRegistro() {
+        return usuarioRegistro;
+    }
+
+    public void setUsuarioRegistro(String usuarioRegistro) {
+        this.usuarioRegistro = usuarioRegistro;
+    }
+    public int getNumEnvio() {
+        return numEnvio;
+    }
+
+    public void setNumEnvio(int numEnvio) {
+        this.numEnvio = numEnvio;
+    }
+    public String getEstudio() {
+        return estudio;
+    }
+
+    public void setEstudio(String estudio) {
+        this.estudio = estudio;
+    }
+    public String getPuesto() {
+        return puesto;
+    }
+
+    public void setPuesto(String puesto) {
+        this.puesto = puesto;
+    }
+
+    public int getEdadMeses() {
+        return edadMeses;
+    }
+
+    public void setEdadMeses(int edadMeses) {
+        this.edadMeses = edadMeses;
     }
 }
