@@ -134,7 +134,6 @@ var SearchProcess = function () {
 
 
                 },
-
                 columns: [{data: 'codigo_participante'},
                     { data: 'consulta' },
                     { data: 'fase_muestra' },
@@ -143,7 +142,7 @@ var SearchProcess = function () {
                     { data: 'fis' },
                     { data: 'fecha_orden' },
                     { data: 'tipo_orde ' },
-                        fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
+                    fnCreatedCell: function (nTd, sData, oData, iRow, iCol) {
                             var name = oData.subjectName;
                             var viewSubjectUrl = parametros.viewSubjectUrl + oData.subjectId + '/' ;
                             $(nTd).html('<a title= ' + name + ' href=' + viewSubjectUrl + ' > '+ name +'</a> ');
@@ -223,5 +222,5 @@ var SearchProcess = function () {
                 }
             });
         }
-    };
+};
 }();

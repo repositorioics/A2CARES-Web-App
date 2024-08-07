@@ -1,6 +1,9 @@
 package ni.org.ics.webapp.service;
 
 import ni.org.ics.webapp.domain.core.Participante;
+import ni.org.ics.webapp.dto.BHCParticipanteDto;
+import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
+import ni.org.ics.webapp.dto.JustificacionesICSDto;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,6 +32,14 @@ public class ParticipanteService {
         Query query = session.createQuery("from Participante");
         return query.list();
     }
+
+    public List<BHCParticipanteDto> getBHCParticipantes(String codigo){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery("call sp_obtener_participante_print_BHC_Estudios(:codigo)");
+        query.setParameter("codigo", codigo);
+        return query.list();
+    }
+
     /* Obtiene Un Participante por su codigo  */
     public Participante getParticipanteByCodigo(String codigo){
         Session session = sessionFactory.getCurrentSession();

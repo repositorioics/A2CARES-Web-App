@@ -23,10 +23,11 @@ public class Bhc extends BaseMetaData implements Auditable, Serializable  {
     private double volumen;
     private String observacion;
     private char enviado = '0';
-    private Integer codigo_casa;
+    private Integer codigoCasa;
     private Integer edadMeses;
     private String descripcion;
-
+    private String procesadaCSFV;
+    private String puesto;
 
 
     //getter and setter
@@ -87,12 +88,12 @@ public class Bhc extends BaseMetaData implements Auditable, Serializable  {
     }
 
     @Column(name = "CODIGO_CASA", nullable = true)
-    public Integer getCodigo_casa() {
-        return codigo_casa;
+    public Integer getCodigoCasa() {
+        return codigoCasa;
     }
 
-    public void setCodigo_casa(Integer codigo_casa) {
-        this.codigo_casa = codigo_casa;
+    public void setCodigoCasa(Integer codigoCasa) {
+        this.codigoCasa = codigoCasa;
     }
 
     @Column(name = "EDAD_MESES", nullable = true)
@@ -112,6 +113,24 @@ public class Bhc extends BaseMetaData implements Auditable, Serializable  {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    @Column(name = "PROCESADA_CSFV", nullable = true, length = 2)
+    public String getProcesadaCSFV() {
+        return procesadaCSFV;
+    }
+    public void setProcesadaCSFV(String procesadaCSFV) {
+        this.procesadaCSFV = procesadaCSFV;
+    }
+
+    @Column(name = "PUESTO", nullable = true, length = 100)
+    public String getPuesto() {
+        return puesto;
+    }
+    public void setPuesto(String puesto) {
+        this.puesto = puesto;
+    }
+
+
     //fin setter
 
     @Transient

@@ -7,6 +7,8 @@ public class HojaClinicaDto {
 
     private String codigo;
     private String nombreCompleto;
+    private Integer numHojaConsulta;
+    private String usuarioRegistro;
     private String fechaConsulta;
     private String lugarAtencion;
     private String tipoConsulta;
@@ -28,6 +30,22 @@ public class HojaClinicaDto {
 
     public void setNombreCompleto(String nombreCompleto) {
         this.nombreCompleto = nombreCompleto;
+    }
+
+    public Integer getNumHojaConsulta() {
+        return numHojaConsulta;
+    }
+
+    public void setNumHojaConsulta(Integer numHojaConsulta) {
+        this.numHojaConsulta = numHojaConsulta;
+    }
+
+    public String getUsuarioRegistro() {
+        return usuarioRegistro;
+    }
+
+    public void setUsuarioRegistro(String usuarioRegistro) {
+        this.usuarioRegistro = usuarioRegistro;
     }
 
     public String getFechaConsulta() {

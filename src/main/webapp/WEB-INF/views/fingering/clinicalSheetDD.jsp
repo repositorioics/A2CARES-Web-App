@@ -36,7 +36,7 @@
 <div class="card">
 <div class="card-header">
     <h3 class="page-title">
-        <spring:message code="Hola Clínica Doble Digitación" /> <small><spring:message code="" /></small>
+        <spring:message code="Hoja Clínica Doble Digitación" /> <small><spring:message code="" /></small>
     </h3>
 </div>
 <div class="card-block">
@@ -142,7 +142,35 @@
         </div>
     </div>
 </form>
+<form action="#" autocomplete="off" id="search-num-form" name="search-participant-form" class="form-horizontal">
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="form-group">
+                &ensp;
+                &ensp;
+                <label class="form-control-label" for="numHoja"><spring:message code="Número de Hoja" />
+                    <span class="required">*</span>
+                </label>
+                <div class="input-group"  align="center">
+                    &ensp;
+                    &ensp;
+                    <span class="input-group-addon" >
+                       <i class="fa fa-book-medical"></i>
+                  </span>
+
+                    <input type="text" id="numHoja" required  name="numHoja" value=""   />
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
 <form name="form-clinicalsheet" autocomplete="off" role="form" action="#" id="form-clinicalsheet" method="post" class="form-horizontal">
+
+<input type="hidden" id="numHoja1" required  name="numHoja1" value=""    />
+<input type="hidden" id="codSup1" required  name="codSup1" value=""    />
 
 <div class="card-block">
 <div class="row">
@@ -178,20 +206,6 @@
 
     </div>
 
-    <div class="col-lg-3 col-md-6 col-sm-12">
-        <div class="form-group">
-            <label class="form-control-label" for="numHoja"><spring:message code="Numero Hoja" />
-                <span class="required">*</span>
-            </label>
-            <div class="input-group">
-            <span class="input-group-addon">
-                <i class="fa fa-pen"></i>
-            </span>
-                <input type="text" id="numHoja" required name="numHoja" value="" />
-                <input type="text" id="codigoSuper"   name="codigoSuper" value="" hidden />
-            </div>
-        </div>
-    </div>
 
 
 
@@ -1922,7 +1936,7 @@
             <div class="col-lg-2 col-md-6 col-sm-12">
                 <div class="form-group">
                     <label for="cambioCategoria" class="form-control-label"><spring:message code="cambio_categoria" /></label>
-                    <select class="form-control focusNext" id="cambioCategoria" name="cambioCategoria" required="required">
+                    <select class="form-control focusNext" id="cambioCategoria" name="cambioCategoria">
                         <option selected value=""><spring:message code="select" />...</option>
                         <c:forEach var="item" items="${catSiNo}">
                             <option value="${item.catKey}">${item.catKey} - ${item.spanish}</option>
@@ -2560,6 +2574,36 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-7">
+                <spring:message code="Líquidos_IV" />
+            </div>
+            <div class="form-group col-lg-4 col-md-4 col-sm-5">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbtratamiento_10S" name="rbtratamiento_10" class="custom-control-input" value="S">
+                    <label class="custom-control-label" for="rbtratamiento_10S"><spring:message code="CAT_SND_HC_01" /></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbtratamiento_10N" name="rbtratamiento_10" class="custom-control-input" value="N">
+                    <label class="custom-control-label" for="rbtratamiento_10N"><spring:message code="CAT_SND_HC_02" /></label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-7">
+                <spring:message code="Referencia por Dengue" />
+            </div>
+            <div class="form-group col-lg-4 col-md-4 col-sm-5">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbtratamiento_11S" name="rbtratamiento_11" class="custom-control-input" value="S">
+                    <label class="custom-control-label" for="rbtratamiento_11S"><spring:message code="CAT_SND_HC_01" /></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbtratamiento_11N" name="rbtratamiento_11" class="custom-control-input" value="N">
+                    <label class="custom-control-label" for="rbtratamiento_11N"><spring:message code="CAT_SND_HC_02" /></label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-7">
                 <spring:message code="otro_tratamiento" />
             </div>
             <div class="form-group col-lg-4 col-md-4 col-sm-5">
@@ -2596,7 +2640,7 @@
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
             <label class="form-control-label" for="planes"><spring:message code="planes" />
             </label>
-            <textarea  class="form-control focusNext" id="planes" name="planes" cols="30" rows="4"  required="required"  placeholder="Ingrese los planes"></textarea>
+            <textarea  class="form-control focusNext" id="planes" name="planes" cols="30" rows="4"  readonly  placeholder="Ingrese los planes"></textarea>
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
             <label class="form-control-label" for="historia"><spring:message code="historia_clinica" /> </label>
@@ -2844,6 +2888,8 @@
 <spring:url value="/hojaclinicaDD/searchParticipant" var="searchUrl"/>
 <spring:url value="/hojaclinicaDD/save" var="saveUrl"/>
 <spring:url value="/hojaclinicaDD/getcodSupervisor" var="getcodSupervisor"/>
+<spring:url value="/hojaclinica/getNumHojaDigitadaH1" var="getNumHojaDigitadaH1"/>
+<spring:url value="/hojaclinica/getNumHojaDigitadaH2" var="getNumHojaDigitadaH2"/>
 
 </body>
 <script>
@@ -2856,6 +2902,8 @@
             error: "${errorProcess}",
             locale : "${lenguaje}",
             getcodSupervisor : "${getcodSupervisor}",
+            getNumHojaDigitadaH1 : "${getNumHojaDigitadaH1}",
+            getNumHojaDigitadaH2 : "${getNumHojaDigitadaH2}"
         };
 
         ClinicalSheetDD.init(parameters);

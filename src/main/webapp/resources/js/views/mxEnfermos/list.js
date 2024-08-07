@@ -145,7 +145,7 @@ var ListaMxEnfermosForm = function(){
                                 icon: "info",
                                 timer: 5000
                             });
-                            imprimirEtiquetas(data.etiquetas);
+                         //   imprimirEtiquetas(data.etiquetas);
                         }
                         CargarDatos();
                     }).fail(function (XMLHttpRequest, textStatus, errorThrown) {

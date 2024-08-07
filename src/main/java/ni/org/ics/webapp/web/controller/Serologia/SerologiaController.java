@@ -17,6 +17,7 @@ import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.dto.ParticipanteSeroDto;
 import ni.org.ics.webapp.dto.SerologiaDto;
 import ni.org.ics.webapp.dto.BhcDto;
+import ni.org.ics.webapp.dto.BhcDto1;
 import ni.org.ics.webapp.dto.SerologiaEnviarDto;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.service.MessageResourceService;
@@ -160,14 +161,14 @@ public class SerologiaController {
             Bhc caso = this.serologiaService.getBhcById(idbhc);
             ParticipanteSeroDto participanteSeroDto = new ParticipanteSeroDto();
             if (caso.getParticipante()!=null){
-                Participante participante = this.participanteService.getParticipanteByCodigo(caso.getParticipante());
+                Participante participante = this.participanteService.getParticipanteByCodigo(caso.getParticipante().toString());
                 if (participante != null){
                     participanteSeroDto.setIdSerologia(caso.getIdbhc());
                     participanteSeroDto.setEdadMeses(caso.getEdadMeses());
                     participanteSeroDto.setFechaNacimiento(participante.getFechaNac());
-                    participanteSeroDto.setIdparticipante(caso.getParticipante());
+                    participanteSeroDto.setIdparticipante(caso.getParticipante().toString());
                     participanteSeroDto.setNombreCompleto(participante.getNombreCompleto());
-                    participanteSeroDto.setCodigo_casa(caso.getCodigo_casa());
+                    participanteSeroDto.setCodigo_casa(caso.getCodigoCasa());
                     String string;
                     string = participante.getEdad();
                     String[] parts = string.split("/");
@@ -184,7 +185,7 @@ public class SerologiaController {
                     participanteSeroDto.setIdSerologia(caso.getIdbhc());
                     participanteSeroDto.setEdadMeses(caso.getEdadMeses());
                     participanteSeroDto.setFechaNacimiento(new Date());
-                    participanteSeroDto.setIdparticipante(caso.getParticipante());
+                    participanteSeroDto.setIdparticipante(caso.getParticipante().toString());
                     participanteSeroDto.setNombreCompleto("-");
                     participanteSeroDto.setCodigo_casa(0);
                     participanteSeroDto.setEdad_year("0");
@@ -572,7 +573,7 @@ public ResponseEntity<String>GuardarBhc (@RequestParam(value = "idbhc", required
                 sero.setPasive('0');
                 sero.setRecordDate(new Date());
                 sero.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
-                sero.setParticipante(idParticipante);
+                sero.setParticipante((idParticipante.toString()));
            //     Integer codeCasa= (casaCHF.equals(""))?0:Integer.parseInt(casaCHF);
              //   sero.setCodigo_casa(codeCasa);
               /*  if (codeCasa==0 && edadMeses==0){
@@ -649,6 +650,7 @@ public ResponseEntity<String>GuardarBhc (@RequestParam(value = "idbhc", required
         List<BhcDto> seroDtom = null;
         try{
             //seroDtom =  this.serologiaService.SerologiaNoEnviada();
+        //    seroDtom =  this.serologiaService.BhcNoEnviadaDto();
             seroDtom =  this.serologiaService.BhcNoEnviadaDto();
             return  seroDtom;
         }catch (Exception e){

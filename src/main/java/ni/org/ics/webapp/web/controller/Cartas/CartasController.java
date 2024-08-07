@@ -54,7 +54,8 @@ public class CartasController {
     /* Instancia de mi Servicio  MessageResourceService*/
     @Resource(name = "messageResourceService")
     private MessageResourceService messageResourceService;
-
+    private String userRegistro = "";
+    private Date fechaRegistro;
 
     @RequestMapping(value = "/Crear", method = RequestMethod.GET)
     public String Crear(ModelMap model) throws Exception {
@@ -103,13 +104,18 @@ public class CartasController {
         List<Version> version = scanCartaService.getVersioCarta(obj.getVersion().getEstudio().getCodigo());
         model.addAttribute("version", version);
         Participante participante = scanCartaService.getParticipante(obj.getParticipante().getCodigo());
+
+        userRegistro = obj.getRecordUser().toString();
+            fechaRegistro = obj.getRecordDate();
+
         model.addAttribute("participante", participante);
         if (participante != null) {
             ParticipanteProcesos procesos = participanteProcesosService.getParticipante(participante.getCodigo());
             model.addAttribute("procesos", procesos);
         }
         List<DetalleParte> dp = scanCartaService.getDetalleParteList(idCartaParticipante);
-        model.addAttribute("dp", dp);
+
+                    model.addAttribute("dp", dp);
         model.addAttribute("obj", obj);
         return "/Cartas/EditCarta";
         } catch (Exception e) {
@@ -402,7 +408,7 @@ public class CartasController {
     public ResponseEntity<String> updateDetalleParte(@RequestBody ArrayList<ParteDto> postData) throws Exception {
         try {
             for (ParteDto dto : postData) {
-                this.scanCartaService.ActualizarAcepta(dto.getIddetalle(), dto.isAcepta());
+                this.scanCartaService.ActualizarAcepta(dto.getIddetalle(), dto.isAcepta(),SecurityContextHolder.getContext().getAuthentication().getName(),new Date());
             }
             return JsonUtil.createJsonResponse("Registros Actualizados");
         } catch (Exception e) {
@@ -456,8 +462,10 @@ public class CartasController {
                 pc.setEdadmeses(obj.getEdadmeses());
                 pc.setEdaddias(obj.getEdaddias());
                 pc.setFechacarta(DateUtil.StringToDate(obj.getFechacarta(), "dd/MM/yyyy"));
-                pc.setRecordDate(new Date());
-                pc.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
+                pc.setRecordDate( fechaRegistro);
+                pc.setFechaModifica(new Date());
+                pc.setRecordUser(userRegistro);
+                pc.setUsuarioModifica(SecurityContextHolder.getContext().getAuthentication().getName());
                 pc.setDeviceid(computerName);
                 pc.setEstado('1');
                 pc.setPasive('0');
@@ -466,7 +474,7 @@ public class CartasController {
             }
             if (obj.getParte() != null) {
                 for (ParteDto dto : obj.getParte()) {
-                    this.scanCartaService.ActualizarAcepta(dto.getIddetalle(), dto.isAcepta());
+                    this.scanCartaService.ActualizarAcepta(dto.getIddetalle(), dto.isAcepta(),SecurityContextHolder.getContext().getAuthentication().getName(),new Date());
                 }
             }
             return createJsonResponse(pc);
@@ -1409,8 +1417,10 @@ public class CartasController {
                 pc.setEdadmeses(meses);
                 pc.setEdaddias(dias);
                 pc.setFechacarta(cartaTemporal.getFechacarta());
-                pc.setRecordDate(new Date());
-                pc.setRecordUser(SecurityContextHolder.getContext().getAuthentication().getName());
+                pc.setFechaModifica(new Date());
+                pc.setUsuarioModifica(SecurityContextHolder.getContext().getAuthentication().getName());
+                pc.setRecordDate(fechaRegistro);
+                pc.setRecordUser(userRegistro);
                 pc.setDeviceid(computerName);
                 pc.setRecordIp(computerIp);
                 pc.setEstado('1');
@@ -1513,6 +1523,8 @@ public class CartasController {
 
     private ResponseEntity<String> createJsonResponse( Object o )
     {
+
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         Gson gson = new Gson();

@@ -342,6 +342,10 @@
                                 <th><spring:message code="AlbendazolMebendazol2"/></th>
                                 <th><spring:message code="SueroOral1"/></th>
                                 <th><spring:message code="SueroOral2"/></th>
+                                <th><spring:message code="LiquidosIv1"/></th>
+                                <th><spring:message code="LiquidosIv1"/></th>
+                                <th><spring:message code="ReferenciaPorDengue1"/></th>
+                                <th><spring:message code="ReferenciaPorDengue2"/></th>
                                 <th><spring:message code="OtroTratamiento1"/></th>
                                 <th><spring:message code="OtroTratamiento2"/></th>
                                 <th><spring:message code="OtroTratamientoEspecificar1"/></th>
@@ -454,8 +458,11 @@
             format: 'L',
             locale: "${lenguaje}",
             maxDate: new Date(),
-            useCurrent: false
+            useCurrent: true
         });
+
+
+
         var edithoja = "EditarHC";
         var table = $('#lista_hojas1').DataTable({
             dom: "<'row'<'col-sm-12 col-md-12'B>>" +
@@ -730,6 +737,10 @@
                 { data: 'albendazolMebendazol2', defaultContent: ""},
                 { data: 'sueroOral1', defaultContent: ""},
                 { data: 'sueroOral2', defaultContent: ""},
+                { data: 'liquidosiv1', defaultContent: ""},
+                { data: 'liquidosiv2', defaultContent: ""},
+                { data: 'referenciaPordengue1', defaultContent: ""},
+                { data: 'referenciaPordengue2', defaultContent: ""},
                 { data: 'otroTratamiento1', defaultContent: ""},
                 { data: 'otroTratamiento2', defaultContent: ""},
                 { data: 'otroTratamientoEspecificar1', defaultContent: ""},

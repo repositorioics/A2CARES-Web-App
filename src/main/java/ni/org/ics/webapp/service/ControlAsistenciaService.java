@@ -1,10 +1,8 @@
 package ni.org.ics.webapp.service;
 
 import ni.org.ics.webapp.domain.core.ControlAsistencia;
-import ni.org.ics.webapp.dto.ControlAsistenciaDto;
-import ni.org.ics.webapp.dto.ConvalecientesEnfermoDto;
-import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
-import ni.org.ics.webapp.dto.RecepcionEnfermoDto;
+import ni.org.ics.webapp.domain.personal.JustificacionesICS;
+import ni.org.ics.webapp.dto.*;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -36,6 +34,10 @@ public class ControlAsistenciaService {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(controlAsistencia);
     }
+    public void saveOrUpdateJustificaciones(JustificacionesICS justificacionesICS) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(justificacionesICS);
+    }
 
     @SuppressWarnings("unchecked")
     public List<ControlAsistenciaDto> getControlAsistenciaPersonal(FiltroMxEnfermoDto filtro)throws Exception{
@@ -55,6 +57,88 @@ public class ControlAsistenciaService {
             query.setParameter("fechaFin", filtro.getFechaFin());
         }
         query.setResultTransformer(Transformers.aliasToBean(ControlAsistenciaDto.class));
+        return query.list();
+    }
+    public List<ControlAsistenciaICSDto> getControlAsistenciaPersonalICS(FiltroMxEnfermoDto filtro)throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createSQLQuery("call sp_obtener_control_asistencia_ics(:fechaInicio, :fechaFin)");
+
+        if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
+            query.setParameter("fechaInicio", filtro.getFechaInicio());
+            query.setParameter("fechaFin", filtro.getFechaFin());
+        }
+        query.setResultTransformer(Transformers.aliasToBean(ControlAsistenciaICSDto.class));
+        return query.list();
+    }
+    public List<JustificacionesICSDto> getJustificacionesICS(FiltroMxEnfermoDto filtro)throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createSQLQuery("call sp_obtener_justificaciones_ics(:fechaInicio, :fechaFin)");
+
+        if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
+            query.setParameter("fechaInicio", filtro.getFechaInicio());
+            query.setParameter("fechaFin", filtro.getFechaFin());
+        }
+        query.setResultTransformer(Transformers.aliasToBean(JustificacionesICSDto.class));
+        return query.list();
+    }
+    public List<NombreEmpleadosICSDto> getNombreEmpleadosICS(String id,String idSitio)throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createSQLQuery("call sp_obtener_nombres_empleados_ics_sitios(:id,:idSitio)");
+            query.setParameter("id", id);
+            query.setParameter("idSitio", idSitio);
+        query.setResultTransformer(Transformers.aliasToBean(NombreEmpleadosICSDto.class));
+        return query.list();
+    }
+    public List<SitiosICSDto> getSitiosICS()throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createSQLQuery("call sp_obtener_sitios_ics()");
+        query.setResultTransformer(Transformers.aliasToBean(SitiosICSDto.class));
+        return query.list();
+    }
+    public List<DepartamentosICSDto> getDepartamentosICS(String id)throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createSQLQuery("call sp_obtener_departamentos_ics(:id)");
+        query.setParameter("id", id);
+        query.setResultTransformer(Transformers.aliasToBean(DepartamentosICSDto.class));
+        return query.list();
+    }
+
+    public List<ReporteHorasICSDto> getReporteHorasICS(FiltroMxEnfermoDto filtro,String id,String idSitio)throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createSQLQuery("call sp_imprimir_reporte_diario_horas_ics(:fechaInicio, :fechaFin,:id,:idSitio)");
+
+        if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
+            query.setParameter("fechaInicio", filtro.getFechaInicio());
+            query.setParameter("fechaFin", filtro.getFechaFin());
+            if (id.isEmpty()){
+                id = "9999";
+            }
+            if (idSitio.isEmpty()){
+                idSitio = "9999";
+            }
+            query.setParameter("id", id);
+            query.setParameter("idSitio", idSitio);
+        }
+        query.setResultTransformer(Transformers.aliasToBean(ReporteHorasICSDto.class));
+        return query.list();
+    }
+    public List<ReporteHorasICSDto> getReporteHorasSitiosICS(FiltroMxEnfermoDto filtro,String idSitio)throws Exception{
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createSQLQuery("call sp_imprimir_reporte_diario_horas_ics_sitios(:fechaInicio, :fechaFin,:idSitio)");
+
+        if (filtro.getFechaInicio() != null && filtro.getFechaFin() != null) {
+            query.setParameter("fechaInicio", filtro.getFechaInicio());
+            query.setParameter("fechaFin", filtro.getFechaFin());
+            query.setParameter("idSitio", idSitio);
+        }
+        query.setResultTransformer(Transformers.aliasToBean(ReporteHorasICSDto.class));
         return query.list();
     }
 

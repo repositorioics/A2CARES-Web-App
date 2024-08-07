@@ -141,8 +141,12 @@ var ClinicalSheetEDIT = function () {
                     $( element ).parents( '.form-group' ).addClass( 'has-success' ).removeClass( 'has-danger' );
                 },
                 submitHandler: function (form) {
-
+                    var recepcionObj2 = {};
+                     recepcionObj2['participante'] = $("#participantCode").val();
+                    $("#codigoPart").val($("#participantCode").val());
+                    search();
                     buscarsup();
+
                 }
             });
 
@@ -155,7 +159,7 @@ var ClinicalSheetEDIT = function () {
 
                          required: true,
                          digits: true,
-                         range: [0, 140]
+                         range: [0, 180]
 
                     },
                     temp: {
@@ -172,7 +176,7 @@ var ClinicalSheetEDIT = function () {
                         required: true,
                         digits: true,
                       //  range: [60, 140]
-                        range: [0, 140]
+                        range: [0, 180]
                     },
                     tempMedico: {
                         required: true,
@@ -757,6 +761,8 @@ var ClinicalSheetEDIT = function () {
                     $("#rbtratamiento_7S").prop('checked', true);
                     $("#rbtratamiento_8S").prop('checked', true);
                     $("#rbtratamiento_9S").prop('checked', true);
+                    $("#rbtratamiento_10S").prop('checked', true);
+                    $("#rbtratamiento_11S").prop('checked', true);
                     updateReadOnly("descOtroTratamiento", false);
                 } else {
                     $("#rbtratamiento_1N").prop('checked', true);
@@ -768,6 +774,8 @@ var ClinicalSheetEDIT = function () {
                     $("#rbtratamiento_7N").prop('checked', true);
                     $("#rbtratamiento_8N").prop('checked', true);
                     $("#rbtratamiento_9N").prop('checked', true);
+                    $("#rbtratamiento_10N").prop('checked', true);
+                    $("#rbtratamiento_11N").prop('checked', true);
                   //  updateReadOnly("descOtroTratamiento", true);
                 }
 
@@ -776,10 +784,11 @@ var ClinicalSheetEDIT = function () {
             });
 
             function save() {
+                search();
                 console.log("save");
                 var strJson = $("#form-clinicalsheet").serializeJSON();
                 var recepcionObj = {};
-                recepcionObj['hojaClinica'] = strJson;
+                recepcionObj['hojaClinicaDD'] = strJson;
                 recepcionObj['participante'] = $("#codigoPart").val();
                 $.ajax(
                     {
@@ -809,6 +818,337 @@ var ClinicalSheetEDIT = function () {
                             //validateLogin(jqXHR);
                         }
                     });
+                swal.fire({
+                    title: "A2CARES",
+                    text: "Hoja Corregída con éxito.",
+                    type: "info",
+                    cancelButtonText: 'Cancelar'
+                });
+                $("#participantCode").val("");
+                $("#numHoja").val("");
+                $("#nombre").val("");
+                $("#fechanac").val("");
+                $("#edadPart").val("");
+                $("#sexoPart").val("");
+                $("#codigoSuper").val("");
+
+                //Asignacion de valores resultantes de comparacion de hojas digitadas
+
+                $("#sexo").val('' );
+                $('#sexo').change();
+
+
+                $("#fechaCons").val('' );
+                $('#fechaCons').change();
+
+                $("#horaCons").val('' );
+
+                $("#numHoja").val('' );
+
+                $("#peso").val('' );
+
+                $("#talla").val('' );
+
+                $("#pa").val('' );
+
+                $("#fc").val('' );
+
+                $("#temp").val('' );
+
+                $("#so").val('' );
+
+                $("#horaIniCons").val('' );
+
+                $("#tipoConsulta").val('' );
+                $('#tipoConsulta').change();
+
+                $('#lugarConsulta').val('');
+                $('#lugarConsulta').change();
+
+                $("#paMedico").val('' );
+
+                $("#tempMedico").val('' );
+
+                $("#frMedico").val('' );
+
+                $("#fcMedico").val('' );
+
+                $("#soMedico").val('' );
+
+                $("#fis").val('' );
+                $('#fis').change();
+
+                $("#fif").val('' );
+                $('#fif').change();
+
+                $("#ultimoDiaFiebre").val('' );
+                $('#ultimoDiaFiebre').change();
+
+                $("#horaUltimoDiaF").val('' );
+                $('#horaUltimoDiaF').change();
+
+                $("#ultimaDosisAntip").val('' );
+                $('#ultimaDosisAntip').change();
+
+                $("#horaUltimaDosisAntip").val('' );
+
+                $("#horaUltimaDosisAntip").val('' );
+
+                //llena check box de sintomas
+                /*sintomas  General */
+
+                $("#rbgeneral_1S").prop('checked', false);
+                $("#rbgeneral_1N").prop('checked', false);
+                $("#rbgeneral_1S").prop('checked', false);
+                $("#rbgeneral_1N").prop('checked', false);
+                $("#rbgeneral_2S").prop('checked', false);
+                $("#rbgeneral_2N").prop('checked', false);
+                $("#rbgeneral_3S").prop('checked', false);
+                $("#rbgeneral_3N").prop('checked', false);
+                $("#rbgeneral_4S").prop('checked', false);
+                $("#rbgeneral_4N").prop('checked', false);
+                $("#rbgeneral_5S").prop('checked', false);
+                $("#rbgeneral_5N").prop('checked', false);
+                $("#rbgeneral_6S").prop('checked', false);
+                $("#rbgeneral_6N").prop('checked', false);
+                $("#rbgeneral_7S").prop('checked', false);
+                $("#rbgeneral_7N").prop('checked', false);
+
+                /*cabeza*/
+
+                $("#rbcabeza_1S").prop('checked', false);
+                $("#rbcabeza_1N").prop('checked', false);
+                $("#rbcabeza_2S").prop('checked', false);
+                $("#rbcabeza_2N").prop('checked', false);
+                $("#rbcabeza_3S").prop('checked', false);
+                $("#rbcabeza_3N").prop('checked', false);
+                $("#rbcabeza_4S").prop('checked', false);
+                $("#rbcabeza_4N").prop('checked', false);
+
+                /*Garganta*/
+
+                $("#rbgarganta_1S").prop('checked', false);
+                $("#rbgarganta_1N").prop('checked', false);
+                $("#rbgarganta_2S").prop('checked', false);
+                $("#rbgarganta_2N").prop('checked', false);
+                $("#rbgarganta_3S").prop('checked', false);
+                $("#rbgarganta_3N").prop('checked', false);
+                $("#rbgarganta_4S").prop('checked', false);
+                $("#rbgarganta_4N").prop('checked', false);
+                $("#rbgarganta_5S").prop('checked', false);
+                $("#rbgarganta_5N").prop('checked', false);
+
+                /*Respiratorio*/
+
+                $("#rbrespiratorio_1S").prop('checked', false);
+                $("#rbrespiratorio_1N").prop('checked', false);
+                $("#rbrespiratorio_2S").prop('checked', false);
+                $("#rbrespiratorio_2N").prop('checked', false);
+                $("#rbrespiratorio_3S").prop('checked', false);
+                $("#rbrespiratorio_3N").prop('checked', false);
+                $("#rbrespiratorio_4S").prop('checked', false);
+                $("#rbrespiratorio_4N").prop('checked', false);
+                $("#rbrespiratorio_5S").prop('checked', false);
+                $("#rbrespiratorio_5N").prop('checked', false);
+                $("#rbrespiratorio_6S").prop('checked', false);
+                $("#rbrespiratorio_6N").prop('checked', false);
+                $("#rbrespiratorio_7S").prop('checked', false);
+                $("#rbrespiratorio_7N").prop('checked', false);
+                $("#rbrespiratorio_8S").prop('checked', false);
+                $("#rbrespiratorio_8N").prop('checked', false);
+                $("#rbrespiratorio_9S").prop('checked', false);
+                $("#rbrespiratorio_9N").prop('checked', false);
+                $("#rbrespiratorio_10S").prop('checked', false);
+                $("#rbrespiratorio_10N").prop('checked', false);
+                $("#rbrespiratorio_11S").prop('checked', false);
+                $("#rbrespiratorio_11N").prop('checked', false);
+                $("#rbrespiratorio_12S").prop('checked', false);
+                $("#rbrespiratorio_12N").prop('checked', false);
+
+                /*Gastrointestinal*/
+
+                $("#rbgastroin_1S").prop('checked', false);
+                $("#rbgastroin_1N").prop('checked', false);
+                $("#rbgastroin_2S").prop('checked', false);
+                $("#rbgastroin_2N").prop('checked', false);
+                $("#rbgastroin_3S").prop('checked', false);
+                $("#rbgastroin_3N").prop('checked', false);
+                $("#numVomito").val("");
+                $("#rbgastroin_4S").prop('checked', false);
+                $("#rbgastroin_4N").prop('checked', false);
+                $("#rbgastroin_5S").prop('checked', false);
+                $("#rbgastroin_5N").prop('checked', false);
+                $("#rbgastroin_6S").prop('checked', false);
+                $("#rbgastroin_6N").prop('checked', false);
+
+                /*Osteomuscular*/
+
+                $("#rbosteomusc_1S").prop('checked', false);
+                $("#rbosteomusc_1N").prop('checked', false);
+                $("#rbosteomusc_2S").prop('checked', false);
+                $("#rbosteomusc_2N").prop('checked', false);
+                $("#rbosteomusc_3S").prop('checked', false);
+                $("#rbosteomusc_3N").prop('checked', false);
+                $("#rbosteomusc_4S").prop('checked', false);
+                $("#rbosteomusc_4N").prop('checked', false);
+                $("#rbosteomusc_5S").prop('checked', false);
+                $("#rbosteomusc_5N").prop('checked', false);
+
+                /*Cutáneo*/
+
+                $("#rbcutaneo_1S").prop('checked', false);
+                $("#rbcutaneo_1N").prop('checked', false);
+                $("#rbcutaneo_2S").prop('checked', false);
+                $("#rbcutaneo_2N").prop('checked', false);
+                $("#rbcutaneo_3S").prop('checked', false);
+                $("#rbcutaneo_3N").prop('checked', false);
+                $("#rbcutaneo_4S").prop('checked', false);
+                $("#rbcutaneo_4N").prop('checked', false);
+                $("#rbcutaneo_5S").prop('checked', false);
+                $("#rbcutaneo_5N").prop('checked', false);
+                $("#rbcutaneo_6S").prop('checked', false);
+                $("#rbcutaneo_6N").prop('checked', false);
+                $("#rbcutaneo_7S").prop('checked', false);
+                $("#rbcutaneo_7N").prop('checked', false);
+                $("#rbcutaneo_8S").prop('checked', false);
+                $("#rbcutaneo_8N").prop('checked', false);
+                $("#rbcutaneo_9S").prop('checked', false);
+                $("#rbcutaneo_9N").prop('checked', false);
+
+                /*Estado nutricional*/
+
+                $("#imc").val("");
+                $("#rbestadonut_1S").prop('checked', false);
+                $("#rbestadonut_1N").prop('checked', false);
+                $("#rbestadonut_2S").prop('checked', false);
+                $("#rbestadonut_2N").prop('checked', false);
+                $("#rbestadonut_3S").prop('checked', false);
+                $("#rbestadonut_3N").prop('checked', false);
+                $("#rbestadonut_4S").prop('checked', false);
+                $("#rbestadonut_4N").prop('checked', false);
+                $("#rbestadonut_5S").prop('checked', false);
+                $("#rbestadonut_5N").prop('checked', false);
+                $("#rbestadonut_6S").prop('checked', false);
+                $("#rbestadonut_6N").prop('checked', false);
+                $("#rbestadonut_7S").prop('checked', false);
+                $("#rbestadonut_7N").prop('checked', false);
+
+                /*categoria*/
+
+                $("#categoria").val("");
+                $('#categoria').change();
+                $("#cambioCategoria").val("");
+                $('#cambioCategoria').change();
+
+                /*Manifestaciones hemorrágicas*/
+
+                $("#rbmanhemo_1S").prop('checked', false);
+                $("#rbmanhemo_1N").prop('checked', false);
+                $("#rbmanhemo_2S").prop('checked', false);
+                $("#rbmanhemo_2N").prop('checked', false);
+                $("#rbmanhemo_3S").prop('checked', false);
+                $("#rbmanhemo_3N").prop('checked', false);
+                $("#rbmanhemo_4S").prop('checked', false);
+                $("#rbmanhemo_4N").prop('checked', false);
+                $("#rbmanhemo_5S").prop('checked', false);
+                $("#rbmanhemo_5N").prop('checked', false);
+                $("#rbmanhemo_6S").prop('checked', false);
+                $("#rbmanhemo_6N").prop('checked', false);
+                $("#rbmanhemo_7S").prop('checked', false);
+                $("#rbmanhemo_7N").prop('checked', false);
+                $("#rbmanhemo_8S").prop('checked', false);
+                $("#rbmanhemo_8N").prop('checked', false);
+                $("#rbmanhemo_9S").prop('checked', false);
+                $("#rbmanhemo_9N").prop('checked', false);
+                $("#rbmanhemo_10S").prop('checked', false);
+                $("#rbmanhemo_10N").prop('checked', false);
+                $("#rbmanhemo_11S").prop('checked', false);
+                $("#rbmanhemo_11N").prop('checked', false);
+                $("#rbmanhemo_12S").prop('checked', false);
+                $("#rbmanhemo_12N").prop('checked', false);
+                $("#rbmanhemo_13S").prop('checked', false);
+                $("#rbmanhemo_13N").prop('checked', false);
+
+                /*Preguntas para todos los pacientes*/
+
+                $("#hospitalizado").val("");
+                $('#hospitalizado').change();
+                $("#unidadSaludHosp").val("");
+                $("#transfusion").val("");
+                $('#transfusion').change();
+                $("#transfusionEsp").val("");
+                $("#tomaMedicamento").val("");
+                $('#tomaMedicamento').change();
+                $("#cualMedicamento").val("");
+
+                /*Exámenes del laboratorio*/
+
+                $("#rbexamen_1S").prop('checked', false);
+                $("#rbexamen_1N").prop('checked', false);
+                $("#rbexamen_2S").prop('checked', false);
+                $("#rbexamen_2N").prop('checked', false);
+                $("#rbexamen_3S").prop('checked', false);
+                $("#rbexamen_3N").prop('checked', false);
+                $("#rbexamen_4S").prop('checked', false);
+                $("#rbexamen_4N").prop('checked', false);
+                $("#rbexamen_5S").prop('checked', false);
+                $("#rbexamen_5N").prop('checked', false);
+                $("#rbexamen_6S").prop('checked', false);
+                $("#rbexamen_6N").prop('checked', false);
+                $("#descOtroExamen").val("");
+
+                /*Tratamiento*/
+
+                $("#rbtratamiento_1S").prop('checked', false);
+                $("#rbtratamiento_1N").prop('checked', false);
+                $("#rbtratamiento_2S").prop('checked', false);
+                $("#rbtratamiento_2N").prop('checked', false);
+                $("#rbtratamiento_3S").prop('checked', false);
+                $("#rbtratamiento_3N").prop('checked', false);
+                $("#rbtratamiento_4S").prop('checked', false);
+                $("#rbtratamiento_4N").prop('checked', false);
+                $("#rbtratamiento_5S").prop('checked', false);
+                $("#rbtratamiento_5N").prop('checked', false);
+                $("#rbtratamiento_6S").prop('checked', false);
+                $("#rbtratamiento_6N").prop('checked', false);
+                $("#rbtratamiento_7S").prop('checked', false);
+                $("#rbtratamiento_7N").prop('checked', false);
+                $("#rbtratamiento_8S").prop('checked', false);
+                $("#rbtratamiento_8N").prop('checked', false);
+                $("#rbtratamiento_9S").prop('checked', false);
+                $("#rbtratamiento_9N").prop('checked', false);
+                $("#descOtroTratamiento").val("");
+
+                /*planes, historia y diagnostico*/
+
+                $("#planes").val("");
+                $("#historia").val("");
+                $("#dx").val("");
+                $('#dx').change();
+                $("#diagnostico1").val("");
+                $('#diagnostico1').change();
+                $("#diagnostico2").val("");
+                $('#diagnostico2').change();
+                $("#diagnostico3").val("");
+                $('#diagnostico3').change();
+                $("#diagnostico4").val("");
+                $('#diagnostico4').change();
+
+                /*fin de llenado de  checkbox*/
+                /*Cierre*/
+
+                $("#telefono").val("");
+                $("#cita").val("");
+                $("#medico").val("");
+                $('#medico').change();
+                $("#fechaMedico").val("");
+                $('#fechaMedico').change();
+                $("#horaMedico").val("");
+                $("#enfermeria").val("");
+                $('#enfermeria').change();
+                $("#fechaEnfermeria").val("");
+                $('#fechaEnfermeria').change();
+                $("#horaEnfermeria").val("");
             }
 
             function search()

@@ -49,22 +49,22 @@ var SearchPrintStickersMuestreoFormVal = function(){
                         } else {
                             total_ini = 0;
                             total_con = 0;
-                            imprimirEtiquetas(data[0].codigo_casa + "*.*1*5");
+                       //     imprimirEtiquetas(data[0].codigo_casa + "*.*1*5");
 
 
                             for (var p = 0; p < len; p++) {
 
                                 imprimirEtiquetas(data[p].codigo_participante + "*1*3");
-
+                                imprimirEtiquetas("100" + data[p].codigo_participante + "*1*4");
 
                             }
 
-                        for (var p = 0; p < len; p++) {
+                      //  for (var p = 0; p < len; p++) {
 
 
-                            imprimirEtiquetas("100" + data[p].codigo_participante + "*1*4");
 
-                        }
+
+                      //  }
 
                         }
                         $.unblockUI();

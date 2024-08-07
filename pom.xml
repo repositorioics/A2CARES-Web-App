@@ -25,6 +25,7 @@
         <commons-io-version>1.4</commons-io-version>
 		<commons-dbcp-version>1.4</commons-dbcp-version>
 		<junit-version>4.7</junit-version>
+		<commons-csv>1.8</commons-csv>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -312,15 +313,49 @@
                 <version>${org.springframework.security-version}</version>
             </dependency>
 
-        <!-- EXCEL -->
+        <!-- EXCEL
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.15</version>
+        </dependency>-->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>${commons-csv}</version>
+		</dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>2.2</version>
         </dependency>
-
-
-	</dependencies>
+    </dependencies>
 	<repositories>
 		<!-- For testing against latest Spring snapshots -->
 		<repository>

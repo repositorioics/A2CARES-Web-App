@@ -7,11 +7,7 @@ import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.laboratorio.RecepcionEnfermo;
-import ni.org.ics.webapp.dto.ConvalecientesEnfermoDto;
-import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
-import ni.org.ics.webapp.dto.OrdenLaboratorioDto;
-import ni.org.ics.webapp.dto.RecepcionEnfermoDto;
-import ni.org.ics.webapp.dto.MuestrasEnfermosDto;
+import ni.org.ics.webapp.dto.*;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.service.*;
 import ni.org.ics.webapp.web.utils.Constants;
@@ -61,6 +57,9 @@ public class MxEnfermosController {
     @Resource(name = "recepcionEnfermoService")
     private RecepcionEnfermoService recepcionEnfermoService;
 
+    @Resource(name = "informeFinDiaMedicosService")
+    private InformeFinDiaMedicosService informeFinDiaMedicosService;
+
     @RequestMapping(value = "list", method = RequestMethod.GET)
     public String list(Model model) throws ParseException {
         logger.debug("Mostrando lista de mx de enfermo para envio del dia de hoy en JSP");
@@ -71,6 +70,26 @@ public class MxEnfermosController {
         model.addAttribute("sitios", sitios);
 
         return "mxEnfermos/list";
+    }
+    @RequestMapping(value = "admisionPacientesMx2", method = RequestMethod.GET)
+    public String informeFinDiaMedicosMx(Model model) throws ParseException {
+        logger.debug("Mostrando lista de Informe Fin de Dia Medicos JSP");
+        List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+        model.addAttribute("numero_envio", numero_envio);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        model.addAttribute("sitios", sitios);
+
+        return "mxEnfermos/admisionPacientesMx2";
+    }
+    @RequestMapping(value = "procesosPendientesMuestreoA2cares", method = RequestMethod.GET)
+    public String procesosPendientesMuestreoA2cares(Model model) throws ParseException {
+        logger.debug("Mostrando lista de procesosPendientesMuestreoA2cares JSP");
+        List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+        model.addAttribute("numero_envio", numero_envio);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        model.addAttribute("sitios", sitios);
+
+        return "mxEnfermos/procesosPendientesMuestreo";
     }
 
     @RequestMapping(value = "controldeIngresosMx", method = RequestMethod.GET)
@@ -85,6 +104,30 @@ public class MxEnfermosController {
         return "mxEnfermos/controldeIngresosMx";
     }
 
+    @RequestMapping(value = "cuadrarRecepcionMuestreo", method = RequestMethod.GET)
+    public String cuadrarRecepcionMuestreo(Model model) throws ParseException {
+        logger.debug("Mostrando lista de muestras ingresadas Muestreo JSP");
+
+        List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+        model.addAttribute("numero_envio", numero_envio);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        model.addAttribute("sitios", sitios);
+
+        return "Serologia/cuadrarRecepcionMuestreo";
+    }
+
+    @RequestMapping(value = "diferenciasRecepcionMuestreo", method = RequestMethod.GET)
+    public String diferenciasRecepcionMuestreo(Model model) throws ParseException {
+        logger.debug("Mostrando lista de muestras diferenciasRecepcionMuestreo JSP");
+
+        List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+        model.addAttribute("numero_envio", numero_envio);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        model.addAttribute("sitios", sitios);
+
+        return "Serologia/diferenciasRecepcionMuestreo";
+    }
+
     @RequestMapping(value = "convalecientesMx", method = RequestMethod.GET)
     public String convalecientesMx(Model model) throws ParseException {
         logger.debug("Mostrando lista de convalecientes mx de enfermo JSP");
@@ -97,6 +140,111 @@ public class MxEnfermosController {
         return "mxEnfermos/convalecientesMxEnfermos";
     }
 
+    @RequestMapping(value = "admisionPacientesMx", method = RequestMethod.GET)
+    public String admisionPacientes(Model model) throws ParseException {
+        logger.debug("Mostrando lista de admision mx de enfermo JSP");
+
+        List<MessageResource> numero_envio = messageResourceService.getCatalogo("CAT_ENVIO_SEROLOGIA");
+        model.addAttribute("numero_envio", numero_envio);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        model.addAttribute("sitios", sitios);
+
+        return "mxEnfermos/admisionPacientesMx";
+    }
+
+    @RequestMapping(value = "getTablaSupervisor", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody List<MuestrasEnfermosDto> getTablaSupervisor(
+            @RequestParam(value="desde", required=false ) String desde
+            ,@RequestParam(value="hasta", required=false ) String hasta)
+            throws ParseException {
+
+        List<MuestrasEnfermosDto> enfermeria = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de muestras de muestreo - Supervisor");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(desde+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+            //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            enfermeria = this.recepcionEnfermoService.ObtenerMuestrasSupervisores(filtro);
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return enfermeria;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @RequestMapping(value = "getTablaEncuestador", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody List<MuestrasEnfermosDto> getTablaEncuestador(
+            @RequestParam(value="desde", required=false ) String desde
+            ,@RequestParam(value="hasta", required=false ) String hasta)
+            throws ParseException {
+
+        List<MuestrasEnfermosDto> enfermeria = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de muestras de muestreo - getTablaEncuestador");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(desde+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+            //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            enfermeria = this.recepcionEnfermoService.ObtenerMuestrasEncuestadores(filtro);
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return enfermeria;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+    @RequestMapping(value = "getTablaRecepcion", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody List<MuestrasEnfermosDto> getTablaRecepcion(
+            @RequestParam(value="desde", required=false ) String desde
+            ,@RequestParam(value="hasta", required=false ) String hasta)
+            throws ParseException {
+
+        List<MuestrasEnfermosDto> enfermeria = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de muestras de muestreo - getTablaRecepcion");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(desde+" 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            filtro.setFechaFin(DateUtil.StringToDate(hasta+" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+            //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            enfermeria = this.recepcionEnfermoService.ObtenerMuestrasRecepcionMuestreo(filtro);
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return enfermeria;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+
     @RequestMapping(value = "getTablasMxEnfermos", method = RequestMethod.GET, produces = "application/json")
    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
    public @ResponseBody List<MuestrasEnfermosDto> getTablasMxEnfermos(
@@ -105,6 +253,7 @@ public class MxEnfermosController {
             throws ParseException {
 
         List<MuestrasEnfermosDto> enfermeria = null;
+        List<OrdenLaboratorioDto> medicos = null;
         LocalDate localDate = LocalDate.now();
         try {
 
@@ -117,9 +266,23 @@ public class MxEnfermosController {
             UnicodeEscaper escaper = UnicodeEscaper.above(127);
          //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
           //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
-
-                 enfermeria = this.recepcionEnfermoService.getMxMuestraEnfermo(filtro);
-              //  return JsonUtil.createJsonResponse(enfermeria);
+              //   if (filtro.getFechaInicio() != null) {
+                     enfermeria = this.recepcionEnfermoService.getMxMuestraEnfermo(filtro);
+              //       medicos = this.recepcionEnfermoService.getMxOrdenLaboratorio(filtro);
+              //   }
+           /*      int i = 0;
+            if (enfermeria.size() > 0 && medicos.size() > 0) {
+                    for (MuestrasEnfermosDto enf : enfermeria) {
+                        if (!enf.getFis().equalsIgnoreCase(medicos.get(i).getFis())) {
+                            enf.setFis("<span class='badge badge-danger'>" + enf.getFis() + "</span>");
+                        }
+                        if (!enf.getFif().equalsIgnoreCase(medicos.get(i).getFif())) {
+                            enf.setFif("<span class='badge badge-danger'>" + enf.getFif() + "</span>");
+                        }
+                    }
+                    i++;
+            }*/
+            //return JsonUtil.createJsonResponse(enfermeriaDif);
             return enfermeria;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -222,7 +385,364 @@ public class MxEnfermosController {
         }
 
     }
+    @RequestMapping(value = "getAdmisionPacientes", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody
+    ResponseEntity<String> getAdmisionPacientes(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
 
+      //  List<AdmisionPacientesDto> adminP = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de admision de pacientes");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+            //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            List<AdmisionPacientesDto> adminP = this.recepcionEnfermoService.getAdmisionPacientesList(filtro.getFechaInicio(),filtro.getFechaFin()) ;
+            if (adminP.size() > 0) {
+                for (AdmisionPacientesDto aPacientes : adminP) {
+                    if (aPacientes.getPerteneceEstudio().equalsIgnoreCase("SI")) {
+                        aPacientes.setPerteneceEstudio("<span class='badge badge-success'>" + aPacientes.getPerteneceEstudio() + "</span>");
+                    }
+                    if (aPacientes.getPerteneceEstudio().equalsIgnoreCase("NO")) {
+                        aPacientes.setPerteneceEstudio( aPacientes.getPerteneceEstudio());
+                    }
+                    if (aPacientes.getFebril().equalsIgnoreCase("SI")) {
+                        aPacientes.setFebril("<span class='badge badge-danger'>" + aPacientes.getFebril() + "</span>");
+                    }
+                    if (aPacientes.getFebril().equalsIgnoreCase("SI")) {
+                        aPacientes.setFebril( aPacientes.getFebril() );
+                    }
+                    aPacientes.setNumeroHoja(aPacientes.getNumeroHoja());
+                    aPacientes.setEdad(aPacientes.getEdad());
+                    aPacientes.setSexo(aPacientes.getSexo());
+                    aPacientes.setFecha_registro(aPacientes.getFecha_registro());
+                    aPacientes.setRecordUser(aPacientes.getRecordUser());
+                }
+            }
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return JsonUtil.createJsonResponse(adminP);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @RequestMapping(value = "getDiferenciasMuestreo", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getDiferenciasMuestreo(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de getDiferenciasMuestreo");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+
+            List<MuestrasEnfermosDto> recepcion = this.recepcionEnfermoService.ObtenerDifSerologiavsSupervisorMuestreo(filtro);
+
+            if (recepcion.size() > 0) {
+                for (MuestrasEnfermosDto recep : recepcion) {
+                                recep.setParticipante("<span class='badge badge-danger'>" + recep.getParticipante() + "</span>");
+                }
+            }
+            return JsonUtil.createJsonResponse(recepcion);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "getDiferenciasSupervsSerologia", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getDiferenciasSupervsSerologia(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de getDiferenciasSupervsSerologia");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+
+            List<MuestrasEnfermosDto> recepcion = this.recepcionEnfermoService.ObtenerDifSupervisorvsSerologiaMuestreo(filtro);
+
+            if (recepcion.size() > 0) {
+                for (MuestrasEnfermosDto recep : recepcion) {
+                    recep.setParticipante("<span class='badge badge-danger'>" + recep.getParticipante() + "</span>");
+                }
+            }
+            return JsonUtil.createJsonResponse(recepcion);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @RequestMapping(value = "getDiferenciasEncuestadoresvsSerologia", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getDiferenciasEncuestadoresvsSerologia(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de getDiferenciasEncuestadoresvsSerologia");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+
+            List<MuestrasEnfermosDto> recepcion = this.recepcionEnfermoService.ObtenerDifEncuestadoresvsSerologiaMuestreo(filtro);
+
+            if (recepcion.size() > 0) {
+                for (MuestrasEnfermosDto recep : recepcion) {
+                    recep.setParticipante("<span class='badge badge-danger'>" + recep.getParticipante() + "</span>");
+                }
+            }
+            return JsonUtil.createJsonResponse(recepcion);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+    @RequestMapping(value = "getDiferenciasSerologiavsEncuestadores", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getDiferenciasSerologiavsEncuestadores(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de getDiferenciasSerologiavsEncuestadores");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+
+            List<MuestrasEnfermosDto> recepcion = this.recepcionEnfermoService.ObtenerDifSerologiavsEncuestadoresMuestreo(filtro);
+
+            if (recepcion.size() > 0) {
+                for (MuestrasEnfermosDto recep : recepcion) {
+                    recep.setParticipante("<span class='badge badge-danger'>" + recep.getParticipante() + "</span>");
+                }
+            }
+            return JsonUtil.createJsonResponse(recepcion);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+    @RequestMapping(value = "getDiferenciasSupervisorvsEncuestadores", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getDiferenciasSupervisorvsEncuestadores(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de getDiferenciasSupervisorvsEncuestadores");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+
+            List<MuestrasEnfermosDto> recepcion = this.recepcionEnfermoService.ObtenerDifSupervisorvsEncuestadoresMuestreo(filtro);
+
+            if (recepcion.size() > 0) {
+                for (MuestrasEnfermosDto recep : recepcion) {
+                    recep.setParticipante("<span class='badge badge-danger'>" + recep.getParticipante() + "</span>");
+                }
+            }
+            return JsonUtil.createJsonResponse(recepcion);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @RequestMapping(value = "getDiferenciasEncuestadoresvsSupervisor", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<String> getDiferenciasEncuestadoresvsSupervisor(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de getDiferenciasEncuestadoresvsSupervisor");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+
+            List<MuestrasEnfermosDto> recepcion = this.recepcionEnfermoService.ObtenerDifEncuestadoresvsSupervisorMuestreo(filtro);
+
+            if (recepcion.size() > 0) {
+                for (MuestrasEnfermosDto recep : recepcion) {
+                    recep.setParticipante("<span class='badge badge-danger'>" + recep.getParticipante() + "</span>");
+                }
+            }
+            return JsonUtil.createJsonResponse(recepcion);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @RequestMapping(value = "getProcesosPendientesMuestreo", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody
+    ResponseEntity<String> getProcesosPendientesMuestreo(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
+
+        //  List<AdmisionPacientesDto> adminP = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de procesos pendientes muestreo");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+              Date fdesde = DateUtil.StringToDate(fechaInicioCons + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+              Date fhasta = DateUtil.StringToDate(fechaFinCons + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            List<ProcesosPendientesMuestreoDto> adminP = this.recepcionEnfermoService.getProcesosPendientesMuestreoList(fdesde, fhasta) ;
+            if (adminP.size() > 0) {
+                for (ProcesosPendientesMuestreoDto aPacientes : adminP) {
+                    if (aPacientes.getMx().equalsIgnoreCase("Si")) {
+                        aPacientes.setMx("<span class='badge badge-danger'>" + aPacientes.getMx() + "</span>");
+                    }else
+                    {
+                        aPacientes.setMx(aPacientes.getMx());
+                    }
+
+                    if (aPacientes.getEnc_casa().equalsIgnoreCase("Si")) {
+                        aPacientes.setEnc_casa("<span class='badge badge-danger'>" + aPacientes.getEnc_casa() + "</span>");
+                    }
+                    else
+                    {
+                        aPacientes.setEnc_casa(aPacientes.getEnc_casa());
+                    }
+                    if (aPacientes.getEnc_part().equalsIgnoreCase("Si")) {
+                        aPacientes.setEnc_part("<span class='badge badge-danger'>" + aPacientes.getEnc_part() + "</span>");
+                    }else
+                    {
+                        aPacientes.setEnc_part(aPacientes.getEnc_part());
+                    }
+                    if (aPacientes.getPyt().equalsIgnoreCase("Si")) {
+                        aPacientes.setPyt("<span class='badge badge-danger'>" + aPacientes.getPyt() + "</span>");
+                    }else
+                    {
+                        aPacientes.setPyt(aPacientes.getPyt());
+                    }
+                    if (aPacientes.getEnc_satis().equalsIgnoreCase("Si")) {
+                        aPacientes.setEnc_satis("<span class='badge badge-danger'>" + aPacientes.getEnc_satis() + "</span>");
+                    }else
+                    {
+                        aPacientes.setEnc_satis(aPacientes.getEnc_satis());
+                    }
+                    if (aPacientes.getObsequio().equalsIgnoreCase("Si")) {
+                        aPacientes.setObsequio("<span class='badge badge-danger'>" + aPacientes.getObsequio() + "</span>");
+                    }else
+                    {
+                        aPacientes.setObsequio(aPacientes.getObsequio());
+                    }
+                    if (aPacientes.getConv().equalsIgnoreCase("Si")) {
+                        aPacientes.setConv("<span class='badge badge-danger'>" + aPacientes.getConv() + "</span>");
+                    }else
+                    {
+                        aPacientes.setConv(aPacientes.getConv());
+                    }
+
+                    aPacientes.setCodigo_casa(aPacientes.getCodigo_casa());
+                    aPacientes.setCodigo(aPacientes.getCodigo());
+                    aPacientes.setSector(aPacientes.getSector());
+                    aPacientes.setBarrio(aPacientes.getBarrio());
+                }
+            }
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return JsonUtil.createJsonResponse(adminP);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @RequestMapping(value = "getInformeFinDiaMedicos", method = RequestMethod.GET, produces = "application/json")
+    // public @ResponseBody ResponseEntity<MuestrasEnfermosDto> getTablasMxEnfermos(
+    public @ResponseBody
+    ResponseEntity<String> getInformeFinDiaMedicos(
+            @RequestParam(value="fechaInicioCons", required=false ) String fechaInicioCons,
+            @RequestParam(value="fechaFinCons", required=false ) String fechaFinCons) throws ParseException {
+
+        //  List<AdmisionPacientesDto> adminP = null;
+        LocalDate localDate = LocalDate.now();
+        try {
+
+            logger.debug("buscar datos de Informe Fin de Dia Médicos");
+            FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+            //   filtro.setCodigoMx(muestra);
+            //  filtro.setParticipante(participante);
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicioCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFinCons, Constants.STRING_FORMAT_DD_MM_YYYY));
+            UnicodeEscaper escaper = UnicodeEscaper.above(127);
+            //   Date fdesde = DateUtil.StringToDate(desde + " 00:00:00", "dd/MM/yyyy HH:mm:ss");
+            //  Date fhasta = DateUtil.StringToDate(hasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+
+            List<InformeFinDiaMedicosDto> adminP = this.informeFinDiaMedicosService.getInformeFinDiaMedicosListar(filtro);
+       /*     if (adminP.size() > 0) {
+                for (AdmisionPacientesDto aPacientes : adminP) {
+                    if (aPacientes.getPerteneceEstudio().equalsIgnoreCase("SI")) {
+                        aPacientes.setPerteneceEstudio("<span class='badge badge-success'>" + aPacientes.getPerteneceEstudio() + "</span>");
+                    }
+                    if (aPacientes.getPerteneceEstudio().equalsIgnoreCase("NO")) {
+                        aPacientes.setPerteneceEstudio( aPacientes.getPerteneceEstudio());
+                    }
+                    if (aPacientes.getFebril().equalsIgnoreCase("SI")) {
+                        aPacientes.setFebril("<span class='badge badge-danger'>" + aPacientes.getFebril() + "</span>");
+                    }
+                    if (aPacientes.getFebril().equalsIgnoreCase("SI")) {
+                        aPacientes.setFebril( aPacientes.getFebril() );
+                    }
+                    aPacientes.setNumeroHoja(aPacientes.getNumeroHoja());
+                    aPacientes.setEdad(aPacientes.getEdad());
+                    aPacientes.setSexo(aPacientes.getSexo());
+                    aPacientes.setFecha_registro(aPacientes.getFecha_registro());
+                    aPacientes.setRecordUser(aPacientes.getRecordUser());
+                }
+            }*/
+            //  return JsonUtil.createJsonResponse(enfermeria);
+            return JsonUtil.createJsonResponse(adminP);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
     public String search(Model model) throws ParseException {
@@ -279,7 +799,7 @@ public class MxEnfermosController {
             String evento = "";
 
             try {
-                evento = this.recepcionEnfermoService.ObtenerEvento(idRecepcion).toString();
+              //  evento = this.recepcionEnfermoService.ObtenerEvento1(idRecepcion).toString();
 
 
             }catch (Exception e){
@@ -294,11 +814,16 @@ public class MxEnfermosController {
                 recepcionEnfermoDto.setNombreCompleto(recepcionEnfermo.getParticipante().getNombreCompleto());
                 recepcionEnfermoDto.setFechaRecepcion(DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY));
                 recepcionEnfermoDto.setFis(DateUtil.DateToString(recepcionEnfermo.getFis(), Constants.STRING_FORMAT_DD_MM_YYYY));
+
                 recepcionEnfermoDto.setFif(DateUtil.DateToString(recepcionEnfermo.getFif(), Constants.STRING_FORMAT_DD_MM_YYYY));
+                logger.debug("fif :"+ recepcionEnfermoDto.getFif());
+                logger.debug("evento :"+ recepcionEnfermoDto.getEvento());
+                logger.debug("codigo_mx :"+ recepcionEnfermoDto.getCodigoBarra());
                 recepcionEnfermoDto.setCategoria(recepcionEnfermo.getCategoria());
                 recepcionEnfermoDto.setTipoMuestra(recepcionEnfermo.getTipoMuestra());
                 recepcionEnfermoDto.setConsulta(recepcionEnfermo.getConsulta());
-                recepcionEnfermoDto.setEvento(evento.substring(1,2));
+              //  recepcionEnfermoDto.setEvento(evento.substring(1,2));
+                recepcionEnfermoDto.setEvento(recepcionEnfermoDto.getEvento());
                 recepcionEnfermoDto.setObservacion(recepcionEnfermo.getObservacion());
                 recepcionEnfermoDto.setVolumen(recepcionEnfermo.getVolumen());
                 recepcionEnfermoDto.setCodigoCasa(recepcionEnfermo.getParticipante().getCasa().getCodigo());
@@ -314,6 +839,8 @@ public class MxEnfermosController {
                 }
                 
                 model.addAttribute("recepcionEnfermo", recepcionEnfermoDto);
+                model.addAttribute("fif", recepcionEnfermoDto.getFif());
+                model.addAttribute("evento", recepcionEnfermo.getEvento());
                 model.addAttribute("catCategoria", catCategoria);
                 model.addAttribute("catTipoConsulta", catTipoConsulta);
                 model.addAttribute("catFaseMuestra", catFaseMuestra);
@@ -351,39 +878,58 @@ public class MxEnfermosController {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
 
-        Date  fechaF2 = formato.parse("2023-04-18");
+        Date  fechaF2 = formato.parse("2024-04-15");
 
 
         try {
             ultimregRec = this.recepcionEnfermoService.getMxRecepcionRegUltimo(codigo);
-            Date  fechaI1 = formato.parse(ultimregRec.get(0).getFechaRecepcion().toString());
-            map.put("fis",ultimregRec.get(0).getFis());
-            map.put("fif",ultimregRec.get(0).getFif());
-            map.put("categoria",ultimregRec.get(0).getCategoria());
-            map.put("consulta",ultimregRec.get(0).getConsulta() );
-            map.put("tipoMuestra",ultimregRec.get(0).getTipoMuestra());
+            if (ultimregRec.size() > 0 ) {
 
-            if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3")) {
-                evento = this.recepcionEnfermoService.ObtenerEvento1(codigo).toString();
-                evento = evento.substring(1, 2);
-                ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento1(codigo).toString();
+                Date fechaI1 = formato.parse(ultimregRec.get(0).getFechaRecepcion().toString());
+                map.put("fis", ultimregRec.get(0).getFis());
+                map.put("fif", ultimregRec.get(0).getFif());
+                map.put("categoria", ultimregRec.get(0).getCategoria());
+                map.put("consulta", ultimregRec.get(0).getConsulta());
+                map.put("tipoMuestra", ultimregRec.get(0).getTipoMuestra());
+
+                if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3")) {
+                    evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
+                    evento = evento.substring(1, 2);
+                    ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento1(codigo).toString();
+                }
+                if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3") && fechaI1.after(fechaF2)) {
+                    evento = this.recepcionEnfermoService.ObtenerEvento1(codigo).toString();
+                    evento = evento.substring(1, 2);
+                    ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
+                }
+                if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("1")) {
+                    if(ultimregRec.get(0).getCodigoBarra().substring(8,11).equals("R23")){
+                        evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
+                    }else{
+                        evento = this.recepcionEnfermoService.ObtenerEvento1(codigo).toString();
+                    }
+                    evento = evento.substring(1, 2);
+                    ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
+                }
+
+
+                positivo = ultima_consulta;
+                if(ultimregRec.get(0).getCodigoBarra().substring(8,11).equals("R22") && ultimregRec.get(0).getConsulta().equalsIgnoreCase("3")){
+                    map.put("consulta", "");
+                    map.put("evento", "A");
+                }
+                if(ultimregRec.get(0).getCodigoBarra().substring(8,11).equals("R23") && ultimregRec.get(0).getConsulta().equalsIgnoreCase("3")){
+                    map.put("consulta", "");
+                    map.put("evento", "A");
+                }else{
+                    map.put("evento", evento);
+                }
+
+
+
+                map.put("ultima_consulta", ultima_consulta);
+
             }
-           if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("3") && fechaI1.after(fechaF2)) {
-                evento = this.recepcionEnfermoService.ObtenerEvento(codigo).toString();
-                evento = evento.substring(1, 2);
-                ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
-            }
-            if (ultimregRec.get(0).getConsulta().equalsIgnoreCase("1")) {
-                evento = this.recepcionEnfermoService.ObtenerEvento1(codigo).toString();
-                evento = evento.substring(1, 2);
-                ultima_consulta = this.recepcionEnfermoService.Ultima_consulta_evento(codigo).toString();
-            }
-
-
-            positivo = ultima_consulta;
-
-            map.put("ultima_consulta",ultima_consulta);
-            map.put("evento",evento);
 
         }catch (Exception e){
             logger.error(e.getMessage());
@@ -455,7 +1001,7 @@ public class MxEnfermosController {
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
 
-            Date  fechaF2 = formato.parse("2023-04-18");
+            Date  fechaF2 = formato.parse("2024-04-15");
             RecepcionEnfermo recepcionEnfermo = new RecepcionEnfermo();
             String nameComputer = InetAddress.getLocalHost().getHostName();
             String ComputerIp = InetAddress.getLocalHost().getHostAddress();
@@ -463,6 +1009,14 @@ public class MxEnfermosController {
             ultimregRec = this.recepcionEnfermoService.getMxRecepcionRegUltimo(codigoParticipante);
 
            // Date  fechaI1 = formato.parse(ultimregRec.get(0).getFechaRecepcion().toString());
+            Date fechaI1;
+            LocalDate localDate = LocalDate.now();
+            if (ultimregRec.size() > 0) {
+                 fechaI1 = formato.parse(ultimregRec.get(0).getFechaRecepcion().toString());
+            }else{
+                fechaI1 = formato.parse(localDate.toString());
+            }
+
             Participante participante = participanteService.getParticipanteByCodigo(codigoParticipante);
             if (tiporequest.equals("false")){//Guardar Nuevo Registro
                 if (!recepcionEnfermoService.existeSerologia(DateUtil.StringToDate(fecha, Constants.STRING_FORMAT_DD_MM_YYYY), codigoParticipante)){
@@ -502,6 +1056,7 @@ public class MxEnfermosController {
                            pp = participanteProcesosService.getParticipante(codigoParticipante);
                            pp.setPendienteMxTx("1");
                            participanteProcesosService.saveOrUpdateParticipanteProc(pp);
+                           codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "24", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
 
                         //  codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
                    // if (faseMuestra.equals("2")) {
@@ -520,12 +1075,24 @@ public class MxEnfermosController {
 
                     }
                     if ( faseMuestra.equals("2") ) {
-                        ParticipanteProcesos pp1 = new ParticipanteProcesos();
-                        pp1 = participanteProcesosService.getParticipante(codigoParticipante);
-                        pp1.setPendienteMxTx("0");
-                        participanteProcesosService.saveOrUpdateParticipanteProc(pp1);
+
+                            ParticipanteProcesos pp1 = new ParticipanteProcesos();
+                            pp1 = participanteProcesosService.getParticipante(codigoParticipante);
+                            pp1.setPendienteMxTx("0");
+                            participanteProcesosService.saveOrUpdateParticipanteProc(pp1);
+                      //  if (faseMuestra.equals("2") && fechaI1.after(fechaF2)) {
+                        if (faseMuestra.equals("2") ) {
+                            codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "24", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                        }else
+                        {
+                            codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                        }
                     }
-                    codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                    if (ultimregRec.size() > 0) {
+                        if (ultimregRec.get(0).getCodigoBarra().substring(8, 11).equals("R24")) {
+                            codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "24", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                        }
+                    }
                     recepcionEnfermo.setCodigo(codigoMx);
                     recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
 
@@ -561,10 +1128,53 @@ public class MxEnfermosController {
                 String anio = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), "YY");
 
                 String fToma = DateUtil.DateToString(recepcionEnfermo.getFechaRecepcion(), Constants.STRING_FORMAT_DD_MM_YYYY);
-                String codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                String codigoMx=""; //= String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
 
+              //  recepcionEnfermo.setCodigo(codigoMx);
+              //  recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
+                if (faseMuestra.equals("1")) {
+
+                    ParticipanteProcesos pp = new ParticipanteProcesos();
+                    pp = participanteProcesosService.getParticipante(codigoParticipante);
+                    pp.setPendienteMxTx("1");
+                    participanteProcesosService.saveOrUpdateParticipanteProc(pp);
+
+                    //  codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                    // if (faseMuestra.equals("2")) {
+
+                    //     if (  fechaI1.before(fechaF2) ) {
+
+
+                    //    }
+                    //    if ( fechaI1.after(fechaF2)) {
+
+                    // codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "22", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                    // }
+
+
+
+
+                }
+                if ( faseMuestra.equals("2") ) {
+                    ParticipanteProcesos pp1 = new ParticipanteProcesos();
+                    pp1 = participanteProcesosService.getParticipante(codigoParticipante);
+                    pp1.setPendienteMxTx("0");
+                    participanteProcesosService.saveOrUpdateParticipanteProc(pp1);
+                }
+
+                if(ultimregRec.get(0).getCodigoBarra().substring(8,11).equals("R23")){
+                    codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                }
+                if(ultimregRec.get(0).getCodigoBarra().substring(8,11).equals("R24")){
+                    codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "24", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
+                }
+
+              //  codigoMx = String.format(Constants.CODIGO_MX_FORMAT, recepcionEnfermo.getParticipante().getCodigo(), recepcionEnfermo.getTipoTubo(), "23", recepcionEnfermo.getEvento(), recepcionEnfermo.getTipoMuestra());
                 recepcionEnfermo.setCodigo(codigoMx);
                 recepcionEnfermo.setCodigoBarra(String.format(Constants.CODIGO_BARRA_FORMAT, fis, fToma, codigoMx));
+
+
+
                 recepcionEnfermoService.saveOrUpdateRecepcionEnfermo(recepcionEnfermo);
                 return JsonUtil.createJsonResponse(recepcionEnfermo);
             }

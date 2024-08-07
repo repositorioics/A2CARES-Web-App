@@ -36,8 +36,8 @@ public class MuestrasEnfermosDto extends BaseMetaData implements Serializable {
     private String consulta; //Inicial, Seguimiento, Convaleciente
     private String tipoMuestra; //Aguda, Convalecient
     //private Date recordDate;
-    private String recordUser;
-
+    private String recordUser1;
+    private String usuarioRegistro;
 
     public String getidMuestra() {
         return idMuestra;
@@ -131,12 +131,17 @@ public class MuestrasEnfermosDto extends BaseMetaData implements Serializable {
         this.recordDate = recordDate;
     }*/
 
-    public String getRecordUser() {
-        return recordUser;
+    public String getRecordUser1() {
+        return recordUser1;
     }
-    public void setRecordUser(String recordUser) {
-        this.recordUser = recordUser;
+    public void setRecordUser1(String recordUser1) {
+        this.recordUser1 = recordUser1;
     }
-
+    public String getUsuarioRegistro() {
+        return usuarioRegistro;
+    }
+    public void setUsuarioRegistro(String usuarioRegistro) {
+        this.usuarioRegistro = usuarioRegistro;
+    }
 
 }

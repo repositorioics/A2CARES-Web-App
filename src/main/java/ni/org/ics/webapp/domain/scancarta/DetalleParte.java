@@ -6,6 +6,7 @@ import ni.org.ics.webapp.domain.catalogs.Parte;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by ICS on 14/01/2020.
@@ -22,6 +23,8 @@ public class  DetalleParte extends BaseMetaData implements Auditable {
     Parte parte;
     private boolean acepta;
     private boolean anulada;
+    private String usuarioModifica;
+    private Date fechaModifica;
 
     public DetalleParte(){}
 
@@ -73,6 +76,24 @@ public class  DetalleParte extends BaseMetaData implements Auditable {
 
     public void setAnulada(boolean anulada) {
         this.anulada = anulada;
+    }
+
+    @Column(name = "USUARIO_MODIFICA", nullable = true, length = 255)
+    public String getUsuarioModifica() {
+        return usuarioModifica;
+    }
+
+    public void setUsuarioModifica(String usuarioModifica) {
+        this.usuarioModifica = usuarioModifica;
+    }
+
+    @Column(name = "FECHA_MODIFICACION", nullable = true)
+    public Date getFechaModifica() {
+        return fechaModifica;
+    }
+
+    public void setFechaModifica(Date fechaModifica) {
+        this.fechaModifica = fechaModifica;
     }
 
     @Override

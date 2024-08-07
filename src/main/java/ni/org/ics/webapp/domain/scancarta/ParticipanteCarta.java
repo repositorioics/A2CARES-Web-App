@@ -47,6 +47,9 @@ public class ParticipanteCarta extends BaseMetaData implements Auditable {
 
     private boolean anulada;
     private String pq_anulada;
+    private String usuarioModifica;
+    private Date fechaModifica;
+
 
     @Id
     @Column(name = "IDPARTICIPANTECARTA", nullable = false)
@@ -282,5 +285,23 @@ public class ParticipanteCarta extends BaseMetaData implements Auditable {
 
     public void setPq_anulada(String pq_anulada) {
         this.pq_anulada = pq_anulada;
+    }
+
+    @Column(name = "USUARIO_MODIFICA", nullable = true, length = 255)
+    public String getUsuarioModifica() {
+        return usuarioModifica;
+    }
+
+    public void setUsuarioModifica(String usuarioModifica) {
+        this.usuarioModifica = usuarioModifica;
+    }
+
+    @Column(name = "FECHA_MODIFICACION", nullable = true)
+    public Date getFechaModifica() {
+        return fechaModifica;
+    }
+
+    public void setFechaModifica(Date fechaModifica) {
+        this.fechaModifica = fechaModifica;
     }
 }

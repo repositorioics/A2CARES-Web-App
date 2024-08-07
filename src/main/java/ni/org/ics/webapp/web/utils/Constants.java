@@ -7,11 +7,13 @@ public class Constants {
     public static final String TPR_REPORTECARTA  = "REPORTECARTA";
     public static final String TPR_ENVIOREPORTE  = "ENVIOREPORTE";
     public static final String TPR_ENVIOREPORTEBHC  = "ENVIOREPORTEBHC";
+    public static final String TPR_ENVIOREPORTEBHC1  = "ENVIOREPORTEBHC1";
     public static final String TPR_REPORTERETIRO = "RETIROREPORTE";
     public static final String TPR_DATOSGENERALES = "DATOSGENERALES";
     public static final String TPR_ENVIO_ENFERMO  = "ENVIO_ENFERMO";
     public static final String TPR_CONVALECIENTES_ENFERMO  = "CONVALECIENTES_ENFERMO";
     public static final String TPR_CONTROL_ASISTENCIA  = "CONTROL_ASISTENCIA";
+    public static final String TPR_IMPRIMIR_BHC_BC6000  = "IMPRIMIR_BHC_BC6000";
 
     public static final String TIPO_TUBO_SEROLOGIA = "R";
 

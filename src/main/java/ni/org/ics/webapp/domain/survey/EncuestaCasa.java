@@ -19,29 +19,29 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
     private String codigo;
     private Casa casa;
     private String participante; //participantes encuestado
-    private int cuantasPersonas; //1
-    private int cuantasMujeres; //2
-    private String edadMujer1;
-    private String edadMujer2;
-    private String edadMujer3;
-    private String edadMujer4;
-    private String edadMujer5;
-    private String edadMujer6;
-    private String edadMujer7;
-    private String edadMujer8;
-    private String edadMujer9;
-    private String edadMujer10;
+    private Integer cuantasPersonas; //1
+    private Integer cuantasMujeres; //2
+    private Integer edadMujer1;
+    private Integer edadMujer2;
+    private Integer edadMujer3;
+    private Integer edadMujer4;
+    private Integer edadMujer5;
+    private Integer edadMujer6;
+    private Integer edadMujer7;
+    private Integer edadMujer8;
+    private Integer edadMujer9;
+    private Integer edadMujer10;
     private int cuantosHombres; //3
-    private String edadHombre1;
-    private String edadHombre2;
-    private String edadHombre3;
-    private String edadHombre4;
-    private String edadHombre5;
-    private String edadHombre6;
-    private String edadHombre7;
-    private String edadHombre8;
-    private String edadHombre9;
-    private String edadHombre10;
+    private Integer edadHombre1;
+    private Integer edadHombre2;
+    private Integer edadHombre3;
+    private Integer edadHombre4;
+    private Integer edadHombre5;
+    private Integer edadHombre6;
+    private Integer edadHombre7;
+    private Integer edadHombre8;
+    private Integer edadHombre9;
+    private Integer edadHombre10;
     private int cantidadCuartos;
     private int cantidadCuartosDormir;
     private String problemaAgua; //6
@@ -165,7 +165,11 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
     private String personaFumaDentroCasa; //35
     private String tieneRecoleccionBasura; //36
     private Integer cuantasVecesRecBasura; //37
-    private String dondePasaRecBasura; //38
+    private String dondePasaRecBasura; //32
+    private String dondePasaRecBasuraOtros; //32
+    private String vistoAnimalesSalvajes; //33
+    private String vistoAnimalesSalvajesOtros; //33
+
 
     @Id
     @Column(name = "CODIGO", nullable = false, length = 50)
@@ -215,93 +219,93 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
         this.cuantasMujeres = cuantasMujeres;
     }
 
-    @Column(name = "EDAD_F1", length = 10)
-    public String getEdadMujer1() {
+    @Column(name = "EDAD_F1")
+    public Integer getEdadMujer1() {
         return edadMujer1;
     }
 
-    public void setEdadMujer1(String edadMujer1) {
+    public void setEdadMujer1(Integer edadMujer1) {
         this.edadMujer1 = edadMujer1;
     }
 
-    @Column(name = "EDAD_F2", length = 10)
-    public String getEdadMujer2() {
+    @Column(name = "EDAD_F2")
+    public Integer getEdadMujer2() {
         return edadMujer2;
     }
 
-    public void setEdadMujer2(String edadMujer2) {
+    public void setEdadMujer2(Integer edadMujer2) {
         this.edadMujer2 = edadMujer2;
     }
 
-    @Column(name = "EDAD_F3", length = 10)
-    public String getEdadMujer3() {
+    @Column(name = "EDAD_F3")
+    public Integer getEdadMujer3() {
         return edadMujer3;
     }
 
-    public void setEdadMujer3(String edadMujer3) {
+    public void setEdadMujer3(Integer edadMujer3) {
         this.edadMujer3 = edadMujer3;
     }
 
-    @Column(name = "EDAD_F4", length = 10)
-    public String getEdadMujer4() {
+    @Column(name = "EDAD_F4")
+    public Integer getEdadMujer4() {
         return edadMujer4;
     }
 
-    public void setEdadMujer4(String edadMujer4) {
+    public void setEdadMujer4(Integer edadMujer4) {
         this.edadMujer4 = edadMujer4;
     }
 
-    @Column(name = "EDAD_F5", length = 10)
-    public String getEdadMujer5() {
+    @Column(name = "EDAD_F5")
+    public Integer getEdadMujer5() {
         return edadMujer5;
     }
 
-    public void setEdadMujer5(String edadMujer5) {
+    public void setEdadMujer5(Integer edadMujer5) {
         this.edadMujer5 = edadMujer5;
     }
 
-    @Column(name = "EDAD_F6", length = 10)
-    public String getEdadMujer6() {
+    @Column(name = "EDAD_F6")
+    public Integer getEdadMujer6() {
         return edadMujer6;
     }
 
-    public void setEdadMujer6(String edadMujer6) {
+    public void setEdadMujer6(Integer edadMujer6) {
         this.edadMujer6 = edadMujer6;
     }
 
-    @Column(name = "EDAD_F7", length = 10)
-    public String getEdadMujer7() {
+    @Column(name = "EDAD_F7")
+    public Integer getEdadMujer7() {
         return edadMujer7;
     }
 
-    public void setEdadMujer7(String edadMujer7) {
+    public void setEdadMujer7(Integer edadMujer7) {
         this.edadMujer7 = edadMujer7;
     }
 
-    @Column(name = "EDAD_F8", length = 10)
-    public String getEdadMujer8() {
+    @Column(name = "EDAD_F8")
+    public Integer getEdadMujer8() {
         return edadMujer8;
     }
 
-    public void setEdadMujer8(String edadMujer8) {
+    public void setEdadMujer8(Integer edadMujer8) {
         this.edadMujer8 = edadMujer8;
     }
 
-    @Column(name = "EDAD_F9", length = 10)
-    public String getEdadMujer9() {
+    @Column(name = "EDAD_F9")
+    public Integer getEdadMujer9() {
         return edadMujer9;
     }
 
-    public void setEdadMujer9(String edadMujer9) {
+    public void setEdadMujer9(Integer edadMujer9) {
         this.edadMujer9 = edadMujer9;
     }
 
-    @Column(name = "EDAD_F10", length = 10)
-    public String getEdadMujer10() {
+    @Column(name = "EDAD_F10")
+    public Integer getEdadMujer10() {
         return edadMujer10;
     }
 
-    public void setEdadMujer10(String edadMujer10) {
+    public void setEdadMujer10(Integer edadMujer10) {
         this.edadMujer10 = edadMujer10;
     }
 
@@ -314,93 +318,93 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
         this.cuantosHombres = cuantosHombres;
     }
 
-    @Column(name = "EDAD_M1", length = 10)
-    public String getEdadHombre1() {
+    @Column(name = "EDAD_M1")
+    public Integer getEdadHombre1() {
         return edadHombre1;
     }
 
-    public void setEdadHombre1(String edadHombre1) {
+    public void setEdadHombre1(Integer edadHombre1) {
         this.edadHombre1 = edadHombre1;
     }
 
-    @Column(name = "EDAD_M2", length = 10)
-    public String getEdadHombre2() {
+    @Column(name = "EDAD_M2")
+    public Integer getEdadHombre2() {
         return edadHombre2;
     }
 
-    public void setEdadHombre2(String edadHombre2) {
+    public void setEdadHombre2(Integer edadHombre2) {
         this.edadHombre2 = edadHombre2;
     }
 
-    @Column(name = "EDAD_M3", length = 10)
-    public String getEdadHombre3() {
+    @Column(name = "EDAD_M3")
+    public Integer getEdadHombre3() {
         return edadHombre3;
     }
 
-    public void setEdadHombre3(String edadHombre3) {
+    public void setEdadHombre3(Integer edadHombre3) {
         this.edadHombre3 = edadHombre3;
     }
 
-    @Column(name = "EDAD_M4", length = 10)
-    public String getEdadHombre4() {
+    @Column(name = "EDAD_M4")
+    public Integer getEdadHombre4() {
         return edadHombre4;
     }
 
-    public void setEdadHombre4(String edadHombre4) {
+    public void setEdadHombre4(Integer edadHombre4) {
         this.edadHombre4 = edadHombre4;
     }
 
-    @Column(name = "EDAD_M5", length = 10)
-    public String getEdadHombre5() {
+    @Column(name = "EDAD_M5")
+    public Integer getEdadHombre5() {
         return edadHombre5;
     }
 
-    public void setEdadHombre5(String edadHombre5) {
+    public void setEdadHombre5(Integer edadHombre5) {
         this.edadHombre5 = edadHombre5;
     }
 
-    @Column(name = "EDAD_M6", length = 10)
-    public String getEdadHombre6() {
+    @Column(name = "EDAD_M6")
+    public Integer getEdadHombre6() {
         return edadHombre6;
     }
 
-    public void setEdadHombre6(String edadHombre6) {
+    public void setEdadHombre6(Integer edadHombre6) {
         this.edadHombre6 = edadHombre6;
     }
 
-    @Column(name = "EDAD_M7", length = 10)
-    public String getEdadHombre7() {
+    @Column(name = "EDAD_M7")
+    public Integer getEdadHombre7() {
         return edadHombre7;
     }
 
-    public void setEdadHombre7(String edadHombre7) {
+    public void setEdadHombre7(Integer edadHombre7) {
         this.edadHombre7 = edadHombre7;
     }
 
-    @Column(name = "EDAD_M8", length = 10)
-    public String getEdadHombre8() {
+    @Column(name = "EDAD_M8")
+    public Integer getEdadHombre8() {
         return edadHombre8;
     }
 
-    public void setEdadHombre8(String edadHombre8) {
+    public void setEdadHombre8(Integer edadHombre8) {
         this.edadHombre8 = edadHombre8;
     }
 
-    @Column(name = "EDAD_M9", length = 10)
-    public String getEdadHombre9() {
+    @Column(name = "EDAD_M9")
+    public Integer getEdadHombre9() {
         return edadHombre9;
     }
 
-    public void setEdadHombre9(String edadHombre9) {
+    public void setEdadHombre9(Integer edadHombre9) {
         this.edadHombre9 = edadHombre9;
     }
 
-    @Column(name = "EDAD_M10", length = 10)
-    public String getEdadHombre10() {
+    @Column(name = "EDAD_M10")
+    public Integer getEdadHombre10() {
         return edadHombre10;
     }
 
-    public void setEdadHombre10(String edadHombre10) {
+    public void setEdadHombre10(Integer edadHombre10) {
         this.edadHombre10 = edadHombre10;
     }
 
@@ -1519,6 +1523,33 @@ public class EncuestaCasa extends BaseMetaData implements Auditable {
     public void setDondePasaRecBasura(String dondePasaRecBasura) {
         this.dondePasaRecBasura = dondePasaRecBasura;
     }
+
+    @Column(name = "DONDE_RECOLECCION_BAS_OTROS", nullable = true)
+    public String getDondePasaRecBasuraOtros() {
+        return dondePasaRecBasuraOtros;
+    }
+
+    public void setDondePasaRecBasuraOtros(String dondePasaRecBasuraOtros) {
+        this.dondePasaRecBasuraOtros = dondePasaRecBasuraOtros;
+    }
+
+    @Column(name = "VISTO_ANIMALES_SALVAJES", nullable = true)
+    public String getVistoAnimalesSalvajes() {
+        return vistoAnimalesSalvajes;
+    }
+
+    public void setVistoAnimalesSalvajes(String vistoAnimalesSalvajes) {
+        this.vistoAnimalesSalvajes = vistoAnimalesSalvajes;
+    }
+    @Column(name = "VISTO_ANIMALES_SALVAJES_OTROS", nullable = true)
+    public String getVistoAnimalesSalvajesOtros() {
+        return vistoAnimalesSalvajesOtros;
+    }
+
+    public void setVistoAnimalesSalvajesOtros(String vistoAnimalesSalvajesOtros) {
+        this.vistoAnimalesSalvajesOtros = vistoAnimalesSalvajesOtros;
+    }
+
 
     @Override
     public boolean isFieldAuditable(String fieldname) {

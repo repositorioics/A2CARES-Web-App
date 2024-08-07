@@ -51,7 +51,7 @@ public class BuildEntoData {
         Font fontContent = workbook.createFont();
         fontContent.setFontName("Calibri");
         fontContent.setFontHeight((short) (11 * 20));
-        fontContent.setColor(HSSFColor.BLACK.index);
+       /// fontContent.setColor(HSSFColor.BLACK.index);
 
         CellStyle dateCellStyle = workbook.createCellStyle();
         CreationHelper createHelper = workbook.getCreationHelper();

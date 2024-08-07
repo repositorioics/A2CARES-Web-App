@@ -46,14 +46,56 @@
                             <spring:message code="Impresion Stickers" /></a>
                     </li>
 
-                    <li class="nav-item filedata">
+                    <!--      <li class="nav-item filedata">
                         <a class="nav-link" href="<spring:url value="/movil/getcontrolAsistencia" htmlEscape="true "/>">
                             <i class="fas fa-search" aria-hidden="true"></i>
                             <spring:message code="Control de Asistencia de Colaboradores" /></a>
-                    </li>
+                    </li>-->
 
 	            </ul>
 	        </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_ASISTENCIA_A2CARES')">
+                <li class="nav-item filedata">
+                    <a class="nav-link" href="<spring:url value="/movil/getcontrolAsistencia" htmlEscape="true "/>">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <spring:message code="Control de Asistencia de Colaboradores" /></a>
+                </li>
+
+
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER','ROLE_ADMIN')">
+                <li class="nav-item filedata">
+                    <a class="nav-link" href="<spring:url value="/mx/enfermo/procesosPendientesMuestreoA2cares" htmlEscape="true "/>">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <spring:message code="Procesos Muestreo A2CARES" /></a>
+                </li>
+
+
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_PROCESAR_BHC_CSFV')">
+                <li class="nav-item filedata">
+                    <a class="nav-link" href="<spring:url value="/hojaclinica/ProcesarBHC" htmlEscape="true "/>">
+                        <i class="fas fa-search" aria-hidden="true"></i>
+                        <spring:message code="Procesar BHC CSFV" /></a>
+                </li>
+                <li class="nav-item filedata">
+                    <a class="nav-link" href="<spring:url value="/Serologia/listEnviosMuestrasBhc" htmlEscape="true "/>">
+                        <i class="fas fa-ambulance" aria-hidden="true"></i>
+                        <spring:message code="Reporte Envios BHC" /></a>
+                </li>
+                <li class="nav-item filedata">
+                    <a class="nav-link" href="<spring:url value="/hojaclinica/cargarFileBc6000bhc" htmlEscape="true "/>">
+                        <i class="fas fa-file-archive" aria-hidden="true"></i>
+                        <spring:message code="Cargar Excel Bc6000" /></a>
+                </li>
+                <li class="nav-item filedata">
+                    <a class="nav-link" href="<spring:url value="/hojaclinica/imprimirBhcBc6000" htmlEscape="true "/>">
+                        <i class="fas fa-print" aria-hidden="true"></i>
+                        <spring:message code="Imprimir BHC-A2CARES" /></a>
+                </li>
+
+
             </sec:authorize>
             <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI')">
                 <li class="nav-item nav-dropdown fingering">
@@ -65,9 +107,36 @@
 
                     </ul>
                 </li>
-
-
             </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ROOT','ROLE_ASISTENCIA_ICS')">
+                <li class="nav-item nav-dropdown fingering">
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-book-open"></i><spring:message code="Asistencia ICS" /></a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item users">
+                            <a class="nav-link" href="<spring:url value="/movil/getcontrolAsistenciaICS/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="Asistencia de personal ICS" /></a>
+                        </li>
+                        <li class="nav-item users">
+                            <a class="nav-link" href="<spring:url value="/movil/getreporteHorasICS/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="Reporte Horas Diarias" /></a>
+                        </li>
+
+                    </ul>
+                </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ROLE_ROOT','ROLE_ASISTENCIA_ICS_JUST')">
+                <li class="nav-item nav-dropdown fingering">
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-book-open"></i><spring:message code="Justificaciones" /></a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item users">
+                            <a class="nav-link" href="<spring:url value="/movil/getJustICS/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="Listar" /></a>
+                        </li>
+                        <li class="nav-item users">
+                            <a class="nav-link" href="<spring:url value="/movil/getJustAddICS/" htmlEscape="true "/>"><i class="icon-doc"></i><spring:message code="Agregar" /></a>
+                        </li>
+
+                    </ul>
+                </li>
+            </sec:authorize>
+
             <sec:authorize access="hasAnyRole('ROLE_ROOT', 'ROLE_SUPER', 'ROLE_DIGI_DOBLE')">
 
                 <li class="nav-item nav-dropdown fingering">
@@ -177,6 +246,16 @@
                                 <spring:message code="Reporte Envios BHC" /></a>
                         </li>
 
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/mx/enfermo/cuadrarRecepcionMuestreo" htmlEscape="true "/>">
+                                <i class="fas fa-ambulance" aria-hidden="true"></i>
+                                <spring:message code="Recepción Muestreo   -   Tablas" /></a>
+                        </li>
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/mx/enfermo/diferenciasRecepcionMuestreo" htmlEscape="true "/>">
+                                <i class="fas fa-ambulance" aria-hidden="true"></i>
+                                <spring:message code="Diferencias Serología Recepción" /></a>
+                        </li>
 
 
                     </ul>
@@ -214,7 +293,16 @@
                                 <i class="fas fa-search" aria-hidden="true"></i>
                                 <spring:message code="Convalecientes Mx" /></a>
                         </li>
-
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/mx/enfermo/admisionPacientesMx" htmlEscape="true "/>">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <spring:message code="Control Admisión Pacientes" /></a>
+                        </li>
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/mx/enfermo/admisionPacientesMx2" htmlEscape="true "/>">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <spring:message code="Informe Fin de Día Médicos" /></a>
+                        </li>
                     </ul>
                 </li>
             </sec:authorize>
@@ -291,12 +379,14 @@
                                 <i class="fa fa-flag-checkered" aria-hidden="true"></i><spring:message code="Information" /></a>
                         </li>
                     </ul>
+                    <sec:authorize access="hasRole('ROLE_ENTO_EDICION')">
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link" href="<spring:url value="/entomologia/editdata/" htmlEscape="true "/>">
                                 <i class="fa fa-database" aria-hidden="true"></i><spring:message code="Editar Tablas" /></a>
                         </li>
                     </ul>
+                    </sec:authorize>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
                             <a class="nav-link" href="<spring:url value="/entomologia/dobledigitacion/" htmlEscape="true "/>">

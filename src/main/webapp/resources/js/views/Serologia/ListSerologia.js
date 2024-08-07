@@ -32,7 +32,7 @@ var EnviarSerologiasForm = function(){
                         });
                     }else{
                         for ( var i = 0; i < len; i++) {
-                            //var d = new Date(data[i].fecha);
+                         //   var d = new Date(data[i].fecha);
                             var partsUrl =  urls.editUrl+ '/'+data[i].idSerologia;
                             //var codParticipante = data[i].participante;
                             //var datestring = ("0" + d.getDate()).slice(-2) + "/" + ("0"+(d.getMonth()+1)).slice(-2) + "/" + d.getFullYear();

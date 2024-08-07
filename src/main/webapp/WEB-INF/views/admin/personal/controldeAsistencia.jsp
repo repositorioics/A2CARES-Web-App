@@ -52,9 +52,9 @@
                     </h5>
                 </div>
                 <div class="card-block">
-                    <spring:url value="/reportes/downloadControlAsistenciaPdf/" var="pdfControlAsistenciaUrl"/>
 
-                    <form autocomplete="off" id="control_asistencia_form" class="form-horizontal">
+
+                    <form action="#" autocomplete="off" id="control_asistencia_form"  name="control_asistencia_form-form" class="form-horizontal">
                     <div class="row">
                         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-2 col-xl-2">
                         </div>
@@ -63,14 +63,24 @@
                                     <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-xl-3 col-form-label" for="desde"><spring:message code="lbl.from" />
                                     </label>
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-6">
-                                        <input type="text" class="form-control from_date datepicker" id="desde" name="desde" data-date-end-date="+0d">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                        <input type="text" class="form-control date-picker" id="desde" name="desde" >
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-xl-3 col-form-label" for="hasta"><spring:message code="lbl.until" />
                                     </label>
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-6">
-                                        <input type="text" class="form-control to_date datepicker" id="hasta" name="hasta" data-date-end-date="+0d">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </span>
+                                        <input type="text" class="form-control date-picker" id="hasta" name="hasta" >
+                                        </div>
                                     </div>
                                 </div>
 
@@ -109,7 +119,9 @@
                                     <td id="identificador_equipo"><b><spring:message code="Identificador de Equipo"/></b></th>
                                     <td id="latitud"><b><spring:message code="Latitud"/></b></th>
                                     <th id="longitud"><spring:message code="Longitud"/></th>
-                                    <th id="fecha_registro"><spring:message code="Fecha Registro"/></th>
+                                    <th id="Cargo"><spring:message code="Cargo"/></th>
+                                    <th id="Area"><spring:message code="Area"/></th>
+
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -196,8 +208,7 @@
 <spring:url value="/resources/js/libs/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js" var="datetimepicker" />
 <script src="${datetimepicker}"></script>
 
-<spring:url value="/resources/js/libs/moment.js" var="moment" />
-<script type="text/javascript" src="${moment}"></script>
+
 
 <spring:url value="/resources/js/libs/sweetalert.js" var="sw" />
 <script type="text/javascript" src="${sw}"></script>
@@ -240,39 +251,94 @@
             "dataTablesLang"        : "${dataTablesLang}",
             "searchUrl"       : "${getAsistenciaPersonal}"
         };
-        SearchControlAsistenciaFormVal.init(misUrl);
-
-        $('.datepicker').datetimepicker({
+      //  SearchControlAsistenciaFormVal.init(misUrl);
+        $('.date-picker').datetimepicker({
             format: 'L',
             locale: "${lenguaje}",
             maxDate: new Date(),
-            useCurrent: false
-        }).val(moment().format('DD/MM/YYYY'));
+            useCurrent: true
+        });
+      /*  $('.datepicker').datetimepicker({
+            format: 'L',
+            locale: "${lenguaje}",
+            maxDate: new Date(),
+            useCurrent: true
+        }).val(moment().format('DD/MM/YYYY'));*/
 
-        $("#desde").on("dp.change", function (e) {
-            $('#hasta').data("DateTimePicker").minDate(e.date);
+       $("#desde").on("dp.change", function (e) {
+           $('#hasta').data("DateTimePicker").minDate(e.date);
         });
         $("#hasta").on("dp.change", function (e) {
-            $('#desde').data("DateTimePicker").maxDate(e.date);
+           $('#desde').data("DateTimePicker").maxDate(e.date);
         });
 
-        var hora = moment().format('HH:mm');
-        $("#horaEnvio").val(hora);
+      /*  var hora = moment().format('HH:mm');
+        $("#horaEnvio").val(hora);*/
 
         if ($('html').attr('dir') === 'rtl') {
             $('.tooltip-demo [data-placement=right]').attr('data-placement', 'left').addClass('rtled');
             $('.tooltip-demo [data-placement=left]:not(.rtled)').attr('data-placement', 'right').addClass('rtled');
         }
         $('[data-toggle="tooltip"]').tooltip();
-    });
+
+        var edithoja = "EditarHC";
+        var table = $('#Lista_asistencia').DataTable({
+            dom: "<'row'<'col-sm-12 col-md-12'B>>" +
+                    "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "oLanguage": {
+                "sUrl": "${dataTablesLang}"
+            },
+            "bFilter": true,
+            "bInfo": true,
+            "bPaginate": true,
+            "bDestroy": true,
+            "responsive": true,
+            "pageLength": 11,
+            "bLengthChange": true,
+            "buttons": [
+                {
+                    extend: 'excel'
+                }
+            ],
+            "ajax":{
+                url: "${getAsistenciaPersonal}", // Change this URL to where your json data comes from
+                type: "GET",
+                data: function(d) {
+                    d.desde = $("#desde").val();
+                    d.hasta = $("#hasta").val();
+                },
+                dataSrc: ""
+
+            },
+            "columns": [
+                { data: 'nombre_usuario', defaultContent: ""},
+                { data: 'nombre_completo', defaultContent: ""},
+                { data: 'horaentrada', defaultContent: ""},
+                { data: 'horasalida', defaultContent: ""},
+                { data: 'fechaasistencia', defaultContent: ""},
+                { data: 'identificador_equipo', defaultContent: ""},
+                { data: 'latitud', defaultContent: ""},
+                { data: 'longitud', defaultContent: ""},
+                { data: 'cargo', defaultContent: ""},
+                { data: 'area', defaultContent: ""}
+
+            ]
+        });
+
+
+
     function print_bhc(){
         if($("#codigo_lineal").text !=""){
         var id ="100"+ $("#codigo_lineal").val()+"*1*2";
         imprimirEtiquetas(id);
         }
     }
-</script>
-<script>
+
+
+
+
 
     var form1 = $('#control_asistencia_form');
     var $validator = form1.validate({
@@ -299,18 +365,31 @@
             $( element ).addClass( 'form-control-success' ).removeClass( 'form-control-danger' );
             $( element ).parents( '.form-group' ).addClass( 'has-success' ).removeClass( 'has-danger' );
         },
-
+        rules: {
+            desde: {required: function () {
+                return $('#desde').val().length > 0;
+            }},
+            hasta: {required: function () {
+                return $('#hasta').val().length > 0;
+            }}
+        },
         submitHandler: function (form) {
             var $validarForm = form1.valid();
             if (!$validarForm) {
+                search();
                 $validator.focusInvalid();
                 return false;
             } else {
-                window.open("${pdfControlAsistenciaUrl}?"+form1.serialize(), '_blank');
+                window.open("${pdfControlAsistenciaUrl}?" + form1.serialize(), '_blank');
             }
+        }
 
     });
-
+        function search()
+        {
+            table.ajax.reload();
+        }
+    });
 </script>
 </body>
 </html>

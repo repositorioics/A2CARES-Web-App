@@ -2560,6 +2560,36 @@
         </div>
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-7">
+                <spring:message code="Líquidos_IV" />
+            </div>
+            <div class="form-group col-lg-4 col-md-4 col-sm-5">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbtratamiento_10S" name="rbtratamiento_10" class="custom-control-input" value="S">
+                    <label class="custom-control-label" for="rbtratamiento_10S"><spring:message code="CAT_SND_HC_01" /></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbtratamiento_10N" name="rbtratamiento_10" class="custom-control-input" value="N">
+                    <label class="custom-control-label" for="rbtratamiento_10N"><spring:message code="CAT_SND_HC_02" /></label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-7">
+                <spring:message code="Referencia por Dengue" />
+            </div>
+            <div class="form-group col-lg-4 col-md-4 col-sm-5">
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbtratamiento_11S" name="rbtratamiento_11" class="custom-control-input" value="S">
+                    <label class="custom-control-label" for="rbtratamiento_11S"><spring:message code="CAT_SND_HC_01" /></label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="rbtratamiento_11N" name="rbtratamiento_11" class="custom-control-input" value="N">
+                    <label class="custom-control-label" for="rbtratamiento_11N"><spring:message code="CAT_SND_HC_02" /></label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-7">
                 <spring:message code="otro_tratamiento" />
             </div>
             <div class="form-group col-lg-4 col-md-4 col-sm-5">
@@ -2596,7 +2626,7 @@
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
             <label class="form-control-label" for="planes"><spring:message code="planes" />
             </label>
-            <textarea  class="form-control focusNext" id="planes" name="planes" cols="30" rows="4"  required="required"  placeholder="Ingrese los planes"></textarea>
+            <textarea  class="form-control focusNext" id="planes" name="planes" cols="30" rows="4" readonly  placeholder="Ingrese los planes"></textarea>
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12">
             <label class="form-control-label" for="historia"><spring:message code="historia_clinica" /> </label>
@@ -2638,6 +2668,7 @@
                 </select>
             </div>
         </div>
+
         <div class="col-lg-2 col-md-4 col-sm-6">
             <div class="form-group">
                 <label for="medico" class="form-control-label"><spring:message code="Diagnóstico 4" /></label>
@@ -2838,11 +2869,12 @@
 <!--own scripts -->
 <spring:url value="/resources/js/libs/jquery.serializejson.js" var="Serializejson" />
 <script src="${Serializejson}"></script>
-<spring:url value="/resources/js/views/fingering/process-clinicalsheetDD.js" var="Clinicalsheet" />
+<spring:url value="/resources/js/views/fingering/process-clinicalsheetEditar.js" var="Clinicalsheet" />
 <script src="${Clinicalsheet}"></script>
 
 <spring:url value="/hojaclinicaDD/searchParticipant" var="searchUrl"/>
-<spring:url value="/hojaclinicaDD/save" var="saveUrl"/>
+<spring:url value="/hojaclinicaDD/saveEdit" var="saveUrl"/>
+
 <spring:url value="/hojaclinicaDD/getcodSupervisor" var="getcodSupervisor"/>
 
 </body>
@@ -2858,7 +2890,7 @@
             getcodSupervisor : "${getcodSupervisor}",
         };
 
-        ClinicalSheetDD.init(parameters);
+        ClinicalSheetEDIT.init(parameters);
 
         //Asignacion de valores resultantes de comparacion de hojas digitadas
         if ("${sexo}" != '/N' ) {
@@ -3479,6 +3511,16 @@
             $("#rbtratamiento_9S").prop('checked', true);
         }else{
             $("#rbtratamiento_9N").prop('checked', true);
+        }
+        if ("${liquidosiv}" === 'S') {
+            $("#rbtratamiento_10S").prop('checked', true);
+        }else{
+            $("#rbtratamiento_10N").prop('checked', true);
+        }
+        if ("${referenciaPordengue}" === 'S') {
+            $("#rbtratamiento_11S").prop('checked', true);
+        }else{
+            $("#rbtratamiento_11N").prop('checked', true);
         }
         if ("${otroTratamientoEspecificar1}" != '/N') {
             $("#descOtroTratamiento").val("${otroTratamientoEspecificar1}");

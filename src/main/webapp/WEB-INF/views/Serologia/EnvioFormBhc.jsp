@@ -206,6 +206,7 @@
         </ol>
         <spring:url value="/reportes/downloadFileEnviosBhc/" var="pdfEnvioSeroUrl"/>
         <spring:url value="/reportes/downloadFileBhcExcel/" var="excelEnvioSeroUrl"/>
+        <spring:url value="/reportes/downloadFileEnviosBhc1/" var="pdfEnvioSeroUrl1"/>
         <c:set var="successMessage"><spring:message code="process.success" /></c:set>
         <c:set var="errorProcess"><spring:message code="process.error" /></c:set>
         <div class="container-fluid col-8">
@@ -251,6 +252,7 @@
                                     <div class="p-2 bd-highlight">
                                         <button id="toPdf" type="submit" class="btn btn-success btn-ladda" data-style="expand-right"><i class="far fa-file-pdf"></i> <spring:message code="generate" /> <spring:message code="Pdf" /> </button>
                                         <button id="toExcel" type="submit" class="btn btn-info btn-ladda" data-style="expand-right"><i class="far fa-file-excel"></i> <spring:message code="generate" /> <spring:message code="Excel" /> </button>
+                                        <button id="ProcesaCSFV" type="submit" class="btn btn-info btn-ladda" data-style="expand-right"><i class="far fa-file-excel"></i>  <spring:message code="Procesa Resultados CSFV" /> </button>
                                     </div>
                                     <div class="p-2 bd-highlight"></div>
                                 </div>
@@ -368,6 +370,15 @@
                 return false;
             } else {
                 window.open("${excelEnvioSeroUrl}?" + form1.serialize())
+            }
+        });
+        $("#ProcesaCSFV").on("click", function(){
+            var $validarForm = form1.valid();
+            if (!$validarForm) {
+                $validator.focusInvalid();
+                return false;
+            } else {
+                window.open("${pdfEnvioSeroUrl1}?" + form1.serialize())
             }
         });
 

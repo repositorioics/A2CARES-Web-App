@@ -452,12 +452,14 @@ public class ScanCartaService {
         return (Extensiones)query.uniqueResult();
     }
 
-    public boolean ActualizarAcepta(Integer idDetalle, boolean newacepta)throws Exception{
+    public boolean ActualizarAcepta(Integer idDetalle, boolean newacepta, String usermodifica, Date fechamodifica)throws Exception{
         try{
             Session session = sessionFactory.getCurrentSession();
-            Query query = session.createQuery("update DetalleParte dp set dp.acepta= :newacepta where dp.iddetalle= :idDetalle");
+            Query query = session.createQuery("update DetalleParte dp set dp.acepta= :newacepta, dp.usuarioModifica= :usermodifica,dp.fechaModifica= :fechamodifica  where dp.iddetalle= :idDetalle");
             query.setParameter("idDetalle",idDetalle);
             query.setParameter("newacepta", newacepta);
+            query.setParameter("usermodifica",usermodifica);
+            query.setParameter("fechamodifica", fechamodifica);
             query.executeUpdate();
             return true;
         }catch (Exception e){
