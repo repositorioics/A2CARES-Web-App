@@ -5,11 +5,15 @@ import java.util.List;
 import javax.annotation.Resource;
 
 
+import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
+import ni.org.ics.webapp.dto.JustificacionesICSDto;
+import ni.org.ics.webapp.dto.SitiosAsistenciaICSDto;
 import ni.org.ics.webapp.language.MessageResource;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,7 +82,34 @@ public class MessageResourceService {
 		// Retrieve all
 		return  query.list();
 	}
-	
+	public List<MessageResource> getCatalogoEmpleados(String catalogo) {
+		// Retrieve session from Hibernate
+		Session session = sessionFactory.getCurrentSession();
+		// Create a Hibernate query (HQL)
+		Query query = session.createQuery("FROM MessageResource mens where mens.isCat ='0' and mens.recordIp <> '-1'" +
+				" and mens.catRoot =:catalogo and mens.catKey is not null and mens.pasive = '0' order by mens.order");
+		query.setParameter("catalogo", catalogo);
+		// Retrieve all
+		return  query.list();
+	}
+	public List<SitiosAsistenciaICSDto> getObtenerSitiosICS()throws Exception{
+		Session session = sessionFactory.getCurrentSession();
+
+		Query query = session.createSQLQuery("call sp_obtener_sitios_ics");
+
+		query.setResultTransformer(Transformers.aliasToBean(SitiosAsistenciaICSDto.class));
+		return query.list();
+	}
+	public List<SitiosAsistenciaICSDto> getObtenerEmpleados()throws Exception{
+		Session session = sessionFactory.getCurrentSession();
+
+		Query query = session.createSQLQuery("call sp_obtener_empleados_ics");
+
+
+
+		query.setResultTransformer(Transformers.aliasToBean(SitiosAsistenciaICSDto.class));
+		return query.list();
+	}
 	@SuppressWarnings("unchecked")
 	public List<MessageResource> getCatalogos() {
 		// Retrieve session from Hibernate

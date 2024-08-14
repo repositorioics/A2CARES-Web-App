@@ -77,7 +77,7 @@ var SearchPrintStickersFormVal = function(){
 
             $("#Lista_Muestra tbody").on("click", ".btnPrint",function(){
                 var id = $(this).data('id');
-                imprimirEtiquetas(id);
+             //    imprimirEtiquetas(id);
             });
             /**************************/
         }// fin init

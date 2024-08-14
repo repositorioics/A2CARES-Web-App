@@ -14,65 +14,45 @@ public class EncuestaSatisfaccionUsuario {
     private static final long serialVersionUID = 1L;
     private Long codigo;
     private String codigoParticipante;
-    private String atencionMedica;
-    private String familaAmistades;
-    private String desicionPropia;
-    private String obsequiosOfreceEstudio;
-    private String ayudaRecibeComunidad;
-    private String examenesLaboratorio;
-    private String interesCientificoPersonalP1;
-    private String informacionAyudaOtros;
-    private String otraP1;
-    private String calidadAtencionMedica;
-    private String atencionOportuna;
-    private String buenaCoordinacionhosp;
-    private String infoEstadoSalud;
-    private String enseniaPrevEnfermedades;
-    private String infoConsMejoraConocimientos;
-    private String interesCientificoPersonalP2;
-    private String mejorarTratamientoDengue;
-    private String unicaManeraRecibirAtencionMed;
-    private String otraP2;
-    private String difBuscarAtencionMed;
-    private String centroSaludLejos;
-    private String costoTrasnporteElevado;
-    private String trabajoTiempo;
-    private String noQueriapasarConsulta;
-    private String horarioClases;
-    private String temorTomenMx;
-    private String temorInfoPersonal;
-    private String otraP3;
-    private String recomendariaAmigoFamiliar;
-    private String atencionCalidad;
-    private String respNecesidadesSaludOportuna;
-    private String tiempoEsperaCorto;
-    private String mejorAtencionQueSeguro;
-    private String examenLabNecesarios;
-    private String conocimientosImportantes;
-    private String pocosRequisitos;
-    private String otraP_4_1;
-    private String atencionPersonalMala;
-    private String noDanRespNecesidades;
-    private String tiempoEsperaLargo;
-    private String mejorAtencionOtraUnidadSalud;
-    private String solicitaDemasiadaMx;
-    private String muchosRequisitos;
-    private String noExplicanHacenMx;
-    private String noConfianza;
-    private String otraP_4_2;
-    private String comprendeProcedimientos;
-    private String noComodoRealizarPreg;
-    private String noRespondieronPreg;
-    private String explicacionRapida;
-    private String noDejaronHacerPreg;
-    private String otraP_5_1;
-    private String brindaronConsejosPrevencionEnfer;
-    private String entiendoProcedimientosEstudios;
-    private String satisfecho;
-    private String comodoInfoRecolectada;
-    private String noComodoPreguntas;
-    private String recomendacionMejorarAtencion;
-    private String importanciaRecibirInformacion;
+    private String atencionPersonalEstudio_P1;
+    private String tiempoAtencionRecibido_P2;
+    private String atencionRecibidaEnfermeria_P3;
+    private String atencionRecibidaDoctores_P4;
+    private String ambienteDondeRecibeAtencion_P5;
+    private String explicaronDiagnostico_P6;
+    private String explicaronTratamiento_P7;
+    private String tieneArbovirusImportanciaSeg_P8;
+    private String explicaronPeligrosArbovirus_P8_1;
+    private String medicoDijoCuidados_P8_2;
+    private String dificultadAtencion_P9;
+    private String centroSaludLejos_P9_1;
+    private String costoTrasnporteElevado_P9_2;
+    private String trabajoTiempo_P9_3;
+    private String noQueriapasarConsulta_P9_4;
+    private String otrasEspecifique_P9_5;
+    private String recomendariaAmigoFamiliar_P10;
+    private String atencionCalidad_P10_1;
+    private String respNecesidadesSaludOportuna_P10_1;
+    private String tiempoEsperaCorto_P10_1;
+    private String mejorAtencionQueSeguro_P10_1;
+    private String examenLabNecesarios_P10_1;
+    private String pocosRequisitos_P10_1;
+    private String otraP_10_1;
+    private String atencionPersonalMala_P10_2;
+    private String noDanRespNecesidades_P10_2;
+    private String tiempoEsperaLargo_P10_2;
+    private String mejorAtencionOtraUnidadSalud_P10_2;
+    private String solicitaDemasiadaMx_P10_2;
+    private String muchosRequisitos_P10_2;
+    private String noExplicanHacenMx_P10_2;
+    private String noConfianza_P10_2;
+    private String otraP_10_2;
+    private String comprendeProcedimientos_P11;
+    private String noComodoRealizarPreg_P11_1;
+    private String noRespondieronPreg_P11_1;
+    private String explicacionRapida_P11_1;
+    private String noDejaronHacerPreg_P11_1;
+    private String otraP_11_1;
     private String identificadoEquipo;
     private char estado;
     private char pasivo;
@@ -106,535 +86,325 @@ public class EncuestaSatisfaccionUsuario {
         this.codigoParticipante = codigoParticipante;
     }
 
-    @Column(name = "ATENCION_MEDICA", length = 1)
-    public String getAtencionMedica() {
-        return atencionMedica;
+    @Column(name = "ATENCION_PERSONAL_ESTUDIO_P1", length = 1, nullable = true)
+    public String getAtencionPersonalEstudio_P1() {
+        return atencionPersonalEstudio_P1;
     }
-
-    public void setAtencionMedica(String atencionMedica) {
-        this.atencionMedica = atencionMedica;
-    }
-
-    @Column(name = "FAMILA_AMISTADES", length = 1)
-    public String getFamilaAmistades() {
-        return familaAmistades;
-    }
-
-    public void setFamilaAmistades(String familaAmistades) {
-        this.familaAmistades = familaAmistades;
-    }
-
-    @Column(name = "DESICION_PROPIA", length = 1)
-    public String getDesicionPropia() {
-        return desicionPropia;
-    }
-
-    public void setDesicionPropia(String desicionPropia) {
-        this.desicionPropia = desicionPropia;
-    }
-
-    @Column(name = "OBSEQUIOS_OFRECE_ESTUDIO", length = 1)
-    public String getObsequiosOfreceEstudio() {
-        return obsequiosOfreceEstudio;
-    }
-
-    public void setObsequiosOfreceEstudio(String obsequiosOfreceEstudio) {
-        this.obsequiosOfreceEstudio = obsequiosOfreceEstudio;
-    }
-
-    @Column(name = "AYUDA_RECIBE_COMUNIDAD", length = 1)
-    public String getAyudaRecibeComunidad() {
-        return ayudaRecibeComunidad;
-    }
-
-    public void setAyudaRecibeComunidad(String ayudaRecibeComunidad) {
-        this.ayudaRecibeComunidad = ayudaRecibeComunidad;
-    }
-
-    @Column(name = "EXAMENES_LABORATORIO", length = 1)
-    public String getExamenesLaboratorio() {
-        return examenesLaboratorio;
-    }
-
-    public void setExamenesLaboratorio(String examenesLaboratorio) {
-        this.examenesLaboratorio = examenesLaboratorio;
-    }
-
-    @Column(name = "INTERES_CIENTIFICO_PERSONAL_P_1", length = 1)
-    public String getInteresCientificoPersonalP1() {
-        return interesCientificoPersonalP1;
-    }
-
-    public void setInteresCientificoPersonalP1(String interesCientificoPersonalP1) {
-        this.interesCientificoPersonalP1 = interesCientificoPersonalP1;
-    }
-
-    @Column(name = "INFORMACION_AYUDA_OTROS", length = 1)
-    public String getInformacionAyudaOtros() {
-        return informacionAyudaOtros;
-    }
-
-    public void setInformacionAyudaOtros(String informacionAyudaOtros) {
-        this.informacionAyudaOtros = informacionAyudaOtros;
-    }
-
-    @Column(name = "OTRA_P_1", length = 255)
-    public String getOtraP1() {
-        return otraP1;
-    }
-
-    public void setOtraP1(String otraP1) {
-        this.otraP1 = otraP1;
-    }
-
-    @Column(name = "CALIDAD_ATENCION_MEDICA", length = 1)
-    public String getCalidadAtencionMedica() {
-        return calidadAtencionMedica;
-    }
-
-    public void setCalidadAtencionMedica(String calidadAtencionMedica) {
-        this.calidadAtencionMedica = calidadAtencionMedica;
-    }
-
-    @Column(name = "ATENCION_EMERGENCIA_OPORTUNA", length = 1)
-    public String getAtencionOportuna() {
-        return atencionOportuna;
-    }
-
-    public void setAtencionOportuna(String atencionOportuna) {
-        this.atencionOportuna = atencionOportuna;
-    }
-
-    @Column(name = "BUENA_COORDINACION_HOSP", length = 1)
-    public String getBuenaCoordinacionhosp() {
-        return buenaCoordinacionhosp;
-    }
-
-    public void setBuenaCoordinacionhosp(String buenaCoordinacionhosp) {
-        this.buenaCoordinacionhosp = buenaCoordinacionhosp;
-    }
-
-    @Column(name = "INFO_ESTADO_SALUD", length = 1)
-    public String getInfoEstadoSalud() {
-        return infoEstadoSalud;
-    }
-
-    public void setInfoEstadoSalud(String infoEstadoSalud) {
-        this.infoEstadoSalud = infoEstadoSalud;
-    }
-
-    @Column(name = "ENSENIA_PREV_ENFERMEDADES", length = 1)
-    public String getEnseniaPrevEnfermedades() {
-        return enseniaPrevEnfermedades;
-    }
-
-    public void setEnseniaPrevEnfermedades(String enseniaPrevEnfermedades) {
-        this.enseniaPrevEnfermedades = enseniaPrevEnfermedades;
-    }
-
-    @Column(name = "INFO_CONS_MEJORA_CONOCIMIENTOS", length = 1)
-    public String getInfoConsMejoraConocimientos() {
-        return infoConsMejoraConocimientos;
-    }
-
-    public void setInfoConsMejoraConocimientos(String infoConsMejoraConocimientos) {
-        this.infoConsMejoraConocimientos = infoConsMejoraConocimientos;
-    }
-
-    @Column(name = "INTERES_CIENTIFICO_PERSONAL_P_2", length = 1)
-    public String getInteresCientificoPersonalP2() {
-        return interesCientificoPersonalP2;
-    }
-
-    public void setInteresCientificoPersonalP2(String interesCientificoPersonalP2) {
-        this.interesCientificoPersonalP2 = interesCientificoPersonalP2;
-    }
-
-    @Column(name = "MEJORAR_TRATAMIENTO_DENGUE", length = 1)
-    public String getMejorarTratamientoDengue() {
-        return mejorarTratamientoDengue;
-    }
-
-    public void setMejorarTratamientoDengue(String mejorarTratamientoDengue) {
-        this.mejorarTratamientoDengue = mejorarTratamientoDengue;
-    }
-
-    @Column(name = "UNICA_MANERA_RECIBIR_ATENCION_MED", length = 1)
-    public String getUnicaManeraRecibirAtencionMed() {
-        return unicaManeraRecibirAtencionMed;
-    }
-
-    public void setUnicaManeraRecibirAtencionMed(String unicaManeraRecibirAtencionMed) {
-        this.unicaManeraRecibirAtencionMed = unicaManeraRecibirAtencionMed;
-    }
-
-    @Column(name = "OTRA_P_2", length = 255)
-    public String getOtraP2() {
-        return otraP2;
-    }
-
-    public void setOtraP2(String otraP2) {
-        this.otraP2 = otraP2;
-    }
-
-    @Column(name = "DIF_BUSCAR_ATENCION_MED", length = 1)
-    public String getDifBuscarAtencionMed() {
-        return difBuscarAtencionMed;
-    }
-
-    public void setDifBuscarAtencionMed(String difBuscarAtencionMed) {
-        this.difBuscarAtencionMed = difBuscarAtencionMed;
-    }
-
-    @Column(name = "CENTRO_SALUD_LEJOS", length = 1)
-    public String getCentroSaludLejos() {
-        return centroSaludLejos;
-    }
-
-    public void setCentroSaludLejos(String centroSaludLejos) {
-        this.centroSaludLejos = centroSaludLejos;
-    }
-
-    @Column(name = "COSTO_TRASNPORTE_ELEVADO", length = 1)
-    public String getCostoTrasnporteElevado() {
-        return costoTrasnporteElevado;
-    }
-
-    public void setCostoTrasnporteElevado(String costoTrasnporteElevado) {
-        this.costoTrasnporteElevado = costoTrasnporteElevado;
-    }
-
-    @Column(name = "TRABAJO_TIEMPO", length = 1)
-    public String getTrabajoTiempo() {
-        return trabajoTiempo;
-    }
-
-    public void setTrabajoTiempo(String trabajoTiempo) {
-        this.trabajoTiempo = trabajoTiempo;
-    }
-
-    @Column(name = "NO_QUERIA_PASAR_CONSULTA", length = 1)
-    public String getNoQueriapasarConsulta() {
-        return noQueriapasarConsulta;
-    }
-
-    public void setNoQueriapasarConsulta(String noQueriapasarConsulta) {
-        this.noQueriapasarConsulta = noQueriapasarConsulta;
+    public void setAtencionPersonalEstudio_P1(String atencionPersonalEstudio_P1) {
+        this.atencionPersonalEstudio_P1 = atencionPersonalEstudio_P1;
     }
 
-    @Column(name = "HORARIO_CLASES", length = 1)
-    public String getHorarioClases() {
-        return horarioClases;
+    @Column(name = "TIEMPO_ATENCION_RECIBIDO_P2", length = 1, nullable = true)
+    public String getTiempoAtencionRecibido_P2() {
+        return tiempoAtencionRecibido_P2;
     }
 
-    public void setHorarioClases(String horarioClases) {
-        this.horarioClases = horarioClases;
+    public void setTiempoAtencionRecibido_P2(String tiempoAtencionRecibido_P2) {
+        this.tiempoAtencionRecibido_P2 = tiempoAtencionRecibido_P2;
     }
 
-    @Column(name = "TEMOR_TOMEN_MX", length = 1)
-    public String getTemorTomenMx() {
-        return temorTomenMx;
-    }
-
-    public void setTemorTomenMx(String temorTomenMx) {
-        this.temorTomenMx = temorTomenMx;
-    }
-
-    @Column(name = "TEMOR_INFO_PERSONAL", length = 1)
-    public String getTemorInfoPersonal() {
-        return temorInfoPersonal;
-    }
-
-    public void setTemorInfoPersonal(String temorInfoPersonal) {
-        this.temorInfoPersonal = temorInfoPersonal;
-    }
-
-    @Column(name = "OTRA_P_3", length = 255)
-    public String getOtraP3() {
-        return otraP3;
-    }
-
-    public void setOtraP3(String otraP3) {
-        this.otraP3 = otraP3;
-    }
-
-    @Column(name = "RECOMENDARIA_AMIGO_FAMILIAR", length = 1)
-    public String getRecomendariaAmigoFamiliar() {
-        return recomendariaAmigoFamiliar;
-    }
-
-    public void setRecomendariaAmigoFamiliar(String recomendariaAmigoFamiliar) {
-        this.recomendariaAmigoFamiliar = recomendariaAmigoFamiliar;
-    }
 
-    @Column(name = "ATENCION_CALIDAD", length = 1)
-    public String getAtencionCalidad() {
-        return atencionCalidad;
+    @Column(name = "ATENCION_RECIBIDA_ENFERMERIA_P3", length = 1, nullable = true)
+    public String getAtencionRecibidaEnfermeria_P3() {
+        return atencionRecibidaEnfermeria_P3;
     }
 
-    public void setAtencionCalidad(String atencionCalidad) {
-        this.atencionCalidad = atencionCalidad;
+    public void setAtencionRecibidaEnfermeria_P3(String atencionRecibidaEnfermeria_P3) {
+        this.atencionRecibidaEnfermeria_P3 = atencionRecibidaEnfermeria_P3;
     }
 
-    @Column(name = "RESP_NECESIDADES_SALUD_OPORTUNA", length = 1)
-    public String getRespNecesidadesSaludOportuna() {
-        return respNecesidadesSaludOportuna;
+    @Column(name = "ATENCION_RECIBIDA_DOCTORES_P4", length = 1, nullable = true)
+    public String getAtencionRecibidaDoctores_P4() {
+        return atencionRecibidaDoctores_P4;
     }
 
-    public void setRespNecesidadesSaludOportuna(String respNecesidadesSaludOportuna) {
-        this.respNecesidadesSaludOportuna = respNecesidadesSaludOportuna;
+    public void setAtencionRecibidaDoctores_P4(String atencionRecibidaDoctores_P4) {
+        this.atencionRecibidaDoctores_P4 = atencionRecibidaDoctores_P4;
     }
 
-    @Column(name = "TIEMPO_ESPERA_CORTO", length = 1)
-    public String getTiempoEsperaCorto() {
-        return tiempoEsperaCorto;
+    @Column(name = "AMBIENTE_DONDE_RECIBE_ATENCION_P5", length = 1, nullable = true)
+    public String getAmbienteDondeRecibeAtencion_P5() {
+        return ambienteDondeRecibeAtencion_P5;
     }
 
-    public void setTiempoEsperaCorto(String tiempoEsperaCorto) {
-        this.tiempoEsperaCorto = tiempoEsperaCorto;
+    public void setAmbienteDondeRecibeAtencion_P5(String ambienteDondeRecibeAtencion_P5) {
+        this.ambienteDondeRecibeAtencion_P5 = ambienteDondeRecibeAtencion_P5;
     }
 
-    @Column(name = "MEJOR_ATENCION_QUE_SEGURO", length = 1)
-    public String getMejorAtencionQueSeguro() {
-        return mejorAtencionQueSeguro;
+    @Column(name = "EXPLICARON_DIAGNOSTICO_P6", length = 1, nullable = true)
+    public String getExplicaronDiagnostico_P6() {
+        return explicaronDiagnostico_P6;
     }
 
-    public void setMejorAtencionQueSeguro(String mejorAtencionQueSeguro) {
-        this.mejorAtencionQueSeguro = mejorAtencionQueSeguro;
+    public void setExplicaronDiagnostico_P6(String explicaronDiagnostico_P6) {
+        this.explicaronDiagnostico_P6 = explicaronDiagnostico_P6;
     }
-
-    @Column(name = "EXAMEN_LAB_NECESARIOS", length = 1)
-    public String getExamenLabNecesarios() {
-        return examenLabNecesarios;
+    @Column(name = "EXPLICARON_TRATAMIENTO_P7", length = 1, nullable = true)
+    public String getExplicaronTratamiento_P7() {
+        return explicaronTratamiento_P7;
     }
 
-    public void setExamenLabNecesarios(String examenLabNecesarios) {
-        this.examenLabNecesarios = examenLabNecesarios;
+    public void setExplicaronTratamiento_P7(String explicaronTratamiento_P7) {
+        this.explicaronTratamiento_P7 = explicaronTratamiento_P7;
     }
-
-    @Column(name = "CONOCIMIENTOS_IMPORTANTES", length = 1)
-    public String getConocimientosImportantes() {
-        return conocimientosImportantes;
+    @Column(name = "TIENE_ARBOVIRUS_IMPORTANCIA_P8", length = 1, nullable = true)
+     public String getTieneArbovirusImportanciaSeg_P8() {
+        return tieneArbovirusImportanciaSeg_P8;
     }
 
-    public void setConocimientosImportantes(String conocimientosImportantes) {
-        this.conocimientosImportantes = conocimientosImportantes;
+    public void setTieneArbovirusImportanciaSeg_P8(String tieneArbovirusImportanciaSeg_P8) {
+        this.tieneArbovirusImportanciaSeg_P8 = tieneArbovirusImportanciaSeg_P8;
     }
 
-    @Column(name = "POCOS_REQUISITOS", length = 1)
-    public String getPocosRequisitos() {
-        return pocosRequisitos;
+    @Column(name = "EXPLICARON_PELIGROS_ARBOVIRUS_P8_1", length = 1, nullable = true)
+    public String getExplicaronPeligrosArbovirus_P8_1() {
+        return explicaronPeligrosArbovirus_P8_1;
     }
 
-    public void setPocosRequisitos(String pocosRequisitos) {
-        this.pocosRequisitos = pocosRequisitos;
+    public void setExplicaronPeligrosArbovirus_P8_1(String explicaronPeligrosArbovirus_P8_1) {
+        this.explicaronPeligrosArbovirus_P8_1 = explicaronPeligrosArbovirus_P8_1;
     }
 
-    @Column(name = "OTRA_P_4_1", length = 255)
-    public String getOtraP_4_1() {
-        return otraP_4_1;
+    @Column(name = "MEDICO_DIJO_CUIDADOS_P8_2", length = 1, nullable = true)
+    public String getMedicoDijoCuidados_P8_2() {
+        return medicoDijoCuidados_P8_2;
     }
 
-    public void setOtraP_4_1(String otraP_4_1) {
-        this.otraP_4_1 = otraP_4_1;
+    public void setMedicoDijoCuidados_P8_2(String medicoDijoCuidados_P8_2) {
+        this.medicoDijoCuidados_P8_2 = medicoDijoCuidados_P8_2;
     }
-
-    @Column(name = "ATENCION_PERSONAL_MALA", length = 1)
-    public String getAtencionPersonalMala() {
-        return atencionPersonalMala;
+    @Column(name = "DIFICULTAD_ATENCION_P9", length = 1, nullable = true)
+    public String getDificultadAtencion_P9() {
+        return dificultadAtencion_P9;
     }
 
-    public void setAtencionPersonalMala(String atencionPersonalMala) {
-        this.atencionPersonalMala = atencionPersonalMala;
+    public void setDificultadAtencion_P9(String dificultadAtencion_P9) {
+        this.dificultadAtencion_P9 = dificultadAtencion_P9;
     }
-
-    @Column(name = "NO_DAN_RESP_NECESIDADES", length = 1)
-    public String getNoDanRespNecesidades() {
-        return noDanRespNecesidades;
+    @Column(name = "CENTRO_SALUD_LEJOS_P9_1", length = 1, nullable = true)
+    public String getCentroSaludLejos_P9_1() {
+        return centroSaludLejos_P9_1;
     }
 
-    public void setNoDanRespNecesidades(String noDanRespNecesidades) {
-        this.noDanRespNecesidades = noDanRespNecesidades;
+    public void setCentroSaludLejos_P9_1(String centroSaludLejos_P9_1) {
+        this.centroSaludLejos_P9_1 = centroSaludLejos_P9_1;
     }
-
-    @Column(name = "TIEMPO_ESPERA_LARGO", length = 1)
-    public String getTiempoEsperaLargo() {
-        return tiempoEsperaLargo;
+    @Column(name = "COSTO_TRANSPORTE_ELEVADO_P9_2", length = 1, nullable = true)
+    public String getCostoTrasnporteElevado_P9_2() {
+        return costoTrasnporteElevado_P9_2;
     }
 
-    public void setTiempoEsperaLargo(String tiempoEsperaLargo) {
-        this.tiempoEsperaLargo = tiempoEsperaLargo;
+    public void setCostoTrasnporteElevado_P9_2(String costoTrasnporteElevado_P9_2) {
+        this.costoTrasnporteElevado_P9_2 = costoTrasnporteElevado_P9_2;
     }
-
-    @Column(name = "MEJOR_ATENCION_OTRA_UNIDAD_SALUD", length = 1)
-    public String getMejorAtencionOtraUnidadSalud() {
-        return mejorAtencionOtraUnidadSalud;
+    @Column(name = "TRABAJO_TIEMPO_P9_3", length = 1, nullable = true)
+    public String geTrabajoTiempo_P9_3() {
+        return trabajoTiempo_P9_3;
     }
 
-    public void setMejorAtencionOtraUnidadSalud(String mejorAtencionOtraUnidadSalud) {
-        this.mejorAtencionOtraUnidadSalud = mejorAtencionOtraUnidadSalud;
+    public void setTrabajoTiempo_P9_3(String trabajoTiempo_P9_3)
+    {
+        this.trabajoTiempo_P9_3 = trabajoTiempo_P9_3;
     }
-
-    @Column(name = "SOLICITA_DEMASIADA_MX", length = 1)
-    public String getSolicitaDemasiadaMx() {
-        return solicitaDemasiadaMx;
+    @Column(name = "NO_QUERIA_PASAR_CONSULTA_P9_4", length = 1, nullable = true)
+    public String getNoQueriapasarConsulta_P9_4() {
+        return noQueriapasarConsulta_P9_4;
     }
 
-    public void setSolicitaDemasiadaMx(String solicitaDemasiadaMx) {
-        this.solicitaDemasiadaMx = solicitaDemasiadaMx;
+    public void setNoQueriapasarConsulta_P9_4(String noQueriapasarConsulta_P9_4) {
+        this.noQueriapasarConsulta_P9_4 = noQueriapasarConsulta_P9_4;
     }
-
-    @Column(name = "MUCHOS_REQUISITOS", length = 1)
-    public String getMuchosRequisitos() {
-        return muchosRequisitos;
+    @Column(name = "OTRAS_ESPECIFIQUE_P9_5", length = 100, nullable = true)
+    public String getOtrasEspecifique_P9_5() {
+        return otrasEspecifique_P9_5;
     }
 
-    public void setMuchosRequisitos(String muchosRequisitos) {
-        this.muchosRequisitos = muchosRequisitos;
+    public void setOtrasEspecifique_P9_5(String otrasEspecifique_P9_5) {
+        this.otrasEspecifique_P9_5 = otrasEspecifique_P9_5;
     }
-
-    @Column(name = "NO_EXPLICAN_HACEN_MX", length = 1)
-    public String getNoExplicanHacenMx() {
-        return noExplicanHacenMx;
+    @Column(name = "RECOMENDARIA_AMIGO_FAMILIAR_P10", length = 1, nullable = true)
+     public String getRecomendariaAmigoFamiliar_P10() {
+        return recomendariaAmigoFamiliar_P10;
     }
 
-    public void setNoExplicanHacenMx(String noExplicanHacenMx) {
-        this.noExplicanHacenMx = noExplicanHacenMx;
+    public void setRecomendariaAmigoFamiliar_P10(String recomendariaAmigoFamiliar_P10) {
+        this.recomendariaAmigoFamiliar_P10 = recomendariaAmigoFamiliar_P10;
     }
-
-    @Column(name = "NO_CONFIANZA", length = 1)
-    public String getNoConfianza() {
-        return noConfianza;
+    @Column(name = "ATENCION_CALIDAD_P10_1", length = 1, nullable = true)
+    public String getAtencionCalidad_P10_1() {
+        return atencionCalidad_P10_1;
     }
 
-    public void setNoConfianza(String noConfianza) {
-        this.noConfianza = noConfianza;
+    public void setAtencionCalidad_P10_1(String atencionCalidad_P10_1) {
+        this.atencionCalidad_P10_1 = atencionCalidad_P10_1;
     }
-
-    @Column(name = "OTRA_P_4_2", length = 255)
-    public String getOtraP_4_2() {
-        return otraP_4_2;
+    @Column(name = "RESP_NECESIDADES_SALUD_OPORTUNDA_P10_1", length = 1, nullable = true)
+    public String getRespNecesidadesSaludOportuna_P10_1() {
+        return respNecesidadesSaludOportuna_P10_1;
     }
 
-    public void setOtraP_4_2(String otraP_4_2) {
-        this.otraP_4_2 = otraP_4_2;
+    public void setRespNecesidadesSaludOportuna_P10_1(String respNecesidadesSaludOportuna_P10_1) {
+        this.respNecesidadesSaludOportuna_P10_1 = respNecesidadesSaludOportuna_P10_1;
     }
-
-    @Column(name = "COMPRENDE_PROCEDIMIENTOS", length = 1)
-    public String getComprendeProcedimientos() {
-        return comprendeProcedimientos;
+    @Column(name = "TIEMPO_ESPERA_CORTO_P10_1", length = 1, nullable = true)
+    public String getTiempoEsperaCorto_P10_1() {
+        return tiempoEsperaCorto_P10_1;
     }
 
-    public void setComprendeProcedimientos(String comprendeProcedimientos) {
-        this.comprendeProcedimientos = comprendeProcedimientos;
+    public void setTiempoEsperaCorto_P10_1(String tiempoEsperaCorto_P10_1) {
+        this.tiempoEsperaCorto_P10_1 = tiempoEsperaCorto_P10_1;
     }
-
-    @Column(name = "NO_COMODO_REALIZAR_PREG", length = 1)
-    public String getNoComodoRealizarPreg() {
-        return noComodoRealizarPreg;
+    @Column(name = "MEJOR_ATENCION_QUE_SEGURO_P10_1", length = 1, nullable = true)
+    public String getMejorAtencionQueSeguro_P10_1() {
+        return mejorAtencionQueSeguro_P10_1;
     }
 
-    public void setNoComodoRealizarPreg(String noComodoRealizarPreg) {
-        this.noComodoRealizarPreg = noComodoRealizarPreg;
+    public void setMejorAtencionQueSeguro_P10_1(String mejorAtencionQueSeguro_P10_1) {
+        this.mejorAtencionQueSeguro_P10_1 = mejorAtencionQueSeguro_P10_1;
     }
-
-    @Column(name = "NO_RESPONDIERON_PREG", length = 1)
-    public String getNoRespondieronPreg() {
-        return noRespondieronPreg;
+    @Column(name = "EXAMEN_LAB_NECESARIOS_P10_1", length = 1, nullable = true)
+    public String getExamenLabNecesarios_P10_1() {
+        return examenLabNecesarios_P10_1;
     }
 
-    public void setNoRespondieronPreg(String noRespondieronPreg) {
-        this.noRespondieronPreg = noRespondieronPreg;
+    public void setExamenLabNecesarios_P10_1(String examenLabNecesarios_P10_1) {
+        this.examenLabNecesarios_P10_1 = examenLabNecesarios_P10_1;
     }
-
-    @Column(name = "EXPLICACION_RAPIDA", length = 1)
-    public String getExplicacionRapida() {
-        return explicacionRapida;
+    @Column(name = "POCOS_REQUISITOS_P10_1", length = 1, nullable = true)
+    public String getPocosRequisitos_P10_1() {
+        return pocosRequisitos_P10_1;
     }
 
-    public void setExplicacionRapida(String explicacionRapida) {
-        this.explicacionRapida = explicacionRapida;
+    public void setPocosRequisitos_P10_1(String pocosRequisitos_P10_1) {
+        this.pocosRequisitos_P10_1 = pocosRequisitos_P10_1;
     }
-
-    @Column(name = "NO_DEJARON_HACER_PREG", length = 1)
-    public String getNoDejaronHacerPreg() {
-        return noDejaronHacerPreg;
+    @Column(name = "OTRAP_P10_1", length = 100, nullable = true)
+    public String getOtraP_10_1() {
+        return otraP_10_1;
     }
 
-    public void setNoDejaronHacerPreg(String noDejaronHacerPreg) {
-        this.noDejaronHacerPreg = noDejaronHacerPreg;
+    public void setOtraP_10_1(String otraP_10_1) {
+        this.otraP_10_1 = otraP_10_1;
     }
-
-    @Column(name = "OTRA_P_5_1", length = 255)
-    public String getOtraP_5_1() {
-        return otraP_5_1;
+    @Column(name = "ATENCION_PERSONA_MALA_P10_2", length = 1, nullable = true)
+    public String getAtencionPersonalMala_P10_2() {
+        return atencionPersonalMala_P10_2;
     }
 
-    public void setOtraP_5_1(String otraP_5_1) {
-        this.otraP_5_1 = otraP_5_1;
+    public void setAtencionPersonalMala_P10_2(String atencionPersonalMala_P10_2) {
+        this.atencionPersonalMala_P10_2 = atencionPersonalMala_P10_2;
     }
+    @Column(name = "NO_DAN_RESP_NECESIDADES_P10_2", length = 1, nullable = true)
+    public String getNoDanRespNecesidades_P10_2() {
+            return noDanRespNecesidades_P10_2;
+            }
 
-    @Column(name = "BRINDARON_CONSEJOS_PREVENCION_ENFER", length = 1)
-    public String getBrindaronConsejosPrevencionEnfer() {
-        return brindaronConsejosPrevencionEnfer;
+            public void setNoDanRespNecesidades_P10_2(String noDanRespNecesidades_P10_2) {
+        this.noDanRespNecesidades_P10_2 = noDanRespNecesidades_P10_2;
     }
+    @Column(name = "TIEMPO_ESPERA_LARGO_P10_2", length = 1, nullable = true)
+            public String getTiempoEsperaLargo_P10_2() {
+            return tiempoEsperaLargo_P10_2;
+            }
 
-    public void setBrindaronConsejosPrevencionEnfer(String brindaronConsejosPrevencionEnfer) {
-        this.brindaronConsejosPrevencionEnfer = brindaronConsejosPrevencionEnfer;
+            public void setTiempoEsperaLargo_P10_2(String tiempoEsperaLargo_P10_2) {
+        this.tiempoEsperaLargo_P10_2 = tiempoEsperaLargo_P10_2;
     }
+    @Column(name = "MEJOR_ATENCION_OTRA_UNIDAD_SALUD_P10_2", length = 1, nullable = true)
+            public String getMejorAtencionOtraUnidadSalud_P10_2() {
+            return mejorAtencionOtraUnidadSalud_P10_2;
+            }
 
-    @Column(name = "ENTIENDO_PROCEDIMIENTOS_ESTUDIOS", length = 1)
-    public String getEntiendoProcedimientosEstudios() {
-        return entiendoProcedimientosEstudios;
+            public void setMejorAtencionOtraUnidadSalud_P10_2(String mejorAtencionOtraUnidadSalud_P10_2) {
+        this.mejorAtencionOtraUnidadSalud_P10_2 = mejorAtencionOtraUnidadSalud_P10_2;
     }
+    @Column(name = "SOLICITA_DEMASIADA_MX_P10_2", length = 1, nullable = true)
+            public String getSolicitaDemasiadaMx_P10_2() {
+            return solicitaDemasiadaMx_P10_2;
+            }
 
-    public void setEntiendoProcedimientosEstudios(String entiendoProcedimientosEstudios) {
-        this.entiendoProcedimientosEstudios = entiendoProcedimientosEstudios;
+            public void setSolicitaDemasiadaMx_P10_2(String solicitaDemasiadaMx_P10_2) {
+        this.solicitaDemasiadaMx_P10_2 = solicitaDemasiadaMx_P10_2;
     }
+    @Column(name = "MUCHOS_REQUISITOS_P10_2", length = 1, nullable = true)
+            public String getMuchosRequisitos_P10_2() {
+            return muchosRequisitos_P10_2;
+            }
 
-    @Column(name = "SATISFECHO", length = 1)
-    public String getSatisfecho() {
-        return satisfecho;
+            public void setMuchosRequisitos_P10_2(String muchosRequisitos_P10_2) {
+        this.muchosRequisitos_P10_2 = muchosRequisitos_P10_2;
     }
+    @Column(name = "NO_EXPLICAN_HACEN_MX_P10_2", length = 1, nullable = true)
+            public String getNoExplicanHacenMx_P10_2() {
+            return noExplicanHacenMx_P10_2;
+            }
 
-    public void setSatisfecho(String satisfecho) {
-        this.satisfecho = satisfecho;
+            public void setNoExplicanHacenMx_P10_2(String noExplicanHacenMx_P10_2) {
+        this.noExplicanHacenMx_P10_2 = noExplicanHacenMx_P10_2;
     }
+    @Column(name = "NO_CONFIANZA_P10_2", length = 1, nullable = true)
+            public String getNoConfianza_P10_2() {
+            return noConfianza_P10_2;
+            }
 
-    @Column(name = "COMODO_INFO_RECOLECTADA", length = 1)
-    public String getComodoInfoRecolectada() {
-        return comodoInfoRecolectada;
+            public void setNoConfianza_P10_2(String noConfianza_P10_2) {
+        this.noConfianza_P10_2 = noConfianza_P10_2;
     }
+    @Column(name = "OTRAP_P10_2", length = 100, nullable = true)
+            public String getOtraP_10_2() {
+            return otraP_10_2;
+            }
 
-    public void setComodoInfoRecolectada(String comodoInfoRecolectada) {
-        this.comodoInfoRecolectada = comodoInfoRecolectada;
+            public void setOtraP_10_2(String otraP_10_2) {
+        this.otraP_10_2 = otraP_10_2;
     }
+    @Column(name = "COMPRENDE_PROCEDIMIENTOS_P11", length = 1, nullable = true)
+            public String getComprendeProcedimientos_P11() {
+            return comprendeProcedimientos_P11;
+            }
 
-    @Column(name = "NO_COMODO_PREGUNTAS", length = 1)
-    public String getNoComodoPreguntas() {
-        return noComodoPreguntas;
+            public void setComprendeProcedimientos_P11(String comprendeProcedimientos_P11) {
+        this.comprendeProcedimientos_P11 = comprendeProcedimientos_P11;
     }
+    @Column(name = "NO_COMODO_REALIZAR_PREG_P11_1", length = 1, nullable = true)
+            public String getNoComodoRealizarPreg_P11_1() {
+            return noComodoRealizarPreg_P11_1;
+            }
 
-    public void setNoComodoPreguntas(String noComodoPreguntas) {
-        this.noComodoPreguntas = noComodoPreguntas;
+            public void setNoComodoRealizarPreg_P11_1(String noComodoRealizarPreg_P11_1) {
+        this.noComodoRealizarPreg_P11_1 = noComodoRealizarPreg_P11_1;
     }
+    @Column(name = "NO_RESPONDIERON_PREG_P11_1", length = 1, nullable = true)
+            public String getNoRespondieronPreg_P11_1() {
+            return noRespondieronPreg_P11_1;
+            }
 
-    @Column(name = "RECOMENDACION_MEJORAR_ATENCION", length = 1)
-    public String getRecomendacionMejorarAtencion() {
-        return recomendacionMejorarAtencion;
+            public void setNoRespondieronPreg_P11_1(String noRespondieronPreg_P11_1) {
+        this.noRespondieronPreg_P11_1 = noRespondieronPreg_P11_1;
     }
+    @Column(name = "EXPLICACION_RAPIDA_P11_1", length = 1, nullable = true)
+            public String getExplicacionRapida_P11_1() {
+            return explicacionRapida_P11_1;
+            }
 
-    public void setRecomendacionMejorarAtencion(String recomendacionMejorarAtencion) {
-        this.recomendacionMejorarAtencion = recomendacionMejorarAtencion;
+            public void setExplicacionRapida_P11_1(String explicacionRapida_P11_1) {
+        this.explicacionRapida_P11_1 = explicacionRapida_P11_1;
     }
+    @Column(name = "NO_DEJARON_HACER_PREG_P11_1", length = 1, nullable = true)
+            public String getNoDejaronHacerPreg_P11_1() {
+            return noDejaronHacerPreg_P11_1;
+            }
 
-    @Column(name = "IMPORTANCIA_RECIBIR_INFORMACION", length = 1)
-    public String getImportanciaRecibirInformacion() {
-        return importanciaRecibirInformacion;
+            public void setNoDejaronHacerPreg_P11_1(String noDejaronHacerPreg_P11_1) {
+        this.noDejaronHacerPreg_P11_1 = noDejaronHacerPreg_P11_1;
     }
+    @Column(name = "OTRAP_P11_1", length = 100, nullable = true)
+            public String getOtraP_11_1() {
+            return otraP_11_1;
+            }
 
-    public void setImportanciaRecibirInformacion(String importanciaRecibirInformacion) {
-        this.importanciaRecibirInformacion = importanciaRecibirInformacion;
+            public void setOtraP_11_1(String otraP_11_1) {
+        this.otraP_11_1 = otraP_11_1;
     }
 
     @Column(name = "IDENTIFICADOR_EQUIPO", nullable = false, length = 50)

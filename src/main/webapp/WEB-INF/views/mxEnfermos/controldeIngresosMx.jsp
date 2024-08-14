@@ -63,14 +63,14 @@
                                     <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-xl-3 col-form-label" for="desde"><spring:message code="lbl.from" />
                                     </label>
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-6">
-                                        <input type="text" class="form-control from_date datepicker" id="desde" name="desde" data-date-end-date="+0d">
+                                        <input type="text" class="form-control date-picker" id="desde" name="desde" >
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <label class="col-xs-12 col-sm-2 col-md-3 col-lg-3 col-xl-3 col-form-label" for="hasta"><spring:message code="lbl.until" />
                                     </label>
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-6">
-                                        <input type="text" class="form-control to_date datepicker" id="hasta" name="hasta" data-date-end-date="+0d">
+                                        <input type="text" class="form-control date-picker" id="hasta" name="hasta" >
                                     </div>
                                 </div>
 
@@ -318,7 +318,12 @@
 
 <script>
     jQuery(document).ready(function() {
-
+        $('.date-picker').datetimepicker({
+            format: 'L',
+            locale: "${lenguaje}",
+            maxDate: new Date(),
+            useCurrent: true
+        });
         var misUrl ={
             "getmedicos"               : "${getMxOrdenLaboratorio}",
             "getrecepcion"             : "${getMxRecepcionEnfermo}",
@@ -329,12 +334,6 @@
         };
         SearchMxEnfermosFormVal.init(misUrl);
 
-        $('.datepicker').datetimepicker({
-            format: 'L',
-            locale: "${lenguaje}",
-            maxDate: new Date(),
-            useCurrent: false
-        }).val(moment().format('DD/MM/YYYY'));
 
         $("#desde").on("dp.change", function (e) {
             $('#hasta').data("DateTimePicker").minDate(e.date);

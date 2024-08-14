@@ -66,8 +66,8 @@ var SearchControlAsistenciaFormVal = function(){
                                         data[i].fechaasistencia,
                                         data[i].identificador_equipo,
                                         data[i].latitud,
-                                        data[i].longitud,
-                                        data[i].fecha_registro
+                                        data[i].longitud
+                                      //  data[i].fecha_registro
 
                                     ]).draw(false);
                                 }

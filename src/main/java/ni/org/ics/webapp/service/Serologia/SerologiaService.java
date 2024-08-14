@@ -14,6 +14,7 @@ import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.dto.ParticipanteSeroDto;
 import ni.org.ics.webapp.dto.SerologiaDto;
 import ni.org.ics.webapp.dto.BhcDto;
+import ni.org.ics.webapp.dto.BhcDto1;
 import ni.org.ics.webapp.service.UsuarioService;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -238,10 +239,22 @@ public class SerologiaService {
         Session session = sessionFactory.getCurrentSession();
         Character noSend ='0';
         Query query = session.createQuery("select s.idbhc as idbhc, s.enviado as enviado, p.codigo as participante, DATE_FORMAT(s.fecha, '%d/%m/%Y') as fecha, s.volumen as volumen, coalesce(s.observacion, '') as observacion, coalesce(s.descripcion, '') as descripcion, " +
-                " s.codigo_casa as codigoCasa from Bhc s, Participante p where s.participante = p.codigo and s.enviado =:noSend and s.pasive = '0' order by p.codigo asc");
+                "0 as numEnvio,0 as edadMeses,0 as codigoCasa, '' as procesaCSFV,'' as usuarioRegistro,'' as estudio,'' as puesto from Bhc s, Participante p where s.participante = p.codigo and s.enviado =:noSend and s.pasive = '0' order by p.codigo asc");
         query.setParameter("noSend", noSend);
         query.setResultTransformer(Transformers.aliasToBean(BhcDto.class));
         return query.list();
+    }
+    @SuppressWarnings("unchecked")
+    public List<BhcDto1> BhcNoEnviadaDto1() throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  sp_extrae_bhc_escaneadas()");
+            query.setResultTransformer(Transformers.aliasToBean(BhcDto1.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
     }
     //Actualiza el campo cerrado
     public  void ModificarEnvio(Integer idSerologia){

@@ -34,7 +34,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="<spring:url value="/" htmlEscape="true "/>"><spring:message code="home" /></a>
-                <i class="fa fa-angle-right"></i> <a href="<spring:url value="/hojaclinicaDD/" htmlEscape="true "/>"><spring:message code="Hola Clínica Doble Digitación" /></a>
+                <i class="fa fa-angle-right"></i> <a href="<spring:url value="/hojaclinicaDD/" htmlEscape="true "/>"><spring:message code="Hoja Clínica Doble Digitación" /></a>
             </li>
         </ol>
         <c:set var="userEnabledLabel"><spring:message code="login.userEnabled" /></c:set>
@@ -51,7 +51,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="page-title">
-                        <spring:message code="Hola Clínica Doble Digitación" /> <small><spring:message code="search" /></small>
+                        <spring:message code="Hoja Clínica Doble Digitación" /> <small><spring:message code="search" /></small>
                     </h3>
                 </div>
                 <div class="card-block">
@@ -132,6 +132,8 @@
                             <tr>
                                 <th class="expand" width="10%"><spring:message code="code" /></th>
                                 <th class="hidden-xs" width="21%"><spring:message code="participant" /></th>
+                                <th class="hidden-xs" width="21%"><spring:message code="numeroHoja" /></th>
+                                <th class="hidden-xs" width="21%"><spring:message code="usuarioRegistr" /></th>
                                 <th class="hidden-xs" width="13%"><spring:message code="fecha_consulta" /></th>
                                 <th class="hidden-xs" width="13%"><spring:message code="lugar_consulta" /></th>
                                 <th class="hidden-xs" width="13%"><spring:message code="consulta" /></th>
@@ -242,6 +244,8 @@
             columns: [
                 { data: 'codigo'},
                 { data: 'nombreCompleto' },
+                { data: 'numHojaConsulta' },
+                { data: 'usuarioRegistro' },
                 { data: 'fechaConsulta' },
                 { data: 'lugarAtencion' },
                 { data: 'tipoConsulta' },

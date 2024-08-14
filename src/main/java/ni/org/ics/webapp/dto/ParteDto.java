@@ -1,6 +1,8 @@
 package ni.org.ics.webapp.dto;
 
+import javax.persistence.Column;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by ICS on 23/01/2020.
@@ -12,6 +14,8 @@ public class ParteDto {
     private String nombreparte;
     private boolean acepta;
     private boolean locked;
+    private String usuarioModifica;
+    private Date fechaModifica;
 
     public ParteDto() {
     }
@@ -67,5 +71,23 @@ public class ParteDto {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+
+    public String getUsuarioModifica() {
+        return usuarioModifica;
+    }
+
+    public void setUsuarioModifica(String usuarioModifica) {
+        this.usuarioModifica = usuarioModifica;
+    }
+
+
+    public Date getFechaModifica() {
+        return fechaModifica;
+    }
+
+    public void setFechaModifica(Date fechaModifica) {
+        this.fechaModifica = fechaModifica;
     }
 }

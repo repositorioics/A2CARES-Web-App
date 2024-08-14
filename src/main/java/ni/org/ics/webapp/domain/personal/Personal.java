@@ -17,6 +17,7 @@ public class Personal extends BaseMetaData implements Auditable {
     private Integer idPersona;
     private String nombre;
     private MessageResource cargo;
+    private String area;
 
     @Id
     @Column(name = "SEQ", nullable = false, length = 4)
@@ -57,6 +58,16 @@ public class Personal extends BaseMetaData implements Auditable {
     public void setCargo(MessageResource cargo) {
         this.cargo = cargo;
     }
+
+    @Column(name = "AREA", nullable = false)
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
 
     @Override
     public boolean equals(Object o) {

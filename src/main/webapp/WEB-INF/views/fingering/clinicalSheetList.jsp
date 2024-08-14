@@ -132,6 +132,8 @@
                             <tr>
                                 <th class="expand" width="10%"><spring:message code="code" /></th>
                                 <th class="hidden-xs" width="21%"><spring:message code="participant" /></th>
+                                <th class="hidden-xs" width="21%"><spring:message code="numeroHoja" /></th>
+                                <th class="hidden-xs" width="21%"><spring:message code="usuarioRegistr" /></th>
                                 <th class="hidden-xs" width="13%"><spring:message code="fecha_consulta" /></th>
                                 <th class="hidden-xs" width="13%"><spring:message code="lugar_consulta" /></th>
                                 <th class="hidden-xs" width="13%"><spring:message code="consulta" /></th>
@@ -242,6 +244,8 @@
             columns: [
                 { data: 'codigo'},
                 { data: 'nombreCompleto' },
+                { data: 'numHojaConsulta' },
+                { data: 'usuarioRegistro' },
                 { data: 'fechaConsulta' },
                 { data: 'lugarAtencion' },
                 { data: 'tipoConsulta' },

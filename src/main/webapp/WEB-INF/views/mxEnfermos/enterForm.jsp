@@ -288,7 +288,7 @@
                                       <div class="form-group">
 
                                               <label for="evento"><spring:message code="evento" /></label>
-                                          <input type="text" id="evento" name="evento"  value="${recepcionEnfermo.evento}"
+                                          <input type="text" id="evento" name="evento"  value="${evento}"
                                                  data-toggle="tooltip" data-state="primary"
                                                  data-placement="right"
                                                  title="El evento está relacionado a la cantidad de consultas, la primera consulta inicial es A y su convaleciente tambien es A, la segunda consulta incial es B y su convaleciente es B......."
@@ -393,7 +393,9 @@
 <script type="application/javascript">
     $(document).ready(function(){
         $('#fechaNac').mask("9999-99-99", {placeholder: 'yyyy-MM-dd' });
-        var today = moment().format('YYYY-MM-DD');
+      //  $('#fif').change();
+      //  $('#fis').change();
+       // var today = moment().format('YYYY-MM-DD');
 
         actDesact();
         var points ={
@@ -407,12 +409,12 @@
         $('.datepicker').datetimepicker({
             format: 'L',
             locale: "${lenguaje}",
-            maxDate: new Date(),
-            useCurrent: true
+        //    maxDate: new Date(),
+        //    useCurrent: true
 
         });
-        $("#fis").val("");
-        $("#fif").val("");
+      /*  $("#fis").val("");
+        $("#fif").val("");*/
 
         if ($("#tiporequest").val() === 'false') {//es nuevo
             $('#fecha').val(moment().format('DD/MM/YYYY'));
@@ -472,13 +474,13 @@
             var evento_letra = $("#ultima_consulta").val().substr(3,1);
             var evento_ascii = evento_letra.charCodeAt(0);
             evento_ascii = evento_ascii + 1;
-
+            if (evento_letra != ""){
             Swal.fire({
                 title: 'Alerta A2CARES!',
                 text: 'Ultima muestra de Participante es Inicial y evento:'+ ' ' +$("#ultima_consulta").val().substr(3,1) + ' Cambiará a siguiente Evento: ' + (String.fromCharCode(evento_ascii)),
                 icon: 'warning',
                 confirmButtonText: 'Aceptar'
-            });
+            });}
             $("#evento").val(String.fromCharCode(evento_ascii));
           //  $('#evento').attr('readonly', false);
         } else {
@@ -504,7 +506,7 @@
     };
     function ValEvento_guardar(){
 
-        if ($("#ultima_consulta").val().substr(3,1) === $("#evento").val() )
+      /*  if ($("#ultima_consulta").val().substr(3,1) === $("#evento").val() )
         {
             Swal.fire({
                 title: 'Alerta A2CARES!',
@@ -513,7 +515,7 @@
                 confirmButtonText: 'Aceptar'
             });
 
-        }};
+        }*/};
 </script>
 
 </body>

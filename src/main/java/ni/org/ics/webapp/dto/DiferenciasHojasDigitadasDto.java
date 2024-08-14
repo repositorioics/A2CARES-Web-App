@@ -366,6 +366,12 @@ public class DiferenciasHojasDigitadasDto implements Serializable {
     private String sueroOral1;
     private String sueroOral2;
 
+    private String liquidosiv1;
+    private String liquidosiv2;
+
+    private String referenciaPordengue1;
+    private String referenciaPordengue2;
+
     private String otroTratamiento1;
     private String otroTratamiento2;
 
@@ -1559,6 +1565,26 @@ public class DiferenciasHojasDigitadasDto implements Serializable {
         this.sueroOral2 = sueroOral2;
     }
     public String getSueroOral2() { return sueroOral2;  }
+
+    public void setLiquidosiv1 (String   liquidosiv1) {
+        this.liquidosiv1 = liquidosiv1;
+    }
+    public String getLiquidosiv1() { return liquidosiv1;  }
+
+    public void setLiquidosiv2 (String   liquidosiv2) {
+        this.liquidosiv2 = liquidosiv2;
+    }
+    public String getLiquidosiv2() { return liquidosiv2;  }
+
+    public void setReferenciaPordengue1 (String   referenciaPordengue1) {
+        this.referenciaPordengue1 = referenciaPordengue1;
+    }
+    public String getReferenciaPordengue1() { return referenciaPordengue1;  }
+
+    public void setReferenciaPordengue2 (String   referenciaPordengue2) {
+        this.referenciaPordengue2 = referenciaPordengue2;
+    }
+    public String getReferenciaPordengue2() { return referenciaPordengue2;  }
     /*otroTratamiento1*/
     public void setOtroTratamiento1(String otroTratamiento1 ) {
         this.otroTratamiento1 = otroTratamiento1;

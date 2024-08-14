@@ -106,6 +106,35 @@ public class RecepcionEnfermoService {
     }
 
     @SuppressWarnings("unchecked")
+    public List<AdmisionPacientesDto> getAdmisionPacientesList(Date inicio, Date fin)throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call sp_obtener_admision_pacientes(:inicio, :fin)");
+            query.setParameter("inicio", inicio);
+            query.setParameter("fin", fin);
+            query.setResultTransformer(Transformers.aliasToBean(AdmisionPacientesDto.class));
+            return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    @SuppressWarnings("unchecked")
+    public List<ProcesosPendientesMuestreoDto> getProcesosPendientesMuestreoList(Date inicio, Date fin)throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call sp_mostrar_procesos_pendientes(:inicio, :fin)");
+            query.setParameter("inicio", inicio);
+            query.setParameter("fin", fin);
+            query.setResultTransformer(Transformers.aliasToBean(ProcesosPendientesMuestreoDto.class));
+            return query.list();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     public List<MuestrasEnfermosDto> getMxMuestraEnfermo(FiltroMxEnfermoDto filtro) throws Exception{
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("select r.idMuestra as idMuestra, DATE_FORMAT(r.fechaMuestra, '%d/%m/%Y') as fechaMuestra, r.horaMuestra as horaMuestra, r.tipoTubo as tipoTubo, " +
@@ -241,6 +270,142 @@ public class RecepcionEnfermoService {
             throw e;
         }
     }
+
+
+    public List<MuestrasEnfermosDto> ObtenerMuestrasSupervisores(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  sp_muestras_por_supervisor_muestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    public List<MuestrasEnfermosDto> ObtenerMuestrasEncuestadores(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  sp_muestras_por_encuestador_muestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    public List<MuestrasEnfermosDto> ObtenerMuestrasRecepcionMuestreo(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  sp_muestras_recepcionadas_muestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    public List<MuestrasEnfermosDto> ObtenerDifSerologiavsSupervisorMuestreo(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  spObtenerDifSerologiavsSupervisorMuestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    public List<MuestrasEnfermosDto> ObtenerDifSupervisorvsSerologiaMuestreo(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  spObtenerDifSupervisorvsSerologiaMuestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    public List<MuestrasEnfermosDto> ObtenerDifEncuestadoresvsSerologiaMuestreo(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  spObtenerDifEncuestadoresvsSerologiaMuestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
+    public List<MuestrasEnfermosDto> ObtenerDifSerologiavsEncuestadoresMuestreo(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  spObtenerDifSerologiavsEncuestadoresMuestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+ /*   public List<MuestrasEnfermosDto> ObtenerDifSerologiavsEncuestadoresMuestreo(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  spObtenerDifSerologiavsEncuestadoresMuestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }*/
+    public List<MuestrasEnfermosDto> ObtenerDifSupervisorvsEncuestadoresMuestreo(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  spObtenerDifSupervisorvsEncuestadoresMuestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    public List<MuestrasEnfermosDto> ObtenerDifEncuestadoresvsSupervisorMuestreo(FiltroMxEnfermoDto filtro) throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call  spObtenerDifEncuestadoresvsSupervisorMuestreo(:desde,:hasta)");
+            query.setParameter("desde", filtro.getFechaInicio());
+            query.setParameter("hasta", filtro.getFechaFin());
+            query.setResultTransformer(Transformers.aliasToBean(MuestrasEnfermosDto.class));
+            return  query.list() ;
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+
     public List<String> ObtenerEvento1(String codigo) throws Exception{
         try{
             Session session = sessionFactory.getCurrentSession();

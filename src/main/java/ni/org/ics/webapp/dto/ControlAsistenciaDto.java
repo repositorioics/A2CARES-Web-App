@@ -33,6 +33,9 @@ public class ControlAsistenciaDto extends BaseMetaData implements Serializable {
     private String nombre_usuario;
     private String nombre_completo;
     private String identificador_equipo;
+    private String cargo;
+    private String area;
+
 
 
     public Integer getId() {
@@ -107,5 +110,20 @@ public class ControlAsistenciaDto extends BaseMetaData implements Serializable {
 
     public void setFecha_registro(String fecha_registro) {
         this.fecha_registro = fecha_registro;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea (String area) {
+        this.area = area;
     }
 }

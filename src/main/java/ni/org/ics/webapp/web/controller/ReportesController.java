@@ -1,13 +1,11 @@
 package ni.org.ics.webapp.web.controller;
 
 import ni.org.ics.webapp.domain.Retiros.Retiros;
-import ni.org.ics.webapp.domain.Serologia.BhcEnvio;
-import ni.org.ics.webapp.domain.Serologia.Bhc_Detalles_Envio;
-import ni.org.ics.webapp.domain.Serologia.SerologiaEnvio;
-import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
+import ni.org.ics.webapp.domain.Serologia.*;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
 import ni.org.ics.webapp.domain.core.ControlAsistencia;
 import ni.org.ics.webapp.domain.core.Estudio;
+import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioHogar;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioHogarPoblacion;
@@ -18,9 +16,7 @@ import ni.org.ics.webapp.domain.personal.Personal;
 import ni.org.ics.webapp.domain.scancarta.DetalleParte;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteCarta;
 import ni.org.ics.webapp.domain.scancarta.ParticipanteExtension;
-import ni.org.ics.webapp.dto.ConvalecientesEnfermoDto;
-import ni.org.ics.webapp.dto.ControlAsistenciaDto;
-import ni.org.ics.webapp.dto.FiltroMxEnfermoDto;
+import ni.org.ics.webapp.dto.*;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.service.*;
 import ni.org.ics.webapp.service.Retiro.RetiroService;
@@ -36,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,6 +75,10 @@ public class ReportesController {
     @Resource(name = "scanCartaService")
     private ScanCartaService scanCartaService;
 
+    /* Instancia de servicio Hoja clinica */
+    @Resource(name = "hojaClinicaService")
+    private HojaClinicaService hojaClinicaService;
+
     /* Instancia de mi Servicio Retiro */
     @Resource(name = "RetiroService")
     private RetiroService retiroService;
@@ -90,6 +91,9 @@ public class ReportesController {
 
     @Resource(name = "controlAsistenciaService")
     private ControlAsistenciaService controlAsistenciaService;
+
+    @Resource(name = "participanteService")
+    private ParticipanteService participanteService;
 
     //region todo Genera el Reporte de ScanCarta /reportes/ReporteCarta
     @RequestMapping(value = "/ReporteCarta", method = RequestMethod.GET)
@@ -121,6 +125,23 @@ public class ReportesController {
         return ReporteCarta;
     }
     //endregion
+    //region  /reportes/ReporteBhcBc6000
+    //@RequestMapping(value = "/ReporteBhcBc6000/", method = RequestMethod.GET)
+    @RequestMapping(value = "/ReporteBhcBc6000/{participante_cod}/{bhcId}/", method = RequestMethod.GET, produces = "application/json")
+    public ModelAndView ReporteBhcBc6000(@PathVariable(value = "participante_cod")String participante_cod,
+            @PathVariable(value = "bhcId")Integer bhcId)
+            throws  Exception{
+        ModelAndView ReporteBhcBc6000 = new ModelAndView("pdfView");
+        Bhc_Bc6000 obj = hojaClinicaService.getImprimirBHCImportadasBc6000(participante_cod.substring(3,7),bhcId);
+        hojaClinicaService.getcambiarImpresoBhc(bhcId);
+        Participante part = participanteService.getParticipanteByCodigo(participante_cod.substring(3,7));
+        ReporteBhcBc6000.addObject("part", part);
+            ReporteBhcBc6000.addObject("obj", obj);
+
+            ReporteBhcBc6000.addObject("TipoReporte", Constants.TPR_IMPRIMIR_BHC_BC6000);
+            return ReporteBhcBc6000;
+    }
+
 
     //region todo Este controlador Genera el Reporte Serologia PDF y EXCEL
     @RequestMapping(value = "/downloadFileEnviosSerologia", method = RequestMethod.GET)
@@ -176,6 +197,61 @@ public class ReportesController {
     }
 
     //endregion
+    //region todo Este controlador Genera el Reporte HORAS LABORADAS ICS EXCEL
+    @RequestMapping(value = "/downloadFileReporteHorasICSExcel", method = RequestMethod.GET)
+    public ModelAndView downloadFileReporteHorasICSExcel(@RequestParam(value="userId", required=false ) String id,
+                                                         @RequestParam(value="sitio", required=false ) String idSitio,
+                                                         @RequestParam(value="depto", required=false ) String idDepto,
+                                              @RequestParam(value="fechaInicioCons", required=false ) String fechaInicio,
+                                              @RequestParam(value="fechaFinCons", required=false ) String fechaFin)
+            throws Exception{
+        ModelAndView ReporteHorasLaboradas = new ModelAndView("excelView");
+        Date dFechaInicio = null;
+        List<SitiosICSDto> sitios = null;
+        List<DepartamentosICSDto> depto = null;
+        List<ReporteHorasICSDto> horasEmpleados = null;
+        FiltroMxEnfermoDto filtro = new FiltroMxEnfermoDto();
+        logger.debug("IDSITIO "+ idSitio);
+
+
+
+        if (fechaInicio!=null && !fechaInicio.isEmpty())
+            filtro.setFechaInicio(DateUtil.StringToDate(fechaInicio + " 00:00:00", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+
+        if (fechaFin!=null && !fechaFin.isEmpty())
+            filtro.setFechaFin(DateUtil.StringToDate(fechaFin +" 23:59:59", Constants.STRING_FORMAT_DD_MM_YYYY_HH24));
+
+        if(!id.isEmpty() && id != null && id != ""){
+            String[] rst = id.split("-");
+            horasEmpleados = this.controlAsistenciaService.getReporteHorasICS(filtro, rst[1], rst[0]);
+        }else {
+            if (!idDepto.isEmpty() && idDepto != null && idDepto != "") {
+                String[] rst = idDepto.split("-");
+                horasEmpleados = this.controlAsistenciaService.getReporteHorasSitiosDeptoICS(filtro, rst[1], rst[0]);
+                depto = this.controlAsistenciaService.getDepartamentosICS(idSitio);
+            } else {
+                if (!idSitio.isEmpty() && idSitio != null && idSitio != "") {
+                    horasEmpleados = this.controlAsistenciaService.getReporteHorasSitiosICS(filtro, idSitio);
+                    depto = this.controlAsistenciaService.getDepartamentosICS(idSitio);
+                }
+            }
+        }
+       // logger.debug("DEPTO "+ horasEmpleados.get(0).getDepto().toString());
+
+        sitios = this.controlAsistenciaService.getSitiosICS();
+
+      //  horasEmpleados = this.controlAsistenciaService.getReporteHorasSitiosICS(filtro, idSitio);
+       // logger.debug("DEPTO "+ horasEmpleados.get(0).getDepto().toString());
+
+        ReporteHorasLaboradas.addObject("sitios", sitios.get(0).getDescripcion());
+        ReporteHorasLaboradas.addObject("depto",depto);
+        ReporteHorasLaboradas.addObject("fechaInicio",fechaInicio);
+        ReporteHorasLaboradas.addObject("fechaFin",fechaFin);
+        ReporteHorasLaboradas.addObject("horasEmpleados",horasEmpleados);
+
+        ReporteHorasLaboradas.addObject("TipoReporte", Constants.TPR_REPORTE_HORAS_TRABAJADAS);
+        return ReporteHorasLaboradas;
+    }
 
     //region todo Este controlador Genera el Reporte Serologia PDF y EXCEL
     @RequestMapping(value = "/downloadFileEnviosBhc", method = RequestMethod.GET)
@@ -203,6 +279,31 @@ public class ReportesController {
         return ReporteEnvioBhc;
     }
 
+    //region todo Este controlador Genera el Reporte Serologia PDF y EXCEL
+    @RequestMapping(value = "/downloadFileEnviosBhc1", method = RequestMethod.GET)
+    public ModelAndView downloadFileEnviosBhc1(@RequestParam(value="nEnvios", required=false ) Integer nEnvios,
+                                              @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                              @RequestParam(value="fechaFin", required=false ) String fechaFin)
+            throws Exception{
+        ModelAndView ReporteEnvioBhc = new ModelAndView("pdfView");
+        Date dFechaInicio = null;
+        if (fechaInicio!=null && !fechaInicio.isEmpty())
+            dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+        Date dFechaFin = null;
+        if (fechaFin!=null && !fechaFin.isEmpty())
+            dFechaFin = DateUtil.StringToDate(fechaFin+ " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+        List<BhcEnvio> BhcEnviadas =  this.serologiaservice.getBhcEnvioByDates(nEnvios,dFechaInicio,dFechaFin);
+        ReporteEnvioBhc.addObject("nEnvios",nEnvios);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        ReporteEnvioBhc.addObject("sitios", sitios);
+        ReporteEnvioBhc.addObject("fechaInicio",fechaInicio);
+        ReporteEnvioBhc.addObject("fechaFin",fechaFin);
+        ReporteEnvioBhc.addObject("BhcEnviadas",BhcEnviadas);
+        List<Bhc_Detalles_Envio> allBhc = this.serologiaservice.getAllBhc(nEnvios,dFechaInicio,dFechaFin);
+        ReporteEnvioBhc.addObject("allBhc",allBhc);
+        ReporteEnvioBhc.addObject("TipoReporte", Constants.TPR_ENVIOREPORTEBHC1);
+        return ReporteEnvioBhc;
+    }
 
 
     @RequestMapping(value = "downloadFileBhcExcel", method = RequestMethod.GET)
@@ -229,7 +330,30 @@ public class ReportesController {
         ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTEBHC);
         return ReporteEnvio;
     }
-
+    @RequestMapping(value = "downloadFileBhcExcel1", method = RequestMethod.GET)
+    public ModelAndView BhcExcel1(@RequestParam(value="nEnvios", required=false ) Integer nEnvios,
+                                 @RequestParam(value="fechaInicio", required=false ) String fechaInicio,
+                                 @RequestParam(value="fechaFin", required=false ) String fechaFin)
+            throws Exception {
+        ModelAndView ReporteEnvio = new ModelAndView("excelView");
+        Date dFechaInicio = null;
+        if (fechaInicio != null && !fechaInicio.isEmpty())
+            dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
+        Date dFechaFin = null;
+        if (fechaFin != null && !fechaFin.isEmpty())
+            dFechaFin = DateUtil.StringToDate(fechaFin + " 23:59:59", "dd/MM/yyyy HH:mm:ss");
+        List<BhcEnvio> BhcEnviadas = this.serologiaservice.getBhcEnvioByDates(nEnvios, dFechaInicio, dFechaFin);
+        ReporteEnvio.addObject("nEnvios", nEnvios);
+        List<MessageResource> sitios = messageResourceService.getCatalogo("CAT_SITIOS_ENVIO_SEROLOGIA");
+        ReporteEnvio.addObject("sitios", sitios);
+        ReporteEnvio.addObject("fechaInicio", fechaInicio);
+        ReporteEnvio.addObject("fechaFin", fechaFin);
+        ReporteEnvio.addObject("BhcEnviadas", BhcEnviadas);
+        List<Bhc_Detalles_Envio> allBhc = this.serologiaservice.getAllBhc(nEnvios, dFechaInicio, dFechaFin) ;
+        ReporteEnvio.addObject("allBhc", allBhc);
+        ReporteEnvio.addObject("TipoReporte", Constants.TPR_ENVIOREPORTEBHC1);
+        return ReporteEnvio;
+    }
     //endregion
 
 

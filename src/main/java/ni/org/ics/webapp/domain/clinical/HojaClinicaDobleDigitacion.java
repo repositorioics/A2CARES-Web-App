@@ -156,6 +156,8 @@ public class HojaClinicaDobleDigitacion extends BaseMetaData {
     private String metronidazolTinidazol;
     private String albendazolMebendazol;
     private String sueroOral;
+    private String liquidos4;
+    private String referencia_por_dengue;
     private String otroTratamiento;
     private String otroTratamientoEspecificar;
     //planes, historia y diagnostico
@@ -178,6 +180,8 @@ public class HojaClinicaDobleDigitacion extends BaseMetaData {
     private Time horaEnfermeria;
     private String estudiosParticipantes;
 
+    private Date fechaModifica;
+    private String usuarioModifica;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -1255,6 +1259,24 @@ public class HojaClinicaDobleDigitacion extends BaseMetaData {
         this.sueroOral = sueroOral;
     }
 
+    @Column(name = "liquidos_iv", length = 1)
+    public String getLiquidos4() {
+        return this.liquidos4;
+    }
+
+    public void setLiquidos4(String liquidos4) {
+        this.liquidos4 = liquidos4;
+    }
+
+    @Column(name = "referencia_por_dengue", length = 1)
+    public String getReferencia_por_dengue() {
+        return this.referencia_por_dengue;
+    }
+
+    public void setReferencia_por_dengue(String referencia_por_dengue) {
+        this.referencia_por_dengue = referencia_por_dengue;
+    }
+
     @Column(name = "otro_tratamiento", length = 1)
     public String getOtroTratamiento() {
         return otroTratamiento;
@@ -1415,6 +1437,23 @@ public class HojaClinicaDobleDigitacion extends BaseMetaData {
 
     public void setEstudiosParticipantes(String estudiosParticipantes) {
         this.estudiosParticipantes = estudiosParticipantes;
+    }
+
+    @Column(name = "fecha_modifica")
+    public Date getFechaModifica() {
+        return fechaModifica;
+    }
+
+    public void setFechaModifica(Date fechaModifica) {
+        this.fechaModifica = fechaModifica;
+    }
+    @Column(name = "usuario_modifica")
+    public String getUsuarioModifica() {
+        return usuarioModifica;
+    }
+
+    public void setUsuarioModifica(String usuarioModifica) {
+        this.usuarioModifica = usuarioModifica;
     }
 
 }

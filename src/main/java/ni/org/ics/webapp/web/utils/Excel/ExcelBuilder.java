@@ -3,6 +3,9 @@ package ni.org.ics.webapp.web.utils.Excel;
 import ni.org.ics.webapp.domain.Serologia.Bhc_Detalles_Envio;
 import ni.org.ics.webapp.domain.Serologia.Serologia_Detalles_Envio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
+import ni.org.ics.webapp.dto.DepartamentosICSDto;
+import ni.org.ics.webapp.dto.ReporteHorasICSDto;
+import ni.org.ics.webapp.dto.SitiosAsistenciaICSDto;
 import ni.org.ics.webapp.language.MessageResource;
 import ni.org.ics.webapp.web.utils.*;
 import ni.org.ics.webapp.web.utils.DateUtil;
@@ -26,9 +29,11 @@ import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,9 +61,217 @@ public class ExcelBuilder extends AbstractExcelView {
         else if (reporte.equalsIgnoreCase(Constants.TPR_ENVIOREPORTEBHC)) {
             buildExcelDocumentVigDxBhc(model, workbook, response);
         }
+        else if (reporte.equalsIgnoreCase(Constants.TPR_REPORTE_HORAS_TRABAJADAS)) {
+            buildExcelDocumentHorasTrabajadas(model, workbook, response);
+        }
 
 	}
 
+    public void buildExcelDocumentHorasTrabajadas(Map<String, Object> model, HSSFWorkbook workbook,HttpServletResponse response) throws IOException {
+        List<ReporteHorasICSDto> listaHorasTrab = (List<ReporteHorasICSDto>) model.get("horasEmpleados");
+       // List<SitiosAsistenciaICSDto> listaSitios = (List<SitiosAsistenciaICSDto>) model.get("sitios");
+        String sitio = (String) model.get("sitios");
+        List<DepartamentosICSDto> listaDepto = (List<DepartamentosICSDto>) model.get("depto");
+        logger.log(Level.INFO, "iniciando libro de excel");
+        response.setContentType("application/octec-stream");
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
+        String fechaActual = dateFormat.format(new Date());
+        String fileName = "INFORME_HORAS_TRABAJADAS_ICS_"+ fechaActual +".xls";
+        response.setHeader("Content-Disposition", "attachment; filename="+ fileName);
+        HSSFSheet sheet = workbook.createSheet("HorasTrabajadas");
+        Header header1 = sheet.getHeader();
+        header1.setCenter("INSTITUTO DE CIENCIAS SOSTENIBLES - ICS");
+        header1.setCenter("REPORTE DE HORAS TRABAJADAS");
+        Font font = workbook.createFont();
+        String[] headers = new String[]{
+                "Sitio",
+                "Departamento",
+                "Nombre Completo",
+                "fecha",
+                "Semana",
+                "Horas",
+                "Veces",
+                "Horas_Trabajadas"
+        };
+        CellStyle headerStyle = workbook.createCellStyle();
+        font.setBold(true);
+        headerStyle.setFont(font);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+
+        HSSFRow headerRow = sheet.createRow(0);
+        HSSFCell cell1 = headerRow.createCell(0);
+        cell1.setCellStyle(headerStyle);
+        cell1.setCellValue("INSTITUTO DE CIENCIAS SOSTENIBLES - ICS");
+        HSSFRow headerRow1 = sheet.createRow(1);
+        HSSFCell cell2 = headerRow1.createCell(0);
+        cell2.setCellStyle(headerStyle);
+        cell2.setCellValue("REPORTE DE HORAS TRABAJADAS");
+
+
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
+        sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 6));
+        HSSFRow headerRow2 = sheet.createRow(3);
+        for (int i = 0; i < headers.length; ++i) {
+            String header = headers[i];
+            HSSFCell cell = headerRow2.createCell(i);
+            cell.setCellStyle(headerStyle);
+            cell.setCellValue(header);
+        }
+
+        if (listaHorasTrab.size()>0) {
+            File archivo = new File(fileName);
+            String filePath = "C:\\Users\\ICS\\Downloads\\" + fileName;
+
+            //Cell style for content cells
+            font = workbook.createFont();
+            font.setFontName("Calibri");
+            font.setFontHeight((short) (11 * 20));
+            //  font.setColor(HSSFColor.BLACK.index);
+
+
+            CellStyle dateCellStyle = workbook.createCellStyle();
+            CreationHelper createHelper = workbook.getCreationHelper();
+            dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("MM/dd/yyyy"));
+            dateCellStyle.setBorderBottom(BorderStyle.THIN);
+            dateCellStyle.setBorderTop(BorderStyle.THIN);
+            dateCellStyle.setBorderLeft(BorderStyle.THIN);
+            dateCellStyle.setBorderRight(BorderStyle.THIN);
+            dateCellStyle.setFont(font);
+
+            CellStyle style = workbook.createCellStyle();
+            style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+            CellStyle contentCellStyle = workbook.createCellStyle();
+            contentCellStyle.setBorderBottom(BorderStyle.THIN);
+            contentCellStyle.setBorderTop(BorderStyle.THIN);
+            contentCellStyle.setBorderLeft(BorderStyle.THIN);
+            contentCellStyle.setBorderRight(BorderStyle.THIN);
+            contentCellStyle.setFont(font);
+
+                        int rowCounth = 4;
+            Long total;
+            total = Long.valueOf(0);
+            Long totalEmp;
+            totalEmp = Long.valueOf(0);
+            String nomEmpCiclo = "";
+            nomEmpCiclo = listaHorasTrab.get(0).getNombreEmpleado();
+                for (ReporteHorasICSDto horast : listaHorasTrab) {
+                    if(!horast.getNombreEmpleado().equalsIgnoreCase(nomEmpCiclo)) {
+
+                        String hmst = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(totalEmp),
+                                TimeUnit.MILLISECONDS.toMinutes(totalEmp) % TimeUnit.HOURS.toMinutes(1),
+                                TimeUnit.MILLISECONDS.toSeconds(totalEmp) % TimeUnit.MINUTES.toSeconds(1));
+                        HSSFRow dataRowh1 = sheet.createRow(rowCounth);
+                        dataRowh1.createCell(7).setCellValue("Total de Horas Trabajadas de "+ nomEmpCiclo + " : "+ hmst);
+                        dataRowh1.setRowStyle(headerStyle);
+                        sheet.autoSizeColumn(7);
+                        nomEmpCiclo = horast.getNombreEmpleado();
+                        totalEmp = Long.valueOf(0);
+                        rowCounth++;
+                        //  sheet.addMergedRegion(new CellRangeAddress(rowCounth, rowCounth, 0, 7));
+                        //  rowCounth = rowCounth + 2;
+                    } /*fin de if empleado*/
+                        HSSFRow dataRowh = sheet.createRow(rowCounth++);
+                        dataRowh.createCell(0).setCellValue(horast.getSitio());
+                        sheet.autoSizeColumn(0);
+                        dataRowh.createCell(1).setCellValue(horast.getDepto());
+                        sheet.autoSizeColumn(1);
+
+                        dataRowh.createCell(2).setCellValue(horast.getNombreEmpleado());
+                        sheet.autoSizeColumn(2);
+                        dataRowh.createCell(3).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(horast.getFecha(), "dd/MM/yyyy"));
+                        sheet.autoSizeColumn(3);
+                        dataRowh.createCell(4).setCellValue(horast.getSemana());
+                        sheet.autoSizeColumn(4);
+                        dataRowh.createCell(5).setCellValue(horast.getHoras());
+                        sheet.autoSizeColumn(5);
+                        dataRowh.createCell(6).setCellValue(horast.getVeces());
+                        sheet.autoSizeColumn(6);
+
+
+                        String[] rst = horast.getHoras().split("-");
+                        if (rst[0].toString().length() > 5) {
+                            if (rst.length > 1) {
+                                Arrays.stream(rst).sorted();
+                                String aux;
+                                for (int i = 1; i <= rst.length; i++) {
+                                    for (int j = 0; j < rst.length - i; j++) {
+                                        if (rst[j].compareTo(rst[j + 1]) > 0) {
+                                            aux = rst[j];
+                                            rst[j] = rst[j + 1];
+                                            rst[j + 1] = aux;
+                                        }
+                                    }
+                                }
+
+                                String[] tokens1 = rst[0].split(":");
+                                int secondsToMs1 = Integer.parseInt(tokens1[2].trim()) * 1000;
+                                int minutesToMs1 = Integer.parseInt(tokens1[1].trim()) * 60000;
+                                int hoursToMs1 = Integer.parseInt(tokens1[0].trim()) * 3600000;
+                                int total1 = secondsToMs1 + minutesToMs1 + hoursToMs1;
+
+                                String[] tokens12 = rst[rst.length - 1].split(":");
+                                int secondsToMs12 = Integer.parseInt(tokens12[2].trim()) * 1000;
+                                int minutesToMs12 = Integer.parseInt(tokens12[1].trim()) * 60000;
+                                int hoursToMs12 = Integer.parseInt(tokens12[0].trim()) * 3600000;
+                                int total12 = secondsToMs12 + minutesToMs12 + hoursToMs12;
+
+                                Long t = new Long(total12) - new Long(total1);
+                                String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(t),
+                                        TimeUnit.MILLISECONDS.toMinutes(t) % TimeUnit.HOURS.toMinutes(1),
+                                        TimeUnit.MILLISECONDS.toSeconds(t) % TimeUnit.MINUTES.toSeconds(1));
+                                total = total + t;
+                                totalEmp = totalEmp + t;
+                                dataRowh.createCell(7).setCellValue(String.valueOf((hms)));
+                                sheet.autoSizeColumn(7);
+                            }
+                        }
+
+                }/*fin del for interno*/
+            String hmst1 = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(totalEmp),
+                    TimeUnit.MILLISECONDS.toMinutes(totalEmp) % TimeUnit.HOURS.toMinutes(1),
+                    TimeUnit.MILLISECONDS.toSeconds(totalEmp) % TimeUnit.MINUTES.toSeconds(1));
+
+            HSSFRow dataRowh1 = sheet.createRow(rowCounth);
+            dataRowh1.createCell(7).setCellValue("Total de Horas Trabajadas de "+ nomEmpCiclo + " : "+ hmst1);
+            dataRowh1.setRowStyle(headerStyle);
+            sheet.autoSizeColumn(7);
+
+            String hmst = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(total),
+                    TimeUnit.MILLISECONDS.toMinutes(total) % TimeUnit.HOURS.toMinutes(1),
+                    TimeUnit.MILLISECONDS.toSeconds(total) % TimeUnit.MINUTES.toSeconds(1));
+            HSSFRow dataRowh = sheet.createRow(rowCounth+1);
+            dataRowh.createCell(7).setCellValue("Total General de Horas Trabajadas: "+ hmst);
+            dataRowh.setRowStyle(headerStyle);
+            sheet.autoSizeColumn(7);
+
+            File excelFile;
+            excelFile = new File(filePath);
+            try {
+                FileOutputStream fileOuS = new FileOutputStream(excelFile);
+                if (excelFile.exists()) {
+                    excelFile.delete();
+                    logger.log(Level.INFO, "Archivo eliminado.!");
+                }
+                workbook.write(fileOuS);
+                fileOuS.flush();
+                fileOuS.close();
+                logger.log(Level.INFO, "Archivo Creado.!");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }else{
+            CellStyle noDataCellStyle = workbook.createCellStyle();
+            noDataCellStyle.setAlignment(HorizontalAlignment.CENTER);
+            noDataCellStyle.setFont(font);
+            HSSFRow aRow = sheet.createRow(1);
+            sheet.addMergedRegion(new CellRangeAddress(aRow.getRowNum(), aRow.getRowNum(), 0, headers.length - 1));
+            aRow.createCell(0).setCellValue("NO SE ENCONTRARON DATOS!");
+            aRow.getCell(0).setCellStyle(noDataCellStyle);
+        }
+    }
 
     public void buildExcelDocumentVigDxBhc(Map<String, Object> model, HSSFWorkbook workbook,HttpServletResponse response) throws IOException {
         List<Bhc_Detalles_Envio> listaSerologia = (List<Bhc_Detalles_Envio>) model.get("allBhc");
@@ -79,7 +292,9 @@ public class ExcelBuilder extends AbstractExcelView {
                 "estudio",
                 "edadA",
                 "edadM",
-                "viaje"
+                "viaje",
+                "Procesada CSFV",
+                "Puesto"
         };
         CellStyle headerStyle = workbook.createCellStyle();
         font.setBold(true);
@@ -101,7 +316,7 @@ public class ExcelBuilder extends AbstractExcelView {
             font = workbook.createFont();
             font.setFontName("Calibri");
             font.setFontHeight((short) (11 * 20));
-            font.setColor(HSSFColor.BLACK.index);
+          //  font.setColor(HSSFColor.BLACK.index);
 
             CellStyle dateCellStyle = workbook.createCellStyle();
             CreationHelper createHelper = workbook.getCreationHelper();
@@ -127,7 +342,7 @@ public class ExcelBuilder extends AbstractExcelView {
             int rowCount = 1;
             for (Bhc_Detalles_Envio registro : listaSerologia) {
                 HSSFRow dataRow = sheet.createRow(rowCount++);
-                dataRow.createCell(0).setCellValue(registro.getBhc().getParticipante().toString());
+                dataRow.createCell(0).setCellValue(registro.getBhc().getParticipante());
 
                 sheet.autoSizeColumn(0);
                 dataRow.createCell(1).setCellValue(ni.org.ics.webapp.web.utils.DateUtil.DateToString(registro.getBhc().getFecha(), "dd/MM/yyyy"));
@@ -150,6 +365,10 @@ public class ExcelBuilder extends AbstractExcelView {
                 sheet.autoSizeColumn(7);
                 dataRow.createCell(8).setCellValue(registro.getBhcEnvio().getIdenvio());
                 sheet.autoSizeColumn(8);
+                dataRow.createCell(9).setCellValue(registro.getBhc().getProcesadaCSFV());
+                sheet.autoSizeColumn(9);
+                dataRow.createCell(10).setCellValue(registro.getBhc().getPuesto());
+                sheet.autoSizeColumn(10);
             }
 
             File excelFile;
@@ -220,7 +439,7 @@ public class ExcelBuilder extends AbstractExcelView {
             font = workbook.createFont();
             font.setFontName("Calibri");
             font.setFontHeight((short) (11 * 20));
-            font.setColor(HSSFColor.BLACK.index);
+           // font.setColor(HSSFColor.BLACK.index);
 
             CellStyle dateCellStyle = workbook.createCellStyle();
             CreationHelper createHelper = workbook.getCreationHelper();
@@ -340,7 +559,7 @@ public class ExcelBuilder extends AbstractExcelView {
             font = workbook.createFont();
             font.setFontName("Calibri");
             font.setFontHeight((short) (11 * 20));
-            font.setColor(HSSFColor.BLACK.index);
+         //   font.setColor(HSSFColor.BLACK.index);
 
             CellStyle dateCellStyle = workbook.createCellStyle();
             CreationHelper createHelper = workbook.getCreationHelper();
