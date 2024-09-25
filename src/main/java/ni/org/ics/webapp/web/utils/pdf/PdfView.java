@@ -805,6 +805,7 @@ public class PdfView extends AbstractPdfView {
         image1.setCompressionLevel(5);
         document.add(image1);*/
 
+
         PdfPTable table = new PdfPTable(new float[]{18,18});
         table.setWidthPercentage(96f);
         PdfPCell cell;

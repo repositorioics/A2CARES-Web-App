@@ -7,6 +7,7 @@ import ni.org.ics.webapp.domain.Serologia.Serologia;
 import ni.org.ics.webapp.domain.clinical.HojaClinica;
 import ni.org.ics.webapp.domain.core.ControlAsistencia;
 import ni.org.ics.webapp.domain.core.Participante;
+import ni.org.ics.webapp.domain.entomologia.CuestionarioCAP;
 import ni.org.ics.webapp.domain.personal.JustificacionesICS;
 import ni.org.ics.webapp.dto.*;
 import ni.org.ics.webapp.language.MessageResource;
@@ -819,6 +820,46 @@ public class ControlAsistenciaController {
                             }
                             if (!verificaSalida.equalsIgnoreCase("0")) {
                                 return "Usuario: " + controlAsistencia.getRecordUser().toUpperCase() + ", tiene Hora de Salida hoy: " + fechaactual + "   Error al Guardar.";
+                            }
+                        }
+                    }
+                }catch(Exception ex) {
+                    ex.printStackTrace();
+                    return null;
+                }
+            }
+        }
+        return "Datos recibidos!";
+    }
+    @RequestMapping(value = "cuestionarioCambioClimatico", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    String saveCuestionarioCambioClimatico(@RequestBody CuestionarioCAP[] objetos){
+        java.util.Date fechaactual = java.sql.Date.valueOf(LocalDate.now());
+
+        SimpleDateFormat format2 = new SimpleDateFormat("yyyy/MM/dd");
+        logger.debug("Insertando/Actualizando Cuestionario Cambio Climático");
+        if (objetos == null){
+            logger.debug("Nulo");
+            return "No recibi nada!";
+        }else{
+
+
+            List<CuestionarioCAP> capList = Arrays.asList(objetos);
+            for(CuestionarioCAP cuestionarioCAP : capList) {
+                try {
+                    String verificaExisteCAP;
+                    if(cuestionarioCAP.getCodigoVivienda() != null) {
+                         verificaExisteCAP = controlAsistenciaService.getvalidarCodViviendaCAP(cuestionarioCAP.getCodigoVivienda().toString());
+                    }else{
+                        verificaExisteCAP = "-1";
+                    }
+                    logger.debug("verifica codigo de vivienda"+ verificaExisteCAP);
+                    if (verificaExisteCAP != null) {
+                        if (!verificaExisteCAP.equalsIgnoreCase("0")) {
+                            return "Código de vivienda " + cuestionarioCAP.getCodigoVivienda().toString() + " ya ingresado por: " + verificaExisteCAP + " No se puede guardar el cuestionario.";
+                        } else {
+                            if (verificaExisteCAP.equalsIgnoreCase("0")) {
+                                controlAsistenciaService.saveOrUpdateCuestionarCambioClimatico(cuestionarioCAP);
                             }
                         }
                     }

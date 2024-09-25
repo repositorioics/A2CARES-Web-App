@@ -1,6 +1,7 @@
 package ni.org.ics.webapp.service;
 
 import ni.org.ics.webapp.domain.core.ControlAsistencia;
+import ni.org.ics.webapp.domain.entomologia.CuestionarioCAP;
 import ni.org.ics.webapp.domain.personal.JustificacionesICS;
 import ni.org.ics.webapp.dto.*;
 import org.hibernate.Query;
@@ -33,6 +34,10 @@ public class ControlAsistenciaService {
     public void saveOrUpdateControlAsistencia(ControlAsistencia controlAsistencia) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(controlAsistencia);
+    }
+    public void saveOrUpdateCuestionarCambioClimatico(CuestionarioCAP cuestionarioCAP) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(cuestionarioCAP);
     }
     public void saveOrUpdateJustificaciones(JustificacionesICS justificacionesICS) {
         Session session = sessionFactory.getCurrentSession();
@@ -186,6 +191,18 @@ public class ControlAsistenciaService {
             Session session = sessionFactory.getCurrentSession();
             Query query = session.createSQLQuery("SELECT fn_verificar_hora_salida_asistencia(:usuario)");
             query.setParameter("usuario", usuario);
+            return query.uniqueResult().toString();
+        }catch (Exception e){
+            System.err.println(e.toString());
+            throw e;
+        }
+    }
+    @SuppressWarnings("unchecked")
+    public String getvalidarCodViviendaCAP(String codVivienda)throws Exception{
+        try{
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createSQLQuery("call fn_validar_cod_vivienda_cap(:codVivienda)");
+            query.setParameter("codVivienda", codVivienda);
             return query.uniqueResult().toString();
         }catch (Exception e){
             System.err.println(e.toString());

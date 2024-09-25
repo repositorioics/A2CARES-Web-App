@@ -15,7 +15,7 @@ import java.util.Date;
 
 /**
  * Created by Everts Morales on 20/03/2023.
- */
+ *//*
 @Entity
 @Table(name = "ento_doble_digitacion_llanta", catalog = "a2cares")
 public class Ento_Doble_Digitacion_Llanta extends BaseMetaData implements Auditable {
@@ -100,4 +100,4 @@ public class Ento_Doble_Digitacion_Llanta extends BaseMetaData implements Audita
     public int hashCode() {
         return codigoLlanta.hashCode();
     }
-}
+}*/

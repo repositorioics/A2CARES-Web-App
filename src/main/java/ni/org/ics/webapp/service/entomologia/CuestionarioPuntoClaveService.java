@@ -1,5 +1,6 @@
 package ni.org.ics.webapp.service.entomologia;
 
+import ni.org.ics.webapp.domain.entomologia.CuestionarioCAP;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioPuntoClave;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -31,10 +32,22 @@ public class CuestionarioPuntoClaveService {
         Query query = session.createQuery("from CuestionarioPuntoClave where movilInfo.eliminado  = false order by movilInfo.today");
         return query.list();
     }
+    public List<CuestionarioCAP> getCuestionariosCap(){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from CuestionarioCAP ");
+        return query.list();
+    }
 
     public List<CuestionarioPuntoClave> getCuestionariosPuntoClaveByRangoFechas(Date fechaInicio, Date fechaFin){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from CuestionarioPuntoClave where  movilInfo.eliminado  = false and movilInfo.today between :fechaInicio and :fechaFin order by movilInfo.today");
+        query.setParameter("fechaInicio", fechaInicio);
+        query.setParameter("fechaFin", fechaFin);
+        return query.list();
+    }
+    public List<CuestionarioCAP> getCuestionariosCapByRangoFechas(Date fechaInicio, Date fechaFin){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from CuestionarioCAP where  fechaCuestionario between :fechaInicio and :fechaFin order by fechaCuestionario");
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         return query.list();

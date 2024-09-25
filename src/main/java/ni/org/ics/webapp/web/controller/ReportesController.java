@@ -7,6 +7,7 @@ import ni.org.ics.webapp.domain.core.ControlAsistencia;
 import ni.org.ics.webapp.domain.core.Estudio;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
+import ni.org.ics.webapp.domain.entomologia.CuestionarioCAP;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioHogar;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioHogarPoblacion;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioPuntoClave;
@@ -508,6 +509,7 @@ public class ReportesController {
         List<CuestionarioHogar> cuestionarios = new ArrayList<CuestionarioHogar>();
         List<CuestionarioHogarPoblacion> poblacion = new ArrayList<CuestionarioHogarPoblacion>();
         List<CuestionarioPuntoClave> puntosClaves = new ArrayList<CuestionarioPuntoClave>();
+        List<CuestionarioCAP> cambioClimatico = new ArrayList<CuestionarioCAP>();
 
         if ((fechaInicio != null && !fechaInicio.isEmpty()) && (fechaFin != null && !fechaFin.isEmpty())) {
             dFechaInicio = DateUtil.StringToDate(fechaInicio, "dd/MM/yyyy");
@@ -515,10 +517,12 @@ public class ReportesController {
             cuestionarios = this.cuestionarioHogarService.getCuestionariosHogarByRangoFechas(dFechaInicio, dFechaFin);
             poblacion = this.cuestionarioHogarService.getCuestionariosHogarPobByRangoFechas(dFechaInicio, dFechaFin);
             puntosClaves = this.cuestionarioPuntoClaveService.getCuestionariosPuntoClaveByRangoFechas(dFechaInicio, dFechaFin);
+            cambioClimatico = this.cuestionarioPuntoClaveService.getCuestionariosCapByRangoFechas(dFechaInicio, dFechaFin);
         } else {
             cuestionarios = this.cuestionarioHogarService.getCuestionariosHogar();
             poblacion = this.cuestionarioHogarService.getCuestionariosHogarPoblacion();
             puntosClaves = this.cuestionarioPuntoClaveService.getCuestionariosPuntoClave();
+            cambioClimatico = this.cuestionarioPuntoClaveService.getCuestionariosCap();
         }
 
         reporteDatosEntomologia.addObject("fechaInicio", fechaInicio);
@@ -526,6 +530,7 @@ public class ReportesController {
         reporteDatosEntomologia.addObject("cuestionarios", cuestionarios);
         reporteDatosEntomologia.addObject("poblacion", poblacion);
         reporteDatosEntomologia.addObject("puntosClaves", puntosClaves);
+        reporteDatosEntomologia.addObject("cambioClimatico", cambioClimatico);
         reporteDatosEntomologia.addObject("TipoReporte", Constants.TPR_ENTO);
 
         return reporteDatosEntomologia;

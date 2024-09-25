@@ -15,7 +15,7 @@ import java.util.Date;
 
 /**
  * Created by Everts Morales on 20/03/2023.
- */
+ *//*
 @Entity
 @Table(name = "ento_doble_digitacion_pilaGrande", catalog = "a2cares")
 public class Ento_Doble_Digitacion_PilaGrande extends BaseMetaData implements Auditable {
@@ -148,4 +148,4 @@ public class Ento_Doble_Digitacion_PilaGrande extends BaseMetaData implements Au
     public int hashCode() {
         return codigoPilaGrande.hashCode();
     }
-}
+}*/
