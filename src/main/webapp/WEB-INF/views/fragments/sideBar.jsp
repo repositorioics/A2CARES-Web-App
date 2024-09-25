@@ -398,6 +398,23 @@
 
             </sec:authorize>
 
+
+            <!-- ** HEMODINAMICA ** -->
+            <sec:authorize access="hasRole('ROLE_DIGI')">
+                <li class="nav-item nav-dropdown hemodinamica">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="fas fa-hospital-symbol"></i>
+                        <spring:message code="Hemodinamica" />
+                    </a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item filedata">
+                            <a class="nav-link" href="<spring:url value="/hemo/list" htmlEscape="true "/>">
+                                <i class="fa fa-snowflake-o" aria-hidden="true"></i>
+                                <spring:message code="lbl.list" /></a>
+                        </li>
+                    </ul>
+                </li>
+            </sec:authorize>
 	        <li class="nav-item">
                 <a class="nav-link" href="<spring:url value="/logout" htmlEscape="true" />"><i class="fas fa-lock"></i><spring:message code="logout" /></a>
             </li>

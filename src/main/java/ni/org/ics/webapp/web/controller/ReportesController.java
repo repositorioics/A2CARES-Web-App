@@ -10,6 +10,8 @@ import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioHogar;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioHogarPoblacion;
 import ni.org.ics.webapp.domain.entomologia.CuestionarioPuntoClave;
+import ni.org.ics.webapp.domain.hemodinamica.DatosHemodinamica;
+import ni.org.ics.webapp.domain.hemodinamica.HemoDetalle;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.personal.Personal;
@@ -23,6 +25,7 @@ import ni.org.ics.webapp.service.Retiro.RetiroService;
 import ni.org.ics.webapp.service.Serologia.SerologiaService;
 import ni.org.ics.webapp.service.entomologia.CuestionarioHogarService;
 import ni.org.ics.webapp.service.entomologia.CuestionarioPuntoClaveService;
+import ni.org.ics.webapp.service.hemodinamica.HemodinamicaService;
 import ni.org.ics.webapp.service.reportes.ReportesPdfService;
 import ni.org.ics.webapp.service.scancarta.ScanCartaService;
 import ni.org.ics.webapp.web.utils.DateUtil;
@@ -94,6 +97,9 @@ public class ReportesController {
 
     @Resource(name = "participanteService")
     private ParticipanteService participanteService;
+
+    @Resource(name = "hemodinamicaService")
+    private HemodinamicaService hemodinamicaService;
 
     //region todo Genera el Reporte de ScanCarta /reportes/ReporteCarta
     @RequestMapping(value = "/ReporteCarta", method = RequestMethod.GET)
@@ -558,4 +564,26 @@ public class ReportesController {
 
         return reporteControlAsistencia;
     }
+
+    @RequestMapping(value = "/ReporteHemodinamica", method = RequestMethod.GET)
+    public ModelAndView ReporteHemodinamica(@RequestParam(value = "idDatoHemo", required = true) String idDatoHemo)
+            throws Exception{
+        ModelAndView pdfHemodinamic = new ModelAndView("pdfView");
+        DatosHemodinamica obj = hemodinamicaService.getHemoDinamicaById(idDatoHemo);
+        List<HemoDetalle> detalle = hemodinamicaService.getListHemoDetalle(idDatoHemo);
+        List<MessageResource> messageReports = messageResourceService.loadAllMessagesNoCatalogs();
+        List<MessageResource> extremidades = messageResourceService.getCatalogo("EXTREMIDADES");
+        extremidades.addAll(messageResourceService.getCatalogo("NIVELCONCIENCIA"));
+        extremidades.addAll(messageResourceService.getCatalogo("LLENADOCAPILAR"));
+        extremidades.addAll(messageResourceService.getCatalogo("PULSOCALIDAD"));
+        extremidades.addAll(messageResourceService.getCatalogo("DIURESIS"));
+        extremidades.addAll(messageResourceService.getCatalogo("CAT_PUESTO_SALUD"));
+        pdfHemodinamic.addObject("extremidades", extremidades);
+        pdfHemodinamic.addObject("labels", messageReports);
+        pdfHemodinamic.addObject("obj", obj);
+        pdfHemodinamic.addObject("detalle", detalle);
+        pdfHemodinamic.addObject("TipoReporte", Constants.TPR_HEMOREPORTE);
+        return pdfHemodinamic;
+    }
+
 }

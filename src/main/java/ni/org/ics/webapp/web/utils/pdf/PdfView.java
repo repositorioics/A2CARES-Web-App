@@ -10,6 +10,8 @@ import ni.org.ics.webapp.domain.Serologia.*;
 import ni.org.ics.webapp.domain.catalogs.Razones_Retiro;
 import ni.org.ics.webapp.domain.core.Participante;
 import ni.org.ics.webapp.domain.core.ParticipanteProcesos;
+import ni.org.ics.webapp.domain.hemodinamica.DatosHemodinamica;
+import ni.org.ics.webapp.domain.hemodinamica.HemoDetalle;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoDetalleEnvio;
 import ni.org.ics.webapp.domain.laboratorio.MuestraEnfermoEnvio;
 import ni.org.ics.webapp.domain.personal.Personal;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.view.document.AbstractPdfView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -92,7 +95,12 @@ public class PdfView extends AbstractPdfView {
         if (model.get("TipoReporte").equals(Constants.TPR_IMPRIMIR_BHC_BC6000)){
             IMPRIMIR_BHC_BC6000(model, document, writer);
         }
+        if (model.get("TipoReporte").equals(Constants.TPR_HEMOREPORTE)){
+            ReporteHemodinamica(model,document,writer);
+        }
     }
+
+
 
     private PdfPCell createCell(String text, Font f, int border){
         PdfPCell cell = new PdfPCell(new Phrase(text, f));
@@ -3182,6 +3190,350 @@ private void ReporteEnvioMxEnfermo(Map<String, Object> model, Document document,
     }
     //endregion
 
+    private void ReporteHemodinamica(Map<String, Object> model, Document document, PdfWriter writer) throws DocumentException {
+        DatosHemodinamica obj = (DatosHemodinamica) model.get("obj");
+        List<HemoDetalle> ListDetail = (List<HemoDetalle>) model.get("detalle");
+        messageExtremidades = (List<MessageResource>) model.get("extremidades");
+        document.setPageSize(PageSize.A4.rotate());
+        document.setMargins(10,10,200,0);
+        document.open();
+        PdfPTable table;
+        String clasifica = ListDetail.get(0).getSigno();
+        String centroName = this.getDescripcionCatalogo(""+obj.getUnidadSalud(),"CAT_CENTRO_SALUD");
+        HeaderAndFooterHemodinamica event = new HeaderAndFooterHemodinamica(obj, clasifica, centroName);
+        writer.setPageEvent(event);
+        int maximoCol = 18; //18 es correcto
+        Double tablas = Math.ceil((double)ListDetail.size()/maximoCol);
+        int conDetalle = 0;
+        Font dataFont = FontFactory.getFont(FontFactory.HELVETICA, 7);
+        Font helv_7 = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD);
+        for (int t = 1; t <= tablas.intValue() ; t++) {
+            if (conDetalle > 0 && conDetalle % 18 == 0) {// 18 es correcto
+                document.newPage();
+            }
+            /*********************************************/
+            table = new PdfPTable(new float[]{3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f,3f}); //19
+            table.setWidthPercentage(100);
+            table.addCell(new Phrase("Fecha", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Hora ", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Nivel de Consciencia ", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("P/A mmHg", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("PP mmHg", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("PAM mmHg", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("FC por Minuto", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Fr por Minuto", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("T°C", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("SA02%", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Extremidades", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Llenado Capilar (seg)", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Pulso (Calidad)", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Diuresis Ml/Kg/Hr", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Cantidad Orina (Ml)", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Cargas I.V Ml/Kg/Hr", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("S.R.O", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Densidad Urinaria", helv_7));
+            table.completeRow();
+            table.addCell(new Phrase("Validado por", helv_7));
+            table.completeRow();
+            /*********************************************/
+
+            for (int i = 0; i <= maximoCol; i++) {
+                if (i == 0) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(DateUtil.DateToString(l.getFecha(), "dd/MM/yyyy"), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 1) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(l.getHora(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 2) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(this.getDescripcionCatalogo(l.getNivelConciencia(), "NIVELCONCIENCIA"), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 3) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    String part1 = "", part2 = "";
+                    Integer alerta;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            for (int indice = 0; indice < l.getPs().length(); indice++) {
+                                String string = l.getPs();
+                                String[] parts = string.split("/");
+                                alerta = parts.length;
+                                part1 = parts[0];
+                                part2 = (alerta > 1) ? parts[1] : l.getPd();
+                            }
+                            cell1[celda].setPhrase(new Phrase(Integer.parseInt(part1) + "/" + Integer.parseInt(part2), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 4) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(l.getPp(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 5) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(l.getPam(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 6) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(l.getFc(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 7) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(l.getFr(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 8) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(l.getTc(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 9) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(l.getSa(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 10) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(this.getDescripcionCatalogo(l.getExtremidades(), "EXTREMIDADES"), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 11) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(this.getDescripcionCatalogo(l.getLlenadoCapilar(), "LLENADOCAPILAR"), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 12) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(this.getDescripcionCatalogo(l.getPulsoCalidad(), "PULSOCALIDAD"), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 13) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(this.getDescripcionCatalogo(l.getDiuresis(), "DIURESIS"), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+
+                if (i == 14) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            String cantiOrina = (l.getCantidadOrina() == null) ? "" : l.getCantidadOrina().toString();
+                            cell1[celda].setPhrase(new Phrase(cantiOrina, dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 15) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            String carga = (l.getCargasIV() == null) ? "" : l.getCargasIV().toString();
+                            cell1[celda].setPhrase(new Phrase(carga, dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+
+                if (i == 16) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            String intrav = (l.getSro() == null) ? "" : l.getSro().toString();
+                            cell1[celda].setPhrase(new Phrase(intrav, dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+
+                if (i == 17) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(l.getDensidadUrinaria(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+                if (i == 18) {
+                    PdfPRow row = table.getRow(i);
+                    PdfPCell[] cell1 = row.getCells();
+                    int celda = 1;
+                    for (int conDet = conDetalle; conDet < maximoCol * t; conDet++) {
+                        if (conDet < ListDetail.size()) {
+                            HemoDetalle l = ListDetail.get(conDet);
+                            cell1[celda].setPhrase(new Phrase(""+l.getPersonaValida(), dataFont));
+                            cell1[celda].setHorizontalAlignment(Element.ALIGN_CENTER);
+                            celda++;
+                        } else break;
+                    }
+                }
+            }
+            conDetalle = maximoCol * t;
+            document.add(table);
+        }
+        document.close();
+    }
+
     private String getDescripcionCatalogo(String codigo,String catroot){
         for(MessageResource rnv : messageExtremidades){
             if (rnv.getCatKey().equals(codigo)) {
@@ -3212,6 +3564,10 @@ private void ReporteEnvioMxEnfermo(Map<String, Object> model, Document document,
         return "-";
     }
 }
+
+
+
+
 
 
 
@@ -4059,7 +4415,460 @@ class HeaderFooterReporteControlAsistencia extends PdfPageEventHelper {
                     document.bottom() - posicion, 0);
         }
     }
+}
 
+
+
+
+
+class HeaderAndFooterHemodinamica extends PdfPageEventHelper{
+
+    Font fontTitulo = new Font(Font.HELVETICA, 14, Font.BOLD);
+    Font fontSubTitulo = new Font(Font.HELVETICA, 12, Font.BOLD);
+
+    Font fontLabel = new Font(Font.HELVETICA, 10, Font.BOLD);
+    Font fontLabelNormal = new Font(Font.HELVETICA, 10, Font.NORMAL);
+    Font fontSmall = new Font(Font.HELVETICA, 8.5f, Font.NORMAL);
+    Font fontData = new Font(Font.HELVETICA, 9, Font.UNDEFINED);
+    protected PdfTemplate total;
+    protected BaseFont helv;
+    DatosHemodinamica datosHemodinamica;
+    String clasificacion,centroName;
+
+    HeaderAndFooterHemodinamica() {}
+
+    HeaderAndFooterHemodinamica(DatosHemodinamica datosHemodinamica,String clasificacion, String centroName){
+        this.datosHemodinamica = datosHemodinamica;
+        this.clasificacion = clasificacion;
+        this.centroName = centroName;
+    }
+
+    @Override
+    public void onOpenDocument(PdfWriter writer, Document document) {
+
+    }
+
+    @Override
+    public void onEndPage(PdfWriter writer, Document document) {
+        super.onEndPage(writer, document);
+        PdfPTable table;
+        PdfPCell cell;
+        Rectangle page = document.getPageSize();
+        table = new PdfPTable(new float[]{86f,16f});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("MINISTERIO DE SALUD.",fontTitulo));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase("Codigo"));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        table.writeSelectedRows(0, -1, 42, 585, writer.getDirectContent());
+
+        table = new PdfPTable(new float[]{86f,16f});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("HOJA DE EVALUACION HEMODINAMICA.",fontSubTitulo));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getParticipante().getCodigo()));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        table.writeSelectedRows(0, -1, 42, 570, writer.getDirectContent());
+
+        table = new PdfPTable(new float[]{86f,16f});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("PACIENTES HOSPITALIZADOS CON DENGUE.",fontSubTitulo));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase(""));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1, 42,558, writer.getDirectContent());
+
+        /****************************** 1er Fila *********************************/
+        table = new PdfPTable(new float[]{5f, 12.5f, 11.5f, 22.5f, 10.5f, 9.5f, 9.5f, 12.5f});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("Silais:",fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Managua", fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Unidad de Salud:", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(centroName, fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Municipio:", fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Managua",fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Sector:", fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getParticipante().getCasa().getBarrio().getNombre(), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,530, writer.getDirectContent());
+/****************************** 2da Fila *********************************/
+        table = new PdfPTable(new float[]{6, 15, 10, 10, 9, 10, 11});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("Dirección:", fontLabel));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getDireccion(), fontData));
+        cell.setColspan(4);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Fecha:", fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(DateUtil.DateToString(datosHemodinamica.getFecha(), "dd/MM/yyyy"), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,515, writer.getDirectContent());
+
+        /****************************** 3ra Fila *********************************/
+        table = new PdfPTable(new float[]{16, 37, 13, 37});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("Número de expediente:", fontLabel));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getnExpediente(), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("No. Teléfonico:", fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+        String tel;
+        if (datosHemodinamica.getTelefono() != null) {
+            tel = datosHemodinamica.getTelefono();
+        } else {
+            tel = "--";
+        }
+        cell = new PdfPCell(new Phrase(tel, fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,500, writer.getDirectContent());
+
+
+        /****************************** Fin 4ta Fila *********************************/
+        table = new PdfPTable(1);
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("Valoración del Estado nutricional en los niños/niñas", fontSmall ));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1, 10,460, writer.getDirectContent());
+        /****************************** *** *********************************/
+
+        table = new PdfPTable(new float[]{15,32,5,17,5,7, 5, 7, 5, 5, 4, 5});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("Nombre y Apellidos:", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getParticipante().getNombreCompleto(), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Edad:", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getEdad(), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Peso:", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+        Double pes = Double.valueOf(datosHemodinamica.getPeso().toString());
+        cell = new PdfPCell(new Phrase(pes + " Kg", fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Talla:", fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getTalla().toString() + " cm", fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("ASC:", fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        double x = (double) Math.round(datosHemodinamica.getAsc() * 100d) / 100d;
+        cell = new PdfPCell(new Phrase(Double.valueOf(x).toString(), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("IMC:", fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getImc().toString(), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,480, writer.getDirectContent());
+
+
+        table = new PdfPTable(new float[]{15, 15, 5, 10, 8, 10, 8, 8});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("Rango de Presión PS/SD.", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+        String psdmin, psdmed, psdmax;
+        if (datosHemodinamica.getSdMin() != null || datosHemodinamica.getSdMin() == "") {
+            psdmin = datosHemodinamica.getSdMin();
+            psdmed = datosHemodinamica.getSdMed();
+            psdmax = datosHemodinamica.getSdMax();
+        } else {
+            psdmin = "--";
+            psdmed = "--";
+            psdmax = "--";
+        }
+        cell = new PdfPCell(new Phrase(psdmin + " /, " + psdmed + " /, " + psdmax, fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("PAM", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        String pammin, pammed, pammax;
+        if (datosHemodinamica.getPamMin()!=null || datosHemodinamica.getPamMed() != null || datosHemodinamica.getPamMax()!=null){
+            pammin =datosHemodinamica.getPamMin();
+            pammed=datosHemodinamica.getPamMed();
+            pammax = datosHemodinamica.getPamMax();
+        }else{
+            pammin ="--";
+            pammed ="--";
+            pammax = "--";
+        }
+        cell = new PdfPCell(new Phrase(pammin + " /, " + pammed + " /, " + pammax, fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Rangos de FC:", fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+        String min, med, max, frmin, frmax;
+        if (datosHemodinamica.getFcMin() != null) {
+            min = datosHemodinamica.getFcMin().toString();
+            med = datosHemodinamica.getFcMed().toString();
+            max = datosHemodinamica.getFcProm().toString();
+            frmin = datosHemodinamica.getFrMin().toString();
+            frmax = datosHemodinamica.getFrMax().toString();
+        } else {
+            min = "--";
+            med = "--";
+            max = "--";
+            frmin = "--";
+            frmax = "--";
+        }
+        cell = new PdfPCell(new Phrase(min + " / " + med + " / " + max, fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Rango FR: ", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(frmin + " / " + frmax, fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,450, writer.getDirectContent());
+
+/************************************* Fin 6ta Fila **********************************************/
+        table = new PdfPTable(new float[]{15, 15, 5, 10, 8, 12, 8, 8});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase(""));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("mínima/,media/,máxima", fontSmall));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(""));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("mínima/,media/,máxima", fontSmall));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(""));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("mínima/,máximo/,promedio", fontSmall));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(""));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("mínimo/máximo", fontSmall));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(0);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,438, writer.getDirectContent());
+
+        table = new PdfPTable(new float[]{15, 8, 10, 10, 10, 10});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        cell = new PdfPCell(new Phrase("Fecha inicio de enfermedad:", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(DateUtil.DateToString(datosHemodinamica.getFie(), "dd/MM/yyyy"), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Días de enfermedad:", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getDiasenf().toString(), fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Días de hospitalización:", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("--", fontData));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,426, writer.getDirectContent());
+
+
+        table = new PdfPTable(new float[]{22,80});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        table.setWidthPercentage(100f);
+        cell = new PdfPCell(new Phrase("Clasificacion clínica del Dengue:", fontLabel));
+        cell.setBorder(0);
+        table.addCell(cell);
+        cell = new PdfPCell(new Phrase(clasificacion, fontLabel));
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell.setBorder(Rectangle.BOTTOM);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,409, writer.getDirectContent());
+
+        Date objDate = new Date();
+        DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm");
+        table = new PdfPTable(new float[]{10,18,14,14,14,14,16});
+        table.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        //table.setSpacingBefore(5f);
+        cell = new PdfPCell(new Phrase("Creado por: ", fontLabelNormal));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell= new PdfPCell(new Phrase(datosHemodinamica.getRecordUser(), fontLabelNormal));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Impreso : ", fontLabelNormal));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(dateformat.format(objDate) + " " + hourFormat.format(objDate), fontLabelNormal));
+        cell.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("N° Evento: ", fontLabelNormal));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase(datosHemodinamica.getNumeroEvento(),fontLabelNormal));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("Página " + writer.getCurrentPageNumber() + " de " + datosHemodinamica.getNumeroPagina(), fontLabelNormal));
+        cell.setBorder(Rectangle.NO_BORDER);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+        table.writeSelectedRows(0,-1,10,40, writer.getDirectContent());
+
+        /*PdfPTable foot = new PdfPTable(3);
+        for (int k = 1; k <= 6; ++k)
+            foot.addCell("foot " + k);
+        foot.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+        foot.writeSelectedRows(0, -1, document.leftMargin(), document.bottomMargin(), writer.getDirectContent());*/
+
+        /*Paragraph encabezado = new Paragraph("MINISTERIO DE SALUD.",FontFactory.getFont("COURIER", 20, java.awt.Font.BOLD, Color.black));
+        encabezado.setAlignment(Element.ALIGN_CENTER);
+        ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, encabezado, (document.right() - document.left()) / 2 + document.leftMargin(), document.top() + 10, 0);
+        ColumnText.showTextAligned(cb, Element.ALIGN_CENTER, footer,(document.right() - document.left()) / 2 + document.leftMargin(), document.bottom() - 10, 0);*/
+    }
+
+    @Override
+    public void onCloseDocument(PdfWriter writer, Document document) {
+        super.onCloseDocument(writer, document);
+
+    }
 }
 
 

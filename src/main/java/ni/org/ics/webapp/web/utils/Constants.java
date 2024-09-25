@@ -16,6 +16,9 @@ public class Constants {
     public static final String TPR_CONTROL_ASISTENCIA  = "CONTROL_ASISTENCIA";
     public static final String TPR_IMPRIMIR_BHC_BC6000  = "IMPRIMIR_BHC_BC6000";
 
+    //04-09-2024
+    public static final String TPR_HEMOREPORTE  = "TPR_HEMOREPORTE";
+
     public static final String TIPO_TUBO_SEROLOGIA = "R";
 
     public static final String STRING_FORMAT_DD_MM_YYYY = "dd/MM/yyyy";
