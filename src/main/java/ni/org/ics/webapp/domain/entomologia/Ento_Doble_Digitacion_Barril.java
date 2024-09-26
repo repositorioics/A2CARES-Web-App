@@ -1,7 +1,7 @@
 package ni.org.ics.webapp.domain.entomologia;
 
 import ni.org.ics.webapp.domain.BaseMetaData;
-import ni.org.ics.webapp.domain.entomologia.Tabla_Doble_Digitacion;
+//import ni.org.ics.webapp.domain.entomologia.Tabla_Doble_Digitacion;
 import org.hibernate.annotations.ForeignKey;
 
 import javax.persistence.JoinColumn;
@@ -18,7 +18,7 @@ import java.util.Date;
 
 /**
  * Created by Everts Morales on 20/03/2023.
- */
+ *//*
 @Entity
 @Table(name = "ento_doble_digitacion_barril", catalog = "a2cares")
 public class Ento_Doble_Digitacion_Barril extends BaseMetaData implements Auditable {
@@ -151,4 +151,4 @@ public class Ento_Doble_Digitacion_Barril extends BaseMetaData implements Audita
     public int hashCode() {
         return codigoBarril.hashCode();
     }
-}
+}*/

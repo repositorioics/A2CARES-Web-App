@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import java.util.Date;
 /**
  * Created by Everts Morales on 20/03/2023.
- */
+ *//*
 @Entity
 @Table(name = "ento_doble_digitacion_BaldeTinas", catalog = "a2cares")
 public class Ento_Doble_Digitacion_BaldeTinas extends BaseMetaData implements Auditable {
@@ -109,4 +109,4 @@ public class Ento_Doble_Digitacion_BaldeTinas extends BaseMetaData implements Au
     public int hashCode() {
         return codigoBaldeTinas.hashCode();
     }
-}
+}*/

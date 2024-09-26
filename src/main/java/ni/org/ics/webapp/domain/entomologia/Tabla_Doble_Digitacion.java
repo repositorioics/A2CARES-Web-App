@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * Created by Everts Morales on 20/03/2023.
- */
+ *//*
 @Entity
 @Table(name = "ento_doble_digitacion_cuestionario", catalog = "a2cares" , uniqueConstraints = { @UniqueConstraint(columnNames = "codigo_encuesta") })
 public class Tabla_Doble_Digitacion extends BaseMetaData implements Auditable {
@@ -157,4 +157,4 @@ public class Tabla_Doble_Digitacion extends BaseMetaData implements Auditable {
     public int hashCode() {
         return codigoEncuesta.hashCode();
     }
-}
+}*/
