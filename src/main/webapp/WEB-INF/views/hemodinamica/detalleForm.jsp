@@ -393,15 +393,15 @@
 
     function isReload(){
         $( window ).bind("load",function() {
-            if(document.getElementById('editando').value == 'true' && document.getElementById('numParams').value == '' && document.getElementById('contParams').value == ''){
+            if( document.getElementById('editando').value =='true' && document.getElementById('numParams').value == '' && document.getElementById('contParams').value == '' ){
                 $("#btnGuardar").prop( "disabled", false );
-            }else{
+            }else if(document.getElementById('editando').value =='false' && document.getElementById('numParams').value == document.getElementById('contParams').value){
                 window.setTimeout(function () {
                     var p = $("#contParams").val();
                     toastr.info("Total de Parámetros: " +p,"Finalizado", {timeOut:6000});
                     $("#btnGuardar").prop( "disabled", true );
                 }, 1500);
-            }
+            }else{}
 
             if($("#numParams").val() != $("#contParams").val()){
                 $('#volver').bind("click", function (e) {

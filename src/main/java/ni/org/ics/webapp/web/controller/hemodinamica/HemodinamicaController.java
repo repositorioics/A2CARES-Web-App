@@ -95,7 +95,7 @@ public class HemodinamicaController {
         model.addAttribute("obj", obj);
         List<Barrio> barrios = this.barrioService.getBarrios();
         model.addAttribute("barrios", barrios);
-        List<MessageResource> centros = this.messageResourceService.getCatalogo("CAT_CENTRO_SALUD");
+        List<MessageResource> centros = this.messageResourceService.getCatalogo("CAT_PUESTO_SALUD");
         model.addAttribute("centros",centros);
         return "/hemodinamica/datosForm";
     }
